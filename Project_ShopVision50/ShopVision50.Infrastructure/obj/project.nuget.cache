@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "Tw5vFDckPNo=",
+  "dgSpecHash": "S/tL4YwLkww=",
   "success": true,
-  "projectFilePath": "C:\\Users\\Saz\\Desktop\\Group50\\Project_ShopVision50\\Project_ShopVision50\\ShopVision50.Infrastructure\\ShopVision50.Infrastructure.csproj",
+  "projectFilePath": "C:\\Users\\Saz\\Desktop\\Project_ShopVision50\\Project_ShopVision50\\ShopVision50.Infrastructure\\ShopVision50.Infrastructure.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\Saz\\.nuget\\packages\\azure.core\\1.25.0\\azure.core.1.25.0.nupkg.sha512",
     "C:\\Users\\Saz\\.nuget\\packages\\azure.identity\\1.7.0\\azure.identity.1.7.0.nupkg.sha512",

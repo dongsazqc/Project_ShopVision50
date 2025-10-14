@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\Saz\\Desktop\\Group50\\Project_ShopVision50\\Project_ShopVision50\\Shop_Db\\ShopVision50.Domain.csproj": {}
+    "C:\\Users\\Saz\\Desktop\\Project_ShopVision50\\Project_ShopVision50\\ShopVision50.Domain\\ShopVision50.Domain.csproj": {}
   },
   "projects": {
-    "C:\\Users\\Saz\\Desktop\\Group50\\Project_ShopVision50\\Project_ShopVision50\\Shop_Db\\ShopVision50.Domain.csproj": {
+    "C:\\Users\\Saz\\Desktop\\Project_ShopVision50\\Project_ShopVision50\\ShopVision50.Domain\\ShopVision50.Domain.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\Saz\\Desktop\\Group50\\Project_ShopVision50\\Project_ShopVision50\\Shop_Db\\ShopVision50.Domain.csproj",
+        "projectUniqueName": "C:\\Users\\Saz\\Desktop\\Project_ShopVision50\\Project_ShopVision50\\ShopVision50.Domain\\ShopVision50.Domain.csproj",
         "projectName": "ShopVision50.Domain",
-        "projectPath": "C:\\Users\\Saz\\Desktop\\Group50\\Project_ShopVision50\\Project_ShopVision50\\Shop_Db\\ShopVision50.Domain.csproj",
+        "projectPath": "C:\\Users\\Saz\\Desktop\\Project_ShopVision50\\Project_ShopVision50\\ShopVision50.Domain\\ShopVision50.Domain.csproj",
         "packagesPath": "C:\\Users\\Saz\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\Saz\\Desktop\\Group50\\Project_ShopVision50\\Project_ShopVision50\\Shop_Db\\obj\\",
+        "outputPath": "C:\\Users\\Saz\\Desktop\\Project_ShopVision50\\Project_ShopVision50\\ShopVision50.Domain\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"

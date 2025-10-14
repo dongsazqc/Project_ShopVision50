@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\Saz\\Desktop\\Group50\\Project_ShopVision50\\Project_ShopVision50\\ShopVision50.API\\ShopVision50.API.csproj": {}
+    "C:\\Users\\Saz\\Desktop\\Project_ShopVision50\\Project_ShopVision50\\ShopVision50.API\\ShopVision50.API.csproj": {}
   },
   "projects": {
-    "C:\\Users\\Saz\\Desktop\\Group50\\Project_ShopVision50\\Project_ShopVision50\\ShopVision50.API\\ShopVision50.API.csproj": {
+    "C:\\Users\\Saz\\Desktop\\Project_ShopVision50\\Project_ShopVision50\\ShopVision50.API\\ShopVision50.API.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\Saz\\Desktop\\Group50\\Project_ShopVision50\\Project_ShopVision50\\ShopVision50.API\\ShopVision50.API.csproj",
+        "projectUniqueName": "C:\\Users\\Saz\\Desktop\\Project_ShopVision50\\Project_ShopVision50\\ShopVision50.API\\ShopVision50.API.csproj",
         "projectName": "ShopVision50.API",
-        "projectPath": "C:\\Users\\Saz\\Desktop\\Group50\\Project_ShopVision50\\Project_ShopVision50\\ShopVision50.API\\ShopVision50.API.csproj",
+        "projectPath": "C:\\Users\\Saz\\Desktop\\Project_ShopVision50\\Project_ShopVision50\\ShopVision50.API\\ShopVision50.API.csproj",
         "packagesPath": "C:\\Users\\Saz\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\Saz\\Desktop\\Group50\\Project_ShopVision50\\Project_ShopVision50\\ShopVision50.API\\obj\\",
+        "outputPath": "C:\\Users\\Saz\\Desktop\\Project_ShopVision50\\Project_ShopVision50\\ShopVision50.API\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
@@ -35,8 +35,8 @@
           "net8.0": {
             "targetAlias": "net8.0",
             "projectReferences": {
-              "C:\\Users\\Saz\\Desktop\\Group50\\Project_ShopVision50\\Project_ShopVision50\\ShopVision50.Infrastructure\\ShopVision50.Infrastructure.csproj": {
-                "projectPath": "C:\\Users\\Saz\\Desktop\\Group50\\Project_ShopVision50\\Project_ShopVision50\\ShopVision50.Infrastructure\\ShopVision50.Infrastructure.csproj"
+              "C:\\Users\\Saz\\Desktop\\Project_ShopVision50\\Project_ShopVision50\\ShopVision50.Infrastructure\\ShopVision50.Infrastructure.csproj": {
+                "projectPath": "C:\\Users\\Saz\\Desktop\\Project_ShopVision50\\Project_ShopVision50\\ShopVision50.Infrastructure\\ShopVision50.Infrastructure.csproj"
               }
             }
           }
@@ -105,14 +105,82 @@
         }
       }
     },
-    "C:\\Users\\Saz\\Desktop\\Group50\\Project_ShopVision50\\Project_ShopVision50\\ShopVision50.Infrastructure\\ShopVision50.Infrastructure.csproj": {
+    "C:\\Users\\Saz\\Desktop\\Project_ShopVision50\\Project_ShopVision50\\ShopVision50.Domain\\ShopVision50.Domain.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\Saz\\Desktop\\Group50\\Project_ShopVision50\\Project_ShopVision50\\ShopVision50.Infrastructure\\ShopVision50.Infrastructure.csproj",
-        "projectName": "ShopVision50.Infrastructure",
-        "projectPath": "C:\\Users\\Saz\\Desktop\\Group50\\Project_ShopVision50\\Project_ShopVision50\\ShopVision50.Infrastructure\\ShopVision50.Infrastructure.csproj",
+        "projectUniqueName": "C:\\Users\\Saz\\Desktop\\Project_ShopVision50\\Project_ShopVision50\\ShopVision50.Domain\\ShopVision50.Domain.csproj",
+        "projectName": "ShopVision50.Domain",
+        "projectPath": "C:\\Users\\Saz\\Desktop\\Project_ShopVision50\\Project_ShopVision50\\ShopVision50.Domain\\ShopVision50.Domain.csproj",
         "packagesPath": "C:\\Users\\Saz\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\Saz\\Desktop\\Group50\\Project_ShopVision50\\Project_ShopVision50\\ShopVision50.Infrastructure\\obj\\",
+        "outputPath": "C:\\Users\\Saz\\Desktop\\Project_ShopVision50\\Project_ShopVision50\\ShopVision50.Domain\\obj\\",
+        "projectStyle": "PackageReference",
+        "fallbackFolders": [
+          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
+        ],
+        "configFilePaths": [
+          "C:\\Users\\Saz\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\DevExpress 18.1.config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+        ],
+        "originalTargetFrameworks": [
+          "net8.0"
+        ],
+        "sources": {
+          "C:\\Program Files (x86)\\DevExpress 18.1\\Components\\System\\Components\\Packages": {},
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+          "C:\\Program Files\\dotnet\\library-packs": {},
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "net8.0": {
+            "targetAlias": "net8.0",
+            "projectReferences": {}
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        },
+        "restoreAuditProperties": {
+          "enableAudit": "true",
+          "auditLevel": "low",
+          "auditMode": "direct"
+        },
+        "SdkAnalysisLevel": "9.0.300"
+      },
+      "frameworks": {
+        "net8.0": {
+          "targetAlias": "net8.0",
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48",
+            "net481"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "frameworkReferences": {
+            "Microsoft.NETCore.App": {
+              "privateAssets": "all"
+            }
+          },
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.305/PortableRuntimeIdentifierGraph.json"
+        }
+      }
+    },
+    "C:\\Users\\Saz\\Desktop\\Project_ShopVision50\\Project_ShopVision50\\ShopVision50.Infrastructure\\ShopVision50.Infrastructure.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "C:\\Users\\Saz\\Desktop\\Project_ShopVision50\\Project_ShopVision50\\ShopVision50.Infrastructure\\ShopVision50.Infrastructure.csproj",
+        "projectName": "ShopVision50.Infrastructure",
+        "projectPath": "C:\\Users\\Saz\\Desktop\\Project_ShopVision50\\Project_ShopVision50\\ShopVision50.Infrastructure\\ShopVision50.Infrastructure.csproj",
+        "packagesPath": "C:\\Users\\Saz\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\Saz\\Desktop\\Project_ShopVision50\\Project_ShopVision50\\ShopVision50.Infrastructure\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
@@ -136,8 +204,8 @@
           "net8.0": {
             "targetAlias": "net8.0",
             "projectReferences": {
-              "C:\\Users\\Saz\\Desktop\\Group50\\Project_ShopVision50\\Project_ShopVision50\\Shop_Db\\ShopVision50.Domain.csproj": {
-                "projectPath": "C:\\Users\\Saz\\Desktop\\Group50\\Project_ShopVision50\\Project_ShopVision50\\Shop_Db\\ShopVision50.Domain.csproj"
+              "C:\\Users\\Saz\\Desktop\\Project_ShopVision50\\Project_ShopVision50\\ShopVision50.Domain\\ShopVision50.Domain.csproj": {
+                "projectPath": "C:\\Users\\Saz\\Desktop\\Project_ShopVision50\\Project_ShopVision50\\ShopVision50.Domain\\ShopVision50.Domain.csproj"
               }
             }
           }
@@ -179,74 +247,6 @@
               "version": "[8.0.0, )"
             }
           },
-          "imports": [
-            "net461",
-            "net462",
-            "net47",
-            "net471",
-            "net472",
-            "net48",
-            "net481"
-          ],
-          "assetTargetFallback": true,
-          "warn": true,
-          "frameworkReferences": {
-            "Microsoft.NETCore.App": {
-              "privateAssets": "all"
-            }
-          },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.305/PortableRuntimeIdentifierGraph.json"
-        }
-      }
-    },
-    "C:\\Users\\Saz\\Desktop\\Group50\\Project_ShopVision50\\Project_ShopVision50\\Shop_Db\\ShopVision50.Domain.csproj": {
-      "version": "1.0.0",
-      "restore": {
-        "projectUniqueName": "C:\\Users\\Saz\\Desktop\\Group50\\Project_ShopVision50\\Project_ShopVision50\\Shop_Db\\ShopVision50.Domain.csproj",
-        "projectName": "ShopVision50.Domain",
-        "projectPath": "C:\\Users\\Saz\\Desktop\\Group50\\Project_ShopVision50\\Project_ShopVision50\\Shop_Db\\ShopVision50.Domain.csproj",
-        "packagesPath": "C:\\Users\\Saz\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\Saz\\Desktop\\Group50\\Project_ShopVision50\\Project_ShopVision50\\Shop_Db\\obj\\",
-        "projectStyle": "PackageReference",
-        "fallbackFolders": [
-          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
-        ],
-        "configFilePaths": [
-          "C:\\Users\\Saz\\AppData\\Roaming\\NuGet\\NuGet.Config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\DevExpress 18.1.config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
-        ],
-        "originalTargetFrameworks": [
-          "net8.0"
-        ],
-        "sources": {
-          "C:\\Program Files (x86)\\DevExpress 18.1\\Components\\System\\Components\\Packages": {},
-          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
-          "C:\\Program Files\\dotnet\\library-packs": {},
-          "https://api.nuget.org/v3/index.json": {}
-        },
-        "frameworks": {
-          "net8.0": {
-            "targetAlias": "net8.0",
-            "projectReferences": {}
-          }
-        },
-        "warningProperties": {
-          "warnAsError": [
-            "NU1605"
-          ]
-        },
-        "restoreAuditProperties": {
-          "enableAudit": "true",
-          "auditLevel": "low",
-          "auditMode": "direct"
-        },
-        "SdkAnalysisLevel": "9.0.300"
-      },
-      "frameworks": {
-        "net8.0": {
-          "targetAlias": "net8.0",
           "imports": [
             "net461",
             "net462",
