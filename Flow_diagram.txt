@@ -1,0 +1,57 @@
+Các định nghĩa cần tìm hiểu:
+API Endpoint
+Controller
+Service
+Repository
+DTO
+Migration
+FE (React / Angular / Vue)
+
+                   +---------------------------+
+                   |         Frontend 1       |
+                   +---------------------------+
+                   |         Frontend 2       |
+                   +---------------------------+
+                   |         Frontend 3       |
+                   +---------------------------+
+                   |         Frontend 4       |
+                   +---------------------------+
+                               |
+                               | 1. User click / Submit JSON
+                               v
+                        +----------------------+
+                        |  API Gateway / API   |
+                        |  ShopVision50.API    |
+                        +----------------------+
+                               |
+         +---------------------+--------------------+--------------------+--------------------+
+         |                     |                    |                    |
+         v                     v                    v                    v
++----------------+     +----------------+     +----------------+     +----------------+
+| Module 1       |     | Module 2       |     | Module 3       |     | Module 4       |
+| Users/Auth     |     | Products/Cat   |     | Orders/Cart    |     | Promotions/Ret|
+| Controller     |     | Controller     |     | Controller     |     | Controller     |
+| Service        |     | Service        |     | Service        |     | Service        |
+| DTOs           |     | DTOs           |     | DTOs           |     | DTOs           |
++----------------+     +----------------+     +----------------+     +----------------+
+         |                     |                    |                    |
+         v                     v                    v                    v
++----------------+     +----------------+     +----------------+     +----------------+
+| Repository     |     | Repository     |     | Repository     |     | Repository     |
+| (DbContext +   |     | (DbContext +   |     | (DbContext +   |     | (DbContext +   |
+|  EF Core)      |     |  EF Core)      |     |  EF Core)      |     |  EF Core)      |
+| Migrations     |     | Migrations     |     | Migrations     |     | Migrations     |
++----------------+     +----------------+     +----------------+     +----------------+
+         |                     |                    |                    |
+         v                     v                    v                    v
++----------------+     +----------------+     +----------------+     +----------------+
+| SQL Server /   |     | SQL Server /   |     | SQL Server /   |     | SQL Server /   |
+| Database 1     |     | Database 2     |     | Database 3     |     | Database 4     |
++----------------+     +----------------+     +----------------+     +----------------+
+
+FE <--> API JSON requests/responses
+- FE 1 gọi User Module
+- FE 2 gọi Product Module
+- FE 3 gọi Order Module
+- FE 4 gọi Promotions/Return Module
+

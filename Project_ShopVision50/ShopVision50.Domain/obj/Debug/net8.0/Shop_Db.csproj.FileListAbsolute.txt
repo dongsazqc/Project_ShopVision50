@@ -1,0 +1,12 @@
+C:\Users\Saz\Desktop\Group50\Project_ShopVision50\Project_ShopVision50\Shop_Db\bin\Debug\net8.0\Shop_Db.deps.json
+C:\Users\Saz\Desktop\Group50\Project_ShopVision50\Project_ShopVision50\Shop_Db\bin\Debug\net8.0\Shop_Db.dll
+C:\Users\Saz\Desktop\Group50\Project_ShopVision50\Project_ShopVision50\Shop_Db\bin\Debug\net8.0\Shop_Db.pdb
+C:\Users\Saz\Desktop\Group50\Project_ShopVision50\Project_ShopVision50\Shop_Db\obj\Debug\net8.0\Shop_Db.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\Saz\Desktop\Group50\Project_ShopVision50\Project_ShopVision50\Shop_Db\obj\Debug\net8.0\Shop_Db.AssemblyInfoInputs.cache
+C:\Users\Saz\Desktop\Group50\Project_ShopVision50\Project_ShopVision50\Shop_Db\obj\Debug\net8.0\Shop_Db.AssemblyInfo.cs
+C:\Users\Saz\Desktop\Group50\Project_ShopVision50\Project_ShopVision50\Shop_Db\obj\Debug\net8.0\Shop_Db.csproj.CoreCompileInputs.cache
+C:\Users\Saz\Desktop\Group50\Project_ShopVision50\Project_ShopVision50\Shop_Db\obj\Debug\net8.0\Shop_Db.sourcelink.json
+C:\Users\Saz\Desktop\Group50\Project_ShopVision50\Project_ShopVision50\Shop_Db\obj\Debug\net8.0\Shop_Db.dll
+C:\Users\Saz\Desktop\Group50\Project_ShopVision50\Project_ShopVision50\Shop_Db\obj\Debug\net8.0\refint\Shop_Db.dll
+C:\Users\Saz\Desktop\Group50\Project_ShopVision50\Project_ShopVision50\Shop_Db\obj\Debug\net8.0\Shop_Db.pdb
+C:\Users\Saz\Desktop\Group50\Project_ShopVision50\Project_ShopVision50\Shop_Db\obj\Debug\net8.0\ref\Shop_Db.dll

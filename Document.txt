@@ -1,0 +1,269 @@
+1. NguoiDung
+
+NguoiDungId (PK)
+
+HoTen
+
+Email
+
+MatKhau
+
+SoDienThoai
+
+DiaChiMacDinh
+
+NgayThamGia
+
+TrangThai
+
+VaiTroId (FK)
+
+2. VaiTro
+
+VaiTroId (PK)
+
+TenVaiTro
+
+3. NguoiDung_VaiTro
+
+NguoiDung_VaiTroId (PK)
+
+NguoiDungId (FK)
+
+VaiTroId (FK)
+
+4. DanhMuc
+
+DanhMucId (PK)
+
+TenDanhMuc
+
+MoTa
+
+5. ChatLieu
+
+ChatLieuId (PK)
+
+TenChatLieu
+
+6. PhongCach
+
+PhongCachId (PK)
+
+TenPhongCach
+
+7. GioiTinh
+
+GioiTinhId (PK)
+
+TenGioiTinh
+
+8. XuatXu
+
+XuatXuId (PK)
+
+TenNuoc
+
+9. SanPham
+
+SanPhamId (PK)
+
+TenSanPham
+
+MoTa
+
+GiaGoc
+
+ThuongHieu
+
+BaoHanh
+
+NgayTao
+
+TrangThai
+
+ChatLieuId (FK)
+
+PhongCachId (FK)
+
+GioiTinhId (FK)
+
+XuatXuId (FK)
+
+DanhMucId (FK)
+
+10. BienTheSanPham
+
+BienTheId (PK)
+
+GiaBan
+
+SoLuongTon
+
+KichCoId (FK)
+
+MauSacId (FK)
+
+SanPhamId (FK)
+
+11. KichCo
+
+KichCoId (PK)
+
+TenKichCo
+
+12. MauSac
+
+MauSacId (PK)
+
+TenMau
+
+13. HinhAnhSanPham
+
+HinhAnhId (PK)
+
+URL
+
+AnhChinh
+
+SoLuongTon
+
+SanPhamId (FK)
+
+14. GioHang
+
+GioHangId (PK)
+
+NgayTao
+
+TrangThai
+
+NguoiDungId (FK)
+
+15. ChiTietGioHang
+
+ChiTietGioHangId (PK)
+
+SoLuong
+
+Gia
+
+BienTheId (FK)
+
+GioHangId (FK)
+
+16. DiaChiNguoiDung
+
+DiaChiId (PK)
+
+HoTenNhan
+
+SoDienThoaiNhan
+
+DiaChiChiTiet
+
+MacDinh
+
+NguoiDungId (FK)
+
+17. DonHang
+
+DonHangId (PK)
+
+NgayDat
+
+LoaiDonHang
+
+TrangThai
+
+TongTien
+
+TenNguoiNhan
+
+SdtNguoiNhan
+
+DiaChiGiaoHang
+
+NguoiDungId (FK)
+
+18. ChiTietDonHang
+
+ChiTietDonHangId (PK)
+
+SoLuong
+
+SoTienGiam
+
+BienTheId (FK)
+
+DonHangId (FK)
+
+KhuyenMaiId (FK)
+
+19. KhuyenMai
+
+KhuyenMaiId (PK)
+
+MaKhuyenMai
+
+LoaiGiam
+
+GiaTriGiam
+
+DieuKienApDung
+
+PhamViApDung
+
+NgayBatDau
+
+NgayKetThuc
+
+TrangThai
+
+20. DonHang_KhuyenMai
+
+DonHang_KhuyenMaiId (PK)
+
+DonHangId (FK)
+
+KhuyenMaiId (FK)
+
+21. ThanhToan
+
+ThanhToanId (PK)
+
+PhuongThuc
+
+SoTien
+
+TrangThai
+
+NgayThanhToan
+
+DonHangId (FK)
+
+22. PhieuTraHang
+
+PhieuTraHangId (PK)
+
+NgayTraHang
+
+LyDoTra
+
+TrangThai
+
+TongTienHoan
+
+DonHangId (FK)
+
+23. ChiTietPhieuTra
+
+ChiTietPhieuTraId (PK)
+
+SoLuongTra
+
+LyDoChiTiet
+
+BienTheId (FK)
+
+PhieuTraHangId (FK)
