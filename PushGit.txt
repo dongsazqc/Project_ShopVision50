@@ -1,0 +1,103 @@
+Git Workflow & Main Protection – Project_ShopVision50
+1. Branching Strategy (Chiến lược nhánh)
+Nhánh chính
+
+main → branch production, luôn ổn định.
+
+Không ai được push trực tiếp vào main.
+
+Feature Branch
+
+Mỗi dev tạo nhánh của riêng mình để làm việc, ví dụ:
+
+git checkout -b feature/users-auth
+
+
+Tên nhánh gợi ý: feature/<tên-tính-năng> hoặc bugfix/<tên-lỗi>.
+
+Dev push code lên branch của mình:
+
+git push origin feature/users-auth
+
+2. Branch Protection Rules (Bảo vệ nhánh main)
+
+Mục tiêu: không ai push trực tiếp vào main, tất cả phải qua PR.
+
+Các rules cần bật
+
+Restrict updates → chỉ người trong bypass list mới update branch.
+
+Require a pull request before merging → tất cả commit phải PR từ branch khác.
+
+Block force pushes → không ai được force push phá history main.
+
+Các rules optional (tùy team)
+
+Restrict deletions → không xóa main.
+
+Require linear history → giữ main sạch, không merge commit lộn xộn.
+
+Require status checks to pass → nếu team có CI/CD (build/test) thì bật.
+
+Status checks hiện tại: bỏ qua nếu chưa có CI/CD, chỉ cần PR là đủ.
+
+Lưu ý: tạo xong ruleset → tự áp dụng ngay, không cần bật thêm gì.
+
+3. Quy trình làm việc cho dev
+
+Tạo feature branch mới:
+
+git checkout -b feature/<tên-tính-năng>
+
+
+Làm việc trên feature branch:
+
+git add .
+git commit -m "Mô tả commit"
+
+
+Push branch lên remote:
+
+git push origin feature/<tên-tính-năng>
+
+
+Tạo Pull Request (PR) từ feature branch → main trên GitHub.
+
+Review PR:
+
+Một dev khác kiểm tra code.
+
+Merge PR nếu mọi thứ ổn.
+
+Không push trực tiếp vào main.
+
+4. Mẹo tránh lỗi
+
+Luôn pull/rebase branch trước khi push để tránh conflict:
+
+git pull --rebase origin feature/<tên-tính-năng>
+
+
+Tên commit rõ ràng, mô tả đúng tính năng.
+
+Tạo nhánh theo chuẩn team để dễ quản lý.
+
+5. Workflow tổng thể (text diagram)
+Dev1: feature/users-auth     Dev2: feature/product-crud
+   |                             |
+   | push                        | push
+   v                             v
+Remote feature branch 1      Remote feature branch 2
+   |                             |
+   | Pull Request                | Pull Request
+   v                             v
+ |----------------------------------------------|
+ |                     main          		   |
+ |----------------------------------------------|
+                  Protected by rules:
+                  - No direct push
+                  - PR required
+                  - Block force pushes
+
+
+Từ giờ, main luôn ổn định. Dev phải push lên feature branch → PR → merge. Không ai phá được main.
