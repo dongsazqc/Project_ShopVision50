@@ -1,0 +1,101 @@
+📘 Git Workflow & Guidelines – Project_ShopVision50
+1. Branching Strategy
+
+main: branch chính, protected, mọi người không push trực tiếp. Chỉ merge từ PR.
+
+feature branches: mọi tính năng mới phải tạo branch từ main:
+
+git checkout -b feature/<tên-tính-năng>
+
+
+Ví dụ:
+
+git checkout -b feature/users-auth
+
+
+dev roles: mỗi dev gánh một feature riêng, push lên branch của mình.
+
+2. Các bước làm việc hàng ngày
+2.1. Cập nhật branch chính
+git checkout main
+git pull origin main
+
+2.2. Tạo branch tính năng
+git checkout -b feature/<tên-tính-năng>
+
+2.3. Code + commit
+git add .
+git commit -m "Mô tả ngắn gọn commit"
+
+2.4. Push branch lên remote
+git push origin feature/<tên-tính-năng>
+
+2.5. Tạo Pull Request (PR)
+
+Vào GitHub repo → branch của bạn → click Compare & pull request → chọn merge vào main.
+
+PR nên mô tả chi tiết: thay đổi gì, có issue nào liên quan không, cách test.
+
+3. Review & Merge PR
+
+Một dev khác (hoặc lead) sẽ review code, kiểm tra và approve.
+
+Sau khi approve → click Merge để đưa code vào main.
+
+Branch tính năng có thể xóa sau khi merge:
+
+git branch -d feature/<tên-tính-năng>    # local
+git push origin --delete feature/<tên-tính-năng>  # remote
+
+4. Quy tắc bảo vệ main (Protected Branch)
+
+Không push trực tiếp vào main.
+
+Chỉ merge code qua Pull Request.
+
+Các dev bình thường không thể xóa hoặc force push.
+
+Có thể bật thêm:
+
+Require status checks to pass → nếu dùng CI/CD (chạy build/test).
+
+Require branches to be up to date before merging → PR phải sync với main mới merge.
+
+5. Làm việc với PR của người khác (Dev B / Dev C)
+
+Fetch PR về máy:
+
+git fetch origin pull/<PR_ID>/head:pr-<tên-branch>
+git checkout pr-<tên-branch>
+
+
+Test / review code.
+
+Nếu cần sửa → commit trên branch đó → push lại.
+
+6. Xem branch hiện tại
+git branch
+
+
+* đánh dấu branch đang đứng.
+
+7. Xem trạng thái Git
+git status
+
+8. Quy tắc commit
+
+Mỗi commit nên nhỏ, rõ ràng, mô tả chính xác thay đổi.
+
+Ví dụ:
+
+git commit -m "Add login & register endpoints"
+
+9. Tips & Best Practices
+
+Luôn pull main trước khi tạo branch mới hoặc merge PR.
+
+Đặt tên branch có ý nghĩa, ví dụ: feature/users-auth, bugfix/cart-calculation.
+
+Không commit file build, .vs, obj,… → thêm .gitignore.
+
+Làm việc theo Pull Request Workflow → tránh xung đột & mất code.
