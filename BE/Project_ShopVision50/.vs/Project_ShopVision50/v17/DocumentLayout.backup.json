@@ -1,0 +1,614 @@
+{
+  "Version": 1,
+  "WorkspaceRootPath": "C:\\Users\\Saz\\OneDrive\\Desktop\\Project_ShopVision50\\BE\\Project_ShopVision50\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{003B4D77-11AF-45B7-94A4-EB2502E4818F}|ShopVision50.API\\ShopVision50.API.csproj|c:\\users\\saz\\onedrive\\desktop\\project_shopvision50\\be\\project_shopvision50\\shopvision50.api\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{003B4D77-11AF-45B7-94A4-EB2502E4818F}|ShopVision50.API\\ShopVision50.API.csproj|solutionrelative:shopvision50.api\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{003B4D77-11AF-45B7-94A4-EB2502E4818F}|ShopVision50.API\\ShopVision50.API.csproj|c:\\users\\saz\\onedrive\\desktop\\project_shopvision50\\be\\project_shopvision50\\shopvision50.api\\controllers\\authcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{003B4D77-11AF-45B7-94A4-EB2502E4818F}|ShopVision50.API\\ShopVision50.API.csproj|solutionrelative:shopvision50.api\\controllers\\authcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{003B4D77-11AF-45B7-94A4-EB2502E4818F}|ShopVision50.API\\ShopVision50.API.csproj|c:\\users\\saz\\onedrive\\desktop\\project_shopvision50\\be\\project_shopvision50\\shopvision50.api\\appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}",
+      "RelativeMoniker": "D:0:0:{003B4D77-11AF-45B7-94A4-EB2502E4818F}|ShopVision50.API\\ShopVision50.API.csproj|solutionrelative:shopvision50.api\\appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{003B4D77-11AF-45B7-94A4-EB2502E4818F}|ShopVision50.API\\ShopVision50.API.csproj|c:\\users\\saz\\onedrive\\desktop\\project_shopvision50\\be\\project_shopvision50\\shopvision50.api\\models\\users\\dtos\\registerdto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{003B4D77-11AF-45B7-94A4-EB2502E4818F}|ShopVision50.API\\ShopVision50.API.csproj|solutionrelative:shopvision50.api\\models\\users\\dtos\\registerdto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{003B4D77-11AF-45B7-94A4-EB2502E4818F}|ShopVision50.API\\ShopVision50.API.csproj|c:\\users\\saz\\onedrive\\desktop\\project_shopvision50\\be\\project_shopvision50\\shopvision50.api\\services\\userservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{003B4D77-11AF-45B7-94A4-EB2502E4818F}|ShopVision50.API\\ShopVision50.API.csproj|solutionrelative:shopvision50.api\\services\\userservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{003B4D77-11AF-45B7-94A4-EB2502E4818F}|ShopVision50.API\\ShopVision50.API.csproj|c:\\users\\saz\\onedrive\\desktop\\project_shopvision50\\be\\project_shopvision50\\shopvision50.api\\services\\iuserservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{003B4D77-11AF-45B7-94A4-EB2502E4818F}|ShopVision50.API\\ShopVision50.API.csproj|solutionrelative:shopvision50.api\\services\\iuserservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{003B4D77-11AF-45B7-94A4-EB2502E4818F}|ShopVision50.API\\ShopVision50.API.csproj|c:\\users\\saz\\onedrive\\desktop\\project_shopvision50\\be\\project_shopvision50\\shopvision50.api\\repositories\\userrepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{003B4D77-11AF-45B7-94A4-EB2502E4818F}|ShopVision50.API\\ShopVision50.API.csproj|solutionrelative:shopvision50.api\\repositories\\userrepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{003B4D77-11AF-45B7-94A4-EB2502E4818F}|ShopVision50.API\\ShopVision50.API.csproj|c:\\users\\saz\\onedrive\\desktop\\project_shopvision50\\be\\project_shopvision50\\shopvision50.api\\repositories\\iuserrepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{003B4D77-11AF-45B7-94A4-EB2502E4818F}|ShopVision50.API\\ShopVision50.API.csproj|solutionrelative:shopvision50.api\\repositories\\iuserrepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{96217467-3F9F-7D1E-6569-C04C746645C6}|ShopVision50.Domain\\ShopVision50.Domain.csproj|c:\\users\\saz\\onedrive\\desktop\\project_shopvision50\\be\\project_shopvision50\\shopvision50.domain\\models\\user.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{96217467-3F9F-7D1E-6569-C04C746645C6}|ShopVision50.Domain\\ShopVision50.Domain.csproj|solutionrelative:shopvision50.domain\\models\\user.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{96217467-3F9F-7D1E-6569-C04C746645C6}|ShopVision50.Domain\\ShopVision50.Domain.csproj|c:\\users\\saz\\onedrive\\desktop\\project_shopvision50\\be\\project_shopvision50\\shopvision50.domain\\shopvision50.domain.csproj||{FA3CD31E-987B-443A-9B81-186104E8DAC1}|",
+      "RelativeMoniker": "D:0:0:{96217467-3F9F-7D1E-6569-C04C746645C6}|ShopVision50.Domain\\ShopVision50.Domain.csproj|solutionrelative:shopvision50.domain\\shopvision50.domain.csproj||{FA3CD31E-987B-443A-9B81-186104E8DAC1}|"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{BCAEED6A-BFB5-4C25-BEFC-A44E5062E00B}|ShopVision50.Infrastructure\\ShopVision50.Infrastructure.csproj|c:\\users\\saz\\onedrive\\desktop\\project_shopvision50\\be\\project_shopvision50\\shopvision50.infrastructure\\appdbcontext.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{BCAEED6A-BFB5-4C25-BEFC-A44E5062E00B}|ShopVision50.Infrastructure\\ShopVision50.Infrastructure.csproj|solutionrelative:shopvision50.infrastructure\\appdbcontext.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{96217467-3F9F-7D1E-6569-C04C746645C6}|ShopVision50.Domain\\ShopVision50.Domain.csproj|c:\\users\\saz\\onedrive\\desktop\\project_shopvision50\\be\\project_shopvision50\\shopvision50.domain\\models\\cartitem.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{96217467-3F9F-7D1E-6569-C04C746645C6}|ShopVision50.Domain\\ShopVision50.Domain.csproj|solutionrelative:shopvision50.domain\\models\\cartitem.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{96217467-3F9F-7D1E-6569-C04C746645C6}|ShopVision50.Domain\\ShopVision50.Domain.csproj|c:\\users\\saz\\onedrive\\desktop\\project_shopvision50\\be\\project_shopvision50\\shopvision50.domain\\models\\orderpromotion.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{96217467-3F9F-7D1E-6569-C04C746645C6}|ShopVision50.Domain\\ShopVision50.Domain.csproj|solutionrelative:shopvision50.domain\\models\\orderpromotion.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{96217467-3F9F-7D1E-6569-C04C746645C6}|ShopVision50.Domain\\ShopVision50.Domain.csproj|c:\\users\\saz\\onedrive\\desktop\\project_shopvision50\\be\\project_shopvision50\\shopvision50.domain\\models\\order.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{96217467-3F9F-7D1E-6569-C04C746645C6}|ShopVision50.Domain\\ShopVision50.Domain.csproj|solutionrelative:shopvision50.domain\\models\\order.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{BCAEED6A-BFB5-4C25-BEFC-A44E5062E00B}|ShopVision50.Infrastructure\\ShopVision50.Infrastructure.csproj|c:\\users\\saz\\onedrive\\desktop\\project_shopvision50\\be\\project_shopvision50\\shopvision50.infrastructure\\shopvision50.infrastructure.csproj||{FA3CD31E-987B-443A-9B81-186104E8DAC1}|",
+      "RelativeMoniker": "D:0:0:{BCAEED6A-BFB5-4C25-BEFC-A44E5062E00B}|ShopVision50.Infrastructure\\ShopVision50.Infrastructure.csproj|solutionrelative:shopvision50.infrastructure\\shopvision50.infrastructure.csproj||{FA3CD31E-987B-443A-9B81-186104E8DAC1}|"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{BCAEED6A-BFB5-4C25-BEFC-A44E5062E00B}|ShopVision50.Infrastructure\\ShopVision50.Infrastructure.csproj|c:\\users\\saz\\onedrive\\desktop\\project_shopvision50\\be\\project_shopvision50\\shopvision50.infrastructure\\migrations\\20251014155712_numberone.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{BCAEED6A-BFB5-4C25-BEFC-A44E5062E00B}|ShopVision50.Infrastructure\\ShopVision50.Infrastructure.csproj|solutionrelative:shopvision50.infrastructure\\migrations\\20251014155712_numberone.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\Saz\\Desktop\\Group50\\Project_ShopVision50\\Project_ShopVision50\\Shop_Db\\Models\\ReturnItem.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\Saz\\Desktop\\Group50\\Project_ShopVision50\\Project_ShopVision50\\Shop_Db\\Models\\ReturnNote.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\Saz\\Desktop\\Group50\\Project_ShopVision50\\Project_ShopVision50\\Shop_Db\\Models\\Payment.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\Saz\\Desktop\\Group50\\Project_ShopVision50\\Project_ShopVision50\\Shop_Db\\Models\\OrderPromotion.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\Saz\\Desktop\\Group50\\Project_ShopVision50\\Project_ShopVision50\\Shop_Db\\Models\\ProductSize.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\Saz\\Desktop\\Group50\\Project_ShopVision50\\Project_ShopVision50\\Shop_Db\\Models\\Style.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\Saz\\Desktop\\Group50\\Project_ShopVision50\\Project_ShopVision50\\Shop_Db\\Models\\ProductColor.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\Saz\\Desktop\\Group50\\Project_ShopVision50\\Project_ShopVision50\\Shop_Db\\Models\\Promotion.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\Saz\\Desktop\\Group50\\Project_ShopVision50\\Project_ShopVision50\\Shop_Db\\Models\\OrderItem.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\Saz\\Desktop\\Group50\\Project_ShopVision50\\Project_ShopVision50\\Shop_Db\\Models\\CartItem.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\Saz\\Desktop\\Group50\\Project_ShopVision50\\Project_ShopVision50\\Shop_Db\\Models\\Origin.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\Saz\\Desktop\\Group50\\Project_ShopVision50\\Project_ShopVision50\\Shop_Db\\Models\\Product.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\Saz\\Desktop\\Group50\\Project_ShopVision50\\Project_ShopVision50\\Shop_Db\\Models\\ProductImage.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\Saz\\Desktop\\Group50\\Project_ShopVision50\\Project_ShopVision50\\Shop_Db\\Models\\ProductVariant.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\Saz\\Desktop\\Group50\\Project_ShopVision50\\Project_ShopVision50\\Shop_Db\\Models\\UserAddress.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\Saz\\Desktop\\Group50\\Project_ShopVision50\\Project_ShopVision50\\Shop_Db\\Models\\Order.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\Saz\\Desktop\\Group50\\Project_ShopVision50\\Project_ShopVision50\\Shop_Db\\Models\\Gender.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\Saz\\Desktop\\Group50\\Project_ShopVision50\\Project_ShopVision50\\Shop_Db\\Models\\Cart.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\Saz\\Desktop\\Group50\\Project_ShopVision50\\Project_ShopVision50\\Shop_Db\\Models\\Material.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\Saz\\Desktop\\Group50\\Project_ShopVision50\\Project_ShopVision50\\Shop_Db\\Models\\Category.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\Saz\\Desktop\\Group50\\Project_ShopVision50\\Project_ShopVision50\\Shop_Db\\Models\\UserRole.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\Saz\\Desktop\\Group50\\Project_ShopVision50\\Project_ShopVision50\\Shop_Db\\Models\\Role.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\Saz\\Desktop\\Group50\\Project_ShopVision50\\Project_ShopVision50\\Shop_Db\\Models\\User.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    }
+  ],
+  "DocumentGroupContainers": [
+    {
+      "Orientation": 0,
+      "VerticalTabListWidth": 256,
+      "DocumentGroups": [
+        {
+          "DockedWidth": 200,
+          "SelectedChildIndex": 5,
+          "Children": [
+            {
+              "$type": "Document",
+              "DocumentIndex": 6,
+              "Title": "UserRepository.cs",
+              "DocumentMoniker": "C:\\Users\\Saz\\OneDrive\\Desktop\\Project_ShopVision50\\BE\\Project_ShopVision50\\ShopVision50.API\\Repositories\\UserRepository.cs",
+              "RelativeDocumentMoniker": "ShopVision50.API\\Repositories\\UserRepository.cs",
+              "ToolTip": "C:\\Users\\Saz\\OneDrive\\Desktop\\Project_ShopVision50\\BE\\Project_ShopVision50\\ShopVision50.API\\Repositories\\UserRepository.cs",
+              "RelativeToolTip": "ShopVision50.API\\Repositories\\UserRepository.cs",
+              "ViewState": "AgIAAAYAAAAAAAAAAAAAABEAAABRAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-10-16T16:08:38.109Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "UserService.cs",
+              "DocumentMoniker": "C:\\Users\\Saz\\OneDrive\\Desktop\\Project_ShopVision50\\BE\\Project_ShopVision50\\ShopVision50.API\\Services\\UserService.cs",
+              "RelativeDocumentMoniker": "ShopVision50.API\\Services\\UserService.cs",
+              "ToolTip": "C:\\Users\\Saz\\OneDrive\\Desktop\\Project_ShopVision50\\BE\\Project_ShopVision50\\ShopVision50.API\\Services\\UserService.cs",
+              "RelativeToolTip": "ShopVision50.API\\Services\\UserService.cs",
+              "ViewState": "AgIAAA8AAAAAAAAAAAAAAB0AAAAoAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-10-16T16:02:57.833Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "RegisterDto.cs",
+              "DocumentMoniker": "C:\\Users\\Saz\\OneDrive\\Desktop\\Project_ShopVision50\\BE\\Project_ShopVision50\\ShopVision50.API\\Models\\Users\\DTOs\\RegisterDto.cs",
+              "RelativeDocumentMoniker": "ShopVision50.API\\Models\\Users\\DTOs\\RegisterDto.cs",
+              "ToolTip": "C:\\Users\\Saz\\OneDrive\\Desktop\\Project_ShopVision50\\BE\\Project_ShopVision50\\ShopVision50.API\\Models\\Users\\DTOs\\RegisterDto.cs",
+              "RelativeToolTip": "ShopVision50.API\\Models\\Users\\DTOs\\RegisterDto.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAYAAAAeAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-10-16T16:01:36.268Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 5,
+              "Title": "IUserService.cs",
+              "DocumentMoniker": "C:\\Users\\Saz\\OneDrive\\Desktop\\Project_ShopVision50\\BE\\Project_ShopVision50\\ShopVision50.API\\Services\\IUserService.cs",
+              "RelativeDocumentMoniker": "ShopVision50.API\\Services\\IUserService.cs",
+              "ToolTip": "C:\\Users\\Saz\\OneDrive\\Desktop\\Project_ShopVision50\\BE\\Project_ShopVision50\\ShopVision50.API\\Services\\IUserService.cs",
+              "RelativeToolTip": "ShopVision50.API\\Services\\IUserService.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAQAAAAVAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-10-16T15:57:51.792Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "AuthController.cs",
+              "DocumentMoniker": "C:\\Users\\Saz\\OneDrive\\Desktop\\Project_ShopVision50\\BE\\Project_ShopVision50\\ShopVision50.API\\Controllers\\AuthController.cs",
+              "RelativeDocumentMoniker": "ShopVision50.API\\Controllers\\AuthController.cs",
+              "ToolTip": "C:\\Users\\Saz\\OneDrive\\Desktop\\Project_ShopVision50\\BE\\Project_ShopVision50\\ShopVision50.API\\Controllers\\AuthController.cs",
+              "RelativeToolTip": "ShopVision50.API\\Controllers\\AuthController.cs",
+              "ViewState": "AgIAAAYAAAAAAAAAAAAAABcAAAAJAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-10-16T15:54:56.94Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "Program.cs",
+              "DocumentMoniker": "C:\\Users\\Saz\\OneDrive\\Desktop\\Project_ShopVision50\\BE\\Project_ShopVision50\\ShopVision50.API\\Program.cs",
+              "RelativeDocumentMoniker": "ShopVision50.API\\Program.cs",
+              "ToolTip": "C:\\Users\\Saz\\OneDrive\\Desktop\\Project_ShopVision50\\BE\\Project_ShopVision50\\ShopVision50.API\\Program.cs*",
+              "RelativeToolTip": "ShopVision50.API\\Program.cs*",
+              "ViewState": "AgIAAAcAAAAAAAAAAAAAABgAAAAKAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-10-14T15:49:42.719Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "appsettings.json",
+              "DocumentMoniker": "C:\\Users\\Saz\\OneDrive\\Desktop\\Project_ShopVision50\\BE\\Project_ShopVision50\\ShopVision50.API\\appsettings.json",
+              "RelativeDocumentMoniker": "ShopVision50.API\\appsettings.json",
+              "ToolTip": "C:\\Users\\Saz\\OneDrive\\Desktop\\Project_ShopVision50\\BE\\Project_ShopVision50\\ShopVision50.API\\appsettings.json",
+              "RelativeToolTip": "ShopVision50.API\\appsettings.json",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAwAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001642|",
+              "WhenOpened": "2025-10-14T15:51:01.801Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 7,
+              "Title": "IUserRepository.cs",
+              "DocumentMoniker": "C:\\Users\\Saz\\OneDrive\\Desktop\\Project_ShopVision50\\BE\\Project_ShopVision50\\ShopVision50.API\\Repositories\\IUserRepository.cs",
+              "RelativeDocumentMoniker": "ShopVision50.API\\Repositories\\IUserRepository.cs",
+              "ToolTip": "C:\\Users\\Saz\\OneDrive\\Desktop\\Project_ShopVision50\\BE\\Project_ShopVision50\\ShopVision50.API\\Repositories\\IUserRepository.cs",
+              "RelativeToolTip": "ShopVision50.API\\Repositories\\IUserRepository.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAoAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-10-16T16:06:20.492Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 8,
+              "Title": "User.cs",
+              "DocumentMoniker": "C:\\Users\\Saz\\OneDrive\\Desktop\\Project_ShopVision50\\BE\\Project_ShopVision50\\ShopVision50.Domain\\Models\\User.cs",
+              "RelativeDocumentMoniker": "ShopVision50.Domain\\Models\\User.cs",
+              "ToolTip": "C:\\Users\\Saz\\OneDrive\\Desktop\\Project_ShopVision50\\BE\\Project_ShopVision50\\ShopVision50.Domain\\Models\\User.cs",
+              "RelativeToolTip": "ShopVision50.Domain\\Models\\User.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAoAAAARAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-10-16T15:58:48.594Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 9,
+              "Title": "ShopVision50.Domain",
+              "DocumentMoniker": "C:\\Users\\Saz\\OneDrive\\Desktop\\Project_ShopVision50\\BE\\Project_ShopVision50\\ShopVision50.Domain\\ShopVision50.Domain.csproj",
+              "RelativeDocumentMoniker": "ShopVision50.Domain\\ShopVision50.Domain.csproj",
+              "ToolTip": "C:\\Users\\Saz\\OneDrive\\Desktop\\Project_ShopVision50\\BE\\Project_ShopVision50\\ShopVision50.Domain\\ShopVision50.Domain.csproj",
+              "RelativeToolTip": "ShopVision50.Domain\\ShopVision50.Domain.csproj",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000758|",
+              "WhenOpened": "2025-10-16T15:58:44.993Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 10,
+              "Title": "AppDbContext.cs",
+              "DocumentMoniker": "C:\\Users\\Saz\\OneDrive\\Desktop\\Project_ShopVision50\\BE\\Project_ShopVision50\\ShopVision50.Infrastructure\\AppDbContext.cs",
+              "RelativeDocumentMoniker": "ShopVision50.Infrastructure\\AppDbContext.cs",
+              "ToolTip": "C:\\Users\\Saz\\OneDrive\\Desktop\\Project_ShopVision50\\BE\\Project_ShopVision50\\ShopVision50.Infrastructure\\AppDbContext.cs",
+              "RelativeToolTip": "ShopVision50.Infrastructure\\AppDbContext.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAUAAAAVAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-10-14T15:36:18.885Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 11,
+              "Title": "CartItem.cs",
+              "DocumentMoniker": "C:\\Users\\Saz\\OneDrive\\Desktop\\Project_ShopVision50\\BE\\Project_ShopVision50\\ShopVision50.Domain\\Models\\CartItem.cs",
+              "RelativeDocumentMoniker": "ShopVision50.Domain\\Models\\CartItem.cs",
+              "ToolTip": "C:\\Users\\Saz\\OneDrive\\Desktop\\Project_ShopVision50\\BE\\Project_ShopVision50\\ShopVision50.Domain\\Models\\CartItem.cs",
+              "RelativeToolTip": "ShopVision50.Domain\\Models\\CartItem.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABQAAAAvAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-10-16T15:59:52.952Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 12,
+              "Title": "OrderPromotion.cs",
+              "DocumentMoniker": "C:\\Users\\Saz\\OneDrive\\Desktop\\Project_ShopVision50\\BE\\Project_ShopVision50\\ShopVision50.Domain\\Models\\OrderPromotion.cs",
+              "RelativeDocumentMoniker": "ShopVision50.Domain\\Models\\OrderPromotion.cs",
+              "ToolTip": "C:\\Users\\Saz\\OneDrive\\Desktop\\Project_ShopVision50\\BE\\Project_ShopVision50\\ShopVision50.Domain\\Models\\OrderPromotion.cs",
+              "RelativeToolTip": "ShopVision50.Domain\\Models\\OrderPromotion.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAoAAAAFAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-10-16T16:00:03.188Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 13,
+              "Title": "Order.cs",
+              "DocumentMoniker": "C:\\Users\\Saz\\OneDrive\\Desktop\\Project_ShopVision50\\BE\\Project_ShopVision50\\ShopVision50.Domain\\Models\\Order.cs",
+              "RelativeDocumentMoniker": "ShopVision50.Domain\\Models\\Order.cs",
+              "ToolTip": "C:\\Users\\Saz\\OneDrive\\Desktop\\Project_ShopVision50\\BE\\Project_ShopVision50\\ShopVision50.Domain\\Models\\Order.cs",
+              "RelativeToolTip": "ShopVision50.Domain\\Models\\Order.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-10-16T16:00:03.725Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 14,
+              "Title": "ShopVision50.Infrastructure.csproj",
+              "DocumentMoniker": "C:\\Users\\Saz\\OneDrive\\Desktop\\Project_ShopVision50\\BE\\Project_ShopVision50\\ShopVision50.Infrastructure\\ShopVision50.Infrastructure.csproj",
+              "RelativeDocumentMoniker": "ShopVision50.Infrastructure\\ShopVision50.Infrastructure.csproj",
+              "ToolTip": "C:\\Users\\Saz\\OneDrive\\Desktop\\Project_ShopVision50\\BE\\Project_ShopVision50\\ShopVision50.Infrastructure\\ShopVision50.Infrastructure.csproj",
+              "RelativeToolTip": "ShopVision50.Infrastructure\\ShopVision50.Infrastructure.csproj",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA0AAAAvAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000758|",
+              "WhenOpened": "2025-10-14T17:37:33.777Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 15,
+              "Title": "20251014155712_NumberOne.cs",
+              "DocumentMoniker": "C:\\Users\\Saz\\OneDrive\\Desktop\\Project_ShopVision50\\BE\\Project_ShopVision50\\ShopVision50.Infrastructure\\Migrations\\20251014155712_NumberOne.cs",
+              "RelativeDocumentMoniker": "ShopVision50.Infrastructure\\Migrations\\20251014155712_NumberOne.cs",
+              "ToolTip": "C:\\Users\\Saz\\OneDrive\\Desktop\\Project_ShopVision50\\BE\\Project_ShopVision50\\ShopVision50.Infrastructure\\Migrations\\20251014155712_NumberOne.cs",
+              "RelativeToolTip": "ShopVision50.Infrastructure\\Migrations\\20251014155712_NumberOne.cs",
+              "ViewState": "AgIAAAoAAAAAAAAAAABBwCMAAAAlAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-10-14T15:57:13.234Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 16,
+              "Title": "ReturnItem.cs",
+              "DocumentMoniker": "C:\\Users\\Saz\\Desktop\\Group50\\Project_ShopVision50\\Project_ShopVision50\\Shop_Db\\Models\\ReturnItem.cs",
+              "RelativeDocumentMoniker": "..\\..\\..\\..\\..\\Desktop\\Group50\\Project_ShopVision50\\Project_ShopVision50\\Shop_Db\\Models\\ReturnItem.cs",
+              "ToolTip": "C:\\Users\\Saz\\Desktop\\Group50\\Project_ShopVision50\\Project_ShopVision50\\Shop_Db\\Models\\ReturnItem.cs",
+              "RelativeToolTip": "..\\..\\..\\..\\..\\Desktop\\Group50\\Project_ShopVision50\\Project_ShopVision50\\Shop_Db\\Models\\ReturnItem.cs",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-10-14T15:28:28.869Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 17,
+              "Title": "ReturnNote.cs",
+              "DocumentMoniker": "C:\\Users\\Saz\\Desktop\\Group50\\Project_ShopVision50\\Project_ShopVision50\\Shop_Db\\Models\\ReturnNote.cs",
+              "RelativeDocumentMoniker": "..\\..\\..\\..\\..\\Desktop\\Group50\\Project_ShopVision50\\Project_ShopVision50\\Shop_Db\\Models\\ReturnNote.cs",
+              "ToolTip": "C:\\Users\\Saz\\Desktop\\Group50\\Project_ShopVision50\\Project_ShopVision50\\Shop_Db\\Models\\ReturnNote.cs",
+              "RelativeToolTip": "..\\..\\..\\..\\..\\Desktop\\Group50\\Project_ShopVision50\\Project_ShopVision50\\Shop_Db\\Models\\ReturnNote.cs",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-10-14T15:27:27.365Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 18,
+              "Title": "Payment.cs",
+              "DocumentMoniker": "C:\\Users\\Saz\\Desktop\\Group50\\Project_ShopVision50\\Project_ShopVision50\\Shop_Db\\Models\\Payment.cs",
+              "RelativeDocumentMoniker": "..\\..\\..\\..\\..\\Desktop\\Group50\\Project_ShopVision50\\Project_ShopVision50\\Shop_Db\\Models\\Payment.cs",
+              "ToolTip": "C:\\Users\\Saz\\Desktop\\Group50\\Project_ShopVision50\\Project_ShopVision50\\Shop_Db\\Models\\Payment.cs",
+              "RelativeToolTip": "..\\..\\..\\..\\..\\Desktop\\Group50\\Project_ShopVision50\\Project_ShopVision50\\Shop_Db\\Models\\Payment.cs",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-10-14T15:27:10.943Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 19,
+              "Title": "OrderPromotion.cs",
+              "DocumentMoniker": "C:\\Users\\Saz\\Desktop\\Group50\\Project_ShopVision50\\Project_ShopVision50\\Shop_Db\\Models\\OrderPromotion.cs",
+              "RelativeDocumentMoniker": "..\\..\\..\\..\\..\\Desktop\\Group50\\Project_ShopVision50\\Project_ShopVision50\\Shop_Db\\Models\\OrderPromotion.cs",
+              "ToolTip": "C:\\Users\\Saz\\Desktop\\Group50\\Project_ShopVision50\\Project_ShopVision50\\Shop_Db\\Models\\OrderPromotion.cs",
+              "RelativeToolTip": "..\\..\\..\\..\\..\\Desktop\\Group50\\Project_ShopVision50\\Project_ShopVision50\\Shop_Db\\Models\\OrderPromotion.cs",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-10-14T15:26:54.478Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 20,
+              "Title": "ProductSize.cs",
+              "DocumentMoniker": "C:\\Users\\Saz\\Desktop\\Group50\\Project_ShopVision50\\Project_ShopVision50\\Shop_Db\\Models\\ProductSize.cs",
+              "RelativeDocumentMoniker": "..\\..\\..\\..\\..\\Desktop\\Group50\\Project_ShopVision50\\Project_ShopVision50\\Shop_Db\\Models\\ProductSize.cs",
+              "ToolTip": "C:\\Users\\Saz\\Desktop\\Group50\\Project_ShopVision50\\Project_ShopVision50\\Shop_Db\\Models\\ProductSize.cs",
+              "RelativeToolTip": "..\\..\\..\\..\\..\\Desktop\\Group50\\Project_ShopVision50\\Project_ShopVision50\\Shop_Db\\Models\\ProductSize.cs",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-10-14T15:22:28.664Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 21,
+              "Title": "Style.cs",
+              "DocumentMoniker": "C:\\Users\\Saz\\Desktop\\Group50\\Project_ShopVision50\\Project_ShopVision50\\Shop_Db\\Models\\Style.cs",
+              "RelativeDocumentMoniker": "..\\..\\..\\..\\..\\Desktop\\Group50\\Project_ShopVision50\\Project_ShopVision50\\Shop_Db\\Models\\Style.cs",
+              "ToolTip": "C:\\Users\\Saz\\Desktop\\Group50\\Project_ShopVision50\\Project_ShopVision50\\Shop_Db\\Models\\Style.cs",
+              "RelativeToolTip": "..\\..\\..\\..\\..\\Desktop\\Group50\\Project_ShopVision50\\Project_ShopVision50\\Shop_Db\\Models\\Style.cs",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-10-14T15:20:33.971Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 22,
+              "Title": "ProductColor.cs",
+              "DocumentMoniker": "C:\\Users\\Saz\\Desktop\\Group50\\Project_ShopVision50\\Project_ShopVision50\\Shop_Db\\Models\\ProductColor.cs",
+              "RelativeDocumentMoniker": "..\\..\\..\\..\\..\\Desktop\\Group50\\Project_ShopVision50\\Project_ShopVision50\\Shop_Db\\Models\\ProductColor.cs",
+              "ToolTip": "C:\\Users\\Saz\\Desktop\\Group50\\Project_ShopVision50\\Project_ShopVision50\\Shop_Db\\Models\\ProductColor.cs",
+              "RelativeToolTip": "..\\..\\..\\..\\..\\Desktop\\Group50\\Project_ShopVision50\\Project_ShopVision50\\Shop_Db\\Models\\ProductColor.cs",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-10-14T15:22:48.245Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 23,
+              "Title": "Promotion.cs",
+              "DocumentMoniker": "C:\\Users\\Saz\\Desktop\\Group50\\Project_ShopVision50\\Project_ShopVision50\\Shop_Db\\Models\\Promotion.cs",
+              "RelativeDocumentMoniker": "..\\..\\..\\..\\..\\Desktop\\Group50\\Project_ShopVision50\\Project_ShopVision50\\Shop_Db\\Models\\Promotion.cs",
+              "ToolTip": "C:\\Users\\Saz\\Desktop\\Group50\\Project_ShopVision50\\Project_ShopVision50\\Shop_Db\\Models\\Promotion.cs",
+              "RelativeToolTip": "..\\..\\..\\..\\..\\Desktop\\Group50\\Project_ShopVision50\\Project_ShopVision50\\Shop_Db\\Models\\Promotion.cs",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-10-14T15:24:54.752Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 24,
+              "Title": "OrderItem.cs",
+              "DocumentMoniker": "C:\\Users\\Saz\\Desktop\\Group50\\Project_ShopVision50\\Project_ShopVision50\\Shop_Db\\Models\\OrderItem.cs",
+              "RelativeDocumentMoniker": "..\\..\\..\\..\\..\\Desktop\\Group50\\Project_ShopVision50\\Project_ShopVision50\\Shop_Db\\Models\\OrderItem.cs",
+              "ToolTip": "C:\\Users\\Saz\\Desktop\\Group50\\Project_ShopVision50\\Project_ShopVision50\\Shop_Db\\Models\\OrderItem.cs",
+              "RelativeToolTip": "..\\..\\..\\..\\..\\Desktop\\Group50\\Project_ShopVision50\\Project_ShopVision50\\Shop_Db\\Models\\OrderItem.cs",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-10-14T15:24:34.489Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 25,
+              "Title": "CartItem.cs",
+              "DocumentMoniker": "C:\\Users\\Saz\\Desktop\\Group50\\Project_ShopVision50\\Project_ShopVision50\\Shop_Db\\Models\\CartItem.cs",
+              "RelativeDocumentMoniker": "..\\..\\..\\..\\..\\Desktop\\Group50\\Project_ShopVision50\\Project_ShopVision50\\Shop_Db\\Models\\CartItem.cs",
+              "ToolTip": "C:\\Users\\Saz\\Desktop\\Group50\\Project_ShopVision50\\Project_ShopVision50\\Shop_Db\\Models\\CartItem.cs",
+              "RelativeToolTip": "..\\..\\..\\..\\..\\Desktop\\Group50\\Project_ShopVision50\\Project_ShopVision50\\Shop_Db\\Models\\CartItem.cs",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-10-14T15:23:39.216Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 26,
+              "Title": "Origin.cs",
+              "DocumentMoniker": "C:\\Users\\Saz\\Desktop\\Group50\\Project_ShopVision50\\Project_ShopVision50\\Shop_Db\\Models\\Origin.cs",
+              "RelativeDocumentMoniker": "..\\..\\..\\..\\..\\Desktop\\Group50\\Project_ShopVision50\\Project_ShopVision50\\Shop_Db\\Models\\Origin.cs",
+              "ToolTip": "C:\\Users\\Saz\\Desktop\\Group50\\Project_ShopVision50\\Project_ShopVision50\\Shop_Db\\Models\\Origin.cs",
+              "RelativeToolTip": "..\\..\\..\\..\\..\\Desktop\\Group50\\Project_ShopVision50\\Project_ShopVision50\\Shop_Db\\Models\\Origin.cs",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-10-14T15:21:24.012Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 27,
+              "Title": "Product.cs",
+              "DocumentMoniker": "C:\\Users\\Saz\\Desktop\\Group50\\Project_ShopVision50\\Project_ShopVision50\\Shop_Db\\Models\\Product.cs",
+              "RelativeDocumentMoniker": "..\\..\\..\\..\\..\\Desktop\\Group50\\Project_ShopVision50\\Project_ShopVision50\\Shop_Db\\Models\\Product.cs",
+              "ToolTip": "C:\\Users\\Saz\\Desktop\\Group50\\Project_ShopVision50\\Project_ShopVision50\\Shop_Db\\Models\\Product.cs",
+              "RelativeToolTip": "..\\..\\..\\..\\..\\Desktop\\Group50\\Project_ShopVision50\\Project_ShopVision50\\Shop_Db\\Models\\Product.cs",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-10-14T15:21:51.03Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 28,
+              "Title": "ProductImage.cs",
+              "DocumentMoniker": "C:\\Users\\Saz\\Desktop\\Group50\\Project_ShopVision50\\Project_ShopVision50\\Shop_Db\\Models\\ProductImage.cs",
+              "RelativeDocumentMoniker": "..\\..\\..\\..\\..\\Desktop\\Group50\\Project_ShopVision50\\Project_ShopVision50\\Shop_Db\\Models\\ProductImage.cs",
+              "ToolTip": "C:\\Users\\Saz\\Desktop\\Group50\\Project_ShopVision50\\Project_ShopVision50\\Shop_Db\\Models\\ProductImage.cs",
+              "RelativeToolTip": "..\\..\\..\\..\\..\\Desktop\\Group50\\Project_ShopVision50\\Project_ShopVision50\\Shop_Db\\Models\\ProductImage.cs",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-10-14T15:23:07.445Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 29,
+              "Title": "ProductVariant.cs",
+              "DocumentMoniker": "C:\\Users\\Saz\\Desktop\\Group50\\Project_ShopVision50\\Project_ShopVision50\\Shop_Db\\Models\\ProductVariant.cs",
+              "RelativeDocumentMoniker": "..\\..\\..\\..\\..\\Desktop\\Group50\\Project_ShopVision50\\Project_ShopVision50\\Shop_Db\\Models\\ProductVariant.cs",
+              "ToolTip": "C:\\Users\\Saz\\Desktop\\Group50\\Project_ShopVision50\\Project_ShopVision50\\Shop_Db\\Models\\ProductVariant.cs",
+              "RelativeToolTip": "..\\..\\..\\..\\..\\Desktop\\Group50\\Project_ShopVision50\\Project_ShopVision50\\Shop_Db\\Models\\ProductVariant.cs",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-10-14T15:22:11.033Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 30,
+              "Title": "UserAddress.cs",
+              "DocumentMoniker": "C:\\Users\\Saz\\Desktop\\Group50\\Project_ShopVision50\\Project_ShopVision50\\Shop_Db\\Models\\UserAddress.cs",
+              "RelativeDocumentMoniker": "..\\..\\..\\..\\..\\Desktop\\Group50\\Project_ShopVision50\\Project_ShopVision50\\Shop_Db\\Models\\UserAddress.cs",
+              "ToolTip": "C:\\Users\\Saz\\Desktop\\Group50\\Project_ShopVision50\\Project_ShopVision50\\Shop_Db\\Models\\UserAddress.cs",
+              "RelativeToolTip": "..\\..\\..\\..\\..\\Desktop\\Group50\\Project_ShopVision50\\Project_ShopVision50\\Shop_Db\\Models\\UserAddress.cs",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-10-14T15:18:51.37Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 31,
+              "Title": "Order.cs",
+              "DocumentMoniker": "C:\\Users\\Saz\\Desktop\\Group50\\Project_ShopVision50\\Project_ShopVision50\\Shop_Db\\Models\\Order.cs",
+              "RelativeDocumentMoniker": "..\\..\\..\\..\\..\\Desktop\\Group50\\Project_ShopVision50\\Project_ShopVision50\\Shop_Db\\Models\\Order.cs",
+              "ToolTip": "C:\\Users\\Saz\\Desktop\\Group50\\Project_ShopVision50\\Project_ShopVision50\\Shop_Db\\Models\\Order.cs",
+              "RelativeToolTip": "..\\..\\..\\..\\..\\Desktop\\Group50\\Project_ShopVision50\\Project_ShopVision50\\Shop_Db\\Models\\Order.cs",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-10-14T15:19:05.721Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 32,
+              "Title": "Gender.cs",
+              "DocumentMoniker": "C:\\Users\\Saz\\Desktop\\Group50\\Project_ShopVision50\\Project_ShopVision50\\Shop_Db\\Models\\Gender.cs",
+              "RelativeDocumentMoniker": "..\\..\\..\\..\\..\\Desktop\\Group50\\Project_ShopVision50\\Project_ShopVision50\\Shop_Db\\Models\\Gender.cs",
+              "ToolTip": "C:\\Users\\Saz\\Desktop\\Group50\\Project_ShopVision50\\Project_ShopVision50\\Shop_Db\\Models\\Gender.cs",
+              "RelativeToolTip": "..\\..\\..\\..\\..\\Desktop\\Group50\\Project_ShopVision50\\Project_ShopVision50\\Shop_Db\\Models\\Gender.cs",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-10-14T15:21:04.566Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 33,
+              "Title": "Cart.cs",
+              "DocumentMoniker": "C:\\Users\\Saz\\Desktop\\Group50\\Project_ShopVision50\\Project_ShopVision50\\Shop_Db\\Models\\Cart.cs",
+              "RelativeDocumentMoniker": "..\\..\\..\\..\\..\\Desktop\\Group50\\Project_ShopVision50\\Project_ShopVision50\\Shop_Db\\Models\\Cart.cs",
+              "ToolTip": "C:\\Users\\Saz\\Desktop\\Group50\\Project_ShopVision50\\Project_ShopVision50\\Shop_Db\\Models\\Cart.cs",
+              "RelativeToolTip": "..\\..\\..\\..\\..\\Desktop\\Group50\\Project_ShopVision50\\Project_ShopVision50\\Shop_Db\\Models\\Cart.cs",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-10-14T15:18:12.96Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 34,
+              "Title": "Material.cs",
+              "DocumentMoniker": "C:\\Users\\Saz\\Desktop\\Group50\\Project_ShopVision50\\Project_ShopVision50\\Shop_Db\\Models\\Material.cs",
+              "RelativeDocumentMoniker": "..\\..\\..\\..\\..\\Desktop\\Group50\\Project_ShopVision50\\Project_ShopVision50\\Shop_Db\\Models\\Material.cs",
+              "ToolTip": "C:\\Users\\Saz\\Desktop\\Group50\\Project_ShopVision50\\Project_ShopVision50\\Shop_Db\\Models\\Material.cs",
+              "RelativeToolTip": "..\\..\\..\\..\\..\\Desktop\\Group50\\Project_ShopVision50\\Project_ShopVision50\\Shop_Db\\Models\\Material.cs",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-10-14T15:20:16.551Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 35,
+              "Title": "Category.cs",
+              "DocumentMoniker": "C:\\Users\\Saz\\Desktop\\Group50\\Project_ShopVision50\\Project_ShopVision50\\Shop_Db\\Models\\Category.cs",
+              "RelativeDocumentMoniker": "..\\..\\..\\..\\..\\Desktop\\Group50\\Project_ShopVision50\\Project_ShopVision50\\Shop_Db\\Models\\Category.cs",
+              "ToolTip": "C:\\Users\\Saz\\Desktop\\Group50\\Project_ShopVision50\\Project_ShopVision50\\Shop_Db\\Models\\Category.cs",
+              "RelativeToolTip": "..\\..\\..\\..\\..\\Desktop\\Group50\\Project_ShopVision50\\Project_ShopVision50\\Shop_Db\\Models\\Category.cs",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-10-14T15:19:50.458Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 36,
+              "Title": "UserRole.cs",
+              "DocumentMoniker": "C:\\Users\\Saz\\Desktop\\Group50\\Project_ShopVision50\\Project_ShopVision50\\Shop_Db\\Models\\UserRole.cs",
+              "RelativeDocumentMoniker": "..\\..\\..\\..\\..\\Desktop\\Group50\\Project_ShopVision50\\Project_ShopVision50\\Shop_Db\\Models\\UserRole.cs",
+              "ToolTip": "C:\\Users\\Saz\\Desktop\\Group50\\Project_ShopVision50\\Project_ShopVision50\\Shop_Db\\Models\\UserRole.cs",
+              "RelativeToolTip": "..\\..\\..\\..\\..\\Desktop\\Group50\\Project_ShopVision50\\Project_ShopVision50\\Shop_Db\\Models\\UserRole.cs",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-10-14T15:18:41.019Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 37,
+              "Title": "Role.cs",
+              "DocumentMoniker": "C:\\Users\\Saz\\Desktop\\Group50\\Project_ShopVision50\\Project_ShopVision50\\Shop_Db\\Models\\Role.cs",
+              "RelativeDocumentMoniker": "..\\..\\..\\..\\..\\Desktop\\Group50\\Project_ShopVision50\\Project_ShopVision50\\Shop_Db\\Models\\Role.cs",
+              "ToolTip": "C:\\Users\\Saz\\Desktop\\Group50\\Project_ShopVision50\\Project_ShopVision50\\Shop_Db\\Models\\Role.cs",
+              "RelativeToolTip": "..\\..\\..\\..\\..\\Desktop\\Group50\\Project_ShopVision50\\Project_ShopVision50\\Shop_Db\\Models\\Role.cs",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-10-14T15:18:30.377Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 38,
+              "Title": "User.cs",
+              "DocumentMoniker": "C:\\Users\\Saz\\Desktop\\Group50\\Project_ShopVision50\\Project_ShopVision50\\Shop_Db\\Models\\User.cs",
+              "RelativeDocumentMoniker": "..\\..\\..\\..\\..\\Desktop\\Group50\\Project_ShopVision50\\Project_ShopVision50\\Shop_Db\\Models\\User.cs",
+              "ToolTip": "C:\\Users\\Saz\\Desktop\\Group50\\Project_ShopVision50\\Project_ShopVision50\\Shop_Db\\Models\\User.cs",
+              "RelativeToolTip": "..\\..\\..\\..\\..\\Desktop\\Group50\\Project_ShopVision50\\Project_ShopVision50\\Shop_Db\\Models\\User.cs",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-10-14T15:06:42.745Z"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
