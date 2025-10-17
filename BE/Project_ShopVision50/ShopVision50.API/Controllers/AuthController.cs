@@ -15,12 +15,19 @@ namespace ShopVision50.API.Controllers
             _userService = userService;
         }
 
-        [HttpPost("register")]   // <- chú ý là POST
-        public async Task<IActionResult> Register([FromBody] RegisterDto dto)
+        [HttpPost("registerLogin")]   // <- chú ý là POST
+        public async Task<IActionResult> RegisterUserApi([FromBody] RegisterDto dto)
         {
-            var result = await _userService.RegisterAsync(dto);
+            var result = await _userService.RegisterUserAsync(dto);
             if (!result.Success) return BadRequest(result.Message);
             return Ok(result);
+        }
+
+        [HttpGet("getAllUsers")]  // <- chú ý là GET
+        public async Task<IActionResult> GetAllUserApi()
+        {
+            var users = await _userService.GetAllUsersAsyncSer(); 
+            return Ok(users);
         }
     }
 
