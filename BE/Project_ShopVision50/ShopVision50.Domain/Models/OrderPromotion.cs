@@ -19,3 +19,4 @@ namespace Shop_Db.Models
         public Promotion Promotion { get; set; } = null!;
     }
 }
+    

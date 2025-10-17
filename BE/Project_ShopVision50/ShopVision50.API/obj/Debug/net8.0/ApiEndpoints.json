@@ -1,8 +1,18 @@
 [
   {
     "ContainingType": "ShopVision50.API.Controllers.AuthController",
-    "Method": "Register",
-    "RelativePath": "api/Auth/register",
+    "Method": "GetAllUserApi",
+    "RelativePath": "api/Auth/getAllUsers",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "ShopVision50.API.Controllers.AuthController",
+    "Method": "RegisterUserApi",
+    "RelativePath": "api/Auth/registerLogin",
     "HttpMethod": "POST",
     "IsController": true,
     "Order": 0,
