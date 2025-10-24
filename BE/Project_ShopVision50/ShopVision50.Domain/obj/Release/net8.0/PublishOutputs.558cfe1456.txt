@@ -1,0 +1,4 @@
+C:\Users\Saz\OneDrive\Desktop\Project_ShopVision50\BE\Project_ShopVision50\out\ShopVision50.Domain.dll
+C:\Users\Saz\OneDrive\Desktop\Project_ShopVision50\BE\Project_ShopVision50\out\ShopVision50.Domain.deps.json
+C:\Users\Saz\OneDrive\Desktop\Project_ShopVision50\BE\Project_ShopVision50\out\ShopVision50.Domain.pdb
+C:\Users\Saz\OneDrive\Desktop\Project_ShopVision50\BE\Project_ShopVision50\out\BCrypt.Net-Next.dll

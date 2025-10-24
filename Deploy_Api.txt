@@ -1,0 +1,161 @@
+Hướng dẫn deploy .NET API lên VPS và gọi từ FE
+1️⃣ Chuẩn bị trên máy dev
+
+Publish project API
+
+cd ShopVision50.API
+dotnet publish -c Release -o ./publish
+
+
+-c Release → build bản release
+
+-o ./publish → xuất toàn bộ file chạy được
+
+Kiểm tra trong folder publish:
+
+ShopVision50.API.dll
+ShopVision50.API.runtimeconfig.json
+ShopVision50.API.deps.json
+wwwroot/ (nếu có)
+
+
+Đây là tất cả những thứ VPS cần, không cần Visual Studio.
+
+2️⃣ Chuẩn bị VPS
+
+Cài .NET Runtime
+
+sudo apt update
+sudo apt install -y dotnet-runtime-8.0 aspnetcore-runtime-8.0
+
+
+Kiểm tra:
+
+dotnet --list-runtimes
+
+
+Phải thấy cả:
+
+Microsoft.NETCore.App 8.0.x
+Microsoft.AspNetCore.App 8.0.x
+
+
+Tạo user để chạy API
+
+sudo useradd -m -s /bin/bash Saz_Api
+sudo passwd Saz_Api
+
+
+-m → tạo thư mục home
+
+/home/Saz_Api sẽ là home directory
+
+Upload API
+
+Trên máy dev:
+
+scp -r .\publish Saz_Api@160.250.5.26:/home/Saz_Api/ShopVision50.API/
+
+3️⃣ Chạy API lần đầu trên VPS
+
+Chuyển vào thư mục
+
+cd /home/Saz_Api/ShopVision50.API/publish
+
+
+Chạy API
+
+dotnet ShopVision50.API.dll --urls "http://0.0.0.0:5000"
+
+
+0.0.0.0 → cho phép FE từ xa kết nối
+
+Port 5000 → nhớ mở firewall
+
+Mở port 5000 cho truy cập từ FE
+
+sudo ufw allow 5000/tcp
+sudo ufw enable
+sudo ufw status
+
+4️⃣ Tạo systemd service (chạy API tự động)
+
+Tạo file service
+
+sudo nano /etc/systemd/system/shopvision50api.service
+
+
+Nội dung:
+
+[Unit]
+Description=ShopVision50 API
+After=network.target
+
+[Service]
+User=Saz_Api
+WorkingDirectory=/home/Saz_Api/ShopVision50.API/publish
+ExecStart=/usr/bin/dotnet /home/Saz_Api/ShopVision50.API/publish/ShopVision50.API.dll --urls "http://0.0.0.0:5000"
+Restart=always
+RestartSec=10
+KillSignal=SIGINT
+SyslogIdentifier=shopvision50api
+Environment=DOTNET_PRINT_TELEMETRY_MESSAGE=false
+
+[Install]
+WantedBy=multi-user.target
+
+
+Enable và start service
+
+sudo systemctl daemon-reload
+sudo systemctl enable shopvision50api.service
+sudo systemctl start shopvision50api.service
+sudo systemctl status shopvision50api.service
+
+
+Lợi ích: tự chạy khi VPS reboot, restart khi crash.
+
+5️⃣ Kiểm tra FE gọi API
+
+Đường link từ FE
+
+http://160.250.5.26:5000/api/Auth/getAllUsers
+
+
+Không dùng https:// nếu API chưa cấu hình SSL
+
+Không dùng : sai chỗ (chỉ có :port sau IP)
+
+Kiểm tra kết nối
+
+Ping VPS:
+
+ping 160.250.5.26
+
+
+Test port:
+
+telnet 160.250.5.26 5000
+
+
+Nếu timeout → kiểm tra firewall hoặc API đang chạy chưa
+
+6️⃣ Lỗi hay gặp
+Lỗi	Nguyên nhân	Cách fix
+No frameworks were found	VPS chưa cài aspnetcore-runtime	sudo apt install aspnetcore-runtime-8.0
+Access denied for user	MySQL user chưa cấp quyền % hoặc firewall	GRANT ALL ON apidb.* TO 'user'@'%'; FLUSH PRIVILEGES; sudo ufw allow 3306/tcp
+Request timed out	Firewall chưa mở port, API listen sai IP	sudo ufw allow 5000/tcp, chạy API với --urls "http://0.0.0.0:5000"
+Cannot connect to DbContext	EF Core dùng connection string sai hoặc chưa allow remote MySQL	Sửa appsettings.json connection string, check MySQL user quyền %
+✅ Tóm tắt workflow
+
+Dev: dotnet publish → folder publish
+
+Upload folder publish lên VPS
+
+VPS: cài .NET runtime + ASP.NET Core runtime
+
+Tạo user → chạy API, mở port firewall
+
+Option: tạo systemd service để chạy API nền
+
+FE: gọi API qua http://IP:port/api/...
