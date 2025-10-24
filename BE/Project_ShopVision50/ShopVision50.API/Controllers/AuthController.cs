@@ -28,6 +28,7 @@ namespace ShopVision50.API.Controllers
         {
             var users = await _userService.GetAllUsersAsyncSer(); 
             return Ok(users);
+            //api/auth/getAllUsers
         }
     }
 

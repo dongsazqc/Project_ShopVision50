@@ -9,8 +9,8 @@ namespace ShopVision50.API.Repositories
 {
     public interface IUserRepository
     {
-        Task<User?> GetByUsernameAsync(string username); // Hàm lấy user theo username/email ( chủ yếu dùng để tìm user hoặc check xem user đã tồn tại chuua
+        Task<User?> GetByUsernameAsync(int Id); // Hàm lấy user theo username/email ( chủ yếu dùng để tìm user hoặc check xem user đã tồn tại chuua
         Task AddregisteredAsync(User user);       // Hàm thêm user mới vào DB - Tên thôi chưa thực hiện logic gì đâu nhé 
-        Task<List<User>> GetAllUsersAsyncRepo();
+        Task<List<User>> GetAllUsersAsyncRepo();// Hợp đồng lấy ra tất cả user từ DB
     }
 }

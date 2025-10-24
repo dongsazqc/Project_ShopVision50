@@ -20,7 +20,7 @@ namespace ShopVision50.API.Services
         public async Task<(bool Success, string Message)> RegisterUserAsync(RegisterDto dto)
         {
             // Check xem user đã tồn tại chưa
-            var existing = await _userRepository.GetByUsernameAsync(dto.FullName);
+            var existing = await _userRepository.GetByUsernameAsync(dto.Id);
             if (existing != null)
                 return (false, "Username already exists");
 
@@ -30,10 +30,12 @@ namespace ShopVision50.API.Services
             // Gọi hàm AddregisteredAsync để lưu user mới vào DB
             await _userRepository.AddregisteredAsync(new User
             {
+                UserId = dto.Id,
                 FullName = dto.FullName,
                 Email = dto.Email,
-                Password = hashed
-                
+                Password = hashed,
+                Phone = dto.Phone,
+
             });
 
             return (true, "User registered successfully");
