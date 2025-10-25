@@ -17,7 +17,7 @@ ShopVision50.API.dll
 ShopVision50.API.runtimeconfig.json
 ShopVision50.API.deps.json
 wwwroot/ (nếu có)
-
+	
 
 Đây là tất cả những thứ VPS cần, không cần Visual Studio.
 
@@ -93,8 +93,8 @@ After=network.target
 
 [Service]
 User=<Thư mục người dùng
-WorkingDirectory=/home/Saz_Api/ShopVision50.API/publish
-ExecStart=/usr/bin/dotnet /home/<Thư mục người dùng/ShopVision50.API/publish/ShopVision50.API.dll --urls "http://0.0.0.0:5000"
+WorkingDirectory=/home/<Thư mục người dùng>/ShopVision50.API/publish
+ExecStart=/usr/bin/dotnet /home/<Thư mục người dùng>/ShopVision50.API/publish/ShopVision50.API.dll --urls "http://0.0.0.0:5000"
 Restart=always
 RestartSec=10
 KillSignal=SIGINT
