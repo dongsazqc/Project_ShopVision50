@@ -1,7 +1,9 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using ShopVision50.API.Repositories.ProductsRepo_FD;
+using ShopVision50.API.Repositories.UserRepo_FD;
+using ShopVision50.API.Services.ProductsService_FD;
+using ShopVision50.API.Services.UserService_FD;
 using ShopVision50.Infrastructure;
-using ShopVision50.API.Services;
-using ShopVision50.API.Repositories;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -21,6 +23,12 @@ builder.Services.AddDbContext<AppDbContext>(options =>
 // Add Services & Repositories
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IUserRepository, UserRepository>();
+//------------------------------------------------------------------------------------------------------------------------------------------------
+
+builder.Services.AddScoped<IProductsRepo, ProductsRepo>();
+builder.Services.AddScoped<IProductsService, ProductsService>();
+
+
 
 // Controllers
 builder.Services.AddControllers();
