@@ -1,4 +1,4 @@
-﻿namespace ShopVision50.API.Modules.Users.DTOs
+﻿namespace ShopVision50.API.Models.Users.DTOs
 {
     public class RegisterDto
     {

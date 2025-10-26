@@ -1,5 +1,4 @@
 ﻿using Shop_Db.Models;
-using ShopVision50.API.Modules.Users.DTOs;
 using BCrypt.Net;
 using ShopVision50.API.Models.Users.DTOs;
 using ShopVision50.API.Repositories.UserRepo_FD;
@@ -42,18 +41,18 @@ namespace ShopVision50.API.Services.UserService_FD
             return (true, "User registered successfully");
         }
 
-        public async Task<List<UserListDto>> GetAllUsersAsyncSer() // hàm này để lấy ra user
+        public async Task<List<UserDto>> GetAllUsersAsyncSer() // hàm này để lấy ra user
         {
             var  user = await _userRepository.GetAllUsersAsyncRepo();  // chổ này định nghĩa biến user là toàn bộ user trong Models User ở Domain
 
-            var userListDtos = new List<UserListDto>(); // khởi tạo userListDtos là 1 list rỗng kiểu UserListDto để chứa dữ liệu trả về
+            var userListDtos = new List<UserDto>(); // khởi tạo userListDtos là 1 list rỗng kiểu UserListDto để chứa dữ liệu trả về
 
             foreach (var u in user) // chổ này là khởi tạo 1 biến u để duyệt từng thằng user trong biến user
             {
-                var userMang = new UserListDto()  // khởi tạo biến userListDto kiểu UserListDto để chứa dữ liệu từng user
+                var userMang = new UserDto()  // khởi tạo biến userListDto kiểu UserListDto để chứa dữ liệu từng user
                 {
-                    Id = u.UserId,
-                    Username =u.FullName,
+                    UserId = u.UserId,
+                    FullName =u.FullName,
                     Email = u.Email
                 }; 
                 userListDtos.Add(userMang); // thêm từng thằng userMang vào trong userListDtos

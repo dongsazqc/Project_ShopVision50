@@ -1,4 +1,6 @@
-﻿namespace ShopVision50.API.Models.Users.DTOs
+﻿using Shop_Db.Models;
+
+namespace ShopVision50.API.Models.Users.DTOs
 {
     public class ProductDto
     {
@@ -7,5 +9,7 @@
         public string Name { get; set; } = string.Empty;
         public decimal Price { get; set; }
         public string Description { get; set; } = string.Empty;
+        public ICollection<ProductVariantDto>? ProductVariants { get; set; }
+
     }
 }

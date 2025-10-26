@@ -1,9 +1,21 @@
-import { Layout, Menu, Avatar, Dropdown, Space, theme, Input } from "antd";
+import {
+  Layout,
+  Menu,
+  Avatar,
+  Dropdown,
+  Space,
+  theme,
+  Input,
+} from "antd";
 import {
   DashboardOutlined,
   ShoppingOutlined,
   ShoppingCartOutlined,
+  TagsOutlined,
   UserOutlined,
+  BarChartOutlined,
+  ShopOutlined,
+  DatabaseOutlined,
   LogoutOutlined,
   MenuFoldOutlined,
   MenuUnfoldOutlined,
@@ -23,31 +35,7 @@ export default function AdminLayout() {
     token: { colorBgContainer },
   } = theme.useToken();
 
-  // Menu bên trái
-  const menuItems = [
-    {
-      key: "/admin/dashboard",
-      icon: <DashboardOutlined />,
-      label: <Link to="/admin/dashboard">Bảng điều khiển</Link>,
-    },
-    {
-      key: "/admin/products",
-      icon: <ShoppingOutlined />,
-      label: <Link to="/admin/products">Sản phẩm</Link>,
-    },
-    {
-      key: "/admin/orders",
-      icon: <ShoppingCartOutlined />,
-      label: <Link to="/admin/orders">Đơn hàng</Link>,
-    },
-    {
-      key: "/admin/users",
-      icon: <UserOutlined />,
-      label: <Link to="/admin/users">Người dùng</Link>,
-    },
-  ];
-
-  // Menu hồ sơ
+  // ====== Hồ sơ (dropdown) ======
   const profileMenu = {
     items: [
       {
@@ -61,7 +49,7 @@ export default function AdminLayout() {
 
   return (
     <Layout style={{ minHeight: "100vh" }}>
-      {/* SIDEBAR */}
+      {/* ===== SIDEBAR ===== */}
       <Sider
         collapsible
         collapsed={collapsed}
@@ -78,7 +66,7 @@ export default function AdminLayout() {
           transition: "all 0.3s ease",
         }}
       >
-        {/* Logo */}
+        {/* LOGO */}
         <div
           style={{
             color: "#fff",
@@ -93,17 +81,66 @@ export default function AdminLayout() {
           {collapsed ? "SW" : "StyleWear Admin"}
         </div>
 
-        {/* Menu trái */}
+        {/* MENU */}
         <Menu
           theme="dark"
           mode="inline"
           selectedKeys={[location.pathname]}
-          items={menuItems}
+          defaultOpenKeys={["product-management"]}
           style={{ marginTop: 10 }}
-        />
+        >
+          {/* ====== BẢNG ĐIỀU KHIỂN ====== */}
+          <Menu.Item key="/admin/dashboard" icon={<DashboardOutlined />}>
+            <Link to="/admin/dashboard">Bảng điều khiển</Link>
+          </Menu.Item>
+
+          {/* ====== QUẢN LÝ SẢN PHẨM ====== */}
+          <Menu.SubMenu
+            key="product-management"
+            icon={<ShoppingOutlined />}
+            title="Quản lý sản phẩm"
+          >
+            <Menu.Item key="/admin/products">
+              <Link to="/admin/products">Sản phẩm</Link>
+            </Menu.Item>
+            <Menu.Item key="/admin/categories">
+              <Link to="/admin/categories">Danh mục</Link>
+            </Menu.Item>
+          </Menu.SubMenu>
+
+          {/* ====== ĐƠN HÀNG ====== */}
+          <Menu.Item key="/admin/orders" icon={<ShoppingCartOutlined />}>
+            <Link to="/admin/orders">Đơn hàng</Link>
+          </Menu.Item>
+
+          {/* ====== KHO HÀNG ====== */}
+          <Menu.Item key="/admin/inventory" icon={<DatabaseOutlined />}>
+            <Link to="/admin/inventory">Kho hàng</Link>
+          </Menu.Item>
+
+          {/* ====== KHUYẾN MÃI ====== */}
+          <Menu.Item key="/admin/promotions" icon={<TagsOutlined />}>
+            <Link to="/admin/promotions">Khuyến mãi</Link>
+          </Menu.Item>
+
+          {/* ====== NGƯỜI DÙNG ====== */}
+          <Menu.Item key="/admin/users" icon={<UserOutlined />}>
+            <Link to="/admin/users">Người dùng</Link>
+          </Menu.Item>
+
+          {/* ====== BÁO CÁO ====== */}
+          <Menu.Item key="/admin/reports" icon={<BarChartOutlined />}>
+            <Link to="/admin/reports">Báo cáo</Link>
+          </Menu.Item>
+
+          {/* ====== POS ====== */}
+          <Menu.Item key="/admin/pos" icon={<ShopOutlined />}>
+            <Link to="/admin/pos">Bán hàng tại quầy (POS)</Link>
+          </Menu.Item>
+        </Menu>
       </Sider>
 
-      {/* MAIN LAYOUT */}
+      {/* ===== MAIN ===== */}
       <Layout
         style={{
           marginLeft: siderWidth,
@@ -127,7 +164,7 @@ export default function AdminLayout() {
             boxShadow: "0 2px 8px rgba(0,0,0,0.08)",
           }}
         >
-          {/* Bên trái: Toggle + Tiêu đề */}
+          {/* TRÁI: Toggle + Tiêu đề */}
           <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
             {collapsed ? (
               <MenuUnfoldOutlined
@@ -151,7 +188,7 @@ export default function AdminLayout() {
             </span>
           </div>
 
-          {/* Bên phải: Ô tìm kiếm + Avatar */}
+          {/* PHẢI: Tìm kiếm + Avatar */}
           <Space size="large" align="center">
             <Input
               placeholder="Tìm kiếm..."
@@ -162,7 +199,11 @@ export default function AdminLayout() {
                 background: "#f5f5f5",
               }}
             />
-            <Dropdown menu={profileMenu} placement="bottomRight" trigger={["click"]}>
+            <Dropdown
+              menu={profileMenu}
+              placement="bottomRight"
+              trigger={["click"]}
+            >
               <div
                 style={{
                   display: "flex",

@@ -1,7 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using ShopVision50.API.Modules.Users.DTOs;
 using ShopVision50.API.Services.UserService_FD;
-
+using ShopVision50.API.Models.Users.DTOs;
 namespace ShopVision50.API.Controllers
 {
     [ApiController]
