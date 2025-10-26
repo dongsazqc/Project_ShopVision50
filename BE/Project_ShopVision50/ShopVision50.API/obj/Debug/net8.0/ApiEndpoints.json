@@ -43,6 +43,16 @@
   },
   {
     "ContainingType": "ShopVision50.API.Controllers.ProductsController",
+    "Method": "GetAllProducts",
+    "RelativePath": "api/Products/getAllProducts",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "ShopVision50.API.Controllers.ProductsController",
     "Method": "GetProductsByName",
     "RelativePath": "api/Products/getProductsByName",
     "HttpMethod": "POST",

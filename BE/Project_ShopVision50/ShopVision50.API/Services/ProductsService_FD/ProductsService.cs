@@ -7,7 +7,7 @@ namespace ShopVision50.API.Services.ProductsService_FD
 {
     public class ProductsService : IProductsService
     {
-       private readonly IProductsRepo _productsRepo; 
+        private readonly IProductsRepo _productsRepo;
         public ProductsService(IProductsRepo productsRepo)
         {
             _productsRepo = productsRepo;
@@ -48,7 +48,7 @@ namespace ShopVision50.API.Services.ProductsService_FD
                 {
                     var productDtoList = new List<ProductDto>(); // khởi tạo productDtoList là 1 list rỗng kiểu ProductDto để chứa dữ liệu trả về
 
-                    foreach( var p in products) // chổ này là khởi tạo 1 biến p để duyệt từng thằng product trong biến products
+                    foreach (var p in products) // chổ này là khởi tạo 1 biến p để duyệt từng thằng product trong biến products
                     {
                         var productDto = new ProductDto()  // khởi tạo biến productDto kiểu ProductDto để chứa dữ liệu từng product
                         {
@@ -62,13 +62,46 @@ namespace ShopVision50.API.Services.ProductsService_FD
 
                     return productDtoList;  // trả về cái thằng productDtoList mà trong hợp đồng có
                 }
-                 
+
             }
             catch (Exception ex)
             {
                 return null; // Tránh null reference
             }
         }
+        public async Task<List<ProductDto>> GetAllProductsAsync()
+        {
+            try
+            {
+                var products = await _productsRepo.GetAllProductsAsync();
+                if (products == null || products.Count == 0)
+                {
 
+                    return null;
+                }
+                else
+                {
+                    var productDtoList = new List<ProductDto>(); // khởi tạo productDtoList là 1 list rỗng kiểu ProductDto để chứa dữ liệu trả về
+                    foreach (var p in products) // chổ này là khởi tạo 1 biến p để duyệt từng thằng product trong biến products
+                    {
+                        var productDto = new ProductDto()  // khởi tạo biến productDto kiểu ProductDto để chứa dữ liệu từng product
+                        {
+                            ProductId = p.ProductId,
+                            Name = p.Name,
+                            Price = p.Price,
+                            Description = p.Description
+                        };
+                        productDtoList.Add(productDto); // thêm từng thằng productDto vào trong productDtoList
+                    }
+                    return productDtoList;  // trả về cái thằng productDtoList mà trong hợp đồng có
+                }
+            }
+            catch (Exception ex)
+            {
+                return null; // Tránh null reference
+            }
+
+        }
     }
+
 }
