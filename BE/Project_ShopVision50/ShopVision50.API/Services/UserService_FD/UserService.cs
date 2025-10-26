@@ -1,67 +1,97 @@
-﻿using Shop_Db.Models;
+﻿// Services/UserService_FD/UserService.cs
 using BCrypt.Net;
+using Microsoft.EntityFrameworkCore;
+using Shop_Db.Models;
 using ShopVision50.API.Models.Users.DTOs;
-using ShopVision50.API.Repositories.UserRepo_FD;
+using ShopVision50.Infrastructure;
 
-
-// đây là nơi dùng để kiểu như validate dữ liệu, format dữ liệu , quyết định xem sẽ lưu những cái gì vào DB
 namespace ShopVision50.API.Services.UserService_FD
 {
     public class UserService : IUserService
     {
-        private readonly IUserRepository _userRepository; // Repository để lưu vào DB
+        private readonly AppDbContext _db;
+        public UserService(AppDbContext db) { _db = db; }
 
-        public UserService(IUserRepository userRepository)
+        #region AuthController methods
+        public async Task<ServiceResult<UserReadDto>> RegisterUserAsync(RegisterDto dto)
         {
-            _userRepository = userRepository;
-        }
+            if (string.IsNullOrWhiteSpace(dto.Email) || string.IsNullOrWhiteSpace(dto.Password))
+                return ServiceResult<UserReadDto>.Fail("Email và Password là bắt buộc.");
 
-        public async Task<(bool Success, string Message)> RegisterUserAsync(RegisterDto dto)
-        {
-            // Check xem user đã tồn tại chưa
-            var existing = await _userRepository.GetByUsernameAsync (dto.Id);
-            if (existing != null)
-                return (false, "Username already exists"); // thoát hàm nếu sản phầm đã tồn tại
+            var email = dto.Email.Trim().ToLower();
+            var existed = await _db.Users.AnyAsync(u => u.Email.ToLower() == email);
+            if (existed) return ServiceResult<UserReadDto>.Fail("Email đã tồn tại.");
 
-
-            // Hash password (dùng BCrypt)
-            var hashed = BCrypt.Net.BCrypt.HashPassword(dto.Password);
-
-            // Gọi hàm AddregisteredAsync để lưu user mới vào DB
-            await _userRepository.AddregisteredAsync(new User
+            var user = new User
             {
-                UserId = dto.Id,
-                FullName = dto.FullName,
-                Email = dto.Email,
-                Password = hashed,
+                FullName = dto.FullName?.Trim() ?? string.Empty,
+                Email = email,
+                Password = BCrypt.Net.BCrypt.HashPassword(dto.Password),
                 Phone = dto.Phone,
+                DefaultAddress = dto.DefaultAddress,
+                JoinDate = DateTime.UtcNow,
+                Status = true,
+                RoleId = null
+            };
 
-            });
+            _db.Users.Add(user);
+            await _db.SaveChangesAsync();
 
-            return (true, "User registered successfully");
+            return ServiceResult<UserReadDto>.Ok(MapToRead(user), "Đăng ký thành công.");
         }
 
-        public async Task<List<UserDto>> GetAllUsersAsyncSer() // hàm này để lấy ra user
+        public async Task<IEnumerable<UserReadDto>> GetAllUsersAsyncSer()
         {
-            var  user = await _userRepository.GetAllUsersAsyncRepo();  // chổ này định nghĩa biến user là toàn bộ user trong Models User ở Domain
+            return await _db.Users
+                .AsNoTracking()
+                .Select(u => MapToRead(u))
+                .ToListAsync();
+        }
+        #endregion
 
-            var userListDtos = new List<UserDto>(); // khởi tạo userListDtos là 1 list rỗng kiểu UserListDto để chứa dữ liệu trả về
-
-            foreach (var u in user) // chổ này là khởi tạo 1 biến u để duyệt từng thằng user trong biến user
-            {
-                var userMang = new UserDto()  // khởi tạo biến userListDto kiểu UserListDto để chứa dữ liệu từng user
-                {
-                    UserId = u.UserId,
-                    FullName =u.FullName,
-                    Email = u.Email
-                }; 
-                userListDtos.Add(userMang); // thêm từng thằng userMang vào trong userListDtos
-
-            }
-            return userListDtos;  // trả về cái thằng userListDtos mà trong hợp đồng có
+        #region Users API methods
+        public async Task<ServiceResult<UserReadDto>> GetUserByIdAsync(int id)
+        {
+            var user = await _db.Users.FindAsync(id);
+            if (user == null) return ServiceResult<UserReadDto>.Fail("Không tìm thấy user.");
+            return ServiceResult<UserReadDto>.Ok(MapToRead(user));
         }
 
-      
-    }
+        public async Task<ServiceResult<UserReadDto>> UpdateUserAsync(int id, UserUpdateDto dto)
+        {
+            var user = await _db.Users.FindAsync(id);
+            if (user == null) return ServiceResult<UserReadDto>.Fail("User không tồn tại.");
 
+            user.FullName = dto.FullName?.Trim() ?? user.FullName;
+            user.Phone = dto.Phone;
+            user.DefaultAddress = dto.DefaultAddress;
+            user.Status = dto.Status;
+            user.RoleId = dto.RoleId;
+
+            await _db.SaveChangesAsync();
+            return ServiceResult<UserReadDto>.Ok(MapToRead(user), "Cập nhật thành công.");
+        }
+
+        public async Task<ServiceResult<bool>> DeleteUserAsync(int id)
+        {
+            var user = await _db.Users.FindAsync(id);
+            if (user == null) return ServiceResult<bool>.Fail("Không tồn tại user để xóa.");
+            _db.Users.Remove(user);
+            await _db.SaveChangesAsync();
+            return ServiceResult<bool>.Ok(true, "Đã xóa user.");
+        }
+        #endregion
+
+        private static UserReadDto MapToRead(User u) => new()
+        {
+            UserId = u.UserId,
+            FullName = u.FullName,
+            Email = u.Email,
+            Phone = u.Phone,
+            Status = u.Status,
+            JoinDate = u.JoinDate,
+            RoleId = u.RoleId,
+            DefaultAddress = u.DefaultAddress
+        };
+    }
 }
