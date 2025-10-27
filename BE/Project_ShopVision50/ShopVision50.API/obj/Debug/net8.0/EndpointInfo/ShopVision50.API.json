@@ -14,17 +14,17 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/RegisterDto"
+                "$ref": "#/components/schemas/UserDto"
               }
             },
             "text/json": {
               "schema": {
-                "$ref": "#/components/schemas/RegisterDto"
+                "$ref": "#/components/schemas/UserDto"
               }
             },
             "application/*+json": {
               "schema": {
-                "$ref": "#/components/schemas/RegisterDto"
+                "$ref": "#/components/schemas/UserDto"
               }
             }
           }
@@ -122,7 +122,7 @@
         }
       }
     },
-    "/api/Users/getAll": {
+    "/api/Users/getAllUsers": {
       "get": {
         "tags": [
           "Users"
@@ -157,7 +157,38 @@
         }
       }
     },
-    "/api/Users/update/{id}": {
+    "/api/Users/registerUser": {
+      "post": {
+        "tags": [
+          "Users"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UserDto"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UserDto"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/UserDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/Users/updateUser/{id}": {
       "put": {
         "tags": [
           "Users"
@@ -177,17 +208,17 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/UserUpdateDto"
+                "$ref": "#/components/schemas/UserDto"
               }
             },
             "text/json": {
               "schema": {
-                "$ref": "#/components/schemas/UserUpdateDto"
+                "$ref": "#/components/schemas/UserDto"
               }
             },
             "application/*+json": {
               "schema": {
-                "$ref": "#/components/schemas/UserUpdateDto"
+                "$ref": "#/components/schemas/UserDto"
               }
             }
           }
@@ -199,7 +230,7 @@
         }
       }
     },
-    "/api/Users/delete/{id}": {
+    "/api/Users/deleteUser/{id}": {
       "delete": {
         "tags": [
           "Users"
@@ -225,6 +256,237 @@
   },
   "components": {
     "schemas": {
+      "CartDto": {
+        "type": "object",
+        "properties": {
+          "cartId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "createdDate": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "status": {
+            "type": "boolean"
+          },
+          "userId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "user": {
+            "$ref": "#/components/schemas/UserDto"
+          },
+          "cartItems": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/CartItemDto"
+            },
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "CartItemDto": {
+        "type": "object",
+        "properties": {
+          "cartItemId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "quantity": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "price": {
+            "type": "number",
+            "format": "double"
+          },
+          "productVariantId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "productVariant": {
+            "$ref": "#/components/schemas/ProductVariantDto"
+          },
+          "cartId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "cart": {
+            "$ref": "#/components/schemas/CartDto"
+          }
+        },
+        "additionalProperties": false
+      },
+      "OrderDto": {
+        "type": "object",
+        "properties": {
+          "orderId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "orderDate": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "orderType": {
+            "type": "string",
+            "nullable": true
+          },
+          "status": {
+            "type": "boolean"
+          },
+          "totalAmount": {
+            "type": "number",
+            "format": "double"
+          },
+          "recipientName": {
+            "type": "string",
+            "nullable": true
+          },
+          "recipientPhone": {
+            "type": "string",
+            "nullable": true
+          },
+          "shippingAddress": {
+            "type": "string",
+            "nullable": true
+          },
+          "userId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "user": {
+            "$ref": "#/components/schemas/UserDto"
+          },
+          "orderItems": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/OrderItemDto"
+            },
+            "nullable": true
+          },
+          "orderPromotions": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/OrderPromotionDto"
+            },
+            "nullable": true
+          },
+          "payments": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/PaymentDto"
+            },
+            "nullable": true
+          },
+          "returnNotes": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ReturnNoteDto"
+            },
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "OrderItemDto": {
+        "type": "object",
+        "properties": {
+          "orderItemId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "quantity": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "discountAmount": {
+            "type": "number",
+            "format": "double"
+          },
+          "productVariantId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "productVariant": {
+            "$ref": "#/components/schemas/ProductVariantDto"
+          },
+          "orderId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "order": {
+            "$ref": "#/components/schemas/OrderDto"
+          },
+          "promotionId": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "promotion": {
+            "$ref": "#/components/schemas/PromotionDto"
+          }
+        },
+        "additionalProperties": false
+      },
+      "OrderPromotionDto": {
+        "type": "object",
+        "properties": {
+          "orderPromotionId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "orderId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "order": {
+            "$ref": "#/components/schemas/OrderDto"
+          },
+          "promotionId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "promotion": {
+            "$ref": "#/components/schemas/PromotionDto"
+          }
+        },
+        "additionalProperties": false
+      },
+      "PaymentDto": {
+        "type": "object",
+        "properties": {
+          "paymentId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "method": {
+            "type": "string",
+            "nullable": true
+          },
+          "amount": {
+            "type": "number",
+            "format": "double"
+          },
+          "status": {
+            "type": "boolean"
+          },
+          "paymentDate": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "orderId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "order": {
+            "$ref": "#/components/schemas/OrderDto"
+          }
+        },
+        "additionalProperties": false
+      },
       "ProductColorDto": {
         "required": [
           "name"
@@ -343,38 +605,218 @@
         },
         "additionalProperties": false
       },
-      "RegisterDto": {
+      "PromotionDto": {
         "type": "object",
         "properties": {
-          "fullName": {
+          "promotionId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "code": {
             "type": "string",
             "nullable": true
           },
-          "email": {
+          "discountType": {
             "type": "string",
             "nullable": true
           },
-          "password": {
+          "discountValue": {
+            "type": "number",
+            "format": "double"
+          },
+          "condition": {
             "type": "string",
             "nullable": true
           },
-          "phone": {
+          "scope": {
             "type": "string",
             "nullable": true
           },
-          "defaultAddress": {
+          "startDate": {
             "type": "string",
+            "format": "date-time"
+          },
+          "endDate": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "status": {
+            "type": "boolean"
+          },
+          "orderItems": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/OrderItemDto"
+            },
+            "nullable": true
+          },
+          "orderPromotions": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/OrderPromotionDto"
+            },
             "nullable": true
           }
         },
         "additionalProperties": false
       },
-      "UserUpdateDto": {
+      "ReturnItemDto": {
         "type": "object",
         "properties": {
-          "fullName": {
+          "returnItemId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "quantity": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "reasonDetail": {
             "type": "string",
             "nullable": true
+          },
+          "productVariantId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "productVariant": {
+            "$ref": "#/components/schemas/ProductVariantDto"
+          },
+          "returnNoteId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "returnNote": {
+            "$ref": "#/components/schemas/ReturnNoteDto"
+          }
+        },
+        "additionalProperties": false
+      },
+      "ReturnNoteDto": {
+        "type": "object",
+        "properties": {
+          "returnNoteId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "returnDate": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "reason": {
+            "type": "string",
+            "nullable": true
+          },
+          "status": {
+            "type": "boolean"
+          },
+          "totalRefund": {
+            "type": "number",
+            "format": "double"
+          },
+          "orderId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "order": {
+            "$ref": "#/components/schemas/OrderDto"
+          },
+          "returnItems": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ReturnItemDto"
+            },
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "RoleDto": {
+        "required": [
+          "roleName"
+        ],
+        "type": "object",
+        "properties": {
+          "roleId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "roleName": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "users": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/UserDto"
+            },
+            "nullable": true
+          },
+          "userRoles": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/UserRoleDto"
+            },
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "UserAddressDto": {
+        "type": "object",
+        "properties": {
+          "addressId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "recipientName": {
+            "type": "string",
+            "nullable": true
+          },
+          "phone": {
+            "type": "string",
+            "nullable": true
+          },
+          "addressDetail": {
+            "type": "string",
+            "nullable": true
+          },
+          "isDefault": {
+            "type": "boolean"
+          },
+          "userId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "user": {
+            "$ref": "#/components/schemas/UserDto"
+          }
+        },
+        "additionalProperties": false
+      },
+      "UserDto": {
+        "required": [
+          "email",
+          "fullName",
+          "password"
+        ],
+        "type": "object",
+        "properties": {
+          "userId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "fullName": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "email": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "password": {
+            "minLength": 1,
+            "type": "string"
           },
           "phone": {
             "type": "string",
@@ -383,6 +825,10 @@
           "defaultAddress": {
             "type": "string",
             "nullable": true
+          },
+          "joinDate": {
+            "type": "string",
+            "format": "date-time"
           },
           "status": {
             "type": "boolean"
@@ -391,6 +837,61 @@
             "type": "integer",
             "format": "int32",
             "nullable": true
+          },
+          "role": {
+            "$ref": "#/components/schemas/RoleDto"
+          },
+          "carts": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/CartDto"
+            },
+            "nullable": true
+          },
+          "addresses": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/UserAddressDto"
+            },
+            "nullable": true
+          },
+          "orders": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/OrderDto"
+            },
+            "nullable": true
+          },
+          "userRoles": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/UserRoleDto"
+            },
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "UserRoleDto": {
+        "type": "object",
+        "properties": {
+          "userRoleId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "userId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "user": {
+            "$ref": "#/components/schemas/UserDto"
+          },
+          "roleId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "role": {
+            "$ref": "#/components/schemas/RoleDto"
           }
         },
         "additionalProperties": false

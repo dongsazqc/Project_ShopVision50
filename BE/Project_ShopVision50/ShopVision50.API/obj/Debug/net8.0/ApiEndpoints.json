@@ -19,7 +19,7 @@
     "Parameters": [
       {
         "Name": "dto",
-        "Type": "ShopVision50.API.Models.Users.DTOs.RegisterDto",
+        "Type": "ShopVision50.API.Models.Users.DTOs.UserDto",
         "IsRequired": true
       }
     ],
@@ -69,8 +69,8 @@
   },
   {
     "ContainingType": "ShopVision50.API.Controllers.UsersController",
-    "Method": "Delete",
-    "RelativePath": "api/Users/delete/{id}",
+    "Method": "DeleteUser",
+    "RelativePath": "api/Users/deleteUser/{id}",
     "HttpMethod": "DELETE",
     "IsController": true,
     "Order": 0,
@@ -85,8 +85,8 @@
   },
   {
     "ContainingType": "ShopVision50.API.Controllers.UsersController",
-    "Method": "GetAll",
-    "RelativePath": "api/Users/getAll",
+    "Method": "GetAllUsers",
+    "RelativePath": "api/Users/getAllUsers",
     "HttpMethod": "GET",
     "IsController": true,
     "Order": 0,
@@ -111,8 +111,24 @@
   },
   {
     "ContainingType": "ShopVision50.API.Controllers.UsersController",
-    "Method": "Update",
-    "RelativePath": "api/Users/update/{id}",
+    "Method": "RegisterUser",
+    "RelativePath": "api/Users/registerUser",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "dto",
+        "Type": "ShopVision50.API.Models.Users.DTOs.UserDto",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "ShopVision50.API.Controllers.UsersController",
+    "Method": "UpdateUser",
+    "RelativePath": "api/Users/updateUser/{id}",
     "HttpMethod": "PUT",
     "IsController": true,
     "Order": 0,
@@ -124,7 +140,7 @@
       },
       {
         "Name": "dto",
-        "Type": "ShopVision50.API.Models.Users.DTOs.UserUpdateDto",
+        "Type": "ShopVision50.API.Models.Users.DTOs.UserDto",
         "IsRequired": true
       }
     ],

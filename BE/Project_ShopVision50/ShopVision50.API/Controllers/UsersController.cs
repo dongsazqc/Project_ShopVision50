@@ -1,7 +1,6 @@
-﻿// Controllers/UsersController.cs
-using Microsoft.AspNetCore.Mvc;
-using ShopVision50.API.Services.UserService_FD;
+﻿using Microsoft.AspNetCore.Mvc;
 using ShopVision50.API.Models.Users.DTOs;
+using ShopVision50.API.Services.UserService_FD;
 
 namespace ShopVision50.API.Controllers
 {
@@ -12,15 +11,10 @@ namespace ShopVision50.API.Controllers
         private readonly IUserService _userService;
         public UsersController(IUserService userService) => _userService = userService;
 
-        // GET api/users/getAll
-        [HttpGet("getAll")]
-        public async Task<IActionResult> GetAll()
-        {
-            var users = await _userService.GetAllUsersAsyncSer();
-            return Ok(users);
-        }
+        [HttpGet("getAllUsers")]
+        public async Task<IActionResult> GetAllUsers()
+            => Ok(await _userService.GetAllUsersAsyncSer());
 
-        // GET api/users/getById/5
         [HttpGet("getById/{id}")]
         public async Task<IActionResult> GetById(int id)
         {
@@ -29,18 +23,24 @@ namespace ShopVision50.API.Controllers
             return Ok(result);
         }
 
-        // PUT api/users/update/5
-        [HttpPut("update/{id}")]
-        public async Task<IActionResult> Update(int id, [FromBody] UserUpdateDto dto)
+        [HttpPost("registerUser")]
+        public async Task<IActionResult> RegisterUser([FromBody] UserDto dto)
+        {
+            var result = await _userService.RegisterUserAsync(dto);
+            if (!result.Success) return BadRequest(result.Message);
+            return Ok(result);
+        }
+
+        [HttpPut("updateUser/{id}")]
+        public async Task<IActionResult> UpdateUser(int id, [FromBody] UserDto dto)
         {
             var result = await _userService.UpdateUserAsync(id, dto);
             if (!result.Success) return BadRequest(result.Message);
             return Ok(result);
         }
 
-        // DELETE api/users/delete/5
-        [HttpDelete("delete/{id}")]
-        public async Task<IActionResult> Delete(int id)
+        [HttpDelete("deleteUser/{id}")]
+        public async Task<IActionResult> DeleteUser(int id)
         {
             var result = await _userService.DeleteUserAsync(id);
             if (!result.Success) return BadRequest(result.Message);

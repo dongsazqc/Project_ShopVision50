@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using ShopVision50.API.Services.UserService_FD;
 using ShopVision50.API.Models.Users.DTOs;
+
 namespace ShopVision50.API.Controllers
 {
     [ApiController]
@@ -14,22 +15,22 @@ namespace ShopVision50.API.Controllers
             _userService = userService;
         }
 
+        // POST: api/auth/registerLogin
         [HttpPost("registerLogin")]   // <- chú ý là POST
-        public async Task<IActionResult> RegisterUserApi([FromBody] RegisterDto dto)
+        public async Task<IActionResult> RegisterUserApi([FromBody] UserDto dto)
         {
             var result = await _userService.RegisterUserAsync(dto);
             if (!result.Success) return BadRequest(result.Message);
             return Ok(result);
         }
 
+        // GET: api/auth/getAllUsers
         [HttpGet("getAllUsers")]  // <- chú ý là GET
         public async Task<IActionResult> GetAllUserApi()
         {
             var users = await _userService.GetAllUsersAsyncSer();
             return Ok(users);
-            //api/auth/getAllUsers
+            // api/auth/getAllUsers
         }
     }
-
-
 }
