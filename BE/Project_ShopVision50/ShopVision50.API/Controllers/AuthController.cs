@@ -25,7 +25,7 @@ namespace ShopVision50.API.Controllers
         [HttpGet("getAllUsers")]  // <- chú ý là GET
         public async Task<IActionResult> GetAllUserApi()
         {
-            var users = await _userService.GetAllUsersAsyncSer(); 
+            var users = await _userService.GetAllUsersAsyncSer();
             return Ok(users);
             //api/auth/getAllUsers
         }

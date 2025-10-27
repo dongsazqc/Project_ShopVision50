@@ -2,33 +2,44 @@
 using Shop_Db.Models;
 using ShopVision50.Infrastructure;
 
-namespace ShopVision50.API.Repositories.UserRepo_FD
+public class UserRepository : IUserRepository
 {
-    // Đây là nơi xử lí logic CRUD thêm sửa xóa... 
-    public class UserRepository : IUserRepository
+    private readonly AppDbContext _context;
+
+    public UserRepository(AppDbContext context)
     {
-        private readonly AppDbContext _context; // Đây là DbContext kết nối DB
+        _context = context;
+    }
 
-        public UserRepository(AppDbContext context)
-        {
-            _context = context; // inject AppDbContext vào repo
-        }
+    public async Task<IEnumerable<User>> GetAllAsync()
+    {
+        return await _context.Users.ToListAsync();
+    }
 
+    public async Task<User?> GetByIdAsync(int id)
+    {
+        return await _context.Users.FindAsync(id);
+    }
 
-        public async Task AddregisteredAsync(User user)
-        {
-            _context.Users.Add(user); // thêm user vào DbContext
-            await _context.SaveChangesAsync(); // lưu vào DB luôn
-        }
+    public async Task AddAsync(User user)
+    {
+        await _context.Users.AddAsync(user);
+    }
 
-        public async Task<List<User>> GetAllUsersAsyncRepo()
-        {
-            return await _context.Users.ToListAsync(); // Lấy tất cả user từ DB
-        }
+    public async Task UpdateAsync(User user)
+    {
+        _context.Users.Update(user);
+    }
 
-        public async Task<User> GetByUsernameAsync(int Id)
-        {
-            return await _context.Users.FirstOrDefaultAsync(u => u.UserId == Id);  // tìm user theo FullName
-        }
+    public async Task DeleteAsync(int id)
+    {
+        var user = await GetByIdAsync(id);
+        if (user != null)
+            _context.Users.Remove(user);
+    }
+
+    public async Task<bool> SaveChangesAsync()
+    {
+        return await _context.SaveChangesAsync() > 0;
     }
 }
