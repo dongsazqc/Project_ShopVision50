@@ -1,9 +1,0 @@
-Các api đã triển khai:
--Products
-1- Lấy sản phẩm theo tên
-2- Thêm mới sản phẩm 
-3- Lấy toàn bộ sản phẩm trong db
-
-----------------------------------------------------------------------------
--Auth
-4- Tạo mới user
