@@ -1,31 +1,5 @@
 [
   {
-    "ContainingType": "ShopVision50.API.Controllers.AuthController",
-    "Method": "GetAllUserApi",
-    "RelativePath": "api/Auth/getAllUsers",
-    "HttpMethod": "GET",
-    "IsController": true,
-    "Order": 0,
-    "Parameters": [],
-    "ReturnTypes": []
-  },
-  {
-    "ContainingType": "ShopVision50.API.Controllers.AuthController",
-    "Method": "RegisterUserApi",
-    "RelativePath": "api/Auth/registerLogin",
-    "HttpMethod": "POST",
-    "IsController": true,
-    "Order": 0,
-    "Parameters": [
-      {
-        "Name": "dto",
-        "Type": "ShopVision50.API.Models.Users.DTOs.UserDto",
-        "IsRequired": true
-      }
-    ],
-    "ReturnTypes": []
-  },
-  {
     "ContainingType": "ShopVision50.API.Controllers.KhuyenMaiController",
     "Method": "Create",
     "RelativePath": "api/KhuyenMai/CreatePromotion",
@@ -98,7 +72,7 @@
     "Parameters": [
       {
         "Name": "request",
-        "Type": "ShopVision50.API.Models.Users.DTOs.ProductDto",
+        "Type": "Shop_Db.Models.Product",
         "IsRequired": true
       }
     ],
@@ -118,14 +92,14 @@
     "ContainingType": "ShopVision50.API.Controllers.ProductsController",
     "Method": "GetProductsByName",
     "RelativePath": "api/Products/getProductsByName",
-    "HttpMethod": "POST",
+    "HttpMethod": "GET",
     "IsController": true,
     "Order": 0,
     "Parameters": [
       {
-        "Name": "request",
-        "Type": "ShopVision50.API.Models.Users.DTOs.ProductDto",
-        "IsRequired": true
+        "Name": "productName",
+        "Type": "System.String",
+        "IsRequired": false
       }
     ],
     "ReturnTypes": []
@@ -141,11 +115,6 @@
       {
         "Name": "productsDetailsId",
         "Type": "System.Int32",
-        "IsRequired": false
-      },
-      {
-        "Name": "productsDetailsId",
-        "Type": "",
         "IsRequired": true
       }
     ],

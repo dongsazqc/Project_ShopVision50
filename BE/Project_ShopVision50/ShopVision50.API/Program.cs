@@ -39,6 +39,16 @@ builder.Services.AddScoped<IProductsService, ProductsService>();
 builder.Services.AddScoped<IPromotionRepository, PromotionRepository>();
 builder.Services.AddScoped<IPromotionService, PromotionService>();
 
+
+
+builder.Services.AddControllers()
+    .AddJsonOptions(options =>
+    {
+        options.JsonSerializerOptions.ReferenceHandler = System.Text.Json.Serialization.ReferenceHandler.Preserve;
+        options.JsonSerializerOptions.MaxDepth = 64; // nếu muốn
+    });
+
+
 // Controllers
 builder.Services.AddControllers();
 
