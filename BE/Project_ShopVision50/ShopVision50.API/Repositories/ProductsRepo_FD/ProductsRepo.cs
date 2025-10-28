@@ -54,10 +54,6 @@ namespace ShopVision50.API.Repositories.ProductsRepo_FD
             }
         }
 
-        public Task ProductsDetail(int productId)
-        {
-            throw new NotImplementedException();
-        }
         public async Task<Product?> GetProductDetailAsync(int productId)
         {
             var product = await _context.Products                      //  Lấy dữ liệu từ bảng Products
