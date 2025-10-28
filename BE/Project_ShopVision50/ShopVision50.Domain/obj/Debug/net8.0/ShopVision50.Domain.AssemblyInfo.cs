@@ -14,7 +14,11 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("ShopVision50.Domain")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
+<<<<<<< Updated upstream
 [assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+323bb7e1219379f20d7307efaa11bcabdcbd730f")]
+=======
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+ad561ea78d5530a7d220cc552d9e7d8cfe6865e5")]
+>>>>>>> Stashed changes
 [assembly: System.Reflection.AssemblyProductAttribute("ShopVision50.Domain")]
 [assembly: System.Reflection.AssemblyTitleAttribute("ShopVision50.Domain")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

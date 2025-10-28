@@ -85,7 +85,11 @@
   },
   {
     "ContainingType": "ShopVision50.API.Controllers.UsersController",
+<<<<<<< Updated upstream
     "Method": "GetAllUsers",
+=======
+    "Method": "GetAll",
+>>>>>>> Stashed changes
     "RelativePath": "api/Users/getAllUsers",
     "HttpMethod": "GET",
     "IsController": true,
@@ -111,14 +115,23 @@
   },
   {
     "ContainingType": "ShopVision50.API.Controllers.UsersController",
+<<<<<<< Updated upstream
     "Method": "RegisterUser",
     "RelativePath": "api/Users/registerUser",
+=======
+    "Method": "Register",
+    "RelativePath": "api/Users/register",
+>>>>>>> Stashed changes
     "HttpMethod": "POST",
     "IsController": true,
     "Order": 0,
     "Parameters": [
       {
+<<<<<<< Updated upstream
         "Name": "dto",
+=======
+        "Name": "dataClientDto",
+>>>>>>> Stashed changes
         "Type": "ShopVision50.API.Models.Users.DTOs.UserDto",
         "IsRequired": true
       }
@@ -127,8 +140,13 @@
   },
   {
     "ContainingType": "ShopVision50.API.Controllers.UsersController",
+<<<<<<< Updated upstream
     "Method": "UpdateUser",
     "RelativePath": "api/Users/updateUser/{id}",
+=======
+    "Method": "Update",
+    "RelativePath": "api/Users/update/{id}",
+>>>>>>> Stashed changes
     "HttpMethod": "PUT",
     "IsController": true,
     "Order": 0,

@@ -418,12 +418,6 @@ C:\Users\Tennyson\Documents\GitHub\Project_ShopVision50\BE\Project_ShopVision50\
 C:\Users\Tennyson\Documents\GitHub\Project_ShopVision50\BE\Project_ShopVision50\ShopVision50.API\obj\Debug\net8.0\ShopVision50.API.pdb
 C:\Users\Tennyson\Documents\GitHub\Project_ShopVision50\BE\Project_ShopVision50\ShopVision50.API\bin\Debug\net8.0\appsettings.Development.json
 C:\Users\Tennyson\Documents\GitHub\Project_ShopVision50\BE\Project_ShopVision50\ShopVision50.API\bin\Debug\net8.0\appsettings.json
-C:\Users\Tennyson\Documents\GitHub\Project_ShopVision50\BE\Project_ShopVision50\ShopVision50.API\bin\Debug\net8.0\publish\web.config
-C:\Users\Tennyson\Documents\GitHub\Project_ShopVision50\BE\Project_ShopVision50\ShopVision50.API\bin\Debug\net8.0\publish\appsettings.Development.json
-C:\Users\Tennyson\Documents\GitHub\Project_ShopVision50\BE\Project_ShopVision50\ShopVision50.API\bin\Debug\net8.0\publish\appsettings.json
-C:\Users\Tennyson\Documents\GitHub\Project_ShopVision50\BE\Project_ShopVision50\ShopVision50.API\bin\Debug\net8.0\publish\ShopVision50.API.deps.json
-C:\Users\Tennyson\Documents\GitHub\Project_ShopVision50\BE\Project_ShopVision50\ShopVision50.API\bin\Debug\net8.0\publish\ShopVision50.API.runtimeconfig.json
-C:\Users\Tennyson\Documents\GitHub\Project_ShopVision50\BE\Project_ShopVision50\ShopVision50.API\bin\Debug\net8.0\publish\ShopVision50.API.staticwebassets.endpoints.json
 C:\Users\Tennyson\Documents\GitHub\Project_ShopVision50\BE\Project_ShopVision50\ShopVision50.API\bin\Debug\net8.0\ShopVision50.API.staticwebassets.endpoints.json
 C:\Users\Tennyson\Documents\GitHub\Project_ShopVision50\BE\Project_ShopVision50\ShopVision50.API\bin\Debug\net8.0\ShopVision50.API.exe
 C:\Users\Tennyson\Documents\GitHub\Project_ShopVision50\BE\Project_ShopVision50\ShopVision50.API\bin\Debug\net8.0\ShopVision50.API.deps.json

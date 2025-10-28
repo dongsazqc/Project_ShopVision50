@@ -1,12 +1,17 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Shop_Db.Models;
 using ShopVision50.API.Models.Users.DTOs;
+<<<<<<< Updated upstream
 using ShopVision50.Infrastructure;
+=======
+using ShopVision50.API.Repositories;
+>>>>>>> Stashed changes
 
 namespace ShopVision50.API.Services.UserService_FD
 {
     public class UserService : IUserService
     {
+<<<<<<< Updated upstream
         private readonly AppDbContext _db;
         public UserService(AppDbContext db) => _db = db;
 
@@ -129,10 +134,117 @@ namespace ShopVision50.API.Services.UserService_FD
             await _db.SaveChangesAsync();
 
             return ServiceResult<UserDto>.Ok(ToDto(entity), "Đăng ký thành công");
+=======
+        private readonly IUserRepository _repo;
+        public UserService(IUserRepository repo) => _repo = repo;
+
+        private static UserDto ToDto(User u) => new UserDto
+        {
+            UserId = u.UserId,
+            FullName = u.FullName,
+            Email = u.Email,
+            Password = string.Empty,
+            Phone = u.Phone,
+            DefaultAddress = u.DefaultAddress,
+            JoinDate = u.JoinDate,
+            Status = u.Status,
+            RoleId = u.RoleId
+        };
+
+        public async Task<ServiceResult<List<UserDto>>> GetAllUsersAsyncSer()
+        {
+            var list = await _repo.GetAllAsync();
+            var data = list.Select(ToDto).ToList();
+            return ServiceResult<List<UserDto>>.Ok(data);
+        }
+
+        public async Task<ServiceResult<object>> GetUserByIdAsync(int id)
+        {
+            var u = await _repo.GetByIdAsync(id);
+            if (u == null) return ServiceResult<object>.Fail("Không tìm thấy user");
+
+            var shaped = new
+            {
+                userId = u.UserId,
+                fullName = u.FullName,
+                email = u.Email,
+                phone = u.Phone,
+                status = u.Status,
+                joinDate = u.JoinDate,
+                defaultAddress = u.DefaultAddress,
+
+                orders = u.Orders?.Select(o => new
+                {
+                    orderId = o.OrderId,
+                    total = o.TotalAmount,     
+                    createdDate = o.OrderDate
+                }).ToList(),
+
+                addresses = u.Addresses?.Select(a => new
+                {
+                    addressId = a.AddressId,
+                    city = a.AddressDetail,  
+                    isDefault = a.IsDefault
+                }).ToList(),
+
+                carts = u.Carts?
+                    .SelectMany(c => c.CartItems.Select(ci => new
+                    {
+                        cartId = c.CartId,
+                        productId = ci.ProductVariantId,
+                        quantity = ci.Quantity
+                    }))
+                    .ToList(),
+
+                userRoles = u.UserRoles?.Select(ur => new
+                {
+                    role = new
+                    {
+                        roleId = ur.Role?.RoleId ?? 0,
+                        roleName = ur.Role?.RoleName
+                    }
+                }).ToList()
+            };
+
+            return ServiceResult<object>.Ok(shaped);
+        }
+
+        public async Task<ServiceResult<string>> RegisterUserAsync(UserDto dto)
+        {
+            try
+            {
+                var existed = await _repo.GetByEmailAsync(dto.Email);
+                if (existed != null)
+                    return ServiceResult<string>.Fail("Email đã tồn tại");
+
+                var newUser = new User
+                {
+                    FullName = dto.FullName,
+                    Email = dto.Email,
+                    Password = BCrypt.Net.BCrypt.HashPassword(dto.Password),
+                    Phone = dto.Phone,
+                    DefaultAddress = dto.DefaultAddress,
+                    JoinDate = dto.JoinDate == default ? DateTime.UtcNow : dto.JoinDate,
+                    Status = dto.Status,
+                    RoleId = dto.RoleId
+                };
+
+                var added = await _repo.AddAsync(newUser);
+                if (added != null)
+                    return ServiceResult<string>.Ok("Người dùng đã được thêm thành công");
+
+                return ServiceResult<string>.Fail("Thêm người dùng thất bại");
+            }
+            catch (Exception ex)
+            {
+                return ServiceResult<string>.Fail("Có lỗi xảy ra: " + ex.Message);
+            }
+>>>>>>> Stashed changes
         }
 
         public async Task<ServiceResult<UserDto>> UpdateUserAsync(int id, UserDto dto)
         {
+<<<<<<< Updated upstream
             var entity = await _db.Users.FindAsync(id);
             if (entity == null) return ServiceResult<UserDto>.Fail("User không tồn tại.");
 
@@ -143,10 +255,28 @@ namespace ShopVision50.API.Services.UserService_FD
             await _db.SaveChangesAsync();
 
             return ServiceResult<UserDto>.Ok(ToDto(entity), "Cập nhật thành công");
+=======
+            var u = await _repo.GetByIdAsync(id);
+            if (u == null) return ServiceResult<UserDto>.Fail("User không tồn tại");
+
+            u.FullName = dto.FullName;
+            u.Email = dto.Email;
+            u.Phone = dto.Phone;
+            u.DefaultAddress = dto.DefaultAddress;
+            u.Status = dto.Status;
+            u.RoleId = dto.RoleId;
+
+            if (!string.IsNullOrWhiteSpace(dto.Password))
+                u.Password = BCrypt.Net.BCrypt.HashPassword(dto.Password);
+
+            var updated = await _repo.UpdateAsync(u);
+            return ServiceResult<UserDto>.Ok(ToDto(updated), "Cập nhật thành công");
+>>>>>>> Stashed changes
         }
 
         public async Task<ServiceResult<bool>> DeleteUserAsync(int id)
         {
+<<<<<<< Updated upstream
             var entity = await _db.Users.FindAsync(id);
             if (entity == null) return ServiceResult<bool>.Fail("User không tồn tại.");
 
@@ -154,6 +284,15 @@ namespace ShopVision50.API.Services.UserService_FD
             await _db.SaveChangesAsync();
 
             return ServiceResult<bool>.Ok(true, "Xóa thành công");
+=======
+            var u = await _repo.GetByIdAsync(id);
+            if (u == null) return ServiceResult<bool>.Fail("User không tồn tại");
+
+            var ok = await _repo.DeleteAsync(u);
+            return ok
+                ? ServiceResult<bool>.Ok(true, "Xóa thành công")
+                : ServiceResult<bool>.Fail("Xóa thất bại");
+>>>>>>> Stashed changes
         }
     }
 }
