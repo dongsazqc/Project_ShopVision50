@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Shop_Db.Models;
 using ShopVision50.API.Models.Users.DTOs;
 using ShopVision50.API.Services.ProductsService_FD;
 
@@ -17,18 +18,18 @@ namespace ShopVision50.API.Controllers
 
 
 
-        [HttpPost("getProductsByName")]
-        public async Task<IActionResult> GetProductsByName([FromBody] ProductDto request)
+        [HttpGet("getProductsByName")]
+        public async Task<IActionResult> GetProductsByName([FromQuery] string productName)
         {
-            if (string.IsNullOrEmpty(request.Name))
-                return BadRequest("Tên sản phẩm không được để trống.");
-
-            var products = await _productsService.GetProductByNameAsync(request.Name);
-            return Ok(products);
+            var products = await _productsService.GetProductByNameAsync(productName);
+            if (products.Success)
+                return Ok(products.Data);
+            return BadRequest(products.Message);
         }
 
+
         [HttpPost("addProduct")]
-        public async Task<IActionResult> AddProduct([FromBody] ProductDto request)
+        public async Task<IActionResult> AddProduct([FromBody] Product request)
         {
             if (string.IsNullOrEmpty(request.Name))
                 return BadRequest("Tên sản phẩm không được để trống.");
@@ -46,8 +47,10 @@ namespace ShopVision50.API.Controllers
             var products = await _productsService.GetAllProductsAsync();
             return Ok(products);
         }
+
+
         [HttpGet("ProductDetails/{productsDetailsId}")]
-        public async Task<IActionResult> GetProductDetails([FromQuery] int productsDetailsId)
+        public async Task<IActionResult> GetProductDetails([FromRoute] int productsDetailsId)
         {
             var result = await _productsService.GetProductDetails(productsDetailsId);
             if (result.Success)
@@ -58,7 +61,7 @@ namespace ShopVision50.API.Controllers
             {
                 return BadRequest(result.Message);
             }
-
         }
+
     }
 }
