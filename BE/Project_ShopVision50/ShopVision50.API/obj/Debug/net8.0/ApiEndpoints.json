@@ -19,7 +19,7 @@
     "Parameters": [
       {
         "Name": "dto",
-        "Type": "ShopVision50.API.Models.Users.DTOs.RegisterDto",
+        "Type": "ShopVision50.API.Models.Users.DTOs.UserDto",
         "IsRequired": true
       }
     ],
@@ -132,6 +132,22 @@
   },
   {
     "ContainingType": "ShopVision50.API.Controllers.UsersController",
+    "Method": "Register",
+    "RelativePath": "api/Users/register",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "dto",
+        "Type": "ShopVision50.API.Models.Users.DTOs.UserDto",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "ShopVision50.API.Controllers.UsersController",
     "Method": "Update",
     "RelativePath": "api/Users/update/{id}",
     "HttpMethod": "PUT",
@@ -145,7 +161,7 @@
       },
       {
         "Name": "dto",
-        "Type": "ShopVision50.API.Models.Users.DTOs.UserUpdateDto",
+        "Type": "ShopVision50.API.Models.Users.DTOs.UserDto",
         "IsRequired": true
       }
     ],

@@ -1,22 +1,22 @@
 ﻿using ShopVision50.API.Models.Users.DTOs;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace ShopVision50.API.Services.UserService_FD
 {
     public interface IUserService
     {
-        // Lấy danh sách user (ẩn password, không include quan hệ)
-        Task<ServiceResult<List<UserDto>>> GetAllUsersAsyncSer();
+        // GET ALL
+        Task<ServiceResult<List<object>>> GetAllUsersAsyncSer();
 
-        // Lấy chi tiết user (include đầy đủ quan hệ, JSON shape đúng format bạn yêu cầu)
+        // GET BY ID
         Task<ServiceResult<object>> GetUserByIdAsync(int id);
 
-        // Đăng ký user (dùng chung cho Auth + Users)
-        Task<ServiceResult<string>>RegisterUserAsync(UserDto dto);
+        // REGISTER
+        Task<ServiceResult<string>> RegisterUserAsync(UserDto dto);
 
-        // Cập nhật user (ẩn password khi trả về)
+        // UPDATE/DELETE
         Task<ServiceResult<UserDto>> UpdateUserAsync(int id, UserDto dto);
-
-        // Xóa user
         Task<ServiceResult<bool>> DeleteUserAsync(int id);
     }
 }
