@@ -1,4 +1,5 @@
-﻿using ShopVision50.API.Models.Users.DTOs;
+﻿using Shop_Db.Models;
+using ShopVision50.API.Models.Users.DTOs;
 
 namespace ShopVision50.API.Services.ProductsService_FD
 {
@@ -9,7 +10,7 @@ namespace ShopVision50.API.Services.ProductsService_FD
         Task<List<ProductDto>> GetProductByNameAsync(string productName);
         Task<bool> AddProductAsync(ProductDto productDto);
         Task<List<ProductDto>> GetAllProductsAsync();
-        Task<ServiceResult<string>> GetProductDetails(int productsDetailsId);
+        Task<ServiceResult<Product>> GetProductDetails(int productsDetailsId);
     }
 
 }

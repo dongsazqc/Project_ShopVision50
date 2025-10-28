@@ -30,6 +30,13 @@ builder.Services.AddScoped<IProductsService, ProductsService>();
 
 
 
+builder.Services.AddControllers()
+    .AddJsonOptions(options =>
+    {
+        options.JsonSerializerOptions.ReferenceHandler = System.Text.Json.Serialization.ReferenceHandler.Preserve;
+        options.JsonSerializerOptions.MaxDepth = 64; 
+    });
+
 // Controllers
 builder.Services.AddControllers();
 

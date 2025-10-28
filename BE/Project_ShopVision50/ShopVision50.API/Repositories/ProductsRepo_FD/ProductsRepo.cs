@@ -55,14 +55,19 @@ namespace ShopVision50.API.Repositories.ProductsRepo_FD
         }
 
 
-        public async Task<ProductVariant> GetProductDetailAsync(int productVariantId)
+        public async Task<Product?> GetProductDetailAsync(int productId)
         {
-            return await _context.ProductVariants
-                            .Include(pv => pv.Product)
-                            .Include(pv => pv.Size)
-                            .Include(pv => pv.Color)
-                            .FirstOrDefaultAsync(pv => pv.ProductVariantId == productVariantId);
+            return await _context.Products
+                .Include(p => p.Material)
+                .Include(p => p.Style)
+                .Include(p => p.Gender)
+                .Include(p => p.Origin)
+                .Include(p => p.Category)
+                .Include(p => p.ProductVariants)
+                .Include(p => p.ProductImages).AsSplitQuery()
+                .FirstOrDefaultAsync(p => p.ProductId == productId);
         }
+
     }
 
 

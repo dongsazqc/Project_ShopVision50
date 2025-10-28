@@ -21,7 +21,16 @@ namespace ShopVision50.API.Services.ProductsService_FD
                 {
                     Name = productDto.Name,
                     Price = productDto.Price,
-                    Description = productDto.Description
+                    Description = productDto.Description,
+                    Brand = productDto.Brand,
+                    Warranty = productDto.Warranty,
+                    CreatedDate = DateTime.Now,
+                    Status = productDto.Status,
+                    MaterialId = productDto.MaterialId,
+                    StyleId = productDto.StyleId,
+                    GenderId = productDto.GenderId,
+                    OriginId = productDto.OriginId,
+                    CategoryId = productDto.CategoryId
                 };
 
                 await _productsRepo.AddProductAsync(product);
@@ -102,19 +111,17 @@ namespace ShopVision50.API.Services.ProductsService_FD
             }
 
         }
-
-        public Task<ServiceResult<string>> GetProductDetails(int productsDetailsId)
+        public async Task<ServiceResult<Product>> GetProductDetails(int productsDetailsId)
         {
-            var productVariant =  _productsRepo.GetProductDetailAsync(productsDetailsId);
-            if(productVariant != null)
+            var productVariant = await _productsRepo.GetProductDetailAsync(productsDetailsId);
+            if (productVariant != null)
             {
-                return Task.FromResult(ServiceResult<string>.Ok("Lấy chi tiết sản phẩm thành công", productVariant.ToString()));
+                return ServiceResult<Product>.Ok(productVariant, "Lấy chi tiết sản phẩm thành công");
             }
             else
             {
-                return Task.FromResult(ServiceResult<string>.Fail("Không tìm thấy chi tiết sản phẩm"));
+                return ServiceResult<Product>.Fail("Không tìm thấy chi tiết sản phẩm");
             }
-
         }
     }
 
