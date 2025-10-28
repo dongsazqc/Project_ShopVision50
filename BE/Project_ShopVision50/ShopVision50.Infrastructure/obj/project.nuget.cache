@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "gJrR/+pn9Uw=",
+  "dgSpecHash": "7/dL3At+eMY=",
   "success": true,
-  "projectFilePath": "C:\\Users\\Saz\\OneDrive\\Desktop\\New folder\\Project_ShopVision50\\BE\\Project_ShopVision50\\ShopVision50.Infrastructure\\ShopVision50.Infrastructure.csproj",
+  "projectFilePath": "C:\\Users\\Saz\\OneDrive\\Desktop\\Api50\\Project_ShopVision50\\BE\\Project_ShopVision50\\ShopVision50.Infrastructure\\ShopVision50.Infrastructure.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\Saz\\.nuget\\packages\\bcrypt.net-next\\4.0.3\\bcrypt.net-next.4.0.3.nupkg.sha512",
     "C:\\Users\\Saz\\.nuget\\packages\\humanizer.core\\2.14.1\\humanizer.core.2.14.1.nupkg.sha512",
