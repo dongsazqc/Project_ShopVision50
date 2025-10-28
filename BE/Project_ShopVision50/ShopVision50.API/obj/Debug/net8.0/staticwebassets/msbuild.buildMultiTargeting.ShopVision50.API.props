@@ -1,0 +1,3 @@
+﻿<Project>
+  <Import Project="..\build\ShopVision50.API.props" />
+</Project>

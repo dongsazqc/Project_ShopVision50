@@ -4,6 +4,8 @@ using ShopVision50.API.Services.ProductsService_FD;
 using ShopVision50.Infrastructure;
 using ShopVision50.API.Services.UserService_FD;
 using ShopVision50.API.Repositories;
+using ShopVision50.API.Repositories.PromotionRepo_FD;
+using ShopVision50.API.Services.PromotionService_FD;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -34,7 +36,8 @@ builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IProductsRepo, ProductsRepo>();
 builder.Services.AddScoped<IProductsService, ProductsService>();
 
-
+builder.Services.AddScoped<IPromotionRepository, PromotionRepository>();
+builder.Services.AddScoped<IPromotionService, PromotionService>();
 
 // Controllers
 builder.Services.AddControllers();

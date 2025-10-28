@@ -26,6 +26,69 @@
     "ReturnTypes": []
   },
   {
+    "ContainingType": "ShopVision50.API.Controllers.KhuyenMaiController",
+    "Method": "Create",
+    "RelativePath": "api/KhuyenMai/CreatePromotion",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "dto",
+        "Type": "ShopVision50.API.Models.Users.DTOs.PromotionDto",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "ShopVision50.API.Controllers.KhuyenMaiController",
+    "Method": "GetAll",
+    "RelativePath": "api/KhuyenMai/GetAllPromotions",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "ShopVision50.API.Controllers.KhuyenMaiController",
+    "Method": "GetById",
+    "RelativePath": "api/KhuyenMai/GetPromotionById/{id}",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "ShopVision50.API.Controllers.KhuyenMaiController",
+    "Method": "Update",
+    "RelativePath": "api/KhuyenMai/UpdatePromotion/{id}",
+    "HttpMethod": "PUT",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Int32",
+        "IsRequired": true
+      },
+      {
+        "Name": "dto",
+        "Type": "ShopVision50.API.Models.Users.DTOs.PromotionDto",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
     "ContainingType": "ShopVision50.API.Controllers.ProductsController",
     "Method": "AddProduct",
     "RelativePath": "api/Products/addProduct",
