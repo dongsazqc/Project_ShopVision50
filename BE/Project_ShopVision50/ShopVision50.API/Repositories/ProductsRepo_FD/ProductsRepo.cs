@@ -37,7 +37,7 @@ namespace ShopVision50.API.Repositories.ProductsRepo_FD
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"Lỗi API của GetProductByNameAsync: {ex.Message}");  
+                Console.WriteLine($"Lỗi API của GetProductByNameAsync: {ex.Message}");
                 return new List<Product>(); // Tránh null reference
             }
         }
@@ -54,26 +54,16 @@ namespace ShopVision50.API.Repositories.ProductsRepo_FD
             }
         }
 
-        public async Task<Product?> GetProductDetailAsync(int productId)
+
+        public async Task<ProductVariant> GetProductDetailAsync(int productVariantId)
         {
-            var product = await _context.Products                      //  Lấy dữ liệu từ bảng Products
-                .Include(p => p.Category)                              //  Join bảng Category (danh mục)
-                .Include(p => p.Material)                              //  Join bảng Material (chất liệu)
-                .Include(p => p.Style)                                 //  Join bảng Style (kiểu dáng)
-                .Include(p => p.Origin)                                //  Join bảng Origin (xuất xứ)
-                .Include(p => p.Gender)                                //  Join bảng Gender (giới tính)
-                .Include(p => p.ProductImages)                         //  Join bảng ProductImages (ảnh sản phẩm)
-                .Include(p => p.ProductVariants)                       //  Join bảng ProductVariants (các biến thể)
-                    .ThenInclude(v => v.Color)                         //  Join tiếp bảng Color của từng biến thể
-                .Include(p => p.ProductVariants)                       //  Join lại ProductVariants
-                    .ThenInclude(v => v.Size)                          //  Join tiếp bảng Size của từng biến thể
-                .FirstOrDefaultAsync(p => p.ProductId == productId);   //  Lấy sản phẩm đầu tiên có ProductId khớp
-
-            return product;                                            // 🔁 Trả về Product entity (nếu không có => null)
+            return await _context.ProductVariants
+                            .Include(pv => pv.Product)
+                            .Include(pv => pv.Size)
+                            .Include(pv => pv.Color)
+                            .FirstOrDefaultAsync(pv => pv.ProductVariantId == productVariantId);
         }
-
     }
+
+
 }
-    
-
-

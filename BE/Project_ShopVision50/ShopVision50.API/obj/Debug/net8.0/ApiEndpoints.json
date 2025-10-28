@@ -68,6 +68,22 @@
     "ReturnTypes": []
   },
   {
+    "ContainingType": "ShopVision50.API.Controllers.ProductsController",
+    "Method": "GetProductDetails",
+    "RelativePath": "api/Products/ProductDetails",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "productsDetailsId",
+        "Type": "System.Int32",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
     "ContainingType": "ShopVision50.API.Controllers.UsersController",
     "Method": "Delete",
     "RelativePath": "api/Users/delete/{id}",

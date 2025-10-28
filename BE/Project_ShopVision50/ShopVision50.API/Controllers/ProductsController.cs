@@ -45,10 +45,19 @@ namespace ShopVision50.API.Controllers
         {
             var products = await _productsService.GetAllProductsAsync();
             return Ok(products);
-
-
-
-
+        }
+        [HttpGet("ProductDetails/{productsDetailsId}")]
+        public async Task<IActionResult> GetProductDetails([FromQuery] int productsDetailsId)
+        {
+            var result = await _productsService.GetProductDetails(productsDetailsId);
+            if (result.Success)
+            {
+                return Ok(result.Data);
+            }
+            else
+            {
+                return BadRequest(result.Message);
+            }
 
         }
     }
