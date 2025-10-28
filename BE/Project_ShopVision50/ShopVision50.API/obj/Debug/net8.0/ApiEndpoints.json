@@ -70,7 +70,7 @@
   {
     "ContainingType": "ShopVision50.API.Controllers.ProductsController",
     "Method": "GetProductDetails",
-    "RelativePath": "api/Products/ProductDetails",
+    "RelativePath": "api/Products/ProductDetails/{productsDetailsId}",
     "HttpMethod": "GET",
     "IsController": true,
     "Order": 0,
@@ -79,6 +79,11 @@
         "Name": "productsDetailsId",
         "Type": "System.Int32",
         "IsRequired": false
+      },
+      {
+        "Name": "productsDetailsId",
+        "Type": "",
+        "IsRequired": true
       }
     ],
     "ReturnTypes": []

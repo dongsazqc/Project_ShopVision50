@@ -1,97 +1,76 @@
-﻿// Services/UserService_FD/UserService.cs
-using BCrypt.Net;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using Shop_Db.Models;
 using ShopVision50.API.Models.Users.DTOs;
+using ShopVision50.API.Repositories;
 using ShopVision50.Infrastructure;
+using System.Text;
 
 namespace ShopVision50.API.Services.UserService_FD
 {
     public class UserService : IUserService
     {
-        private readonly AppDbContext _db;
-        public UserService(AppDbContext db) { _db = db; }
-
-        #region AuthController methods
-        public async Task<ServiceResult<UserReadDto>> RegisterUserAsync(RegisterDto dto)
+        private readonly IUserRepository _repo;
+        public UserService(IUserRepository repo)
         {
-            if (string.IsNullOrWhiteSpace(dto.Email) || string.IsNullOrWhiteSpace(dto.Password))
-                return ServiceResult<UserReadDto>.Fail("Email và Password là bắt buộc.");
+            _repo = repo;
+        }
 
-            var email = dto.Email.Trim().ToLower();
-            var existed = await _db.Users.AnyAsync(u => u.Email.ToLower() == email);
-            if (existed) return ServiceResult<UserReadDto>.Fail("Email đã tồn tại.");
+        public Task<ServiceResult<bool>> DeleteUserAsync(int id)
+        {
+            throw new NotImplementedException();
+        }
 
-            var user = new User
+        public Task<ServiceResult<List<UserDto>>> GetAllUsersAsyncSer()
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<ServiceResult<object>> GetUserByIdAsync(int id)
+        {
+            throw new NotImplementedException();
+        }
+
+            public async Task<ServiceResult<string>> RegisterUserAsync(UserDto dto)
             {
-                FullName = dto.FullName?.Trim() ?? string.Empty,
-                Email = email,
-                Password = BCrypt.Net.BCrypt.HashPassword(dto.Password),
-                Phone = dto.Phone,
-                DefaultAddress = dto.DefaultAddress,
-                JoinDate = DateTime.UtcNow,
-                Status = true,
-                RoleId = null
-            };
+                try
+                {
+                    // Kiểm tra email đã tồn tại chưa
+                    var checkMail = await _repo.GetByEmailAsync(dto.Email);
+                    if (checkMail != null)
+                    {
+                        return ServiceResult<string>.Fail("Email đã tồn tại");
+                    }
 
-            _db.Users.Add(user);
-            await _db.SaveChangesAsync();
+                    var newUser = new User()
+                    {
+                        FullName = dto.FullName,
+                        Email = dto.Email,
+                        Password = BCrypt.Net.BCrypt.HashPassword(dto.Password),
+                        Phone = dto.Phone,
+                        DefaultAddress = dto.DefaultAddress,
+                        JoinDate = dto.JoinDate,
+                        Status = dto.Status,
+                        RoleId = dto.RoleId,
+                    };
 
-            return ServiceResult<UserReadDto>.Ok(MapToRead(user), "Đăng ký thành công.");
-        }
+                    var addedUser = await _repo.AddAsync(newUser);
 
-        public async Task<IEnumerable<UserReadDto>> GetAllUsersAsyncSer()
+                    // Nếu AddAsync thành công và trả về user, coi như thành công
+                    if (addedUser != null)
+                        return ServiceResult<string>.Ok("Người dùng đã được thêm thành công");
+
+                    return ServiceResult<string>.Fail("Thêm người dùng thất bại");
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine(ex.Message);
+                    return ServiceResult<string>.Fail("Có lỗi xảy ra: " + ex.Message);
+                }
+            }
+
+        public Task<ServiceResult<UserDto>> UpdateUserAsync(int id, UserDto dto)
         {
-            return await _db.Users
-                .AsNoTracking()
-                .Select(u => MapToRead(u))
-                .ToListAsync();
+            throw new NotImplementedException();
         }
-        #endregion
-
-        #region Users API methods
-        public async Task<ServiceResult<UserReadDto>> GetUserByIdAsync(int id)
-        {
-            var user = await _db.Users.FindAsync(id);
-            if (user == null) return ServiceResult<UserReadDto>.Fail("Không tìm thấy user.");
-            return ServiceResult<UserReadDto>.Ok(MapToRead(user));
-        }
-
-        public async Task<ServiceResult<UserReadDto>> UpdateUserAsync(int id, UserUpdateDto dto)
-        {
-            var user = await _db.Users.FindAsync(id);
-            if (user == null) return ServiceResult<UserReadDto>.Fail("User không tồn tại.");
-
-            user.FullName = dto.FullName?.Trim() ?? user.FullName;
-            user.Phone = dto.Phone;
-            user.DefaultAddress = dto.DefaultAddress;
-            user.Status = dto.Status;
-            user.RoleId = dto.RoleId;
-
-            await _db.SaveChangesAsync();
-            return ServiceResult<UserReadDto>.Ok(MapToRead(user), "Cập nhật thành công.");
-        }
-
-        public async Task<ServiceResult<bool>> DeleteUserAsync(int id)
-        {
-            var user = await _db.Users.FindAsync(id);
-            if (user == null) return ServiceResult<bool>.Fail("Không tồn tại user để xóa.");
-            _db.Users.Remove(user);
-            await _db.SaveChangesAsync();
-            return ServiceResult<bool>.Ok(true, "Đã xóa user.");
-        }
-        #endregion
-
-        private static UserReadDto MapToRead(User u) => new()
-        {
-            UserId = u.UserId,
-            FullName = u.FullName,
-            Email = u.Email,
-            Phone = u.Phone,
-            Status = u.Status,
-            JoinDate = u.JoinDate,
-            RoleId = u.RoleId,
-            DefaultAddress = u.DefaultAddress
-        };
     }
 }

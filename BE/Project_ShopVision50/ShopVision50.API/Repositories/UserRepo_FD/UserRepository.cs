@@ -1,45 +1,37 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Shop_Db.Models;
 using ShopVision50.Infrastructure;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 
-public class UserRepository : IUserRepository
+namespace ShopVision50.API.Repositories
 {
-    private readonly AppDbContext _context;
-
-    public UserRepository(AppDbContext context)
+    public class UserRepository : IUserRepository
     {
-        _context = context;
-    }
+        private readonly AppDbContext _db;
+        public UserRepository(AppDbContext db) => _db = db;
 
-    public async Task<IEnumerable<User>> GetAllAsync()
-    {
-        return await _context.Users.ToListAsync();
-    }
 
-    public async Task<User?> GetByIdAsync(int id)
-    {
-        return await _context.Users.FindAsync(id);
-    }
+        public async Task<User> AddAsync(User user)
+        {
+            await _db.Users.AddAsync(user);
+            await _db.SaveChangesAsync();
+            return user;
+        }
+        public async Task<List<User>> GetAllAsync()
+            => await _db.Users.ToListAsync();
 
-    public async Task AddAsync(User user)
-    {
-        await _context.Users.AddAsync(user);
-    }
+        public Task<User?> GetByEmailAsync(string email)
+        {
 
-    public async Task UpdateAsync(User user)
-    {
-        _context.Users.Update(user);
-    }
+            return _db.Users.FirstOrDefaultAsync(u => u.Email == email);
+        }
 
-    public async Task DeleteAsync(int id)
-    {
-        var user = await GetByIdAsync(id);
-        if (user != null)
-            _context.Users.Remove(user);
-    }
+        public Task<User?> GetByIdAsync(int id)
+        {
+            throw new NotImplementedException();
+        }
 
-    public async Task<bool> SaveChangesAsync()
-    {
-        return await _context.SaveChangesAsync() > 0;
     }
 }

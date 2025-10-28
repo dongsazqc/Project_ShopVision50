@@ -3,6 +3,7 @@ using ShopVision50.API.Repositories.ProductsRepo_FD;
 using ShopVision50.API.Services.ProductsService_FD;
 using ShopVision50.Infrastructure;
 using ShopVision50.API.Services.UserService_FD;
+using ShopVision50.API.Repositories;
 
 var builder = WebApplication.CreateBuilder(args);
 

@@ -122,7 +122,7 @@
         }
       }
     },
-    "/api/Products/ProductDetails": {
+    "/api/Products/ProductDetails/{productsDetailsId}": {
       "get": {
         "tags": [
           "Products"
@@ -134,6 +134,14 @@
             "schema": {
               "type": "integer",
               "format": "int32"
+            }
+          },
+          {
+            "name": "productsDetailsId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
             }
           }
         ],

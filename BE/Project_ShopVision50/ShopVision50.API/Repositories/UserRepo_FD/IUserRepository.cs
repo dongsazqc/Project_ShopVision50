@@ -1,11 +1,14 @@
 ﻿using Shop_Db.Models;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
-public interface IUserRepository
+namespace ShopVision50.API.Repositories
 {
-    Task<IEnumerable<User>> GetAllAsync();
-    Task<User?> GetByIdAsync(int id);
-    Task AddAsync(User user);
-    Task UpdateAsync(User user);
-    Task DeleteAsync(int id);
-    Task<bool> SaveChangesAsync();
+    public interface IUserRepository
+    {
+        Task<List<User>> GetAllAsync();
+        Task<User?> GetByIdAsync(int id);
+        Task<User?> GetByEmailAsync(string email);
+        Task<User> AddAsync(User user);
+    }
 }
