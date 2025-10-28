@@ -1,45 +1,61 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Shop_Db.Models;
 using ShopVision50.Infrastructure;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 
-public class UserRepository : IUserRepository
+namespace ShopVision50.API.Repositories
 {
-    private readonly AppDbContext _context;
-
-    public UserRepository(AppDbContext context)
+    public class UserRepository : IUserRepository
     {
-        _context = context;
-    }
+        private readonly AppDbContext _db;
+        public UserRepository(AppDbContext db) => _db = db;
 
-    public async Task<IEnumerable<User>> GetAllAsync()
-    {
-        return await _context.Users.ToListAsync();
-    }
+        public Task<List<User>> GetAllAsync() =>
+            _db.Users.AsNoTracking().ToListAsync();
 
-    public async Task<User?> GetByIdAsync(int id)
-    {
-        return await _context.Users.FindAsync(id);
-    }
+        public Task<List<User>> GetAllWithDetailAsync() =>
+            _db.Users
+               .Include(u => u.Orders)
+               .Include(u => u.Addresses)
+               .Include(u => u.Carts).ThenInclude(c => c.CartItems)
+               .Include(u => u.UserRoles).ThenInclude(ur => ur.Role)
+               .AsNoTracking()
+               .ToListAsync();
 
-    public async Task AddAsync(User user)
-    {
-        await _context.Users.AddAsync(user);
-    }
+        public Task<User?> GetByIdAsync(int id) =>
+            _db.Users
+               .Include(u => u.Orders)
+               .Include(u => u.Addresses)
+               .Include(u => u.Carts).ThenInclude(c => c.CartItems)
+               .Include(u => u.UserRoles).ThenInclude(ur => ur.Role)
+               .FirstOrDefaultAsync(u => u.UserId == id);
 
-    public async Task UpdateAsync(User user)
-    {
-        _context.Users.Update(user);
-    }
+        public Task<User?> GetSimpleByIdAsync(int id) =>
+            _db.Users.FirstOrDefaultAsync(u => u.UserId == id);
 
-    public async Task DeleteAsync(int id)
-    {
-        var user = await GetByIdAsync(id);
-        if (user != null)
-            _context.Users.Remove(user);
-    }
+        public Task<User?> GetByEmailAsync(string email) =>
+            _db.Users.AsNoTracking().FirstOrDefaultAsync(u => u.Email == email);
 
-    public async Task<bool> SaveChangesAsync()
-    {
-        return await _context.SaveChangesAsync() > 0;
+        public async Task<User> AddAsync(User user)
+        {
+            await _db.Users.AddAsync(user);
+            await _db.SaveChangesAsync();
+            return user;
+        }
+
+        public async Task<User> UpdateAsync(User user)
+        {
+            _db.Users.Update(user);
+            await _db.SaveChangesAsync();
+            return user;
+        }
+
+        public async Task<bool> DeleteAsync(User user)
+        {
+            _db.Users.Remove(user);
+            return await _db.SaveChangesAsync() > 0;
+        }
     }
 }

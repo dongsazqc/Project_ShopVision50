@@ -2820,24 +2820,23 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\Saz\\.nuget\\packages\\": {},
+    "C:\\Users\\Tennyson\\.nuget\\packages\\": {},
     "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\Saz\\OneDrive\\Desktop\\Project_ShopVision50\\BE\\Project_ShopVision50\\ShopVision50.API\\ShopVision50.API.csproj",
+      "projectUniqueName": "C:\\Users\\Tennyson\\Documents\\GitHub\\Project_ShopVision50\\BE\\Project_ShopVision50\\ShopVision50.API\\ShopVision50.API.csproj",
       "projectName": "ShopVision50.API",
-      "projectPath": "C:\\Users\\Saz\\OneDrive\\Desktop\\Project_ShopVision50\\BE\\Project_ShopVision50\\ShopVision50.API\\ShopVision50.API.csproj",
-      "packagesPath": "C:\\Users\\Saz\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\Saz\\OneDrive\\Desktop\\Project_ShopVision50\\BE\\Project_ShopVision50\\ShopVision50.API\\obj\\",
+      "projectPath": "C:\\Users\\Tennyson\\Documents\\GitHub\\Project_ShopVision50\\BE\\Project_ShopVision50\\ShopVision50.API\\ShopVision50.API.csproj",
+      "packagesPath": "C:\\Users\\Tennyson\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\Tennyson\\Documents\\GitHub\\Project_ShopVision50\\BE\\Project_ShopVision50\\ShopVision50.API\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
       ],
       "configFilePaths": [
-        "C:\\Users\\Saz\\AppData\\Roaming\\NuGet\\NuGet.Config",
-        "C:\\Program Files (x86)\\NuGet\\Config\\DevExpress 18.1.config",
+        "C:\\Users\\Tennyson\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
@@ -2845,17 +2844,15 @@
         "net8.0"
       ],
       "sources": {
-        "C:\\Program Files (x86)\\DevExpress 18.1\\Components\\System\\Components\\Packages": {},
         "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
-        "C:\\Program Files\\dotnet\\library-packs": {},
         "https://api.nuget.org/v3/index.json": {}
       },
       "frameworks": {
         "net8.0": {
           "targetAlias": "net8.0",
           "projectReferences": {
-            "C:\\Users\\Saz\\OneDrive\\Desktop\\Project_ShopVision50\\BE\\Project_ShopVision50\\ShopVision50.Infrastructure\\ShopVision50.Infrastructure.csproj": {
-              "projectPath": "C:\\Users\\Saz\\OneDrive\\Desktop\\Project_ShopVision50\\BE\\Project_ShopVision50\\ShopVision50.Infrastructure\\ShopVision50.Infrastructure.csproj"
+            "C:\\Users\\Tennyson\\Documents\\GitHub\\Project_ShopVision50\\BE\\Project_ShopVision50\\ShopVision50.Infrastructure\\ShopVision50.Infrastructure.csproj": {
+              "projectPath": "C:\\Users\\Tennyson\\Documents\\GitHub\\Project_ShopVision50\\BE\\Project_ShopVision50\\ShopVision50.Infrastructure\\ShopVision50.Infrastructure.csproj"
             }
           }
         }
@@ -2920,7 +2917,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.305/PortableRuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.301/PortableRuntimeIdentifierGraph.json"
       }
     }
   }

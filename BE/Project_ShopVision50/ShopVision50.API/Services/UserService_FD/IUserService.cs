@@ -1,17 +1,22 @@
-﻿// Services/UserService_FD/IUserService.cs
-using ShopVision50.API.Models.Users.DTOs;
+﻿using ShopVision50.API.Models.Users.DTOs;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace ShopVision50.API.Services.UserService_FD
 {
     public interface IUserService
     {
-        // AuthController đang dùng
-        Task<ServiceResult<UserReadDto>> RegisterUserAsync(RegisterDto dto);
-        Task<IEnumerable<UserReadDto>> GetAllUsersAsyncSer();
+        // GET ALL
+        Task<ServiceResult<List<object>>> GetAllUsersAsyncSer();
 
-        // Users API
-        Task<ServiceResult<UserReadDto>> GetUserByIdAsync(int id);
-        Task<ServiceResult<UserReadDto>> UpdateUserAsync(int id, UserUpdateDto dto);
+        // GET BY ID
+        Task<ServiceResult<object>> GetUserByIdAsync(int id);
+
+        // REGISTER
+        Task<ServiceResult<string>> RegisterUserAsync(UserDto dto);
+
+        // UPDATE/DELETE
+        Task<ServiceResult<UserDto>> UpdateUserAsync(int id, UserDto dto);
         Task<ServiceResult<bool>> DeleteUserAsync(int id);
     }
 }

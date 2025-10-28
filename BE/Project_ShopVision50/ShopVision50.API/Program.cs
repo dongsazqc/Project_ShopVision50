@@ -3,6 +3,7 @@ using ShopVision50.API.Repositories.ProductsRepo_FD;
 using ShopVision50.API.Services.ProductsService_FD;
 using ShopVision50.Infrastructure;
 using ShopVision50.API.Services.UserService_FD;
+using ShopVision50.API.Repositories;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -19,6 +20,12 @@ builder.Services.AddDbContext<AppDbContext>(options =>
         builder.Configuration.GetConnectionString("DefaultConnection"),
         ServerVersion.AutoDetect(builder.Configuration.GetConnectionString("DefaultConnection"))
     ));
+
+builder.Services.Configure<Microsoft.AspNetCore.Mvc.ApiBehaviorOptions>(o =>
+{
+    o.SuppressModelStateInvalidFilter = true;
+});
+
 // Add Services & Repositories
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IUserRepository, UserRepository>();

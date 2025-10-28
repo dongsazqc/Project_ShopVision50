@@ -15,7 +15,7 @@ namespace ShopVision50.API.Controllers
         }
 
         [HttpPost("registerLogin")]   // <- chú ý là POST
-        public async Task<IActionResult> RegisterUserApi([FromBody] RegisterDto dto)
+        public async Task<IActionResult> RegisterUserApi([FromBody] UserDto dto)
         {
             var result = await _userService.RegisterUserAsync(dto);
             if (!result.Success) return BadRequest(result.Message);

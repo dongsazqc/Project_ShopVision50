@@ -9,6 +9,7 @@ namespace ShopVision50.API.Services.ProductsService_FD
         Task<List<ProductDto>> GetProductByNameAsync(string productName);
         Task<bool> AddProductAsync(ProductDto productDto);
         Task<List<ProductDto>> GetAllProductsAsync();
+        Task<ServiceResult<string>> GetProductDetails(int productsDetailsId);
     }
 
 }

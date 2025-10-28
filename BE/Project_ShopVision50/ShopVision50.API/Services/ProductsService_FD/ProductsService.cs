@@ -102,6 +102,20 @@ namespace ShopVision50.API.Services.ProductsService_FD
             }
 
         }
+
+        public Task<ServiceResult<string>> GetProductDetails(int productsDetailsId)
+        {
+            var productVariant =  _productsRepo.GetProductDetailAsync(productsDetailsId);
+            if(productVariant != null)
+            {
+                return Task.FromResult(ServiceResult<string>.Ok("Lấy chi tiết sản phẩm thành công", productVariant.ToString()));
+            }
+            else
+            {
+                return Task.FromResult(ServiceResult<string>.Fail("Không tìm thấy chi tiết sản phẩm"));
+            }
+
+        }
     }
 
 }
