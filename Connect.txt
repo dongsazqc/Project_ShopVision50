@@ -15,3 +15,6 @@ Pass: Group50@
       "DefaultConnection": "Server=160.250.5.26;Port=3306;Database=Api50Group;User=Group50;Password=Group50@MySql;"
 
 ------------------------------------------------------------
+"ConnectionStrings": {
+    "DefaultConnection": "server=localhost;database=api50group_local;user=root;password=123456"
+}

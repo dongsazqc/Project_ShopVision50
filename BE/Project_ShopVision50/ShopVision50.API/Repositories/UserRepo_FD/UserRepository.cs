@@ -15,14 +15,7 @@ namespace ShopVision50.API.Repositories
         public Task<List<User>> GetAllAsync() =>
             _db.Users.AsNoTracking().ToListAsync();
 
-        public Task<List<User>> GetAllWithDetailAsync() =>
-            _db.Users
-               .Include(u => u.Orders)
-               .Include(u => u.Addresses)
-               .Include(u => u.Carts).ThenInclude(c => c.CartItems)
-               .Include(u => u.UserRoles).ThenInclude(ur => ur.Role)
-               .AsNoTracking()
-               .ToListAsync();
+      
 
         public Task<User?> GetByIdAsync(int id) =>
             _db.Users
@@ -32,8 +25,6 @@ namespace ShopVision50.API.Repositories
                .Include(u => u.UserRoles).ThenInclude(ur => ur.Role)
                .FirstOrDefaultAsync(u => u.UserId == id);
 
-        public Task<User?> GetSimpleByIdAsync(int id) =>
-            _db.Users.FirstOrDefaultAsync(u => u.UserId == id);
 
         public Task<User?> GetByEmailAsync(string email) =>
             _db.Users.AsNoTracking().FirstOrDefaultAsync(u => u.Email == email);

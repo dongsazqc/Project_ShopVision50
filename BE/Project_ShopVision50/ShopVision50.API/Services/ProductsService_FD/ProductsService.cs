@@ -30,11 +30,6 @@ namespace ShopVision50.API.Services.ProductsService_FD
                 return false;
             }
         }
-
-
-
-
-
         public async Task<List<ProductDto>> GetAllProductsAsync()
         {
             try
@@ -74,8 +69,8 @@ namespace ShopVision50.API.Services.ProductsService_FD
             var productVariant = await _productsRepo.GetProductDetailAsync(productsDetailsId);
             if (productVariant != null)
             {
-                return await Task.FromResult(ServiceResult<Product>.Ok(productVariant,"Thêm sản phâm th"));
-            } 
+                return await Task.FromResult(ServiceResult<Product>.Ok(productVariant, "Thêm sản phâm th"));
+            }
             else
             {
                 return await Task.FromResult(ServiceResult<Product>.Fail("Không tìm thấy chi tiết sản phẩm"));
@@ -109,8 +104,20 @@ namespace ShopVision50.API.Services.ProductsService_FD
             }
         }
 
+        public async Task<ServiceResult<string>> DeleteProductsAsync(int productId)
+        {
+            var product =await _productsRepo.GetProductDetailAsync(productId);
+            if (product != null)
+            {
+              await  _productsRepo.DeleteProductsAsync(product);
+                return await Task.FromResult(ServiceResult<string>.Ok(null, "Xóa sản phẩm thành công"));
+            }
+            else
+            {
+                return await Task.FromResult(ServiceResult<string>.Fail("Không tìm thấy sản phẩm để xóa"));
 
+            }
+        }
 
     }
-
 }
