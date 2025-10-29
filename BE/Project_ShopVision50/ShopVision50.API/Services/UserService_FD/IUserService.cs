@@ -1,4 +1,5 @@
-﻿using ShopVision50.API.Models.Users.DTOs;
+﻿using Shop_Db.Models;
+using ShopVision50.API.Models.Users.DTOs;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -7,16 +8,16 @@ namespace ShopVision50.API.Services.UserService_FD
     public interface IUserService
     {
         // GET ALL
-        Task<ServiceResult<List<object>>> GetAllUsersAsyncSer();
+        Task<ServiceResult<List<User>>> GetAllUsersAsyncSer();
 
         // GET BY ID
-        Task<ServiceResult<object>> GetUserByIdAsync(int id);
+        Task<ServiceResult<User>> GetUserByIdAsync(int id);
 
         // REGISTER
-        Task<ServiceResult<string>> RegisterUserAsync(UserDto dto);
+        Task<ServiceResult<string>> RegisterUserAsync( User user);   
 
         // UPDATE/DELETE
-        Task<ServiceResult<UserDto>> UpdateUserAsync(int id, UserDto dto);
-        Task<ServiceResult<bool>> DeleteUserAsync(int id);
+        Task<ServiceResult<User>> UpdateUserAsync(User id);
+        Task<ServiceResult<string>> DeleteUserAsync(int id);
     }
 }

@@ -72,6 +72,15 @@ namespace ShopVision50.API.Repositories.ProductsRepo_FD
                  .ToListAsync();
 
         }
+
+        public async Task DeleteProductsAsync(Product productid)
+        {
+            await Task.Run(() =>
+            {
+                _context.Products.Remove(productid);
+                _context.SaveChanges();
+            });
+        }
     }
 
 

@@ -11,6 +11,7 @@ namespace ShopVision50.API.Services.ProductsService_FD
         Task<List<ProductDto>> GetAllProductsAsync();
         Task<ServiceResult<Product>> GetProductDetails(int productsDetailsId);
         Task<ServiceResult<List<ProductDto>>> GetProductByNameAsync(string productName);
+        Task <ServiceResult<string>> DeleteProductsAsync(int productId);
 
     }
 

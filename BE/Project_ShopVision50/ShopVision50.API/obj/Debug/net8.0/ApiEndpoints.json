@@ -80,6 +80,22 @@
   },
   {
     "ContainingType": "ShopVision50.API.Controllers.ProductsController",
+    "Method": "DeleteProduct",
+    "RelativePath": "api/Products/DeleteProducts/{productId}",
+    "HttpMethod": "DELETE",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "productId",
+        "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "ShopVision50.API.Controllers.ProductsController",
     "Method": "GetAllProducts",
     "RelativePath": "api/Products/getAllProducts",
     "HttpMethod": "GET",
@@ -171,8 +187,8 @@
     "Order": 0,
     "Parameters": [
       {
-        "Name": "dto",
-        "Type": "ShopVision50.API.Models.Users.DTOs.UserDto",
+        "Name": "user",
+        "Type": "Shop_Db.Models.User",
         "IsRequired": true
       }
     ],
@@ -181,19 +197,14 @@
   {
     "ContainingType": "ShopVision50.API.Controllers.UsersController",
     "Method": "Update",
-    "RelativePath": "api/Users/update/{id}",
+    "RelativePath": "api/Users/update",
     "HttpMethod": "PUT",
     "IsController": true,
     "Order": 0,
     "Parameters": [
       {
-        "Name": "id",
-        "Type": "System.Int32",
-        "IsRequired": true
-      },
-      {
-        "Name": "dto",
-        "Type": "ShopVision50.API.Models.Users.DTOs.UserDto",
+        "Name": "user",
+        "Type": "Shop_Db.Models.User",
         "IsRequired": true
       }
     ],

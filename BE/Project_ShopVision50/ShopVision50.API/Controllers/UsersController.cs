@@ -1,6 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using ShopVision50.API.Models.Users.DTOs;
 using ShopVision50.API.Services.UserService_FD;
+using Shop_Db.Models;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace ShopVision50.API.Controllers
@@ -17,45 +19,46 @@ namespace ShopVision50.API.Controllers
         public async Task<IActionResult> GetAll()
         {
             var result = await _svc.GetAllUsersAsyncSer();
-            return Ok(result);
+            if (!result.Success) return NotFound(result.Message);
+            return Ok(result.Data);
         }
 
-        // GET api/users/getById/
+        // GET api/users/getById/{id}
         [HttpGet("getById/{id}")]
-        public async Task<IActionResult> GetById(int id)
+        public async Task<IActionResult> GetById([FromRoute] int id)
         {
             var result = await _svc.GetUserByIdAsync(id);
             if (!result.Success) return NotFound(result.Message);
-            return Ok(result);
+            return Ok(result.Data);
         }
 
-        // POST api/users/register (tạo user + quan hệ)
+        // POST api/users/register
         [HttpPost("register")]
-        [Consumes("application/json")]
-        public async Task<IActionResult> Register([FromBody] UserDto dto)
+        public async Task<IActionResult> Register([FromBody] User user)
         {
-            if (dto == null) return BadRequest("Body trống hoặc Content-Type không phải application/json.");
-            var result = await _svc.RegisterUserAsync(dto);
+            if (user == null) return BadRequest("Body trống");
+            var result = await _svc.RegisterUserAsync(user);
             if (!result.Success) return BadRequest(result.Message);
-            return Ok(result);
+            return Ok(result.Message);
         }
 
-        // PUT api/users/update/
-        [HttpPut("update/{id}")]
-        public async Task<IActionResult> Update(int id, [FromBody] UserDto dto)
+        // PUT api/users/update
+        [HttpPut("update")]
+        public async Task<IActionResult> Update([FromBody] User user)
         {
-            var result = await _svc.UpdateUserAsync(id, dto);
+            if (user == null) return BadRequest("Body trống");
+            var result = await _svc.UpdateUserAsync(user);
             if (!result.Success) return BadRequest(result.Message);
-            return Ok(result);
+            return Ok(result.Data);
         }
 
-        // DELETE api/users/delete/
+        // DELETE api/users/delete/{id}
         [HttpDelete("delete/{id}")]
-        public async Task<IActionResult> Delete(int id)
+        public async Task<IActionResult> Delete([FromRoute] int id)
         {
             var result = await _svc.DeleteUserAsync(id);
             if (!result.Success) return BadRequest(result.Message);
-            return Ok(result);
+            return Ok(result.Message);
         }
     }
 }

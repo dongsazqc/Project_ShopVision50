@@ -62,6 +62,19 @@ namespace ShopVision50.API.Controllers
                 return BadRequest(result.Message);
             }
         }
+        [HttpDelete("DeleteProducts/{productId}")]
+        public async Task<IActionResult> DeleteProduct([FromRoute] int productId)
+        {
+            var result = await _productsService.DeleteProductsAsync(productId);
 
+            if (result.Success)
+            {
+                return Ok(result.Message); // "Xóa sản phẩm thành công"
+            }
+            else
+            {
+                return NotFound(result.Message); // "Không tìm thấy sản phẩm để xóa"
+            }
+        }
     }
 }

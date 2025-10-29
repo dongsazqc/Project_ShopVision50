@@ -8,6 +8,7 @@ namespace ShopVision50.API.Repositories.ProductsRepo_FD
         Task AddProductAsync(Product product); // Hợp đồng thêm sản phẩm mới vào DB
         Task <List<Product>>GetAllProductsAsync();
         Task <Product> GetProductDetailAsync(int productId);
+        Task DeleteProductsAsync(Product productid);
     }
 
 
