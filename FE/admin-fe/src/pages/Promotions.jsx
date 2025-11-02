@@ -1,4 +1,3 @@
-// src/pages/Promotions.jsx
 import {
   Table,
   Button,
@@ -10,41 +9,32 @@ import {
   InputNumber,
   Tag,
   message,
-  Tabs,
 } from "antd";
-import {
-  PlusOutlined,
-  EditOutlined,
-  EyeOutlined,
-  GiftOutlined,
-} from "@ant-design/icons";
+import { PlusOutlined, GiftOutlined } from "@ant-design/icons";
 import dayjs from "dayjs";
 import { useEffect, useState } from "react";
 import api from "../utils/axios";
 
-const { TabPane } = Tabs;
 const { RangePicker } = DatePicker;
 
 export default function Promotions() {
   const [promotions, setPromotions] = useState([]);
   const [loading, setLoading] = useState(false);
-  const [openModal, setOpenModal] = useState(false);
-  const [editingPromo, setEditingPromo] = useState(null);
   const [form] = Form.useForm();
-  const [detailModal, setDetailModal] = useState(false);
+  const [openModal, setOpenModal] = useState(false);
   const [selectedPromo, setSelectedPromo] = useState(null);
 
-  // 📦 Lấy danh sách khuyến mãi
+  // ================= Lấy danh sách khuyến mãi =================
   const fetchPromotions = async () => {
     try {
       setLoading(true);
-      // TODO: ⚙️ API thật: GET /api/khuyenmai (include SanPham nếu cần)
-      const res = await api.get("/khuyenmai");
-      const data = (res.data || []).map((km) => ({
-        ...km,
-        trangThai: dayjs().isBefore(dayjs(km.ngayKetThuc)), // true nếu chưa hết hạn
+      const res = await api.get("/KhuyenMai/GetAllPromotions");
+      const data = res.data?.$values || res.data || [];
+      const formatted = data.map((p) => ({
+        ...p,
+        trangThai: dayjs().isBefore(dayjs(p.endDate)),
       }));
-      setPromotions(data);
+      setPromotions(formatted);
     } catch (err) {
       console.error(err);
       message.error("Không thể tải danh sách khuyến mãi");
@@ -57,123 +47,133 @@ export default function Promotions() {
     fetchPromotions();
   }, []);
 
-  // 💾 Thêm / Sửa khuyến mãi
+  // ================= Thêm / Cập nhật =================
   const handleSave = async (values) => {
     try {
       const [start, end] = values.dateRange;
-      const body = {
-        tenChuongTrinh: values.tenChuongTrinh,
-        moTa: values.moTa,
-        phanTramGiam: values.phanTramGiam,
-        ngayBatDau: start,
-        ngayKetThuc: end,
+
+      // Validate ngày bắt đầu < ngày kết thúc
+      if (start.isAfter(end)) {
+        message.warning("Ngày bắt đầu không được sau ngày kết thúc!");
+        return;
+      }
+
+      const payload = {
+        promotionId: selectedPromo?.promotionId || 0,
+        code: values.code.trim(),
+        discountType: "Percent",
+        discountValue: values.discountValue,
+        condition: values.condition,
+        scope: values.scope,
+        startDate: start.toISOString(),
+        endDate: end.toISOString(),
+        status: true,
       };
 
-      if (editingPromo) {
-        // TODO: ⚙️ API thật: PUT /api/khuyenmai/:id
-        await api.put(`/khuyenmai/${editingPromo.khuyenMaiId}`, body);
+      if (selectedPromo) {
+        await api.put(
+          `/KhuyenMai/UpdatePromotion/${selectedPromo.promotionId}`,
+          payload
+        );
         message.success("Cập nhật khuyến mãi thành công");
       } else {
-        // TODO: ⚙️ API thật: POST /api/khuyenmai
-        await api.post("/khuyenmai", body);
-        message.success("Thêm khuyến mãi thành công");
+        await api.post("/KhuyenMai/CreatePromotion", payload);
+        message.success("Tạo khuyến mãi thành công");
       }
 
       setOpenModal(false);
       form.resetFields();
+      setSelectedPromo(null);
       fetchPromotions();
     } catch (err) {
-      console.error(err);
+      console.error("Error saving promotion:", err);
       message.error("Lưu khuyến mãi thất bại");
     }
   };
 
-  // 👁️ Xem chi tiết khuyến mãi
-  const handleView = async (record) => {
+  // ================= Xem chi tiết / chỉnh sửa =================
+  const openDetailModal = async (record) => {
     try {
-      // TODO: ⚙️ API thật: GET /api/khuyenmai/:id (include SanPham)
-      const res = await api.get(`/khuyenmai/${record.khuyenMaiId}`);
-      setSelectedPromo(res.data);
-      setDetailModal(true);
+      const res = await api.get(
+        `/KhuyenMai/GetPromotionById/${record.promotionId}`
+      );
+      const promo = res.data;
+      setSelectedPromo(promo);
+      form.setFieldsValue({
+        code: promo.code,
+        discountValue: promo.discountValue,
+        condition: promo.condition,
+        scope: promo.scope,
+        dateRange: [dayjs(promo.startDate), dayjs(promo.endDate)],
+      });
+      setOpenModal(true);
     } catch (err) {
       console.error(err);
       message.error("Không thể tải chi tiết khuyến mãi");
     }
   };
 
+  // ================= Cấu hình cột =================
   const columns = [
     {
-      title: "Tên chương trình",
-      dataIndex: "tenChuongTrinh",
-      key: "tenChuongTrinh",
-      render: (text) => (
-        <Space>
-          <GiftOutlined />
+      title: "ID",
+      dataIndex: "promotionId",
+      key: "promotionId",
+      width: 80,
+      align: "center",
+    },
+    {
+      title: "Mã khuyến mãi",
+      dataIndex: "code",
+      key: "code",
+      render: (text, record) => (
+        <span
+          style={{
+            color: "#1677ff",
+            cursor: "pointer",
+            textDecoration: "none",
+          }}
+          onClick={() => openDetailModal(record)}
+        >
+          <GiftOutlined style={{ marginRight: 4 }} />
           {text}
-        </Space>
+        </span>
       ),
     },
     {
       title: "% Giảm",
-      dataIndex: "phanTramGiam",
-      key: "phanTramGiam",
+      dataIndex: "discountValue",
+      key: "discountValue",
       render: (val) => `${val}%`,
     },
     {
+      title: "Điều kiện",
+      dataIndex: "condition",
+    },
+    {
       title: "Ngày bắt đầu",
-      dataIndex: "ngayBatDau",
+      dataIndex: "startDate",
       render: (val) => dayjs(val).format("DD/MM/YYYY"),
     },
     {
       title: "Ngày kết thúc",
-      dataIndex: "ngayKetThuc",
+      dataIndex: "endDate",
       render: (val) => dayjs(val).format("DD/MM/YYYY"),
     },
     {
       title: "Trạng thái",
-      key: "trangThai",
-      render: (_, record) =>
-        dayjs().isBefore(dayjs(record.ngayKetThuc)) ? (
+      dataIndex: "status",
+      render: (val, record) =>
+        dayjs().isBefore(dayjs(record.endDate)) ? (
           <Tag color="green">Đang áp dụng</Tag>
         ) : (
           <Tag color="volcano">Hết hạn</Tag>
         ),
     },
-    {
-      title: "Thao tác",
-      key: "actions",
-      render: (_, record) => (
-        <Space>
-          <Button
-            icon={<EyeOutlined />}
-            onClick={() => handleView(record)}
-            type="default"
-          />
-          <Button
-            icon={<EditOutlined />}
-            onClick={() => {
-              setEditingPromo(record);
-              form.setFieldsValue({
-                tenChuongTrinh: record.tenChuongTrinh,
-                moTa: record.moTa,
-                phanTramGiam: record.phanTramGiam,
-                dateRange: [
-                  dayjs(record.ngayBatDau),
-                  dayjs(record.ngayKetThuc),
-                ],
-              });
-              setOpenModal(true);
-            }}
-            type="primary"
-          />
-        </Space>
-      ),
-    },
   ];
 
   return (
     <div>
-      {/* Thanh công cụ */}
       <Space
         style={{
           marginBottom: 16,
@@ -182,11 +182,11 @@ export default function Promotions() {
         }}
       >
         <Input.Search
-          placeholder="Tìm khuyến mãi..."
+          placeholder="Tìm mã khuyến mãi..."
           onSearch={(value) =>
             setPromotions((prev) =>
               prev.filter((p) =>
-                p.tenChuongTrinh.toLowerCase().includes(value.toLowerCase())
+                p.code.toLowerCase().includes(value.toLowerCase())
               )
             )
           }
@@ -196,8 +196,8 @@ export default function Promotions() {
           type="primary"
           icon={<PlusOutlined />}
           onClick={() => {
-            setEditingPromo(null);
             form.resetFields();
+            setSelectedPromo(null);
             setOpenModal(true);
           }}
         >
@@ -205,98 +205,75 @@ export default function Promotions() {
         </Button>
       </Space>
 
-      {/* Bảng khuyến mãi */}
       <Table
         dataSource={promotions}
         columns={columns}
-        rowKey="khuyenMaiId"
+        rowKey="promotionId"
         loading={loading}
         bordered
       />
 
-      {/* Modal thêm/sửa */}
+      {/* Modal chi tiết + chỉnh sửa */}
       <Modal
-        title={editingPromo ? "Chỉnh sửa khuyến mãi" : "Thêm khuyến mãi mới"}
+        title={
+          selectedPromo
+            ? "Chi tiết & chỉnh sửa khuyến mãi"
+            : "Thêm khuyến mãi mới"
+        }
         open={openModal}
-        onCancel={() => setOpenModal(false)}
+        onCancel={() => {
+          setOpenModal(false);
+          setSelectedPromo(null);
+        }}
         onOk={() => form.submit()}
         okText="Lưu"
         cancelText="Hủy"
+        width={600}
       >
         <Form layout="vertical" form={form} onFinish={handleSave}>
           <Form.Item
-            label="Tên chương trình"
-            name="tenChuongTrinh"
-            rules={[{ required: true, message: "Nhập tên chương trình" }]}
+            label="Mã khuyến mãi"
+            name="code"
+            rules={[{ required: true, message: "Nhập mã khuyến mãi" }]}
           >
-            <Input />
-          </Form.Item>
-
-          <Form.Item label="Mô tả" name="moTa">
-            <Input.TextArea rows={3} />
+            <Input disabled={!!selectedPromo} />
           </Form.Item>
 
           <Form.Item
-            label="Phần trăm giảm"
-            name="phanTramGiam"
-            rules={[{ required: true, message: "Nhập phần trăm giảm giá" }]}
+            label="Giá trị giảm (%)"
+            name="discountValue"
+            rules={[{ required: true, message: "Nhập phần trăm giảm" }]}
           >
-            <InputNumber min={1} max={100} addonAfter="%" style={{ width: "100%" }} />
+            <InputNumber
+              min={1}
+              max={100}
+              addonAfter="%"
+              style={{ width: "100%" }}
+            />
+          </Form.Item>
+
+          <Form.Item label="Điều kiện" name="condition">
+            <Input placeholder="VD: Đơn hàng từ 500000 VND" />
+          </Form.Item>
+
+          <Form.Item label="Phạm vi áp dụng" name="scope">
+            <Input placeholder="VD: Tất cả sản phẩm" />
           </Form.Item>
 
           <Form.Item
             label="Thời gian áp dụng"
             name="dateRange"
-            rules={[{ required: true, message: "Chọn thời gian khuyến mãi" }]}
+            rules={[{ required: true, message: "Chọn thời gian áp dụng" }]}
           >
-            <RangePicker format="DD/MM/YYYY" style={{ width: "100%" }} />
+            <RangePicker
+              format="DD/MM/YYYY"
+              style={{ width: "100%" }}
+              disabledDate={(current) =>
+                current && current < dayjs().startOf("day")
+              }
+            />
           </Form.Item>
         </Form>
-      </Modal>
-
-      {/* Modal chi tiết */}
-      <Modal
-        open={detailModal}
-        title="Chi tiết khuyến mãi"
-        onCancel={() => setDetailModal(false)}
-        footer={null}
-        width={800}
-      >
-        {selectedPromo && (
-          <Tabs defaultActiveKey="1">
-            <TabPane tab="Thông tin" key="1">
-              <p><b>Tên:</b> {selectedPromo.tenChuongTrinh}</p>
-              <p><b>Mô tả:</b> {selectedPromo.moTa || "Không có"}</p>
-              <p><b>Giảm giá:</b> {selectedPromo.phanTramGiam}%</p>
-              <p><b>Thời gian:</b> {dayjs(selectedPromo.ngayBatDau).format("DD/MM/YYYY")} → {dayjs(selectedPromo.ngayKetThuc).format("DD/MM/YYYY")}</p>
-              <p>
-                <b>Trạng thái:</b>{" "}
-                {dayjs().isBefore(dayjs(selectedPromo.ngayKetThuc)) ? (
-                  <Tag color="green">Đang áp dụng</Tag>
-                ) : (
-                  <Tag color="volcano">Hết hạn</Tag>
-                )}
-              </p>
-            </TabPane>
-
-            <TabPane tab="Sản phẩm áp dụng" key="2">
-              <Table
-                dataSource={selectedPromo.sanPham || []}
-                columns={[
-                  { title: "Tên sản phẩm", dataIndex: "tenSanPham" },
-                  {
-                    title: "Giá gốc",
-                    dataIndex: "giaGoc",
-                    render: (val) => `${val?.toLocaleString()} ₫`,
-                  },
-                  { title: "Danh mục", dataIndex: "tenDanhMuc" },
-                ]}
-                pagination={false}
-                rowKey="sanPhamId"
-              />
-            </TabPane>
-          </Tabs>
-        )}
       </Modal>
     </div>
   );
