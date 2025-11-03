@@ -75,8 +75,9 @@ namespace ShopVision50.API.Services.UserService_FD
             existingUser.FullName = user.FullName;
             existingUser.Email = user.Email;
             existingUser.Phone = user.Phone;
+            existingUser.DefaultAddress = user.DefaultAddress;
             existingUser.Addresses = user.Addresses;
-            existingUser.Status = user.Status;
+            existingUser.Status = user.Status;ls
             existingUser.RoleId = user.RoleId;
 
             var updatedUser = await _repo.UpdateAsync(existingUser);

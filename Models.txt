@@ -267,3 +267,28 @@ LyDoChiTiet
 BienTheId (FK)
 
 PhieuTraHangId (FK)
+
+
+
+Tiếng Việt	Tiếng Anh
+Người Dùng	User
+Vai Trò	Role
+Danh Mục	Category
+Chất Liệu	Material
+Phong Cách	Style
+Giới Tính	Gender
+Xuất Xứ	Origin
+Sản Phẩm	Product
+Biến Thể	Variant
+Kích Cỡ	Size
+Màu Sắc	Color
+Hình Ảnh	Image
+Giỏ Hàng	Cart
+Chi Tiết Giỏ Hàng	CartDetail
+Địa Chỉ Người Dùng	UserAddress
+Đơn Hàng	Order
+Chi Tiết Đơn Hàng	OrderDetail
+Khuyến Mãi	Promotion
+Thanh Toán	Payment
+Phiếu Trả Hàng	ReturnNote
+Chi Tiết Phiếu Trả	ReturnDetail

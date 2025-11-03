@@ -18,7 +18,7 @@ namespace Shop_Db.Models
         public ProductVariant ProductVariant { get; set; } = null!;
 
         public int OrderId { get; set; }
-        public Order Order { get; set; } = null!;
+        public Order Order { get; set; } = null!;   
 
         public int? PromotionId { get; set; }
         public Promotion? Promotion { get; set; }

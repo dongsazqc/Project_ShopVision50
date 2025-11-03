@@ -114,6 +114,11 @@ sudo systemctl start shopvision50api.service
 sudo systemctl status shopvision50api.service
 
 
+
+xem log service 
+sudo journalctl -u shopvision50api.service -f
+
+
 Lợi ích: tự chạy khi VPS reboot, restart khi crash.
 
 5️⃣ Kiểm tra FE gọi API
