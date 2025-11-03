@@ -6,6 +6,11 @@ using ShopVision50.API.Services.UserService_FD;
 using ShopVision50.API.Repositories;
 using ShopVision50.API.Repositories.PromotionRepo_FD;
 using ShopVision50.API.Services.PromotionService_FD;
+using ShopVision50.API.Repositories.CategoriesRepo_FD;
+using ShopVision50.API.Services.CategoriesService_FD;
+using ShopVision50.API.Repositories.OrderRepo_FD;
+using ShopVision50.API.Repositories.ProductsRepo_FD.OrderRepo;
+using ShopVision50.API.Service.OrderService_FD;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -33,12 +38,27 @@ builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 //------------------------------------------------------------------------------------------------------------------------------------------------
 
+builder.Services.AddScoped<ICategoriesReposirory, CategoriesReposirory>();
+builder.Services.AddScoped<ICategoriesService, CategoriesService>();
+
+
 builder.Services.AddScoped<IProductsRepo, ProductsRepo>();
 builder.Services.AddScoped<IProductsService, ProductsService>();
 
 builder.Services.AddScoped<IPromotionRepository, PromotionRepository>();
 builder.Services.AddScoped<IPromotionService, PromotionService>();
 
+builder.Services.AddScoped<IOrderRepository,OrderRepository>();
+builder.Services.AddScoped<IOrderService, OrderService>();
+
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowLocalhostAnyPort", policy =>
+        policy.SetIsOriginAllowed(origin => new Uri(origin).Host == "localhost")
+              .AllowAnyMethod()
+              .AllowAnyHeader()
+              .AllowCredentials());
+});
 
 
 builder.Services.AddControllers()

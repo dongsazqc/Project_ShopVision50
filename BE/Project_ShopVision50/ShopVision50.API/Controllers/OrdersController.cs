@@ -1,0 +1,67 @@
+using Microsoft.AspNetCore.Mvc;
+using Shop_Db.Models;
+using ShopVision50.API.Service.OrderService_FD;
+namespace ShopVision50.API.Controllers
+{
+
+    [ApiController]
+    [Route("api/[controller]")]
+    public class OrdersController : ControllerBase
+    {
+        private readonly IOrderService _service;
+
+        public OrdersController(IOrderService service)
+        {
+            _service = service;
+        }
+
+        [HttpGet("GetAll")]
+        public async Task<IActionResult> GetAll()
+        {
+            var orders = await _service.GetAllAsync();
+            return Ok(orders);
+        }
+
+       [HttpGet("GetById/{id}")]
+        public async Task<IActionResult> GetById(int id)
+        {
+            var order = await _service.GetByIdAsync(id);
+            if (order == null)
+                return NotFound(new { message = $"Order with ID {id} not found." });
+
+            return Ok(order);
+        }
+
+        [HttpPost("Add")]
+        public async Task<IActionResult> Create(Order order)
+        {
+            await _service.AddAsync(order);
+            return CreatedAtAction(nameof(GetById), new { id = order.OrderId }, order);
+        }
+
+        [HttpPut("Update/{id}")]
+        public async Task<IActionResult> Update(int id, Order order)
+        {
+            if (id != order.OrderId)
+                return BadRequest(new { message = "ID in URL does not match ID in order data." });
+
+            var existing = await _service.GetByIdAsync(id);
+            if (existing == null)
+                return NotFound(new { message = $"Order with ID {id} not found." });
+
+            await _service.UpdateAsync(order);
+            return Ok(new { message = "Order updated successfully." });
+        }
+
+       [HttpDelete("Delete/{id}")]
+        public async Task<IActionResult> Delete(int id)
+        {
+            var existing = await _service.GetByIdAsync(id);
+            if (existing == null)
+                return NotFound(new { message = $"Order with ID {id} not found." });
+
+            await _service.DeleteAsync(id);
+            return Ok(new { message = "Order deleted successfully." });
+        }
+    }
+}

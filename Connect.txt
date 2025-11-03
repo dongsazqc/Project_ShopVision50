@@ -4,7 +4,7 @@ HostName:160.250.5.26
 Port:3306
 UserName:Group50
 Pass: Group50@MySql
-Default Schema: Api50Group
+Default Schema: Api50Group	
 -------------------------------------------------------------
 Info Server Vps
 IP: 160.250.5.26

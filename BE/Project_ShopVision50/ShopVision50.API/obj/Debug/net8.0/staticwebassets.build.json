@@ -1,1 +1,12 @@
-{"Version":1,"Hash":"zswsrdhZ7f3hKqZeKZnfsDNxRrav2QzbLENrmjIPNUk=","Source":"ShopVision50.API","BasePath":"_content/ShopVision50.API","Mode":"Default","ManifestType":"Build","ReferencedProjectsConfiguration":[],"DiscoveryPatterns":[],"Assets":[],"Endpoints":[]}
+{
+  "Version": 1,
+  "Hash": "zswsrdhZ7f3hKqZeKZnfsDNxRrav2QzbLENrmjIPNUk=",
+  "Source": "ShopVision50.API",
+  "BasePath": "_content/ShopVision50.API",
+  "Mode": "Default",
+  "ManifestType": "Build",
+  "ReferencedProjectsConfiguration": [],
+  "DiscoveryPatterns": [],
+  "Assets": [],
+  "Endpoints": []
+}
