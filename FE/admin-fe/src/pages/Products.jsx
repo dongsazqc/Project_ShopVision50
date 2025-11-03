@@ -1,76 +1,60 @@
-// src/pages/Products.jsx
+import React, { useEffect, useState } from "react";
 import {
   Table,
   Button,
-  Space,
   Modal,
   Form,
   Input,
+  InputNumber,
   Select,
   message,
-  Tabs,
   Tag,
-  Upload,
+  Row,
+  Col,
 } from "antd";
-import {
-  PlusOutlined,
-  EditOutlined,
-  EyeOutlined,
-  UploadOutlined,
-  CheckOutlined,
-  StopOutlined,
-} from "@ant-design/icons";
-import { useEffect, useState } from "react";
+import { PlusOutlined, SaveOutlined, SearchOutlined } from "@ant-design/icons";
 import api from "../utils/axios";
 
 const { Option } = Select;
-const { TabPane } = Tabs;
 
 export default function Products() {
   const [products, setProducts] = useState([]);
   const [categories, setCategories] = useState([]);
+  const [filteredProducts, setFilteredProducts] = useState([]);
   const [loading, setLoading] = useState(false);
-  const [openModal, setOpenModal] = useState(false);
+
+  const [modalOpen, setModalOpen] = useState(false);
   const [editingProduct, setEditingProduct] = useState(null);
-  const [detailModal, setDetailModal] = useState(false);
-  const [selectedProduct, setSelectedProduct] = useState(null);
+  const [filterCategory, setFilterCategory] = useState(null);
+  const [searchName, setSearchName] = useState("");
+
   const [form] = Form.useForm();
 
-  // 📦 1️⃣ Lấy danh sách sản phẩm
+  // ================= FETCH PRODUCTS =================
   const fetchProducts = async () => {
     try {
       setLoading(true);
-      // TODO: ⚙️ API thật: GET /api/sanpham (include BienThe, DanhMuc, HinhAnh)
-      const res = await api.get("/sanpham");
-      const data = res.data || [];
-
-      // ✅ Nếu sản phẩm có tổng tồn = 0 → cập nhật trạng thái tạm trên FE
-      const updated = data.map((p) => {
-        const totalStock =
-          p.bienTheSanPham?.reduce(
-            (sum, b) => sum + (b.soLuongTon || 0),
-            0
-          ) || 0;
-        return { ...p, tongTon: totalStock, trangThai: totalStock > 0 };
-      });
-
-      setProducts(updated);
+      const res = await api.get("/Products/getAllProducts");
+      const list = res.data?.$values || res.data || [];
+      setProducts(list);
+      setFilteredProducts(list);
     } catch (err) {
-      console.error(err);
+      console.error("Lỗi tải sản phẩm:", err);
       message.error("Không thể tải danh sách sản phẩm");
     } finally {
       setLoading(false);
     }
   };
 
-  // 📋 2️⃣ Lấy danh mục
+  // ================= FETCH CATEGORIES =================
   const fetchCategories = async () => {
     try {
-      // TODO: ⚙️ API thật: GET /api/danhmuc
-      const res = await api.get("/danhmuc");
-      setCategories(res.data || []);
+      const res = await api.get("/Category/GetAll");
+      const list = res.data?.$values || res.data || [];
+      setCategories(list);
     } catch (err) {
-      console.error(err);
+      console.error("Lỗi tải danh mục:", err);
+      message.error("Không thể tải danh mục");
     }
   };
 
@@ -79,272 +63,237 @@ export default function Products() {
     fetchCategories();
   }, []);
 
-  // 💾 3️⃣ Thêm / sửa sản phẩm
-  const handleSave = async (values) => {
-    try {
-      if (editingProduct) {
-        // TODO: ⚙️ API thật: PUT /api/sanpham/:id
-        await api.put(`/sanpham/${editingProduct.sanPhamId}`, values);
-        message.success("Cập nhật sản phẩm thành công");
-      } else {
-        // TODO: ⚙️ API thật: POST /api/sanpham
-        await api.post("/sanpham", values);
-        message.success("Thêm sản phẩm thành công");
-      }
-      fetchProducts();
-      setOpenModal(false);
-      form.resetFields();
-    } catch (err) {
-      console.error(err);
-      message.error("Lưu thất bại");
-    }
-  };
-
-  // 🔄 4️⃣ Đổi trạng thái sản phẩm (ngừng bán <-> đang bán)
-  const handleToggleStatus = async (product) => {
-    try {
-      const newStatus = !product.trangThai;
-
-      // TODO: ⚙️ API thật: PUT /api/sanpham/{id}/trangthai
-      await api.put(`/sanpham/${product.sanPhamId}`, {
-        ...product,
-        trangThai: newStatus,
-      });
-
-      message.success(
-        newStatus ? "Đã mở bán sản phẩm" : "Đã ngừng bán sản phẩm"
+  // ================= FILTER BY CATEGORY =================
+  useEffect(() => {
+    if (!filterCategory) {
+      setFilteredProducts(products);
+    } else {
+      const filtered = products.filter(
+        (p) => p.categoryId === filterCategory
       );
+      setFilteredProducts(filtered);
+    }
+  }, [filterCategory, products]);
+
+  // ================= SEARCH BY NAME =================
+  const searchByName = async () => {
+    if (!searchName.trim()) {
+      fetchProducts();
+      return;
+    }
+    try {
+      setLoading(true);
+      const res = await api.get(
+        `/Products/getProductsByName/${encodeURIComponent(searchName)}`
+      );
+      const list = res.data?.$values || res.data || [];
+      setFilteredProducts(list);
+      if (list.length === 0) message.info("Không tìm thấy sản phẩm phù hợp");
+    } catch (err) {
+      console.error("Lỗi tìm sản phẩm:", err);
+      message.error("Không thể tìm sản phẩm");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  // ================= OPEN MODAL =================
+  const openAddModal = () => {
+    setEditingProduct(null);
+    form.resetFields();
+    setModalOpen(true);
+  };
+
+  const openEditModal = (record) => {
+    setEditingProduct(record);
+    form.setFieldsValue({
+      name: record.name,
+      price: record.price,
+      description: record.description,
+      brand: record.brand,
+      warranty: record.warranty,
+      status: record.status,
+      categoryId: record.categoryId,
+    });
+    setModalOpen(true);
+  };
+
+  // ================= ADD / UPDATE PRODUCT =================
+  const handleSubmit = async (values) => {
+    try {
+      const payload = {
+        Name: values.name,
+        Price: values.price,
+        Description: values.description,
+        Brand: values.brand,
+        Warranty: values.warranty,
+        Status: values.status,
+        CategoryId: values.categoryId,
+      };
+
+      if (editingProduct) {
+        await api.put(`/Products/update/${editingProduct.productId}`, payload);
+        message.success("Cập nhật sản phẩm thành công!");
+      } else {
+        await api.post("/Products/addProduct", payload);
+        message.success("Thêm sản phẩm thành công!");
+      }
+
+      setModalOpen(false);
       fetchProducts();
     } catch (err) {
-      console.error(err);
-      message.error("Cập nhật trạng thái thất bại");
+      console.error("Lỗi khi thêm/cập nhật:", err.response?.data || err.message);
+      message.error(err.response?.data || "Không thể lưu sản phẩm");
     }
   };
 
-  // 👁️ 5️⃣ Xem chi tiết sản phẩm
-  const handleView = async (record) => {
-    try {
-      // TODO: ⚙️ API thật: GET /api/sanpham/:id (include BienThe, HinhAnh)
-      const res = await api.get(`/sanpham/${record.sanPhamId}`);
-      setSelectedProduct(res.data);
-      setDetailModal(true);
-    } catch (err) {
-      console.error(err);
-      message.error("Không thể tải chi tiết sản phẩm");
-    }
-  };
-
+  // ================= TABLE COLUMNS =================
   const columns = [
-    { title: "Tên sản phẩm", dataIndex: "tenSanPham", key: "tenSanPham" },
+    { title: "ID", dataIndex: "productId", width: 60 },
     {
-      title: "Danh mục",
-      dataIndex: ["danhMuc", "tenDanhMuc"],
-      render: (_, record) => record.danhMuc?.tenDanhMuc || "—",
+      title: "Tên sản phẩm",
+      dataIndex: "name",
+      render: (text, record) => (
+        <span
+          style={{ color: "#1677ff", cursor: "pointer" }}
+          onClick={() => openEditModal(record)}
+        >
+          {text}
+        </span>
+      ),
     },
     {
-      title: "Giá gốc",
-      dataIndex: "giaGoc",
-      render: (val) => `${val?.toLocaleString()} ₫`,
+      title: "Giá",
+      dataIndex: "price",
+      render: (v) => v?.toLocaleString("vi-VN") + " ₫",
     },
-    { title: "Thương hiệu", dataIndex: "thuongHieu" },
-    {
-      title: "Tồn kho",
-      dataIndex: "tongTon",
-      render: (val) => <b>{val || 0}</b>,
-    },
+    { title: "Thương hiệu", dataIndex: "brand" },
+    { title: "Bảo hành", dataIndex: "warranty" },
     {
       title: "Trạng thái",
-      dataIndex: "trangThai",
-      render: (val, record) => {
-        const color = record.tongTon === 0 ? "volcano" : val ? "green" : "gray";
-        const text =
-          record.tongTon === 0
-            ? "Hết hàng"
-            : val
-            ? "Đang bán"
-            : "Ngừng bán";
-        return <Tag color={color}>{text}</Tag>;
-      },
+      dataIndex: "status",
+      render: (v) =>
+        v ? <Tag color="green">Còn hàng</Tag> : <Tag color="red">Hết hàng</Tag>,
     },
     {
-      title: "Thao tác",
-      key: "actions",
-      render: (_, record) => (
-        <Space>
-          <Button icon={<EyeOutlined />} onClick={() => handleView(record)} />
-          <Button
-            icon={<EditOutlined />}
-            type="primary"
-            onClick={() => {
-              setEditingProduct(record);
-              form.setFieldsValue(record);
-              setOpenModal(true);
-            }}
-          />
-          <Button
-            icon={record.trangThai ? <StopOutlined /> : <CheckOutlined />}
-            danger={record.trangThai}
-            onClick={() => handleToggleStatus(record)}
-          >
-            {record.trangThai ? "Ngừng bán" : "Mở bán"}
-          </Button>
-        </Space>
-      ),
+      title: "Danh mục",
+      dataIndex: "categoryId",
+      render: (id) => {
+        const cat = categories.find((c) => c.categoryId === id);
+        return cat ? cat.name : "—";
+      },
     },
   ];
 
+  // ================= RENDER =================
   return (
     <div>
-      {/* Thanh tìm kiếm + nút thêm */}
-      <Space
-        style={{
-          marginBottom: 16,
-          display: "flex",
-          justifyContent: "space-between",
-        }}
-      >
-        <Input.Search
-          placeholder="Tìm sản phẩm..."
-          onSearch={(value) =>
-            setProducts((prev) =>
-              prev.filter((p) =>
-                p.tenSanPham.toLowerCase().includes(value.toLowerCase())
-              )
-            )
-          }
-          style={{ width: 300 }}
-        />
-        <Button
-          type="primary"
-          icon={<PlusOutlined />}
-          onClick={() => {
-            setEditingProduct(null);
-            setOpenModal(true);
-          }}
-        >
-          Thêm sản phẩm
-        </Button>
-      </Space>
+      <h2 style={{ marginBottom: 16 }}>Quản lý sản phẩm</h2>
 
-      {/* Bảng sản phẩm */}
+      <Row gutter={12} style={{ marginBottom: 16 }}>
+        <Col span={6}>
+          <Input
+            placeholder="Nhập tên sản phẩm..."
+            value={searchName}
+            onChange={(e) => setSearchName(e.target.value)}
+            onPressEnter={searchByName}
+          />
+        </Col>
+        <Col>
+          <Button
+            icon={<SearchOutlined />}
+            onClick={searchByName}
+          >
+            Tìm
+          </Button>
+        </Col>
+        <Col span={6}>
+          <Select
+            allowClear
+            placeholder="Lọc theo danh mục"
+            style={{ width: "100%" }}
+            value={filterCategory}
+            onChange={setFilterCategory}
+          >
+            {categories.map((c) => (
+              <Option key={c.categoryId} value={c.categoryId}>
+                {c.name}
+              </Option>
+            ))}
+          </Select>
+        </Col>
+        <Col flex="auto" style={{ textAlign: "right" }}>
+          <Button
+            type="primary"
+            icon={<PlusOutlined />}
+            onClick={openAddModal}
+          >
+            Thêm sản phẩm
+          </Button>
+        </Col>
+      </Row>
+
       <Table
-        dataSource={products}
+        rowKey="productId"
+        dataSource={filteredProducts}
         columns={columns}
         loading={loading}
-        rowKey="sanPhamId"
         bordered
+        pagination={{ pageSize: 10 }}
       />
 
-      {/* Modal thêm / sửa */}
+      {/* ================= MODAL ================= */}
       <Modal
-        title={editingProduct ? "Chỉnh sửa sản phẩm" : "Thêm sản phẩm mới"}
-        open={openModal}
-        onCancel={() => setOpenModal(false)}
-        onOk={() => form.submit()}
-        okText="Lưu"
-        cancelText="Hủy"
-      >
-        <Form layout="vertical" form={form} onFinish={handleSave}>
-          <Form.Item
-            label="Tên sản phẩm"
-            name="tenSanPham"
-            rules={[{ required: true, message: "Nhập tên sản phẩm" }]}
+        open={modalOpen}
+        onCancel={() => setModalOpen(false)}
+        title={editingProduct ? "Cập nhật sản phẩm" : "Thêm sản phẩm"}
+        footer={[
+          <Button onClick={() => setModalOpen(false)}>Hủy</Button>,
+          <Button
+            type="primary"
+            icon={<SaveOutlined />}
+            onClick={() => form.submit()}
           >
+            Lưu
+          </Button>,
+        ]}
+      >
+        <Form form={form} layout="vertical" onFinish={handleSubmit}>
+          <Form.Item name="name" label="Tên sản phẩm" rules={[{ required: true }]}>
             <Input />
           </Form.Item>
-          <Form.Item label="Mô tả" name="moTa">
+          <Form.Item name="price" label="Giá" rules={[{ required: true }]}>
+            <InputNumber min={0} style={{ width: "100%" }} />
+          </Form.Item>
+          <Form.Item name="description" label="Mô tả">
             <Input.TextArea rows={3} />
           </Form.Item>
-          <Form.Item label="Giá gốc" name="giaGoc">
-            <Input type="number" min={0} />
-          </Form.Item>
-          <Form.Item label="Thương hiệu" name="thuongHieu">
+          <Form.Item name="brand" label="Thương hiệu">
             <Input />
           </Form.Item>
-          <Form.Item label="Bảo hành" name="baoHanh">
+          <Form.Item name="warranty" label="Bảo hành">
             <Input />
           </Form.Item>
-          <Form.Item label="Danh mục" name="danhMucId">
+          <Form.Item name="status" label="Trạng thái">
+            <Select>
+              <Option value={true}>Còn hàng</Option>
+              <Option value={false}>Hết hàng</Option>
+            </Select>
+          </Form.Item>
+          <Form.Item
+            name="categoryId"
+            label="Danh mục"
+            rules={[{ required: true, message: "Vui lòng chọn danh mục" }]}
+          >
             <Select placeholder="Chọn danh mục">
               {categories.map((c) => (
-                <Option key={c.danhMucId} value={c.danhMucId}>
-                  {c.tenDanhMuc}
+                <Option key={c.categoryId} value={c.categoryId}>
+                  {c.name}
                 </Option>
               ))}
             </Select>
           </Form.Item>
         </Form>
-      </Modal>
-
-      {/* Modal chi tiết */}
-      <Modal
-        open={detailModal}
-        title="Chi tiết sản phẩm"
-        onCancel={() => setDetailModal(false)}
-        footer={null}
-        width={800}
-      >
-        {selectedProduct && (
-          <Tabs defaultActiveKey="1">
-            <TabPane tab="Thông tin chung" key="1">
-              <p><b>Tên:</b> {selectedProduct.tenSanPham}</p>
-              <p><b>Mô tả:</b> {selectedProduct.moTa}</p>
-              <p><b>Thương hiệu:</b> {selectedProduct.thuongHieu}</p>
-              <p><b>Bảo hành:</b> {selectedProduct.baoHanh}</p>
-              <p>
-                <b>Giá gốc:</b>{" "}
-                {selectedProduct.giaGoc?.toLocaleString()} ₫
-              </p>
-              <p>
-                <b>Danh mục:</b>{" "}
-                {selectedProduct.danhMuc?.tenDanhMuc || "Chưa có"}
-              </p>
-            </TabPane>
-
-            <TabPane tab="Biến thể" key="2">
-              <Table
-                dataSource={selectedProduct.bienTheSanPham || []}
-                columns={[
-                  { title: "Kích cỡ", dataIndex: ["kichCo", "tenKichCo"] },
-                  { title: "Màu sắc", dataIndex: ["mauSac", "tenMau"] },
-                  { title: "Giá bán", dataIndex: "giaBan" },
-                  { title: "Tồn kho", dataIndex: "soLuongTon" },
-                ]}
-                pagination={false}
-                rowKey="bienTheId"
-              />
-            </TabPane>
-
-            <TabPane tab="Hình ảnh" key="3">
-              <Upload
-                listType="picture-card"
-                fileList={
-                  selectedProduct.hinhAnhSanPham?.map((img) => ({
-                    uid: img.hinhAnhId,
-                    url: img.url,
-                    name: `Ảnh ${img.hinhAnhId}`,
-                    status: "done",
-                  })) || []
-                }
-                showUploadList={{ showRemoveIcon: false }}
-                itemRender={(originNode, file) => (
-                  <img
-                    src={file.url}
-                    alt="Ảnh sản phẩm"
-                    style={{
-                      width: 100,
-                      height: 100,
-                      objectFit: "cover",
-                      borderRadius: 6,
-                    }}
-                  />
-                )}
-              >
-                <Button icon={<UploadOutlined />}>Thêm ảnh</Button>
-              </Upload>
-            </TabPane>
-          </Tabs>
-        )}
       </Modal>
     </div>
   );
