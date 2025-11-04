@@ -6,13 +6,17 @@ import {
   Modal,
   Space,
   message,
-  Descriptions,
-  Steps,
+  Form,
+  Input,
   Select,
 } from "antd";
-import { EyeOutlined, EditOutlined, ReloadOutlined } from "@ant-design/icons";
+import {
+  EyeOutlined,
+  ReloadOutlined,
+  SaveOutlined,
+} from "@ant-design/icons";
 import { useState, useEffect } from "react";
-import api from "../utils/axios"; // TODO: Cấu hình baseURL + token interceptor ở đây
+import api from "../utils/axios";
 import dayjs from "dayjs";
 
 export default function Orders() {
@@ -20,16 +24,15 @@ export default function Orders() {
   const [loading, setLoading] = useState(false);
   const [detailModal, setDetailModal] = useState(false);
   const [selectedOrder, setSelectedOrder] = useState(null);
-  const [updateModal, setUpdateModal] = useState(false);
-  const [selectedStatus, setSelectedStatus] = useState(null);
+  const [form] = Form.useForm();
 
-  // 📦 Lấy danh sách đơn hàng
+  // ================= FETCH ORDERS =================
   const fetchOrders = async () => {
     try {
       setLoading(true);
-      // TODO: ⚙️ API thật: GET /api/donhang (include KhachHang + ChiTietDonHang)
-      const res = await api.get("/donhang");
-      setOrders(res.data || []);
+      const res = await api.get("/Orders/GetAll");
+      const list = res.data?.$values || res.data || [];
+      setOrders(list);
     } catch (err) {
       console.error(err);
       message.error("Không thể tải danh sách đơn hàng");
@@ -42,12 +45,18 @@ export default function Orders() {
     fetchOrders();
   }, []);
 
-  // 👁️ Xem chi tiết đơn hàng
+  // ================= VIEW + EDIT ORDER =================
   const handleView = async (record) => {
     try {
-      // TODO: ⚙️ API thật: GET /api/donhang/:id (bao gồm chi tiết và khách hàng)
-      const res = await api.get(`/donhang/${record.donHangId}`);
+      const res = await api.get(`/Orders/GetById/${record.orderId}`);
       setSelectedOrder(res.data);
+      form.setFieldsValue({
+        recipientName: res.data.recipientName,
+        recipientPhone: res.data.recipientPhone,
+        shippingAddress: res.data.shippingAddress,
+        totalAmount: res.data.totalAmount,
+        status: res.data.status,
+      });
       setDetailModal(true);
     } catch (err) {
       console.error(err);
@@ -55,33 +64,30 @@ export default function Orders() {
     }
   };
 
-  // 🔁 Cập nhật trạng thái đơn hàng
-  const handleUpdateStatus = async () => {
-    if (!selectedStatus) return message.warning("Vui lòng chọn trạng thái mới");
+  // ================= SAVE UPDATE =================
+  const handleSaveUpdate = async () => {
     try {
-      // TODO: ⚙️ API thật: PUT /api/donhang/:id/trangthai
-      await api.put(`/donhang/${selectedOrder.donHangId}/trangthai`, {
-        trangThai: selectedStatus,
+      const values = await form.validateFields();
+      await api.put(`/Orders/Update/${selectedOrder.orderId}`, {
+        ...selectedOrder,
+        ...values,
       });
-      message.success("Cập nhật trạng thái đơn hàng thành công");
-      setUpdateModal(false);
+      message.success("Cập nhật đơn hàng thành công!");
+      setDetailModal(false);
       fetchOrders();
     } catch (err) {
       console.error(err);
-      message.error("Cập nhật trạng thái thất bại");
+      message.error("Không thể cập nhật đơn hàng");
     }
   };
 
+  // ================= STATUS RENDER =================
   const renderStatus = (status) => {
     switch (status) {
-      case "ChoXuLy":
-        return <Tag color="orange">Chờ xử lý</Tag>;
-      case "DangGiao":
-        return <Tag color="blue">Đang giao</Tag>;
-      case "HoanTat":
+      case true:
         return <Tag color="green">Hoàn tất</Tag>;
-      case "Huy":
-        return <Tag color="red">Đã hủy</Tag>;
+      case false:
+        return <Tag color="orange">Đang xử lý</Tag>;
       default:
         return <Tag>Không xác định</Tag>;
     }
@@ -90,56 +96,39 @@ export default function Orders() {
   const columns = [
     {
       title: "Mã đơn hàng",
-      dataIndex: "maDonHang",
-      key: "maDonHang",
-      render: (text) => <b>{text}</b>,
+      dataIndex: "orderId",
+      key: "orderId",
+      width: 100,
     },
     {
-      title: "Khách hàng",
-      dataIndex: ["khachHang", "tenDangNhap"],
-      key: "khachHang",
-      render: (val, record) =>
-        record.khachHang?.hoTen || record.khachHang?.email || "—",
+      title: "Người nhận",
+      dataIndex: "recipientName",
+      render: (text, record) => (
+        <span
+          style={{ color: "#1677ff", cursor: "pointer" }}
+          onClick={() => handleView(record)}
+        >
+          {text || "Không rõ"}
+        </span>
+      ),
     },
+    { title: "Số điện thoại", dataIndex: "recipientPhone" },
+    { title: "Địa chỉ giao hàng", dataIndex: "shippingAddress", ellipsis: true },
     {
       title: "Tổng tiền",
-      dataIndex: "tongTien",
-      key: "tongTien",
+      dataIndex: "totalAmount",
       render: (val) => `${val?.toLocaleString()} ₫`,
     },
     {
-      title: "Ngày tạo",
-      dataIndex: "ngayDat",
-      key: "ngayDat",
-      render: (val) => dayjs(val).format("DD/MM/YYYY HH:mm"),
-    },
-    {
       title: "Trạng thái",
-      dataIndex: "trangThai",
-      key: "trangThai",
+      dataIndex: "status",
       render: (val) => renderStatus(val),
     },
     {
-      title: "Thao tác",
-      key: "actions",
-      render: (_, record) => (
-        <Space>
-          <Button
-            icon={<EyeOutlined />}
-            onClick={() => handleView(record)}
-            type="default"
-          />
-          <Button
-            icon={<EditOutlined />}
-            onClick={() => {
-              setSelectedOrder(record);
-              setSelectedStatus(record.trangThai);
-              setUpdateModal(true);
-            }}
-            type="primary"
-          />
-        </Space>
-      ),
+      title: "Ngày tạo",
+      dataIndex: "orderDate",
+      render: (val) =>
+        val ? dayjs(val).format("DD/MM/YYYY HH:mm") : "—",
     },
   ];
 
@@ -153,11 +142,7 @@ export default function Orders() {
         }}
       >
         <h2>Quản lý đơn hàng</h2>
-        <Button
-          icon={<ReloadOutlined />}
-          onClick={fetchOrders}
-          type="default"
-        >
+        <Button icon={<ReloadOutlined />} onClick={fetchOrders}>
           Làm mới
         </Button>
       </Space>
@@ -165,108 +150,75 @@ export default function Orders() {
       <Table
         columns={columns}
         dataSource={orders}
-        rowKey="donHangId"
+        rowKey="orderId"
         loading={loading}
         bordered
       />
 
-      {/* Modal chi tiết đơn hàng */}
+      {/* Modal Chi tiết + Cập nhật */}
       <Modal
-        title="Chi tiết đơn hàng"
+        title={`Chi tiết & Cập nhật đơn hàng #${selectedOrder?.orderId || ""}`}
         open={detailModal}
         onCancel={() => setDetailModal(false)}
-        footer={null}
-        width={850}
+        footer={[
+          <Button onClick={() => setDetailModal(false)}>Đóng</Button>,
+          <Button
+            type="primary"
+            icon={<SaveOutlined />}
+            onClick={handleSaveUpdate}
+          >
+            Lưu thay đổi
+          </Button>,
+        ]}
+        width={700}
       >
         {selectedOrder && (
           <>
-            <Descriptions bordered column={2} size="small">
-              <Descriptions.Item label="Mã đơn hàng">
-                {selectedOrder.maDonHang}
-              </Descriptions.Item>
-              <Descriptions.Item label="Ngày đặt">
-                {dayjs(selectedOrder.ngayDat).format("DD/MM/YYYY HH:mm")}
-              </Descriptions.Item>
-              <Descriptions.Item label="Khách hàng">
-                {selectedOrder.khachHang?.hoTen}
-              </Descriptions.Item>
-              <Descriptions.Item label="Email">
-                {selectedOrder.khachHang?.email}
-              </Descriptions.Item>
-              <Descriptions.Item label="Số điện thoại" span={2}>
-                {selectedOrder.khachHang?.soDienThoai}
-              </Descriptions.Item>
-              <Descriptions.Item label="Địa chỉ giao hàng" span={2}>
-                {selectedOrder.diaChiGiaoHang}
-              </Descriptions.Item>
-              <Descriptions.Item label="Tổng tiền">
-                {selectedOrder.tongTien?.toLocaleString()} ₫
-              </Descriptions.Item>
-              <Descriptions.Item label="Trạng thái">
-                {renderStatus(selectedOrder.trangThai)}
-              </Descriptions.Item>
-            </Descriptions>
+            <Form form={form} layout="vertical">
+              <Form.Item label="Tên người nhận" name="recipientName">
+                <Input />
+              </Form.Item>
+              <Form.Item label="Số điện thoại" name="recipientPhone">
+                <Input />
+              </Form.Item>
+              <Form.Item label="Địa chỉ giao hàng" name="shippingAddress">
+                <Input />
+              </Form.Item>
+              <Form.Item label="Tổng tiền" name="totalAmount">
+                <Input type="number" />
+              </Form.Item>
+              <Form.Item label="Trạng thái" name="status">
+                <Select>
+                  <Select.Option value={false}>Đang xử lý</Select.Option>
+                  <Select.Option value={true}>Hoàn tất</Select.Option>
+                </Select>
+              </Form.Item>
+            </Form>
 
-            <h3 style={{ marginTop: 20 }}>Danh sách sản phẩm</h3>
+            <h3 style={{ marginTop: 24 }}>Danh sách sản phẩm</h3>
             <Table
-              dataSource={selectedOrder.chiTietDonHang || []}
+              dataSource={selectedOrder?.orderItems?.$values || []}
               columns={[
-                { title: "Sản phẩm", dataIndex: ["sanPham", "tenSanPham"] },
-                { title: "Số lượng", dataIndex: "soLuong" },
+                { title: "Sản phẩm ID", dataIndex: "productVariantId" },
+                { title: "Số lượng", dataIndex: "quantity" },
                 {
                   title: "Đơn giá",
-                  dataIndex: "donGia",
-                  render: (val) => `${val.toLocaleString()} ₫`,
+                  dataIndex: "price",
+                  render: (v) => `${v?.toLocaleString()} ₫`,
                 },
                 {
-                  title: "Thành tiền",
-                  render: (_, r) =>
-                    `${(r.soLuong * r.donGia).toLocaleString()} ₫`,
+                  title: "Giảm giá",
+                  dataIndex: "discountAmount",
+                  render: (v) => `${v?.toLocaleString()} ₫`,
                 },
               ]}
               pagination={false}
-              rowKey="chiTietDonHangId"
+              rowKey="orderItemId"
               size="small"
               bordered
             />
           </>
         )}
-      </Modal>
-
-      {/* Modal cập nhật trạng thái */}
-      <Modal
-        title="Cập nhật trạng thái đơn hàng"
-        open={updateModal}
-        onCancel={() => setUpdateModal(false)}
-        onOk={handleUpdateStatus}
-        okText="Lưu"
-        cancelText="Hủy"
-      >
-        <p>Mã đơn hàng: <b>{selectedOrder?.maDonHang}</b></p>
-        <Select
-          value={selectedStatus}
-          onChange={setSelectedStatus}
-          style={{ width: "100%" }}
-        >
-          <Select.Option value="ChoXuLy">Chờ xử lý</Select.Option>
-          <Select.Option value="DangGiao">Đang giao</Select.Option>
-          <Select.Option value="HoanTat">Hoàn tất</Select.Option>
-          <Select.Option value="Huy">Hủy</Select.Option>
-        </Select>
-
-        <Steps
-          size="small"
-          current={
-            ["ChoXuLy", "DangGiao", "HoanTat", "Huy"].indexOf(selectedStatus)
-          }
-          style={{ marginTop: 20 }}
-          items={[
-            { title: "Chờ xử lý" },
-            { title: "Đang giao" },
-            { title: "Hoàn tất" },
-            { title: "Hủy" },
-          ]}
-        />
       </Modal>
     </div>
   );

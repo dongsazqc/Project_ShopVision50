@@ -6,7 +6,6 @@ import Dashboard from "../pages/Dashboard";
 import Products from "../pages/Products";
 import Categories from "../pages/Categories";
 import Orders from "../pages/Orders";
-import Inventory from "../pages/Inventory";
 import Promotions from "../pages/Promotions";
 import Users from "../pages/Users";
 import Reports from "../pages/Reports";
@@ -28,9 +27,6 @@ export default function AdminRoutes() {
 
         {/* Đơn hàng */}
         <Route path="orders" element={<Orders />} />
-
-        {/* Kho hàng */}
-        <Route path="inventory" element={<Inventory />} />
 
         {/* Khuyến mãi */}
         <Route path="promotions" element={<Promotions />} />

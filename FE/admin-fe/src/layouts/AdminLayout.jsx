@@ -113,11 +113,6 @@ export default function AdminLayout() {
             <Link to="/admin/orders">Đơn hàng</Link>
           </Menu.Item>
 
-          {/* ====== KHO HÀNG ====== */}
-          <Menu.Item key="/admin/inventory" icon={<DatabaseOutlined />}>
-            <Link to="/admin/inventory">Kho hàng</Link>
-          </Menu.Item>
-
           {/* ====== KHUYẾN MÃI ====== */}
           <Menu.Item key="/admin/promotions" icon={<TagsOutlined />}>
             <Link to="/admin/promotions">Khuyến mãi</Link>

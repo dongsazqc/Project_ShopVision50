@@ -21,7 +21,6 @@ export default function Users() {
   const [filteredUsers, setFilteredUsers] = useState([]);
   const [loading, setLoading] = useState(false);
 
-  // Modal states
   const [modalOpen, setModalOpen] = useState(false);
   const [modalAddOpen, setModalAddOpen] = useState(false);
   const [selectedUser, setSelectedUser] = useState(null);
@@ -35,27 +34,50 @@ export default function Users() {
 
   // ================== FETCH USERS ==================
   const fetchUsers = async () => {
+    let mounted = true;
     try {
       setLoading(true);
       const res = await api.get("/Users/getAll");
-      const list = res.data?.$values || [];
+      let list = res.data?.$values || [];
 
-      const formatted = list.map((u) => ({
-        ...u,
-        role: u.userRoles?.$values?.[0]?.role?.roleName || "Khách hàng",
-        roleId: u.userRoles?.$values?.[0]?.role?.roleId || 3,
-        joinDate: u.joinDate
-          ? new Date(u.joinDate).toLocaleDateString("vi-VN")
-          : "—",
-      }));
+      if (!mounted) return;
+
+      // 🧩 Sắp xếp userId giảm dần (mới nhất lên đầu)
+      list.sort((a, b) => b.userId - a.userId);
+
+      const formatted = list.map((u) => {
+        const roleId =
+          u.userRoles?.$values?.[0]?.role?.roleId ??
+          u.roleId ??
+          4;
+
+        let roleName = "Khách hàng";
+        if (roleId === 1) roleName = "Admin";
+        else if (roleId === 3) roleName = "Nhân viên";
+
+        return {
+          ...u,
+          role: roleName,
+          roleId,
+          joinDate: u.joinDate
+            ? new Date(u.joinDate).toLocaleDateString("vi-VN")
+            : "—",
+        };
+      });
 
       setUsers(formatted);
       setFilteredUsers(formatted);
-    } catch {
-      message.error("Không thể tải danh sách người dùng");
+    } catch (err) {
+      console.error(err);
+      const msg =
+        err.response?.data?.message || "Không thể tải danh sách người dùng";
+      message.error(msg);
     } finally {
       setLoading(false);
     }
+    return () => {
+      mounted = false;
+    };
   };
 
   useEffect(() => {
@@ -88,65 +110,172 @@ export default function Users() {
   // ================== EDIT USER ==================
   const openModal = (user) => {
     setSelectedUser(user);
-    form.setFieldsValue(user);
+    form.setFieldsValue({
+      fullName: user.fullName,
+      email: user.email,
+      phone: user.phone,
+      defaultAddress: user.defaultAddress,
+      joinDate: user.joinDate,
+      roleId: user.roleId,
+      status: user.status,
+    });
     setModalOpen(true);
+  };
+
+  const closeEditModal = () => {
+    setModalOpen(false);
+    setSelectedUser(null);
+    form.resetFields();
   };
 
   const submitUpdate = async (values) => {
     try {
+      if (!selectedUser) return;
+
       const payload = {
-        ...selectedUser,
-        fullName: values.fullName,
-        email: values.email,
-        phone: values.phone,
-        status: values.status,
-        defaultAddress: values.defaultAddress,
-        roleId: values.roleId,
+        UserId: selectedUser.userId,
+        FullName: values.fullName,
+        Email: values.email,
+        Phone: values.phone,
+        Status: values.status,
+        DefaultAddress: values.defaultAddress,
+        RoleId: values.roleId,
       };
 
       await api.put(`/Users/update/${selectedUser.userId}`, payload);
+      message.success("Cập nhật người dùng thành công!");
 
-      message.success("Cập nhật thành công");
-      setModalOpen(false);
-      fetchUsers();
-    } catch {
-      message.error("Cập nhật thất bại");
+      // 🧩 Cập nhật ngay trên UI
+      setUsers((prev) => {
+        const updated = prev.map((u) =>
+          u.userId === selectedUser.userId
+            ? {
+                ...u,
+                fullName: values.fullName,
+                email: values.email,
+                phone: values.phone,
+                status: values.status,
+                defaultAddress: values.defaultAddress,
+                roleId: values.roleId,
+                role:
+                  values.roleId === 1
+                    ? "Admin"
+                    : values.roleId === 3
+                    ? "Nhân viên"
+                    : "Khách hàng",
+              }
+            : u
+        );
+        return [...updated].sort((a, b) => b.userId - a.userId);
+      });
+
+      setFilteredUsers((prev) => {
+        const updated = prev.map((u) =>
+          u.userId === selectedUser.userId
+            ? {
+                ...u,
+                fullName: values.fullName,
+                email: values.email,
+                phone: values.phone,
+                status: values.status,
+                defaultAddress: values.defaultAddress,
+                roleId: values.roleId,
+                role:
+                  values.roleId === 1
+                    ? "Admin"
+                    : values.roleId === 3
+                    ? "Nhân viên"
+                    : "Khách hàng",
+              }
+            : u
+        );
+        return [...updated].sort((a, b) => b.userId - a.userId);
+      });
+
+      closeEditModal();
+    } catch (error) {
+      console.error("Error updating user:", error.response?.data || error.message);
+      const msg =
+        error.response?.data?.message || "Cập nhật người dùng thất bại!";
+      message.error(msg);
     }
   };
 
   // ================== ADD USER ==================
   const openAddModal = () => {
-    const today = new Date().toISOString().slice(0, 10); // yyyy-mm-dd
+    const today = new Date().toISOString().slice(0, 10);
     formAdd.resetFields();
     formAdd.setFieldsValue({
-      status: true,
-      roleId: 3,
       joinDate: today,
     });
     setModalAddOpen(true);
   };
 
+  const closeAddModal = () => {
+    setModalAddOpen(false);
+    formAdd.resetFields();
+  };
+
   const submitAdd = async (values) => {
     try {
       const payload = {
-        fullName: values.fullName,
-        email: values.email,
-        phone: values.phone,
-        password: "123456", // 🔥 Mật khẩu mặc định
-        status: values.status,
-        joinDate: new Date(values.joinDate).toISOString(), // 🔥 Ngày hiện tại
-        defaultAddress: values.defaultAddress,
-        roleId: values.roleId,
+        FullName: values.fullName,
+        Email: values.email,
+        Phone: values.phone,
+        Password: "123456",
+        Status: values.status,
+        JoinDate: new Date(values.joinDate).toISOString(),
+        DefaultAddress: values.defaultAddress,
+        RoleId: values.roleId,
       };
 
-      await api.post("/Users/register", payload);
+      const res = await api.post("/Users/register", payload);
 
-      message.success("Thêm người dùng thành công");
-      setModalAddOpen(false);
-      fetchUsers();
+      console.log("👉 Response từ backend:", res.data); // kiểm tra cấu trúc backend trả về
+
+      message.success("Thêm người dùng thành công!");
+
+      // 🧩 Thử lấy userId thật từ response
+      const returned =
+        res.data?.data || res.data?.user || res.data || {};
+      const realId =
+        returned?.userId ||
+        returned?.UserId ||
+        returned?.id ||
+        null;
+
+      if (realId) {
+        // ✅ Có ID thật từ backend
+        const newUser = {
+          userId: realId,
+          fullName: values.fullName,
+          email: values.email,
+          phone: values.phone,
+          status: values.status,
+          defaultAddress: values.defaultAddress,
+          joinDate: new Date(values.joinDate).toLocaleDateString("vi-VN"),
+          roleId: values.roleId,
+          role:
+            values.roleId === 1
+              ? "Admin"
+              : values.roleId === 3
+              ? "Nhân viên"
+              : "Khách hàng",
+        };
+
+        setUsers((prev) => [newUser, ...prev]);
+        setFilteredUsers((prev) => [newUser, ...prev]);
+      } else {
+        // ⚠️ Nếu BE không trả ID thì fetch lại để lấy đúng dữ liệu thật
+        await fetchUsers();
+      }
+
+      closeAddModal();
     } catch (error) {
-      console.error("Error adding user:", error);
-      message.error("Thêm người dùng thất bại");
+      console.error("Error adding user:", error.response?.data || error.message);
+      const msg =
+        error.response?.data?.message || "Thêm người dùng thất bại!";
+      message.error(msg);
     }
   };
 
@@ -209,8 +338,8 @@ export default function Users() {
             onChange={setFilterRole}
           >
             <Option value="1">Admin</Option>
-            <Option value="2">Nhân viên</Option>
-            <Option value="3">Khách hàng</Option>
+            <Option value="3">Nhân viên</Option>
+            <Option value="4">Khách hàng</Option>
           </Select>
         </Col>
         <Col span={6} style={{ textAlign: "right" }}>
@@ -236,10 +365,10 @@ export default function Users() {
       {/* ================== EDIT MODAL ================== */}
       <Modal
         open={modalOpen}
-        onCancel={() => setModalOpen(false)}
+        onCancel={closeEditModal}
         title="Cập nhật người dùng"
         footer={[
-          <Button onClick={() => setModalOpen(false)}>Hủy</Button>,
+          <Button onClick={closeEditModal}>Hủy</Button>,
           <Button
             type="primary"
             icon={<SaveOutlined />}
@@ -268,8 +397,8 @@ export default function Users() {
           <Form.Item name="roleId" label="Vai trò">
             <Select>
               <Option value={1}>Admin</Option>
-              <Option value={2}>Nhân viên</Option>
-              <Option value={3}>Khách hàng</Option>
+              <Option value={3}>Nhân viên</Option>
+              <Option value={4}>Khách hàng</Option>
             </Select>
           </Form.Item>
           <Form.Item name="status" label="Trạng thái">
@@ -284,10 +413,10 @@ export default function Users() {
       {/* ================== ADD MODAL ================== */}
       <Modal
         open={modalAddOpen}
-        onCancel={() => setModalAddOpen(false)}
+        onCancel={closeAddModal}
         title="Thêm người dùng"
         footer={[
-          <Button onClick={() => setModalAddOpen(false)}>Hủy</Button>,
+          <Button onClick={closeAddModal}>Hủy</Button>,
           <Button
             type="primary"
             icon={<SaveOutlined />}
@@ -316,8 +445,8 @@ export default function Users() {
           <Form.Item name="roleId" label="Vai trò" rules={[{ required: true }]}>
             <Select>
               <Option value={1}>Admin</Option>
-              <Option value={2}>Nhân viên</Option>
-              <Option value={3}>Khách hàng</Option>
+              <Option value={3}>Nhân viên</Option>
+              <Option value={4}>Khách hàng</Option>
             </Select>
           </Form.Item>
           <Form.Item name="status" label="Trạng thái">
