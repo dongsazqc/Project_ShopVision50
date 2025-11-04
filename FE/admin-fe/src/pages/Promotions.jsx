@@ -30,10 +30,16 @@ export default function Promotions() {
       setLoading(true);
       const res = await api.get("/KhuyenMai/GetAllPromotions");
       const data = res.data?.$values || res.data || [];
-      const formatted = data.map((p) => ({
-        ...p,
-        trangThai: dayjs().isBefore(dayjs(p.endDate)),
-      }));
+
+      const formatted = data
+        .map((p) => ({
+          ...p,
+          startDate: p.startDate ? dayjs(p.startDate) : null,
+          endDate: p.endDate ? dayjs(p.endDate) : null,
+          trangThai: dayjs().isBefore(dayjs(p.endDate)),
+        }))
+        .sort((a, b) => b.promotionId - a.promotionId);
+
       setPromotions(formatted);
     } catch (err) {
       console.error(err);
@@ -52,7 +58,11 @@ export default function Promotions() {
     try {
       const [start, end] = values.dateRange;
 
-      // Validate ngày bắt đầu < ngày kết thúc
+      if (!start || !end) {
+        message.warning("Vui lòng chọn ngày bắt đầu và ngày kết thúc!");
+        return;
+      }
+
       if (start.isAfter(end)) {
         message.warning("Ngày bắt đầu không được sau ngày kết thúc!");
         return;
@@ -65,10 +75,22 @@ export default function Promotions() {
         discountValue: values.discountValue,
         condition: values.condition,
         scope: values.scope,
-        startDate: start.toISOString(),
-        endDate: end.toISOString(),
+        // 🧩 fix timezone và định dạng ngày chuẩn ISO (không sai lệch)
+        startDate: dayjs(start).format("YYYY-MM-DDTHH:mm:ss"),
+        endDate: dayjs(end).format("YYYY-MM-DDTHH:mm:ss"),
         status: true,
       };
+
+      // 🧩 Check trùng mã trước khi gửi API
+      if (!selectedPromo) {
+        const exists = promotions.some(
+          (p) => p.code?.toLowerCase() === values.code.trim().toLowerCase()
+        );
+        if (exists) {
+          message.warning("⚠️ Mã khuyến mãi này đã tồn tại, vui lòng chọn mã khác!");
+          return; // dừng lại, không gửi request
+        }
+      }
 
       if (selectedPromo) {
         await api.put(
@@ -87,7 +109,9 @@ export default function Promotions() {
       fetchPromotions();
     } catch (err) {
       console.error("Error saving promotion:", err);
-      message.error("Lưu khuyến mãi thất bại");
+      const msg =
+        err.response?.data?.message || "Lưu khuyến mãi thất bại!";
+      message.error(msg);
     }
   };
 
@@ -99,13 +123,18 @@ export default function Promotions() {
       );
       const promo = res.data;
       setSelectedPromo(promo);
+
       form.setFieldsValue({
         code: promo.code,
         discountValue: promo.discountValue,
         condition: promo.condition,
         scope: promo.scope,
-        dateRange: [dayjs(promo.startDate), dayjs(promo.endDate)],
+        dateRange: [
+          dayjs(promo.startDate),
+          dayjs(promo.endDate),
+        ],
       });
+
       setOpenModal(true);
     } catch (err) {
       console.error(err);
@@ -118,21 +147,17 @@ export default function Promotions() {
     {
       title: "ID",
       dataIndex: "promotionId",
-      key: "promotionId",
       width: 80,
       align: "center",
+      sorter: (a, b) => a.promotionId - b.promotionId,
+      defaultSortOrder: "descend",
     },
     {
       title: "Mã khuyến mãi",
       dataIndex: "code",
-      key: "code",
       render: (text, record) => (
         <span
-          style={{
-            color: "#1677ff",
-            cursor: "pointer",
-            textDecoration: "none",
-          }}
+          style={{ color: "#1677ff", cursor: "pointer" }}
           onClick={() => openDetailModal(record)}
         >
           <GiftOutlined style={{ marginRight: 4 }} />
@@ -143,27 +168,22 @@ export default function Promotions() {
     {
       title: "% Giảm",
       dataIndex: "discountValue",
-      key: "discountValue",
       render: (val) => `${val}%`,
     },
-    {
-      title: "Điều kiện",
-      dataIndex: "condition",
-    },
+    { title: "Điều kiện", dataIndex: "condition", render: (v) => v || "—" },
     {
       title: "Ngày bắt đầu",
       dataIndex: "startDate",
-      render: (val) => dayjs(val).format("DD/MM/YYYY"),
+      render: (val) => (val ? dayjs(val).format("DD/MM/YYYY") : "—"),
     },
     {
       title: "Ngày kết thúc",
       dataIndex: "endDate",
-      render: (val) => dayjs(val).format("DD/MM/YYYY"),
+      render: (val) => (val ? dayjs(val).format("DD/MM/YYYY") : "—"),
     },
     {
       title: "Trạng thái",
-      dataIndex: "status",
-      render: (val, record) =>
+      render: (_, record) =>
         dayjs().isBefore(dayjs(record.endDate)) ? (
           <Tag color="green">Đang áp dụng</Tag>
         ) : (
@@ -183,13 +203,18 @@ export default function Promotions() {
       >
         <Input.Search
           placeholder="Tìm mã khuyến mãi..."
-          onSearch={(value) =>
-            setPromotions((prev) =>
-              prev.filter((p) =>
-                p.code.toLowerCase().includes(value.toLowerCase())
-              )
-            )
-          }
+          allowClear
+          onSearch={(value) => {
+            if (!value.trim()) {
+              fetchPromotions();
+            } else {
+              setPromotions((prev) =>
+                prev.filter((p) =>
+                  p.code.toLowerCase().includes(value.toLowerCase())
+                )
+              );
+            }
+          }}
           style={{ width: 300 }}
         />
         <Button
@@ -211,15 +236,12 @@ export default function Promotions() {
         rowKey="promotionId"
         loading={loading}
         bordered
+        pagination={{ pageSize: 10 }}
       />
 
-      {/* Modal chi tiết + chỉnh sửa */}
+      {/* Modal thêm / chỉnh sửa */}
       <Modal
-        title={
-          selectedPromo
-            ? "Chi tiết & chỉnh sửa khuyến mãi"
-            : "Thêm khuyến mãi mới"
-        }
+        title={selectedPromo ? "Cập nhật khuyến mãi" : "Thêm khuyến mãi mới"}
         open={openModal}
         onCancel={() => {
           setOpenModal(false);
@@ -236,7 +258,10 @@ export default function Promotions() {
             name="code"
             rules={[{ required: true, message: "Nhập mã khuyến mãi" }]}
           >
-            <Input disabled={!!selectedPromo} />
+            <Input
+              placeholder="VD: SALE50"
+              disabled={!!selectedPromo}
+            />
           </Form.Item>
 
           <Form.Item
