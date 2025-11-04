@@ -113,3 +113,16 @@ C:/Users/Saz/OneDrive/Desktop/Api50/Project_ShopVision50/BE/Project_ShopVision50
 /home/saz/Desktop/Fodels/Project_ShopVision50/BE/Project_ShopVision50/ShopVision50.Domain/obj/Debug/net8.0/refint/ShopVision50.Domain.dll
 /home/saz/Desktop/Fodels/Project_ShopVision50/BE/Project_ShopVision50/ShopVision50.Domain/obj/Debug/net8.0/ShopVision50.Domain.pdb
 /home/saz/Desktop/Fodels/Project_ShopVision50/BE/Project_ShopVision50/ShopVision50.Domain/obj/Debug/net8.0/ref/ShopVision50.Domain.dll
+/home/saz/Desktop/Project_ShopVision50/BE/Project_ShopVision50/ShopVision50.Domain/bin/Debug/net8.0/ShopVision50.Domain.deps.json
+/home/saz/Desktop/Project_ShopVision50/BE/Project_ShopVision50/ShopVision50.Domain/bin/Debug/net8.0/ShopVision50.Domain.dll
+/home/saz/Desktop/Project_ShopVision50/BE/Project_ShopVision50/ShopVision50.Domain/bin/Debug/net8.0/ShopVision50.Domain.pdb
+/home/saz/Desktop/Project_ShopVision50/BE/Project_ShopVision50/ShopVision50.Domain/obj/Debug/net8.0/ShopVision50.Domain.csproj.AssemblyReference.cache
+/home/saz/Desktop/Project_ShopVision50/BE/Project_ShopVision50/ShopVision50.Domain/obj/Debug/net8.0/ShopVision50.Domain.GeneratedMSBuildEditorConfig.editorconfig
+/home/saz/Desktop/Project_ShopVision50/BE/Project_ShopVision50/ShopVision50.Domain/obj/Debug/net8.0/ShopVision50.Domain.AssemblyInfoInputs.cache
+/home/saz/Desktop/Project_ShopVision50/BE/Project_ShopVision50/ShopVision50.Domain/obj/Debug/net8.0/ShopVision50.Domain.AssemblyInfo.cs
+/home/saz/Desktop/Project_ShopVision50/BE/Project_ShopVision50/ShopVision50.Domain/obj/Debug/net8.0/ShopVision50.Domain.csproj.CoreCompileInputs.cache
+/home/saz/Desktop/Project_ShopVision50/BE/Project_ShopVision50/ShopVision50.Domain/obj/Debug/net8.0/ShopVision50.Domain.sourcelink.json
+/home/saz/Desktop/Project_ShopVision50/BE/Project_ShopVision50/ShopVision50.Domain/obj/Debug/net8.0/ShopVision50.Domain.dll
+/home/saz/Desktop/Project_ShopVision50/BE/Project_ShopVision50/ShopVision50.Domain/obj/Debug/net8.0/refint/ShopVision50.Domain.dll
+/home/saz/Desktop/Project_ShopVision50/BE/Project_ShopVision50/ShopVision50.Domain/obj/Debug/net8.0/ShopVision50.Domain.pdb
+/home/saz/Desktop/Project_ShopVision50/BE/Project_ShopVision50/ShopVision50.Domain/obj/Debug/net8.0/ref/ShopVision50.Domain.dll

@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Shop_Db.Models;
 using ShopVision50.API.Service.OrderService_FD;
@@ -16,6 +17,7 @@ namespace ShopVision50.API.Controllers
         }
 
         [HttpGet("GetAll")]
+        [Authorize]
         public async Task<IActionResult> GetAll()
         {
             var orders = await _service.GetAllAsync();
@@ -23,6 +25,7 @@ namespace ShopVision50.API.Controllers
         }
 
        [HttpGet("GetById/{id}")]
+       [Authorize]
         public async Task<IActionResult> GetById(int id)
         {
             var order = await _service.GetByIdAsync(id);
@@ -33,6 +36,7 @@ namespace ShopVision50.API.Controllers
         }
 
         [HttpPost("Add")]
+        [Authorize]
         public async Task<IActionResult> Create(Order order)
         {
             await _service.AddAsync(order);
@@ -40,6 +44,7 @@ namespace ShopVision50.API.Controllers
         }
 
         [HttpPut("Update/{id}")]
+        [Authorize]
         public async Task<IActionResult> Update(int id, Order order)
         {
             if (id != order.OrderId)
@@ -54,6 +59,7 @@ namespace ShopVision50.API.Controllers
         }
 
        [HttpDelete("Delete/{id}")]
+       [Authorize]
         public async Task<IActionResult> Delete(int id)
         {
             var existing = await _service.GetByIdAsync(id);

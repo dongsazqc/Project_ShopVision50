@@ -64,20 +64,18 @@ namespace ShopVision50.API.Services.UserService_FD
                 return await Task.FromResult(ServiceResult<string>.Ok("Đăng ký thành công"));
             }
         }
-
         public async Task<ServiceResult<User>> UpdateUserAsync(User user)
         {
             var existingUser = await _repo.GetByIdAsync(user.UserId);
             if (existingUser == null)
                 return  ServiceResult<User>.Fail("Không tìm thấy người dùng");
-
             // Update mấy property cần thiết
             existingUser.FullName = user.FullName;
             existingUser.Email = user.Email;
             existingUser.Phone = user.Phone;
             existingUser.DefaultAddress = user.DefaultAddress;
             existingUser.Addresses = user.Addresses;
-            existingUser.Status = user.Status;ls
+            existingUser.Status = user.Status;
             existingUser.RoleId = user.RoleId;
 
             var updatedUser = await _repo.UpdateAsync(existingUser);
@@ -97,6 +95,5 @@ namespace ShopVision50.API.Services.UserService_FD
                 return ServiceResult<string>.Fail("Xóa người dùng thất bại");
         }
 
-       
     }
 }

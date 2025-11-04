@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Shop_Db.Models;
 using ShopVision50.API.Models.Users.DTOs;
 using ShopVision50.API.Services.ProductsService_FD;
@@ -19,6 +20,7 @@ namespace ShopVision50.API.Controllers
 
 
         [HttpGet("getProductsByName")]
+        [Authorize]
         public async Task<IActionResult> GetProductsByName([FromQuery] string productName)
         {
             var products = await _productsService.GetProductByNameAsync(productName);
@@ -29,6 +31,7 @@ namespace ShopVision50.API.Controllers
 
 
         [HttpPost("addProduct")]
+        [Authorize]
         public async Task<IActionResult> AddProduct([FromBody] Product request)
         {
             if (string.IsNullOrEmpty(request.Name))
@@ -42,6 +45,7 @@ namespace ShopVision50.API.Controllers
                 return StatusCode(500, "Thêm sản phẩm thất bại.");
         }
         [HttpGet("getAllProducts")]
+        [Authorize]
         public async Task<IActionResult> GetAllProducts()
         {
             var products = await _productsService.GetAllProductsAsync();
@@ -50,6 +54,7 @@ namespace ShopVision50.API.Controllers
 
 
         [HttpGet("ProductDetails/{productsDetailsId}")]
+        [Authorize]
         public async Task<IActionResult> GetProductDetails([FromRoute] int productsDetailsId)
         {
             var result = await _productsService.GetProductDetails(productsDetailsId);
@@ -63,6 +68,7 @@ namespace ShopVision50.API.Controllers
             }
         }
         [HttpDelete("DeleteProducts/{productId}")]
+        [Authorize]
         public async Task<IActionResult> DeleteProduct([FromRoute] int productId)
         {
             var result = await _productsService.DeleteProductsAsync(productId);

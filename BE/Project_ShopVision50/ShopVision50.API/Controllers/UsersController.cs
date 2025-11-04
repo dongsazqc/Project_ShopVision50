@@ -4,6 +4,7 @@ using ShopVision50.API.Services.UserService_FD;
 using Shop_Db.Models;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 
 namespace ShopVision50.API.Controllers
 {
@@ -16,6 +17,7 @@ namespace ShopVision50.API.Controllers
 
         // GET api/users/getAll
         [HttpGet("getAll")]
+        [Authorize]
         public async Task<IActionResult> GetAll()
         {
             var result = await _svc.GetAllUsersAsyncSer();
@@ -25,6 +27,7 @@ namespace ShopVision50.API.Controllers
 
         // GET api/users/getById/{id}
         [HttpGet("getById/{id}")]
+        [Authorize]
         public async Task<IActionResult> GetById([FromRoute] int id)
         {
             var result = await _svc.GetUserByIdAsync(id);
@@ -34,6 +37,7 @@ namespace ShopVision50.API.Controllers
 
         // POST api/users/register
         [HttpPost("register")]
+        [Authorize]
         public async Task<IActionResult> Register([FromBody] User user)
         {
             if (user == null) return BadRequest("Body trống");
@@ -44,6 +48,7 @@ namespace ShopVision50.API.Controllers
 
         // PUT api/users/update
        [HttpPut("update/{id}")]
+       [Authorize]
         public async Task<IActionResult> Update(int id, [FromBody] User user)
         {
             if (user == null) return BadRequest("Body trống");
@@ -57,6 +62,7 @@ namespace ShopVision50.API.Controllers
 
         // DELETE api/users/delete/{id}
         [HttpDelete("delete/{id}")]
+        [Authorize]
         public async Task<IActionResult> Delete([FromRoute] int id)
         {
             var result = await _svc.DeleteUserAsync(id);
