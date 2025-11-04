@@ -1,158 +1,180 @@
-import React, { useEffect, useState } from "react";
 import {
   Table,
   Button,
+  Space,
   Modal,
   Form,
   Input,
+  message,
   InputNumber,
   Select,
-  message,
-  Tag,
-  Row,
-  Col,
+  Upload,
+  Tabs,
+  Spin,
 } from "antd";
-import { PlusOutlined, SaveOutlined, SearchOutlined } from "@ant-design/icons";
+import {
+  PlusOutlined,
+  EditOutlined,
+  DeleteOutlined,
+  SaveOutlined,
+  UploadOutlined,
+} from "@ant-design/icons";
+import { useEffect, useState } from "react";
 import api from "../utils/axios";
 
-const { Option } = Select;
+const { TabPane } = Tabs;
 
 export default function Products() {
   const [products, setProducts] = useState([]);
-  const [categories, setCategories] = useState([]);
-  const [filteredProducts, setFilteredProducts] = useState([]);
   const [loading, setLoading] = useState(false);
-
-  const [modalOpen, setModalOpen] = useState(false);
+  const [openModal, setOpenModal] = useState(false);
   const [editingProduct, setEditingProduct] = useState(null);
-  const [filterCategory, setFilterCategory] = useState(null);
-  const [searchName, setSearchName] = useState("");
-
+  const [variants, setVariants] = useState([]);
+  const [images, setImages] = useState([]);
+  const [metaData, setMetaData] = useState({});
   const [form] = Form.useForm();
+  const [imageLoading, setImageLoading] = useState(false);
 
-  // ================= FETCH PRODUCTS =================
+  // ==================== FETCH PRODUCTS ====================
   const fetchProducts = async () => {
     try {
       setLoading(true);
-      const res = await api.get("/Products/getAllProducts");
-      const list = res.data?.$values || res.data || [];
-      setProducts(list);
-      setFilteredProducts(list);
+      const res = await api.get("Products/getAllProducts"); // TODO: BE cần trả kèm danh mục, chất liệu, v.v.
+      setProducts(res.data?.$values || res.data || []);
     } catch (err) {
-      console.error("Lỗi tải sản phẩm:", err);
+      console.error(err);
       message.error("Không thể tải danh sách sản phẩm");
     } finally {
       setLoading(false);
     }
   };
 
-  // ================= FETCH CATEGORIES =================
-  const fetchCategories = async () => {
+  // ==================== FETCH META DATA ====================
+  const fetchMetaData = async () => {
     try {
-      const res = await api.get("/Category/GetAll");
-      const list = res.data?.$values || res.data || [];
-      setCategories(list);
+      const [cat, chat, style, gen, origin] = await Promise.all([
+        api.get("/Category/GetAll"), // TODO
+        api.get("/ChatLieu/GetAll"), // TODO
+        api.get("/PhongCach/GetAll"), // TODO
+        api.get("/GioiTinh/GetAll"), // TODO
+        api.get("/XuatXu/GetAll"), // TODO
+      ]);
+      setMetaData({
+        categories: cat.data?.$values || cat.data || [],
+        chatlieus: chat.data?.$values || chat.data || [],
+        phongcachs: style.data?.$values || style.data || [],
+        gioitinhs: gen.data?.$values || gen.data || [],
+        xuatxus: origin.data?.$values || origin.data || [],
+      });
     } catch (err) {
-      console.error("Lỗi tải danh mục:", err);
-      message.error("Không thể tải danh mục");
+      console.error(err);
+      message.error("Không thể tải dữ liệu meta");
     }
   };
 
   useEffect(() => {
     fetchProducts();
-    fetchCategories();
+    fetchMetaData();
   }, []);
 
-  // ================= FILTER BY CATEGORY =================
-  useEffect(() => {
-    if (!filterCategory) {
-      setFilteredProducts(products);
-    } else {
-      const filtered = products.filter(
-        (p) => p.categoryId === filterCategory
-      );
-      setFilteredProducts(filtered);
-    }
-  }, [filterCategory, products]);
-
-  // ================= SEARCH BY NAME =================
-  const searchByName = async () => {
-    if (!searchName.trim()) {
-      fetchProducts();
-      return;
-    }
+  // ==================== FETCH VARIANTS ====================
+  const fetchVariants = async (productId) => {
     try {
-      setLoading(true);
-      const res = await api.get(
-        `/Products/getProductsByName/${encodeURIComponent(searchName)}`
-      );
-      const list = res.data?.$values || res.data || [];
-      setFilteredProducts(list);
-      if (list.length === 0) message.info("Không tìm thấy sản phẩm phù hợp");
+      const res = await api.get(`/ProductVariants/GetByProductId/${productId}`); // TODO
+      setVariants(res.data?.$values || res.data || []);
     } catch (err) {
-      console.error("Lỗi tìm sản phẩm:", err);
-      message.error("Không thể tìm sản phẩm");
-    } finally {
-      setLoading(false);
+      console.error(err);
     }
   };
 
-  // ================= OPEN MODAL =================
-  const openAddModal = () => {
-    setEditingProduct(null);
-    form.resetFields();
-    setModalOpen(true);
-  };
-
-  const openEditModal = (record) => {
-    setEditingProduct(record);
-    form.setFieldsValue({
-      name: record.name,
-      price: record.price,
-      description: record.description,
-      brand: record.brand,
-      warranty: record.warranty,
-      status: record.status,
-      categoryId: record.categoryId,
-    });
-    setModalOpen(true);
-  };
-
-  // ================= ADD / UPDATE PRODUCT =================
-  const handleSubmit = async (values) => {
+  // ==================== FETCH IMAGES ====================
+  const fetchImages = async (productId) => {
     try {
-      const payload = {
-        Name: values.name,
-        Price: values.price,
-        Description: values.description,
-        Brand: values.brand,
-        Warranty: values.warranty,
-        Status: values.status,
-        CategoryId: values.categoryId,
-      };
+      setImageLoading(true);
+      const res = await api.get(`/Images/GetByProductId/${productId}`); // TODO
+      setImages(res.data?.$values || res.data || []);
+    } catch (err) {
+      console.error(err);
+    } finally {
+      setImageLoading(false);
+    }
+  };
 
+  // ==================== SAVE PRODUCT ====================
+  const handleSave = async (values) => {
+    try {
       if (editingProduct) {
-        await api.put(`/Products/update/${editingProduct.productId}`, payload);
+        await api.put(`/Products/Update/${editingProduct.sanPhamId}`, values); // TODO
         message.success("Cập nhật sản phẩm thành công!");
       } else {
-        await api.post("/Products/addProduct", payload);
+        await api.post("/Products/Add", values); // TODO
         message.success("Thêm sản phẩm thành công!");
       }
-
-      setModalOpen(false);
       fetchProducts();
+      setOpenModal(false);
+      form.resetFields();
     } catch (err) {
-      console.error("Lỗi khi thêm/cập nhật:", err.response?.data || err.message);
-      message.error(err.response?.data || "Không thể lưu sản phẩm");
+      console.error(err);
+      message.error("Lưu sản phẩm thất bại");
     }
   };
 
-  // ================= TABLE COLUMNS =================
+  // ==================== UPDATE VARIANT ====================
+  const handleUpdateVariant = async (record) => {
+    try {
+      await api.put(`/ProductVariants/Update/${record.bienTheId}`, {
+        giaBan: record.giaBan,
+        soLuongTon: record.soLuongTon,
+      }); // TODO
+      message.success("Cập nhật biến thể thành công!");
+      fetchVariants(record.sanPhamId);
+    } catch (err) {
+      console.error(err);
+      message.error("Không thể cập nhật biến thể");
+    }
+  };
+
+  // ==================== UPLOAD IMAGE ====================
+  const handleUploadImage = async ({ file }) => {
+    const formData = new FormData();
+    formData.append("file", file);
+    formData.append("sanPhamId", editingProduct?.sanPhamId);
+    try {
+      await api.post("/Images/Upload", formData); // TODO
+      message.success("Tải ảnh thành công!");
+      fetchImages(editingProduct?.sanPhamId);
+    } catch (err) {
+      console.error(err);
+      message.error("Tải ảnh thất bại");
+    }
+  };
+
+  // ==================== OPEN MODAL ====================
+  const openEditModal = (record) => {
+    setEditingProduct(record);
+    form.setFieldsValue(record);
+    setOpenModal(true);
+    fetchVariants(record.sanPhamId);
+    fetchImages(record.sanPhamId);
+  };
+
+  // ==================== DELETE PRODUCT ====================
+  const handleDelete = async (id) => {
+    try {
+      await api.delete(`/Products/Delete/${id}`); // TODO
+      message.success("Xóa sản phẩm thành công!");
+      fetchProducts();
+    } catch (err) {
+      console.error(err);
+      message.error("Không thể xóa sản phẩm");
+    }
+  };
+
   const columns = [
-    { title: "ID", dataIndex: "productId", width: 60 },
+    { title: "ID", dataIndex: "sanPhamId", width: 70 },
     {
       title: "Tên sản phẩm",
-      dataIndex: "name",
+      dataIndex: "tenSanPham",
       render: (text, record) => (
         <span
           style={{ color: "#1677ff", cursor: "pointer" }}
@@ -162,138 +184,207 @@ export default function Products() {
         </span>
       ),
     },
+    { title: "Giá gốc", dataIndex: "giaGoc", render: (v) => `${v?.toLocaleString()} ₫` },
+    { title: "Thương hiệu", dataIndex: "thuongHieu" },
+    { title: "Trạng thái", dataIndex: "trangThai" },
     {
-      title: "Giá",
-      dataIndex: "price",
-      render: (v) => v?.toLocaleString("vi-VN") + " ₫",
-    },
-    { title: "Thương hiệu", dataIndex: "brand" },
-    { title: "Bảo hành", dataIndex: "warranty" },
-    {
-      title: "Trạng thái",
-      dataIndex: "status",
-      render: (v) =>
-        v ? <Tag color="green">Còn hàng</Tag> : <Tag color="red">Hết hàng</Tag>,
-    },
-    {
-      title: "Danh mục",
-      dataIndex: "categoryId",
-      render: (id) => {
-        const cat = categories.find((c) => c.categoryId === id);
-        return cat ? cat.name : "—";
-      },
+      title: "Thao tác",
+      render: (_, record) => (
+        <Space>
+          <Button icon={<EditOutlined />} onClick={() => openEditModal(record)} />
+          <Button danger icon={<DeleteOutlined />} onClick={() => handleDelete(record.sanPhamId)} />
+        </Space>
+      ),
     },
   ];
 
-  // ================= RENDER =================
   return (
     <div>
-      <h2 style={{ marginBottom: 16 }}>Quản lý sản phẩm</h2>
+      <Space style={{ display: "flex", justifyContent: "space-between", marginBottom: 16 }}>
+        <h2>Quản lý sản phẩm</h2>
+        <Button
+          type="primary"
+          icon={<PlusOutlined />}
+          onClick={() => {
+            setEditingProduct(null);
+            form.resetFields();
+            setOpenModal(true);
+          }}
+        >
+          Thêm sản phẩm
+        </Button>
+      </Space>
 
-      <Row gutter={12} style={{ marginBottom: 16 }}>
-        <Col span={6}>
-          <Input
-            placeholder="Nhập tên sản phẩm..."
-            value={searchName}
-            onChange={(e) => setSearchName(e.target.value)}
-            onPressEnter={searchByName}
-          />
-        </Col>
-        <Col>
-          <Button
-            icon={<SearchOutlined />}
-            onClick={searchByName}
-          >
-            Tìm
-          </Button>
-        </Col>
-        <Col span={6}>
-          <Select
-            allowClear
-            placeholder="Lọc theo danh mục"
-            style={{ width: "100%" }}
-            value={filterCategory}
-            onChange={setFilterCategory}
-          >
-            {categories.map((c) => (
-              <Option key={c.categoryId} value={c.categoryId}>
-                {c.name}
-              </Option>
-            ))}
-          </Select>
-        </Col>
-        <Col flex="auto" style={{ textAlign: "right" }}>
-          <Button
-            type="primary"
-            icon={<PlusOutlined />}
-            onClick={openAddModal}
-          >
-            Thêm sản phẩm
-          </Button>
-        </Col>
-      </Row>
+      <Table dataSource={products} columns={columns} loading={loading} rowKey="sanPhamId" bordered />
 
-      <Table
-        rowKey="productId"
-        dataSource={filteredProducts}
-        columns={columns}
-        loading={loading}
-        bordered
-        pagination={{ pageSize: 10 }}
-      />
-
-      {/* ================= MODAL ================= */}
+      {/* ==================== MODAL ==================== */}
       <Modal
-        open={modalOpen}
-        onCancel={() => setModalOpen(false)}
-        title={editingProduct ? "Cập nhật sản phẩm" : "Thêm sản phẩm"}
-        footer={[
-          <Button onClick={() => setModalOpen(false)}>Hủy</Button>,
-          <Button
-            type="primary"
-            icon={<SaveOutlined />}
-            onClick={() => form.submit()}
-          >
-            Lưu
-          </Button>,
-        ]}
+        title={editingProduct ? "Chi tiết sản phẩm" : "Thêm sản phẩm"}
+        open={openModal}
+        onCancel={() => setOpenModal(false)}
+        onOk={() => form.submit()}
+        okText="Lưu"
+        cancelText="Hủy"
+        width={1000}
       >
-        <Form form={form} layout="vertical" onFinish={handleSubmit}>
-          <Form.Item name="name" label="Tên sản phẩm" rules={[{ required: true }]}>
-            <Input />
-          </Form.Item>
-          <Form.Item name="price" label="Giá" rules={[{ required: true }]}>
-            <InputNumber min={0} style={{ width: "100%" }} />
-          </Form.Item>
-          <Form.Item name="description" label="Mô tả">
-            <Input.TextArea rows={3} />
-          </Form.Item>
-          <Form.Item name="brand" label="Thương hiệu">
-            <Input />
-          </Form.Item>
-          <Form.Item name="warranty" label="Bảo hành">
-            <Input />
-          </Form.Item>
-          <Form.Item name="status" label="Trạng thái">
-            <Select>
-              <Option value={true}>Còn hàng</Option>
-              <Option value={false}>Hết hàng</Option>
-            </Select>
-          </Form.Item>
-          <Form.Item
-            name="categoryId"
-            label="Danh mục"
-            rules={[{ required: true, message: "Vui lòng chọn danh mục" }]}
-          >
-            <Select placeholder="Chọn danh mục">
-              {categories.map((c) => (
-                <Option key={c.categoryId} value={c.categoryId}>
-                  {c.name}
-                </Option>
-              ))}
-            </Select>
-          </Form.Item>
-        </Form>
+        <Tabs defaultActiveKey="1">
+          {/* TAB 1: THÔNG TIN CHUNG */}
+          <TabPane tab="Thông tin chung" key="1">
+            <Form layout="vertical" form={form} onFinish={handleSave}>
+              <Form.Item label="Tên sản phẩm" name="tenSanPham" rules={[{ required: true }]}>
+                <Input />
+              </Form.Item>
+              <Form.Item label="Mô tả" name="moTa">
+                <Input.TextArea rows={3} />
+              </Form.Item>
+              <Form.Item label="Giá gốc" name="giaGoc">
+                <InputNumber min={0} style={{ width: "100%" }} />
+              </Form.Item>
+              <Form.Item label="Thương hiệu" name="thuongHieu">
+                <Input />
+              </Form.Item>
+              <Form.Item label="Bảo hành" name="baoHanh">
+                <Input />
+              </Form.Item>
+
+              {/* Dropdown các bảng con */}
+              <Form.Item label="Danh mục" name="danhMucId">
+                <Select
+                  options={metaData.categories?.map((x) => ({
+                    value: x.danhMucId,
+                    label: x.tenDanhMuc,
+                  }))}
+                />
+              </Form.Item>
+              <Form.Item label="Chất liệu" name="chatLieuId">
+                <Select
+                  options={metaData.chatlieus?.map((x) => ({
+                    value: x.chatLieuId,
+                    label: x.tenChatLieu,
+                  }))}
+                />
+              </Form.Item>
+              <Form.Item label="Phong cách" name="phongCachId">
+                <Select
+                  options={metaData.phongcachs?.map((x) => ({
+                    value: x.phongCachId,
+                    label: x.tenPhongCach,
+                  }))}
+                />
+              </Form.Item>
+              <Form.Item label="Giới tính" name="gioiTinhId">
+                <Select
+                  options={metaData.gioitinhs?.map((x) => ({
+                    value: x.gioiTinhId,
+                    label: x.tenGioiTinh,
+                  }))}
+                />
+              </Form.Item>
+              <Form.Item label="Xuất xứ" name="xuatXuId">
+                <Select
+                  options={metaData.xuatxus?.map((x) => ({
+                    value: x.xuatXuId,
+                    label: x.tenNuoc,
+                  }))}
+                />
+              </Form.Item>
+            </Form>
+          </TabPane>
+
+          {/* TAB 2: BIẾN THỂ SẢN PHẨM */}
+          <TabPane tab="Biến thể sản phẩm" key="2">
+            <Table
+              dataSource={variants}
+              rowKey="bienTheId"
+              bordered
+              pagination={false}
+              columns={[
+                { title: "Màu sắc", dataIndex: "tenMau" },
+                { title: "Kích cỡ", dataIndex: "tenKichCo" },
+                {
+                  title: "Giá bán",
+                  dataIndex: "giaBan",
+                  render: (v, r) => (
+                    <InputNumber
+                      value={r.giaBan}
+                      onChange={(val) =>
+                        setVariants((prev) =>
+                          prev.map((x) =>
+                            x.bienTheId === r.bienTheId ? { ...x, giaBan: val } : x
+                          )
+                        )
+                      }
+                    />
+                  ),
+                },
+                {
+                  title: "Tồn kho",
+                  dataIndex: "soLuongTon",
+                  render: (v, r) => (
+                    <InputNumber
+                      value={r.soLuongTon}
+                      onChange={(val) =>
+                        setVariants((prev) =>
+                          prev.map((x) =>
+                            x.bienTheId === r.bienTheId ? { ...x, soLuongTon: val } : x
+                          )
+                        )
+                      }
+                    />
+                  ),
+                },
+                {
+                  title: "Hành động",
+                  render: (_, record) => (
+                    <Button
+                      icon={<SaveOutlined />}
+                      type="primary"
+                      onClick={() => handleUpdateVariant(record)}
+                    >
+                      Lưu
+                    </Button>
+                  ),
+                },
+              ]}
+            />
+          </TabPane>
+
+          {/* TAB 3: ẢNH SẢN PHẨM */}
+          <TabPane tab="Ảnh sản phẩm" key="3">
+            <Upload
+              customRequest={handleUploadImage}
+              showUploadList={false}
+              accept="image/*"
+            >
+              <Button icon={<UploadOutlined />}>Tải ảnh mới</Button>
+            </Upload>
+            <Spin spinning={imageLoading}>
+              <div
+                style={{
+                  marginTop: 16,
+                  display: "flex",
+                  flexWrap: "wrap",
+                  gap: 12,
+                }}
+              >
+                {images.map((img) => (
+                  <img
+                    key={img.hinhAnhId}
+                    src={img.url}
+                    alt=""
+                    style={{
+                      width: 120,
+                      height: 120,
+                      objectFit: "cover",
+                      borderRadius: 8,
+                      border: img.anhChinh ? "2px solid #1890ff" : "1px solid #ccc",
+                    }}
+                  />
+                ))}
+              </div>
+            </Spin>
+          </TabPane>
+        </Tabs>
       </Modal>
     </div>
   );

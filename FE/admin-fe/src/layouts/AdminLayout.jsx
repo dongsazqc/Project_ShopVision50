@@ -15,34 +15,42 @@ import {
   UserOutlined,
   BarChartOutlined,
   ShopOutlined,
-  DatabaseOutlined,
   LogoutOutlined,
   MenuFoldOutlined,
   MenuUnfoldOutlined,
   SearchOutlined,
 } from "@ant-design/icons";
-import { Link, Outlet, useLocation } from "react-router-dom";
-import { useState } from "react";
+import { Link, Outlet, useLocation, useNavigate } from "react-router-dom";
+import { useState, useEffect } from "react";
+import { useAuth } from "../context/AuthContext";
 
 const { Header, Sider, Content } = Layout;
 
 export default function AdminLayout() {
   const [collapsed, setCollapsed] = useState(false);
   const location = useLocation();
+  const navigate = useNavigate();
+  const { user, logout, isAuthenticated } = useAuth();
+
   const siderWidth = collapsed ? 80 : 230;
 
   const {
     token: { colorBgContainer },
   } = theme.useToken();
 
-  // ====== Hồ sơ (dropdown) ======
+  // 🔒 Nếu chưa đăng nhập thì redirect ra trang /login
+  useEffect(() => {
+    if (!isAuthenticated) navigate("/login");
+  }, [isAuthenticated, navigate]);
+
+  // 📋 Menu dropdown (đăng xuất)
   const profileMenu = {
     items: [
       {
         key: "logout",
         icon: <LogoutOutlined />,
         label: "Đăng xuất",
-        onClick: () => console.log("Đăng xuất"),
+        onClick: () => logout(),
       },
     ],
   };
@@ -66,7 +74,6 @@ export default function AdminLayout() {
           transition: "all 0.3s ease",
         }}
       >
-        {/* LOGO */}
         <div
           style={{
             color: "#fff",
@@ -81,7 +88,6 @@ export default function AdminLayout() {
           {collapsed ? "SW" : "StyleWear Admin"}
         </div>
 
-        {/* MENU */}
         <Menu
           theme="dark"
           mode="inline"
@@ -89,12 +95,10 @@ export default function AdminLayout() {
           defaultOpenKeys={["product-management"]}
           style={{ marginTop: 10 }}
         >
-          {/* ====== BẢNG ĐIỀU KHIỂN ====== */}
           <Menu.Item key="/admin/dashboard" icon={<DashboardOutlined />}>
             <Link to="/admin/dashboard">Bảng điều khiển</Link>
           </Menu.Item>
 
-          {/* ====== QUẢN LÝ SẢN PHẨM ====== */}
           <Menu.SubMenu
             key="product-management"
             icon={<ShoppingOutlined />}
@@ -108,27 +112,22 @@ export default function AdminLayout() {
             </Menu.Item>
           </Menu.SubMenu>
 
-          {/* ====== ĐƠN HÀNG ====== */}
           <Menu.Item key="/admin/orders" icon={<ShoppingCartOutlined />}>
             <Link to="/admin/orders">Đơn hàng</Link>
           </Menu.Item>
 
-          {/* ====== KHUYẾN MÃI ====== */}
           <Menu.Item key="/admin/promotions" icon={<TagsOutlined />}>
             <Link to="/admin/promotions">Khuyến mãi</Link>
           </Menu.Item>
 
-          {/* ====== NGƯỜI DÙNG ====== */}
           <Menu.Item key="/admin/users" icon={<UserOutlined />}>
             <Link to="/admin/users">Người dùng</Link>
           </Menu.Item>
 
-          {/* ====== BÁO CÁO ====== */}
           <Menu.Item key="/admin/reports" icon={<BarChartOutlined />}>
             <Link to="/admin/reports">Báo cáo</Link>
           </Menu.Item>
 
-          {/* ====== POS ====== */}
           <Menu.Item key="/admin/pos" icon={<ShopOutlined />}>
             <Link to="/admin/pos">Bán hàng tại quầy (POS)</Link>
           </Menu.Item>
@@ -144,7 +143,7 @@ export default function AdminLayout() {
           transition: "margin-left 0.3s ease",
         }}
       >
-        {/* HEADER */}
+        {/* ===== HEADER ===== */}
         <Header
           style={{
             background: colorBgContainer,
@@ -194,11 +193,7 @@ export default function AdminLayout() {
                 background: "#f5f5f5",
               }}
             />
-            <Dropdown
-              menu={profileMenu}
-              placement="bottomRight"
-              trigger={["click"]}
-            >
+            <Dropdown menu={profileMenu} placement="bottomRight" trigger={["click"]}>
               <div
                 style={{
                   display: "flex",
@@ -209,25 +204,21 @@ export default function AdminLayout() {
                   borderRadius: 8,
                   transition: "all 0.2s ease",
                 }}
-                onMouseEnter={(e) =>
-                  (e.currentTarget.style.background = "#f5f5f5")
-                }
-                onMouseLeave={(e) =>
-                  (e.currentTarget.style.background = "transparent")
-                }
               >
                 <Avatar
                   icon={<UserOutlined />}
                   size={32}
                   style={{ backgroundColor: "#1890ff" }}
                 />
-                <span style={{ fontWeight: 500 }}>Admin</span>
+                <span style={{ fontWeight: 500 }}>
+                  {user?.fullName || "Người dùng"}
+                </span>
               </div>
             </Dropdown>
           </Space>
         </Header>
 
-        {/* CONTENT */}
+        {/* ===== CONTENT ===== */}
         <Content
           style={{
             margin: "24px 16px",
