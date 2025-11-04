@@ -1,4 +1,3 @@
-// src/pages/Users.jsx
 import {
   Table,
   Button,
@@ -39,12 +38,19 @@ export default function Users() {
     try {
       setLoading(true);
       const res = await api.get("/Users/getAll");
-      const list = res.data?.$values || [];
+      let list = res.data?.$values || [];
 
       if (!mounted) return;
 
+      // 🧩 Sắp xếp userId giảm dần (mới nhất lên đầu)
+      list.sort((a, b) => b.userId - a.userId);
+
       const formatted = list.map((u) => {
-        const roleId = u.userRoles?.$values?.[0]?.role?.roleId || 4;
+        const roleId =
+          u.userRoles?.$values?.[0]?.role?.roleId ??
+          u.roleId ??
+          4;
+
         let roleName = "Khách hàng";
         if (roleId === 1) roleName = "Admin";
         else if (roleId === 3) roleName = "Nhân viên";
@@ -63,7 +69,8 @@ export default function Users() {
       setFilteredUsers(formatted);
     } catch (err) {
       console.error(err);
-      const msg = err.response?.data?.message || "Không thể tải danh sách người dùng";
+      const msg =
+        err.response?.data?.message || "Không thể tải danh sách người dùng";
       message.error(msg);
     } finally {
       setLoading(false);
@@ -136,13 +143,60 @@ export default function Users() {
       };
 
       await api.put(`/Users/update/${selectedUser.userId}`, payload);
-
       message.success("Cập nhật người dùng thành công!");
+
+      // 🧩 Cập nhật ngay trên UI
+      setUsers((prev) => {
+        const updated = prev.map((u) =>
+          u.userId === selectedUser.userId
+            ? {
+                ...u,
+                fullName: values.fullName,
+                email: values.email,
+                phone: values.phone,
+                status: values.status,
+                defaultAddress: values.defaultAddress,
+                roleId: values.roleId,
+                role:
+                  values.roleId === 1
+                    ? "Admin"
+                    : values.roleId === 3
+                    ? "Nhân viên"
+                    : "Khách hàng",
+              }
+            : u
+        );
+        return [...updated].sort((a, b) => b.userId - a.userId);
+      });
+
+      setFilteredUsers((prev) => {
+        const updated = prev.map((u) =>
+          u.userId === selectedUser.userId
+            ? {
+                ...u,
+                fullName: values.fullName,
+                email: values.email,
+                phone: values.phone,
+                status: values.status,
+                defaultAddress: values.defaultAddress,
+                roleId: values.roleId,
+                role:
+                  values.roleId === 1
+                    ? "Admin"
+                    : values.roleId === 3
+                    ? "Nhân viên"
+                    : "Khách hàng",
+              }
+            : u
+        );
+        return [...updated].sort((a, b) => b.userId - a.userId);
+      });
+
       closeEditModal();
-      fetchUsers();
     } catch (error) {
       console.error("Error updating user:", error.response?.data || error.message);
-      const msg = error.response?.data?.message || "Cập nhật người dùng thất bại!";
+      const msg =
+        error.response?.data?.message || "Cập nhật người dùng thất bại!";
       message.error(msg);
     }
   };
@@ -152,7 +206,6 @@ export default function Users() {
     const today = new Date().toISOString().slice(0, 10);
     formAdd.resetFields();
     formAdd.setFieldsValue({
-      status: true,
       joinDate: today,
     });
     setModalAddOpen(true);
@@ -176,14 +229,52 @@ export default function Users() {
         RoleId: values.roleId,
       };
 
-      await api.post("/Users/register", payload);
+      const res = await api.post("/Users/register", payload);
+
+      console.log("👉 Response từ backend:", res.data); // kiểm tra cấu trúc backend trả về
 
       message.success("Thêm người dùng thành công!");
+
+      // 🧩 Thử lấy userId thật từ response
+      const returned =
+        res.data?.data || res.data?.user || res.data || {};
+      const realId =
+        returned?.userId ||
+        returned?.UserId ||
+        returned?.id ||
+        null;
+
+      if (realId) {
+        // ✅ Có ID thật từ backend
+        const newUser = {
+          userId: realId,
+          fullName: values.fullName,
+          email: values.email,
+          phone: values.phone,
+          status: values.status,
+          defaultAddress: values.defaultAddress,
+          joinDate: new Date(values.joinDate).toLocaleDateString("vi-VN"),
+          roleId: values.roleId,
+          role:
+            values.roleId === 1
+              ? "Admin"
+              : values.roleId === 3
+              ? "Nhân viên"
+              : "Khách hàng",
+        };
+
+        setUsers((prev) => [newUser, ...prev]);
+        setFilteredUsers((prev) => [newUser, ...prev]);
+      } else {
+        // ⚠️ Nếu BE không trả ID thì fetch lại để lấy đúng dữ liệu thật
+        await fetchUsers();
+      }
+
       closeAddModal();
-      fetchUsers();
     } catch (error) {
       console.error("Error adding user:", error.response?.data || error.message);
-      const msg = error.response?.data?.message || "Thêm người dùng thất bại!";
+      const msg =
+        error.response?.data?.message || "Thêm người dùng thất bại!";
       message.error(msg);
     }
   };
