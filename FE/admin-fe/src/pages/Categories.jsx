@@ -1,289 +1,327 @@
+// src/pages/Categories.jsx
 import {
-  Table,
-  Button,
-  Space,
-  Modal,
-  Form,
-  Input,
-  message,
-  Tabs,
-  Tag,
-  Popconfirm,
+    Table,
+    Button,
+    Space,
+    Modal,
+    Form,
+    Input,
+    message,
+    Tabs,
+    Tag,
 } from "antd";
 import {
-  PlusOutlined,
-  EyeOutlined,
-  DeleteOutlined,
-  FolderOutlined,
-  SaveOutlined,
+    PlusOutlined,
+    EditOutlined,
+    EyeOutlined,
+    FolderOutlined,
+    DeleteOutlined,
 } from "@ant-design/icons";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import api from "../utils/axios";
 
 const { TabPane } = Tabs;
 
 export default function Categories() {
-  const [categories, setCategories] = useState([]);
-  const [loading, setLoading] = useState(false);
-  const [openModal, setOpenModal] = useState(false);
-  const [detailModal, setDetailModal] = useState(false);
-  const [selectedCategory, setSelectedCategory] = useState(null);
-  const [form] = Form.useForm();
+    const [categories, setCategories] = useState([]);
+    const [loading, setLoading] = useState(false);
+    const [openModal, setOpenModal] = useState(false);
+    const [editingCategory, setEditingCategory] = useState(null);
+    const [detailModal, setDetailModal] = useState(false);
+    const [selectedCategory, setSelectedCategory] = useState(null);
+    const [isModalConfirmOpen, setIsModalConfirmOpen] = useState(false);
+    const [idDelete, setIdDelete] = useState(null);
 
-  // ================= LẤY DANH MỤC =================
-  const fetchCategories = async () => {
-    try {
-      setLoading(true);
-      const res = await api.get("/Category/GetAll");
-      const list = res.data?.$values || res.data || [];
-      setCategories(list);
-    } catch (err) {
-      console.error(err);
-      message.error("Không thể tải danh sách danh mục");
-    } finally {
-      setLoading(false);
-    }
-  };
+    const [form] = Form.useForm();
 
-  useEffect(() => {
-    fetchCategories();
-  }, []);
+    // 📦 Lấy danh sách danh mục
+    const fetchCategories = async () => {
+        try {
+            setLoading(true);
+            // TODO: ⚙️ API thật: GET /api/danhmuc (include SanPham nếu cần)
+            const res = await api.get("/Category/GetAll");
+            const dataBuilder = (res?.data?.$values || []).map((item) => ({
+                ...item,
+                productTotal: item?.products?.$values?.length || 0,
+            }));
+            setCategories(dataBuilder);
+        } catch (err) {
+            console.error(err);
+            message.error("Không thể tải danh sách danh mục");
+        } finally {
+            setLoading(false);
+        }
+    };
 
-  // ================= XEM + CHỈNH SỬA DANH MỤC =================
-  const handleView = async (record) => {
-    try {
-      const res = await api.get(`/Category/${record.categoryId}`);
-      setSelectedCategory(res.data);
-      form.setFieldsValue({
-        name: res.data.name,
-        description: res.data.description,
-      });
-      setDetailModal(true);
-    } catch (err) {
-      console.error(err);
-      message.error("Không thể tải chi tiết danh mục");
-    }
-  };
+    useEffect(() => {
+        fetchCategories();
+    }, []);
 
-  const handleUpdate = async () => {
-    try {
-      const values = await form.validateFields();
-      await api.put(`/Category/Update/${selectedCategory.categoryId}`, values);
-      message.success("Cập nhật danh mục thành công!");
-      setDetailModal(false);
-      fetchCategories();
-    } catch (err) {
-      console.error(err);
-      message.error("Không thể cập nhật danh mục");
-    }
-  };
+    // 💾 Thêm / Sửa danh mục
+    const handleSave = async (values) => {
+        try {
+            console.log("Form values:", values);
+            if (editingCategory) {
+                // TODO: ⚙️ API thật: PUT /api/danhmuc/:id
+                await api.put(
+                    `/Category/Update/${editingCategory.categoryId}`,
+                    {
+                        ...values,
+                        categoryId: editingCategory.categoryId,
+                    }
+                );
+                message.success("Cập nhật danh mục thành công");
+            } else {
+                // TODO: ⚙️ API thật: POST /api/danhmuc
+                await api.post("/Category", values);
+                message.success("Thêm danh mục thành công");
+            }
+            fetchCategories();
+            setOpenModal(false);
+            form.resetFields();
+        } catch (err) {
+            console.error(err);
+            message.error("Lưu danh mục thất bại");
+        }
+    };
 
-  // ================= THÊM DANH MỤC =================
-  const handleAdd = async (values) => {
-    try {
-      await api.post("/Category", values);
-      message.success("Thêm danh mục thành công!");
-      setOpenModal(false);
-      form.resetFields();
-      fetchCategories();
-    } catch (err) {
-      console.error(err);
-      message.error("Không thể thêm danh mục");
-    }
-  };
+    // 👁️ Xem chi tiết danh mục (và danh sách sản phẩm)
+    const handleView = async (record) => {
+        console.log(record);
+        try {
+            // TODO: ⚙️ API thật: GET /api/danhmuc/:id (include SanPham)
+            // const res = await api.get(`/danhmuc/${record.danhMucId}`);
+            setSelectedCategory(record);
+            setDetailModal(true);
+        } catch (err) {
+            console.error(err);
+            message.error("Không thể tải chi tiết danh mục");
+        }
+    };
 
-  // ================= XÓA DANH MỤC =================
-  const handleDelete = async () => {
-    if (!selectedCategory) {
-      message.warning("Chọn danh mục để xóa");
-      return;
-    }
-    try {
-      await api.delete(`/Category/${selectedCategory.categoryId}`);
-      message.success("Xóa danh mục thành công!");
-      setSelectedCategory(null);
-      setDetailModal(false);
-      fetchCategories();
-    } catch (err) {
-      console.error(err);
-      message.error("Không thể xóa danh mục");
-    }
-  };
+    const handleDelete = useCallback(async () => {
+        if (!idDelete) return;
+        try {
+            await api.delete(`/Category/${idDelete}`);
+            message.success("Xóa danh mục thành công");
+            setIsModalConfirmOpen(false);
+            setIdDelete(null);
+            fetchCategories();
+        } catch (err) {
+            console.error(err);
+            message.error("Xóa danh mục thất bại");
+        }
+    }, [idDelete]);
 
-  // ================= CỘT TRONG BẢNG =================
-  const columns = [
-    {
-      title: "ID",
-      dataIndex: "categoryId",
-      key: "categoryId",
-      width: 80,
-    },
-    {
-      title: "Tên danh mục",
-      dataIndex: "name",
-      key: "name",
-      render: (text, record) => (
-        <span
-          style={{
-            color: "#1677ff",
-            fontWeight: 400,
-            cursor: "pointer",
-          }}
-          onClick={() => handleView(record)}
-        >
-          {text}
-        </span>
-      ),
-    },
-    {
-      title: "Mô tả",
-      dataIndex: "description",
-      key: "description",
-      render: (text) => text || "—",
-    },
-  ];
+    const columns = [
+        {
+            title: "Tên danh mục",
+            dataIndex: "name",
+            key: "name",
+            render: (text) => (
+                <Space>
+                    <FolderOutlined />
+                    {text}
+                </Space>
+            ),
+        },
+        {
+            title: "Mô tả",
+            dataIndex: "description",
+            key: "description",
+            render: (text) => text || "—",
+        },
+        {
+            title: "Số lượng sản phẩm",
+            dataIndex: "productTotal",
+            key: "productTotal",
+            render: (value) => <Tag color="blue">{value}</Tag>,
+        },
+        {
+            title: "Thao tác",
+            key: "actions",
+            render: (_, record) => (
+                <Space>
+                    <Button
+                        icon={<EyeOutlined />}
+                        onClick={() => handleView(record)}
+                        type="default"
+                    />
+                    <Button
+                        icon={<EditOutlined />}
+                        onClick={() => {
+                            setEditingCategory(record);
+                            form.setFieldsValue(record);
+                            setOpenModal(true);
+                        }}
+                        type="primary"
+                    />
+                    <Button
+                        danger
+                        icon={<DeleteOutlined />}
+                        onClick={() => {
+                            setIdDelete(record.categoryId);
+                            setIsModalConfirmOpen(true);
+                        }}
+                        type="default"
+                    />
+                </Space>
+            ),
+        },
+    ];
 
-  return (
-    <div>
-      <Space
-        style={{
-          marginBottom: 16,
-          display: "flex",
-          justifyContent: "space-between",
-        }}
-      >
-        <Input.Search
-          placeholder="Tìm danh mục..."
-          onSearch={(value) =>
-            setCategories((prev) =>
-              prev.filter((c) =>
-                c.name.toLowerCase().includes(value.toLowerCase())
-              )
-            )
-          }
-          style={{ width: 300 }}
-        />
-        <Space>
-          <Popconfirm
-            title="Bạn có chắc muốn xóa danh mục đang chọn không?"
-            onConfirm={handleDelete}
-            okText="Xóa"
-            cancelText="Hủy"
-          >
-            <Button danger icon={<DeleteOutlined />}>
-              Xóa danh mục
-            </Button>
-          </Popconfirm>
-
-          <Button
-            type="primary"
-            icon={<PlusOutlined />}
-            onClick={() => {
-              form.resetFields();
-              setOpenModal(true);
-            }}
-          >
-            Thêm danh mục
-          </Button>
-        </Space>
-      </Space>
-
-      <Table
-        dataSource={categories}
-        columns={columns}
-        loading={loading}
-        rowKey="categoryId"
-        bordered
-      />
-
-      {/* Modal thêm mới */}
-      <Modal
-        title="Thêm danh mục mới"
-        open={openModal}
-        onCancel={() => setOpenModal(false)}
-        onOk={() => form.submit()}
-        okText="Lưu"
-        cancelText="Hủy"
-      >
-        <Form layout="vertical" form={form} onFinish={handleAdd}>
-          <Form.Item
-            label="Tên danh mục"
-            name="name"
-            rules={[{ required: true, message: "Nhập tên danh mục" }]}
-          >
-            <Input />
-          </Form.Item>
-          <Form.Item label="Mô tả" name="description">
-            <Input.TextArea rows={3} />
-          </Form.Item>
-        </Form>
-      </Modal>
-
-      {/* Modal chi tiết + cập nhật */}
-      <Modal
-        open={detailModal}
-        title="Chi tiết & Cập nhật danh mục"
-        onCancel={() => setDetailModal(false)}
-        footer={[
-          <Button key="cancel" onClick={() => setDetailModal(false)}>
-            Đóng
-          </Button>,
-          <Button
-            key="save"
-            type="primary"
-            icon={<SaveOutlined />}
-            onClick={handleUpdate}
-          >
-            Lưu thay đổi
-          </Button>,
-        ]}
-        width={700}
-      >
-        {selectedCategory && (
-          <Tabs defaultActiveKey="1">
-            <TabPane tab="Thông tin" key="1">
-              <Form layout="vertical" form={form}>
-                <Form.Item
-                  label="Tên danh mục"
-                  name="name"
-                  rules={[{ required: true, message: "Nhập tên danh mục" }]}
+    return (
+        <div>
+            {/* Thanh chức năng */}
+            <Space
+                style={{
+                    marginBottom: 16,
+                    display: "flex",
+                    justifyContent: "space-between",
+                }}
+            >
+                <Input.Search
+                    placeholder="Tìm danh mục..."
+                    onSearch={(value) =>
+                        setCategories((prev) =>
+                            prev.filter((c) =>
+                                c.tenDanhMuc
+                                    .toLowerCase()
+                                    .includes(value.toLowerCase())
+                            )
+                        )
+                    }
+                    style={{ width: 300 }}
+                />
+                <Button
+                    type="primary"
+                    icon={<PlusOutlined />}
+                    onClick={() => {
+                        setEditingCategory(null);
+                        setOpenModal(true);
+                    }}
                 >
-                  <Input />
-                </Form.Item>
-                <Form.Item label="Mô tả" name="description">
-                  <Input.TextArea rows={3} />
-                </Form.Item>
-              </Form>
-            </TabPane>
+                    Thêm danh mục
+                </Button>
+            </Space>
 
-            <TabPane tab="Danh sách sản phẩm" key="2">
-              <Table
-                dataSource={selectedCategory.products?.$values || []}
-                columns={[
-                  { title: "Tên sản phẩm", dataIndex: "name" },
-                  {
-                    title: "Giá",
-                    dataIndex: "price",
-                    render: (val) => `${val?.toLocaleString()} ₫`,
-                  },
-                  { title: "Thương hiệu", dataIndex: "brand" },
-                  {
-                    title: "Trạng thái",
-                    dataIndex: "status",
-                    render: (val) => (
-                      <Tag color={val ? "green" : "volcano"}>
-                        {val ? "Còn hàng" : "Hết hàng"}
-                      </Tag>
-                    ),
-                  },
-                ]}
-                pagination={false}
-                rowKey="productId"
-              />
-            </TabPane>
-          </Tabs>
-        )}
-      </Modal>
-    </div>
-  );
+            {/* Bảng danh mục */}
+            <Table
+                dataSource={categories}
+                columns={columns}
+                loading={loading}
+                rowKey="danhMucId"
+                bordered
+            />
+
+            {/* Modal thêm / sửa */}
+            <Modal
+                title={
+                    editingCategory ? "Chỉnh sửa danh mục" : "Thêm danh mục mới"
+                }
+                open={openModal}
+                onCancel={() => setOpenModal(false)}
+                onOk={() => form.submit()}
+                okText="Lưu"
+                cancelText="Hủy"
+            >
+                <Form layout="vertical" form={form} onFinish={handleSave}>
+                    <Form.Item
+                        label="Tên danh mục"
+                        name="name"
+                        rules={[
+                            { required: true, message: "Nhập tên danh mục" },
+                        ]}
+                    >
+                        <Input />
+                    </Form.Item>
+                    <Form.Item label="Mô tả" name="description">
+                        <Input.TextArea rows={3} />
+                    </Form.Item>
+                </Form>
+            </Modal>
+
+            {/* Modal chi tiết danh mục */}
+            <Modal
+                open={detailModal}
+                title="Chi tiết danh mục"
+                onCancel={() => setDetailModal(false)}
+                footer={null}
+                width={800}
+            >
+                {selectedCategory && (
+                    <Tabs defaultActiveKey="1">
+                        <TabPane tab="Thông tin" key="1">
+                            <p>
+                                <b>Tên danh mục:</b> {selectedCategory.name}
+                            </p>
+                            <p>
+                                <b>Mô tả:</b>{" "}
+                                {selectedCategory.description || "Không có"}
+                            </p>
+                            <p>
+                                <b>Số lượng sản phẩm:</b>{" "}
+                                {selectedCategory.productTotal || 0}
+                            </p>
+                        </TabPane>
+
+                        <TabPane tab="Danh sách sản phẩm" key="2">
+                            <Table
+                                dataSource={
+                                    selectedCategory?.products?.$values || []
+                                }
+                                columns={[
+                                    {
+                                        title: "Tên sản phẩm",
+                                        dataIndex: "name",
+                                        render: (text) => (
+                                            <Space>
+                                                <FolderOutlined />
+                                                {text}
+                                            </Space>
+                                        ),
+                                    },
+                                    {
+                                        title: "Giá gốc",
+                                        dataIndex: "price",
+                                        render: (val) =>
+                                            `${val?.toLocaleString()} ₫`,
+                                    },
+                                    {
+                                        title: "Thương hiệu",
+                                        dataIndex: "brand",
+                                    },
+                                    {
+                                        title: "Trạng thái",
+                                        dataIndex: "status",
+                                        render: (val) => (
+                                            <Tag
+                                                color={
+                                                    val ? "green" : "volcano"
+                                                }
+                                            >
+                                                {val ? "Đang bán" : "Ngừng bán"}
+                                            </Tag>
+                                        ),
+                                    },
+                                ]}
+                                pagination={false}
+                                rowKey="sanPhamId"
+                            />
+                        </TabPane>
+                    </Tabs>
+                )}
+            </Modal>
+
+            {/* Modal xác nhận xóa */}
+            <Modal
+                title="Basic Modal"
+                open={isModalConfirmOpen}
+                onOk={handleDelete}
+                onCancel={() => setIsModalConfirmOpen(false)}
+            >
+                <p>Bạn có chắc chắn muốn xóa danh mục này?</p>
+            </Modal>
+        </div>
+    );
 }
