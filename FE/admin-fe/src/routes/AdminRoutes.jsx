@@ -1,5 +1,6 @@
-import { Routes, Route } from "react-router-dom";
+import { Routes, Route, Navigate } from "react-router-dom";
 import AdminLayout from "../layouts/AdminLayout";
+import { useAuth } from "../context/AuthContext";
 
 // --- Import các trang ---
 import Dashboard from "../pages/Dashboard";
@@ -11,13 +12,35 @@ import Users from "../pages/Users";
 import Reports from "../pages/Reports";
 import POS from "../pages/POS";
 
-// --- Định nghĩa các route admin ---
 export default function AdminRoutes() {
+  const { user } = useAuth();
+
+  // Nếu chưa đăng nhập → chuyển về login
+  if (!user) return <Navigate to="/login" replace />;
+
+  // Nếu là khách hàng → không được vào admin
+  if (user.roleId === 4)
+    return <Navigate to="/login" replace state={{ message: "Bạn không có quyền truy cập trang quản trị!" }} />;
+
+  // Nếu là nhân viên → chỉ cho phép dashboard + pos
+  if (user.roleId === 3) {
+    return (
+      <Routes>
+        <Route path="/admin" element={<AdminLayout />}>
+          <Route index element={<Dashboard />} />
+          <Route path="dashboard" element={<Dashboard />} />
+          <Route path="pos" element={<POS />} />
+          {/* Nếu truy cập route khác → quay lại POS */}
+          <Route path="*" element={<Navigate to="/admin/pos" replace />} />
+        </Route>
+      </Routes>
+    );
+  }
+
+  // Nếu là admin → toàn quyền
   return (
     <Routes>
-      {/* Layout chính cho toàn bộ phần quản trị */}
       <Route path="/admin" element={<AdminLayout />}>
-        {/* Dashboard mặc định */}
         <Route index element={<Dashboard />} />
         <Route path="dashboard" element={<Dashboard />} />
 
@@ -39,6 +62,9 @@ export default function AdminRoutes() {
 
         {/* POS – Bán hàng tại quầy */}
         <Route path="pos" element={<POS />} />
+
+        {/* Route sai → về Dashboard */}
+        <Route path="*" element={<Navigate to="/admin/dashboard" replace />} />
       </Route>
     </Routes>
   );
