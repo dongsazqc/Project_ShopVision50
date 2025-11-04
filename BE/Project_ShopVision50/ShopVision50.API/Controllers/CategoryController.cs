@@ -1,4 +1,5 @@
-    using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Shop_Db.Models;
 using ShopVision50.API.Services.CategoriesService_FD;
 using System.Collections.Generic;
@@ -16,6 +17,7 @@ public class CategoryController : ControllerBase
     }
 
     [HttpGet("GetAll")]
+     [Authorize] 
     public async Task<ActionResult<IEnumerable<Category>>> GetAll()
     {
         var categories = await _service.GetAllAsync();
@@ -23,6 +25,8 @@ public class CategoryController : ControllerBase
     }
 
     [HttpGet("{id}")]
+         [Authorize] 
+
     public async Task<ActionResult<Category>> GetById(int id)
     {
         var category = await _service.GetByIdAsync(id);
@@ -31,6 +35,8 @@ public class CategoryController : ControllerBase
     }
 
     [HttpPost]
+         [Authorize] 
+
     public async Task<ActionResult> Create(Category category)
     {
         await _service.AddAsync(category);
@@ -38,6 +44,7 @@ public class CategoryController : ControllerBase
     }
 
    [HttpPut("Update/{id}")]
+        [Authorize] 
 public async Task<ActionResult> Update(int id, Category category)
 {
     if (id != category.CategoryId)
@@ -62,6 +69,7 @@ public async Task<ActionResult> Update(int id, Category category)
 
 
     [HttpDelete("{id}")]
+    [Authorize]
     public async Task<ActionResult> Delete(int id)
     {
         var existing = await _service.GetByIdAsync(id);

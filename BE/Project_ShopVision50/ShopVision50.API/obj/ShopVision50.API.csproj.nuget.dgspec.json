@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "/home/saz/Desktop/Fodels/Project_ShopVision50/BE/Project_ShopVision50/ShopVision50.API/ShopVision50.API.csproj": {}
+    "/home/saz/Desktop/Project_ShopVision50/BE/Project_ShopVision50/ShopVision50.API/ShopVision50.API.csproj": {}
   },
   "projects": {
-    "/home/saz/Desktop/Fodels/Project_ShopVision50/BE/Project_ShopVision50/ShopVision50.API/ShopVision50.API.csproj": {
+    "/home/saz/Desktop/Project_ShopVision50/BE/Project_ShopVision50/ShopVision50.API/ShopVision50.API.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "/home/saz/Desktop/Fodels/Project_ShopVision50/BE/Project_ShopVision50/ShopVision50.API/ShopVision50.API.csproj",
+        "projectUniqueName": "/home/saz/Desktop/Project_ShopVision50/BE/Project_ShopVision50/ShopVision50.API/ShopVision50.API.csproj",
         "projectName": "ShopVision50.API",
-        "projectPath": "/home/saz/Desktop/Fodels/Project_ShopVision50/BE/Project_ShopVision50/ShopVision50.API/ShopVision50.API.csproj",
+        "projectPath": "/home/saz/Desktop/Project_ShopVision50/BE/Project_ShopVision50/ShopVision50.API/ShopVision50.API.csproj",
         "packagesPath": "/home/saz/.nuget/packages/",
-        "outputPath": "/home/saz/Desktop/Fodels/Project_ShopVision50/BE/Project_ShopVision50/ShopVision50.API/obj/",
+        "outputPath": "/home/saz/Desktop/Project_ShopVision50/BE/Project_ShopVision50/ShopVision50.API/obj/",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "/home/saz/.nuget/NuGet/NuGet.Config"
@@ -27,8 +27,8 @@
           "net8.0": {
             "targetAlias": "net8.0",
             "projectReferences": {
-              "/home/saz/Desktop/Fodels/Project_ShopVision50/BE/Project_ShopVision50/ShopVision50.Infrastructure/ShopVision50.Infrastructure.csproj": {
-                "projectPath": "/home/saz/Desktop/Fodels/Project_ShopVision50/BE/Project_ShopVision50/ShopVision50.Infrastructure/ShopVision50.Infrastructure.csproj"
+              "/home/saz/Desktop/Project_ShopVision50/BE/Project_ShopVision50/ShopVision50.Infrastructure/ShopVision50.Infrastructure.csproj": {
+                "projectPath": "/home/saz/Desktop/Project_ShopVision50/BE/Project_ShopVision50/ShopVision50.Infrastructure/ShopVision50.Infrastructure.csproj"
               }
             }
           }
@@ -52,6 +52,10 @@
             "BCrypt.Net-Next": {
               "target": "Package",
               "version": "[4.0.3, )"
+            },
+            "Microsoft.AspNetCore.Authentication.JwtBearer": {
+              "target": "Package",
+              "version": "[8.0.0, )"
             },
             "Microsoft.EntityFrameworkCore": {
               "target": "Package",
@@ -111,14 +115,14 @@
         }
       }
     },
-    "/home/saz/Desktop/Fodels/Project_ShopVision50/BE/Project_ShopVision50/ShopVision50.Domain/ShopVision50.Domain.csproj": {
+    "/home/saz/Desktop/Project_ShopVision50/BE/Project_ShopVision50/ShopVision50.Domain/ShopVision50.Domain.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "/home/saz/Desktop/Fodels/Project_ShopVision50/BE/Project_ShopVision50/ShopVision50.Domain/ShopVision50.Domain.csproj",
+        "projectUniqueName": "/home/saz/Desktop/Project_ShopVision50/BE/Project_ShopVision50/ShopVision50.Domain/ShopVision50.Domain.csproj",
         "projectName": "ShopVision50.Domain",
-        "projectPath": "/home/saz/Desktop/Fodels/Project_ShopVision50/BE/Project_ShopVision50/ShopVision50.Domain/ShopVision50.Domain.csproj",
+        "projectPath": "/home/saz/Desktop/Project_ShopVision50/BE/Project_ShopVision50/ShopVision50.Domain/ShopVision50.Domain.csproj",
         "packagesPath": "/home/saz/.nuget/packages/",
-        "outputPath": "/home/saz/Desktop/Fodels/Project_ShopVision50/BE/Project_ShopVision50/ShopVision50.Domain/obj/",
+        "outputPath": "/home/saz/Desktop/Project_ShopVision50/BE/Project_ShopVision50/ShopVision50.Domain/obj/",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "/home/saz/.nuget/NuGet/NuGet.Config"
@@ -177,14 +181,14 @@
         }
       }
     },
-    "/home/saz/Desktop/Fodels/Project_ShopVision50/BE/Project_ShopVision50/ShopVision50.Infrastructure/ShopVision50.Infrastructure.csproj": {
+    "/home/saz/Desktop/Project_ShopVision50/BE/Project_ShopVision50/ShopVision50.Infrastructure/ShopVision50.Infrastructure.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "/home/saz/Desktop/Fodels/Project_ShopVision50/BE/Project_ShopVision50/ShopVision50.Infrastructure/ShopVision50.Infrastructure.csproj",
+        "projectUniqueName": "/home/saz/Desktop/Project_ShopVision50/BE/Project_ShopVision50/ShopVision50.Infrastructure/ShopVision50.Infrastructure.csproj",
         "projectName": "ShopVision50.Infrastructure",
-        "projectPath": "/home/saz/Desktop/Fodels/Project_ShopVision50/BE/Project_ShopVision50/ShopVision50.Infrastructure/ShopVision50.Infrastructure.csproj",
+        "projectPath": "/home/saz/Desktop/Project_ShopVision50/BE/Project_ShopVision50/ShopVision50.Infrastructure/ShopVision50.Infrastructure.csproj",
         "packagesPath": "/home/saz/.nuget/packages/",
-        "outputPath": "/home/saz/Desktop/Fodels/Project_ShopVision50/BE/Project_ShopVision50/ShopVision50.Infrastructure/obj/",
+        "outputPath": "/home/saz/Desktop/Project_ShopVision50/BE/Project_ShopVision50/ShopVision50.Infrastructure/obj/",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "/home/saz/.nuget/NuGet/NuGet.Config"
@@ -200,8 +204,8 @@
           "net8.0": {
             "targetAlias": "net8.0",
             "projectReferences": {
-              "/home/saz/Desktop/Fodels/Project_ShopVision50/BE/Project_ShopVision50/ShopVision50.Domain/ShopVision50.Domain.csproj": {
-                "projectPath": "/home/saz/Desktop/Fodels/Project_ShopVision50/BE/Project_ShopVision50/ShopVision50.Domain/ShopVision50.Domain.csproj"
+              "/home/saz/Desktop/Project_ShopVision50/BE/Project_ShopVision50/ShopVision50.Domain/ShopVision50.Domain.csproj": {
+                "projectPath": "/home/saz/Desktop/Project_ShopVision50/BE/Project_ShopVision50/ShopVision50.Domain/ShopVision50.Domain.csproj"
               }
             }
           }
