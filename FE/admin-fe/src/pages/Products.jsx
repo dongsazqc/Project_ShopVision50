@@ -171,32 +171,41 @@ export default function Products() {
   };
 
   const columns = [
-    { title: "ID", dataIndex: "sanPhamId", width: 70 },
-    {
-      title: "Tên sản phẩm",
-      dataIndex: "tenSanPham",
-      render: (text, record) => (
-        <span
-          style={{ color: "#1677ff", cursor: "pointer" }}
-          onClick={() => openEditModal(record)}
-        >
-          {text}
-        </span>
-      ),
-    },
-    { title: "Giá gốc", dataIndex: "giaGoc", render: (v) => `${v?.toLocaleString()} ₫` },
-    { title: "Thương hiệu", dataIndex: "thuongHieu" },
-    { title: "Trạng thái", dataIndex: "trangThai" },
-    {
-      title: "Thao tác",
-      render: (_, record) => (
-        <Space>
-          <Button icon={<EditOutlined />} onClick={() => openEditModal(record)} />
-          <Button danger icon={<DeleteOutlined />} onClick={() => handleDelete(record.sanPhamId)} />
-        </Space>
-      ),
-    },
-  ];
+  { title: "ID", dataIndex: "productId", width: 70 },
+  {
+    title: "Tên sản phẩm",
+    dataIndex: "name",
+    render: (text, record) => (
+      <span
+        style={{ color: "#1677ff", cursor: "pointer" }}
+        onClick={() => openEditModal(record)}
+      >
+        {text}
+      </span>
+    ),
+  },
+  {
+    title: "Giá gốc",
+    dataIndex: "price", 
+    render: (v) => `${Number(v).toLocaleString()} ₫`,
+  },
+  { title: "Thương hiệu", dataIndex: "brand" },
+  {
+    title: "Trạng thái",
+    dataIndex: "status",
+    render: (val) => (val ? "Hoạt động" : "Không hoạt động"),
+  },
+  {
+    title: "Thao tác",
+    render: (_, record) => (
+      <Space>
+        <Button icon={<EditOutlined />} onClick={() => openEditModal(record)} />
+        <Button danger icon={<DeleteOutlined />} onClick={() => handleDelete(record.productId)} />
+      </Space>
+    ),
+  },
+];
+
 
   return (
     <div>

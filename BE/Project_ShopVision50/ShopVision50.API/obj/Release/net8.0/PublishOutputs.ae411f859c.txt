@@ -25,7 +25,9 @@
 /home/saz/Desktop/Project_ShopVision50/BE/Project_ShopVision50/ShopVision50.API/bin/Release/net8.0/publish/Microsoft.IdentityModel.Tokens.dll
 /home/saz/Desktop/Project_ShopVision50/BE/Project_ShopVision50/ShopVision50.API/bin/Release/net8.0/publish/Microsoft.OpenApi.dll
 /home/saz/Desktop/Project_ShopVision50/BE/Project_ShopVision50/ShopVision50.API/bin/Release/net8.0/publish/MySqlConnector.dll
+/home/saz/Desktop/Project_ShopVision50/BE/Project_ShopVision50/ShopVision50.API/bin/Release/net8.0/publish/Newtonsoft.Json.dll
 /home/saz/Desktop/Project_ShopVision50/BE/Project_ShopVision50/ShopVision50.API/bin/Release/net8.0/publish/Pomelo.EntityFrameworkCore.MySql.dll
+/home/saz/Desktop/Project_ShopVision50/BE/Project_ShopVision50/ShopVision50.API/bin/Release/net8.0/publish/RabbitMQ.Client.dll
 /home/saz/Desktop/Project_ShopVision50/BE/Project_ShopVision50/ShopVision50.API/bin/Release/net8.0/publish/Swashbuckle.AspNetCore.Swagger.dll
 /home/saz/Desktop/Project_ShopVision50/BE/Project_ShopVision50/ShopVision50.API/bin/Release/net8.0/publish/Swashbuckle.AspNetCore.SwaggerGen.dll
 /home/saz/Desktop/Project_ShopVision50/BE/Project_ShopVision50/ShopVision50.API/bin/Release/net8.0/publish/Swashbuckle.AspNetCore.SwaggerUI.dll

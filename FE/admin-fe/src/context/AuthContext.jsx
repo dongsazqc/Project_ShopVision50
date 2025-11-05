@@ -1,76 +1,79 @@
 import React, { createContext, useContext, useState, useEffect } from "react";
 import { message } from "antd";
-// import api from "../utils/axios"; //  tạm bỏ để mock dữ liệu
 
 const AuthContext = createContext();
-// eslint-disable-next-line react-refresh/only-export-components
+
 export const useAuth = () => useContext(AuthContext);
 
 export const AuthProvider = ({ children }) => {
+  // Khởi tạo user từ localStorage, tránh lỗi parse undefined/null
   const [user, setUser] = useState(() => {
     const savedUser = localStorage.getItem("user");
-    return savedUser ? JSON.parse(savedUser) : null;
+    if (!savedUser || savedUser === "undefined") {
+      localStorage.removeItem("user");
+      return null;
+    }
+    try {
+      return JSON.parse(savedUser);
+    } catch {
+      localStorage.removeItem("user");
+      return null;
+    }
   });
+
   const [loading, setLoading] = useState(false);
 
-  // Khi load lại trang, nếu có token thì giữ trạng thái đăng nhập
+  // Giữ trạng thái đăng nhập khi reload trang
   useEffect(() => {
     const token = localStorage.getItem("token");
     if (token && !user) {
-      const storedUser = localStorage.getItem("user");
-      if (storedUser) setUser(JSON.parse(storedUser));
+      const savedUser = localStorage.getItem("user");
+      if (savedUser && savedUser !== "undefined") {
+        try {
+          setUser(JSON.parse(savedUser));
+        } catch {
+          setUser(null);
+          localStorage.removeItem("user");
+          localStorage.removeItem("token");
+        }
+      }
     }
-  }, []);
+  }, [user]);
 
-  //  MOCK LOGIN để test frontend
+  // Hàm login
   const login = async (email, password) => {
+    setLoading(true);
     try {
-      setLoading(true);
-      await new Promise((r) => setTimeout(r, 600)); // mô phỏng delay
+      const res = await fetch("http://160.250.5.26:5000/api/Login/login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ Email: email, Password: password }),
+      });
 
-      // Dữ liệu mô phỏng người dùng:
-      const fakeUsers = [
-        {
-          email: "admin@stylewear.com",
-          password: "123456",
-          roleId: 1,
-          fullName: "Quản trị viên",
-        },
-        {
-          email: "staff@stylewear.com",
-          password: "123456",
-          roleId: 3,
-          fullName: "Nhân viên bán hàng",
-        },
-      ];
-
-      const found = fakeUsers.find(
-        (u) => u.email === email && u.password === password
-      );
-
-      if (!found) {
+      if (!res.ok) {
         message.error("Email hoặc mật khẩu không đúng!");
         return false;
       }
 
-      const mockToken = "fake_token_" + Date.now();
+      const data = await res.json();
 
-      localStorage.setItem("token", mockToken);
-      localStorage.setItem("user", JSON.stringify(found));
+      // Lưu token + user vào localStorage
+      localStorage.setItem("token", data.token);
+      localStorage.setItem("user", JSON.stringify(data.user));
+      setUser(data.user);
 
-      setUser(found);
-      message.success(`Xin chào ${found.fullName}!`);
+      message.success(`Xin chào ${data.user.fullName || data.user.email}!`);
       return true;
-    } catch (err) {
-      console.error(err);
-      message.error("Đăng nhập lỗi (mock)!");
+    } catch (error) {
+      console.error(error);
+      message.error("Đăng nhập lỗi!");
       return false;
     } finally {
       setLoading(false);
     }
   };
 
-  // Đăng xuất
+  // Hàm logout
   const logout = () => {
     localStorage.removeItem("token");
     localStorage.removeItem("user");
