@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { Card, Form, Input, Button, Typography, message, Spin } from "antd";
+import { Card, Form, Input, Button, Typography, message } from "antd";
 import { useAuth } from "../context/AuthContext";
 
 const { Title, Text } = Typography;
@@ -16,6 +16,7 @@ export default function Login() {
       const success = await login(values.email, values.password);
       if (success) {
         const storedUser = JSON.parse(localStorage.getItem("user"));
+
         if (storedUser?.roleId === 1) {
           navigate("/admin/dashboard");
         } else if (storedUser?.roleId === 3) {
@@ -24,9 +25,8 @@ export default function Login() {
           message.warning("Tài khoản không có quyền truy cập trang quản trị!");
         }
       }
-    } catch (err) {
-      console.error(err);
-      message.error("Đăng nhập thất bại — cần backend bổ sung API!");
+    } catch (error) {
+      message.error("Lỗi đăng nhập, thử lại sau!");
     } finally {
       setLoading(false);
     }
@@ -45,21 +45,14 @@ export default function Login() {
       <Card
         style={{
           width: 400,
-          boxShadow: "0 4px 18px rgba(0, 0, 0, 0.08)",
+          boxShadow: "0 4px 18px rgba(0,0,0,0.08)",
           borderRadius: 12,
           background: "#fff",
           padding: "30px 24px",
         }}
       >
         <div style={{ textAlign: "center", marginBottom: 28 }}>
-          <Title
-            level={3}
-            style={{
-              color: "#1677ff",
-              fontWeight: 700,
-              marginBottom: 4,
-            }}
-          >
+          <Title level={3} style={{ color: "#1677ff", fontWeight: 700 }}>
             StyleWear Admin
           </Title>
           <Text type="secondary">Đăng nhập hệ thống quản trị</Text>
@@ -74,13 +67,7 @@ export default function Login() {
               { type: "email", message: "Email không hợp lệ!" },
             ]}
           >
-            <Input
-              placeholder="Nhập email của bạn"
-              style={{
-                borderRadius: 6,
-                height: 42,
-              }}
-            />
+            <Input placeholder="Nhập email của bạn" style={{ borderRadius: 6, height: 42 }} />
           </Form.Item>
 
           <Form.Item
@@ -88,13 +75,7 @@ export default function Login() {
             name="password"
             rules={[{ required: true, message: "Vui lòng nhập mật khẩu!" }]}
           >
-            <Input.Password
-              placeholder="Nhập mật khẩu"
-              style={{
-                borderRadius: 6,
-                height: 42,
-              }}
-            />
+            <Input.Password placeholder="Nhập mật khẩu" style={{ borderRadius: 6, height: 42 }} />
           </Form.Item>
 
           <Form.Item>
@@ -103,24 +84,12 @@ export default function Login() {
               htmlType="submit"
               block
               loading={loading}
-              style={{
-                borderRadius: 6,
-                height: 42,
-                fontWeight: 500,
-                fontSize: 15,
-                backgroundColor: "#1677ff",
-              }}
+              style={{ borderRadius: 6, height: 42, fontWeight: 500, fontSize: 15 }}
             >
               Đăng nhập
             </Button>
           </Form.Item>
         </Form>
-
-        {loading && (
-          <div style={{ textAlign: "center", marginTop: 10 }}>
-            <Spin size="small" />
-          </div>
-        )}
       </Card>
     </div>
   );

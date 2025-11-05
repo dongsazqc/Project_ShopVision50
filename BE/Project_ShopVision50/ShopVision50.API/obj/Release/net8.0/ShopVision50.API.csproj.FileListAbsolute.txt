@@ -480,3 +480,5 @@ C:/Users/Saz/OneDrive/Desktop/Api50/Project_ShopVision50/BE/Project_ShopVision50
 /home/saz/Desktop/Project_ShopVision50/BE/Project_ShopVision50/ShopVision50.API/bin/Release/net8.0/Microsoft.IdentityModel.Protocols.OpenIdConnect.dll
 /home/saz/Desktop/Project_ShopVision50/BE/Project_ShopVision50/ShopVision50.API/bin/Release/net8.0/Microsoft.IdentityModel.Tokens.dll
 /home/saz/Desktop/Project_ShopVision50/BE/Project_ShopVision50/ShopVision50.API/bin/Release/net8.0/System.IdentityModel.Tokens.Jwt.dll
+/home/saz/Desktop/Project_ShopVision50/BE/Project_ShopVision50/ShopVision50.API/bin/Release/net8.0/Newtonsoft.Json.dll
+/home/saz/Desktop/Project_ShopVision50/BE/Project_ShopVision50/ShopVision50.API/bin/Release/net8.0/RabbitMQ.Client.dll

@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
+using Shop_Db.Models;
 using ShopVision50.API.Models.Login;
 using ShopVision50.API.Services.Login_FD;
 using ShopVision50.API.Services.UserService_FD;
@@ -68,7 +69,15 @@ namespace ShopVision50.API.Controllers
             {
                 message = "Đăng nhập thành công!",
                 token = jwt,
-                expires = token.ValidTo
+                expires = token.ValidTo,
+                user = new 
+                {
+                    UserId = user.UserId,
+                    Email = user.Email,
+                    FullName = user.FullName,
+                    RoleId  = user.RoleId,
+                } 
+
             });
         }
     }

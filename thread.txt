@@ -1,0 +1,92 @@
+=== Liệt kê file + chức năng ===
+
+main.jsx
+- Entry point của React app
+- Render <App /> vào DOM
+- Bao bọc <App /> bằng <AuthProvider> để cung cấp context xác thực
+- Import CSS global (vd: antd styles)
+
+App.jsx
+- Root component của ứng dụng
+- Cấu hình Router chính (BrowserRouter, Routes)
+- Định nghĩa route /login và route /* (admin)
+- Sử dụng PrivateRoute để phân quyền truy cập admin
+
+AuthContext.jsx
+- Quản lý trạng thái xác thực người dùng (user, token)
+- Cung cấp hàm login, logout
+- Lưu trạng thái user/token vào localStorage
+- Cung cấp context để các component khác dùng (qua useAuth())
+
+AdminRoutes.jsx
+- Định nghĩa các route con trong khu vực admin
+- Phân quyền route dựa vào roleId (admin, staff, khách hàng)
+- Trả về component tương ứng theo route
+
+AdminLayout.jsx
+- Layout chính cho admin (sidebar, header, content)
+- Chứa <Outlet /> để render trang con theo route
+- Quản lý menu điều hướng, avatar người dùng, logout
+
+Login.jsx
+- Trang đăng nhập
+- Form nhập email và password
+- Gọi hàm login từ AuthContext
+- Điều hướng sang trang admin khi đăng nhập thành công
+
+Các trang trong thư mục pages (Dashboard.jsx, Products.jsx, Categories.jsx, Orders.jsx, Promotions.jsx, Users.jsx, Reports.jsx, POS.jsx)
+- Mỗi file là một trang chức năng riêng biệt
+- Render giao diện và logic tương ứng với route admin
+
+PrivateRoute.jsx (nếu có)
+- Component bao ngoài các route cần bảo vệ
+- Kiểm tra trạng thái đăng nhập và quyền truy cập
+- Điều hướng về /login nếu chưa hợp lệ
+
+
+=== Sơ đồ luồng đơn giản ===
+
+main.jsx
+   │
+   └──> AuthProvider (cung cấp Context: user, login, logout, isAuthenticated)
+                 │
+                 └──> App.jsx
+                          │
+                          ├── Route /login  → Login.jsx  (gọi login từ AuthContext)
+                          │
+                          └── Route /*     → PrivateRoute (kiểm tra isAuthenticated, user.roleId)
+                                       │
+                                       └──> AdminRoutes.jsx
+                                               │
+                                               ├── Nếu user.roleId === 3 → Chỉ quyền Dashboard, POS
+                                               │       ├── Route /admin/dashboard → Dashboard.jsx
+                                               │       └── Route /admin/pos → POS.jsx
+                                               │
+                                               └── Nếu user.roleId === 1 (admin) → full quyền
+                                                       ├── Route /admin/dashboard → Dashboard.jsx
+                                                       ├── Route /admin/products → Products.jsx
+                                                       ├── Route /admin/categories → Categories.jsx
+                                                       ├── Route /admin/orders → Orders.jsx
+                                                       ├── Route /admin/promotions → Promotions.jsx
+                                                       ├── Route /admin/users → Users.jsx
+                                                       ├── Route /admin/reports → Reports.jsx
+                                                       └── Route /admin/pos → POS.jsx
+                                              
+                                               (Tất cả route trong AdminLayout.jsx)
+
+AdminLayout.jsx
+  ├── Sidebar (menu điều hướng)
+  ├── Header (avatar, tìm kiếm, logout)
+  └── Content (<Outlet /> render page con như Dashboard, Products,...)
+
+
+=== Flow đăng nhập ===
+
+1. User truy cập /login → hiển thị Login.jsx
+2. User nhập email + password → gọi login() từ AuthContext
+3. login() gọi API backend
+4. Nếu thành công → lưu token + user vào localStorage + Context
+5. Login thành công → điều hướng /admin/dashboard hoặc /admin/pos theo role
+6. Trình duyệt load route AdminRoutes
+7. AdminRoutes phân quyền route dựa roleId
+8. AdminLayout render sidebar, header, content trang chính

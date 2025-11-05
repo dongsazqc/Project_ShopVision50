@@ -49,7 +49,7 @@ export default function Users() {
         const roleId =
           u.userRoles?.$values?.[0]?.role?.roleId ??
           u.roleId ??
-          4;
+          3;
 
         let roleName = "Khách hàng";
         if (roleId === 1) roleName = "Admin";
@@ -258,7 +258,7 @@ export default function Users() {
           role:
             values.roleId === 1
               ? "Admin"
-              : values.roleId === 3
+              : values.roleId === 2
               ? "Nhân viên"
               : "Khách hàng",
         };
@@ -339,7 +339,7 @@ export default function Users() {
           >
             <Option value="1">Admin</Option>
             <Option value="3">Nhân viên</Option>
-            <Option value="4">Khách hàng</Option>
+            <Option value="2">Khách hàng</Option>
           </Select>
         </Col>
         <Col span={6} style={{ textAlign: "right" }}>
@@ -398,7 +398,7 @@ export default function Users() {
             <Select>
               <Option value={1}>Admin</Option>
               <Option value={3}>Nhân viên</Option>
-              <Option value={4}>Khách hàng</Option>
+              <Option value={2}>Khách hàng</Option>
             </Select>
           </Form.Item>
           <Form.Item name="status" label="Trạng thái">
@@ -445,8 +445,8 @@ export default function Users() {
           <Form.Item name="roleId" label="Vai trò" rules={[{ required: true }]}>
             <Select>
               <Option value={1}>Admin</Option>
-              <Option value={3}>Nhân viên</Option>
-              <Option value={4}>Khách hàng</Option>
+              <Option value={2}>Nhân viên</Option>
+              <Option value={3}>Khách hàng</Option>
             </Select>
           </Form.Item>
           <Form.Item name="status" label="Trạng thái">

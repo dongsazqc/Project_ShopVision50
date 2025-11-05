@@ -4,6 +4,14 @@ ShopVision50.Infrastructure   // Project chứa DB, EF Core, migrations
 │
 └── AppDbContext.cs        // DbContext quản lý kết nối DB, mapping entity <-> table
 └── Migrations/            // Chứa file migration EF Core để tạo/cập nhật schema DB
+...
+
+
+ShopVision50.Agent
+|
+|___( chưa có gì vừa mới tạo )
+...
+
 
 Shop_Db.Models             // Project chứa các model/entity thuần
 │
@@ -25,7 +33,7 @@ ShopVision50.API           // Project Web API, nơi FE gửi request tới
 │   └── UserRepository.cs  // Thực hiện truy vấn DB qua AppDbContext
 └── DTOs/                  // Chứa các object dùng để trao đổi dữ liệu với FE
     └── RegisterDto.cs     // DTO định nghĩa dữ liệu nhận từ FE khi register
-
+...
 
 
 FE (Client)                  // Frontend gửi request
@@ -47,3 +55,11 @@ Sau đó chúng ta sẽ vào trong IService hoặc IRepository và đăng kí h�
 Tiếp tục vào hoặc S Repositories/ để thực hiện hợp đồng theo chức năng chúng ta cần làm
 
 Bước cuối đó là ở Controller thì chuyển thành api ra cho Fe gọi thôi
+
+
+
+
+
+
+
+

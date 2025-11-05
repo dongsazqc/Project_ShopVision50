@@ -50,7 +50,8 @@ namespace ShopVision50.API.Services.ProductsService_FD
                             ProductId = p.ProductId,
                             Name = p.Name,
                             Price = p.Price,
-                            Description = p.Description
+                            Description = p.Description,
+                            Brand = p.Brand,
                         };
                         productDtoList.Add(productDto); // thêm từng thằng productDto vào trong productDtoList
                     }

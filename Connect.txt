@@ -10,11 +10,20 @@ Info Server Vps
 IP: 160.250.5.26
 UserName: root
 Pass: Group50@
+
+--------------------------------------------------------------
+RabbitMq
+URL: http://160.250.5.26:15672
+UserName: admin
+Pass: admin123
+
+
+
 -------------------------------------------------------------
 
       "DefaultConnection": "Server=160.250.5.26;Port=3306;Database=Api50Group;User=Group50;Password=Group50@MySql;"
 
 ------------------------------------------------------------
-"ConnectionStrings": {
-    "DefaultConnection": "server=localhost;database=api50group_local;user=root;password=123456"
-}
+
+      "DefaultConnection": "server=localhost;database=Group50;user=root;password=123456"
+
