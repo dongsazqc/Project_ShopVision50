@@ -59,7 +59,6 @@ const fetchMetaData = async () => {
       api.get("/Gender/GetAll"),
       api.get("/Origin/GetAll"),
     ]);
-
     const newMeta = {
       categories: cat.data?.$values || cat.data || [],
       chatlieus: chat.data?.$values || chat.data || [],
