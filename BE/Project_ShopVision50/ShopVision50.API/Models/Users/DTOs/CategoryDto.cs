@@ -11,5 +11,7 @@ namespace ShopVision50.API.Models.Users.DTOs
     {
         public int CategoryId { get; set; }
         public string Name { get; set; } = string.Empty;
+        public string? Description { get; set; }
+
     }
 }

@@ -20,7 +20,8 @@ namespace ShopVision50.API.Services.CategoriesService_FD
             return category.Select(c => new CategoryDto
             {
                 CategoryId = c.CategoryId,
-                Name = c.Name,  
+                Name = c.Name, 
+                Description= c.Description 
             });
         }
 
