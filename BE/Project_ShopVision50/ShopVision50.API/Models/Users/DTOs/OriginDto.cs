@@ -14,6 +14,5 @@ namespace ShopVision50.API.Models.Users.DTOs
         [Required]
         public string Country { get; set; } = string.Empty;
 
-        public ICollection<ProductDto>? Products { get; set; }
     }
 }

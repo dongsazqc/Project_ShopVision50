@@ -10,7 +10,5 @@ namespace ShopVision50.API.Models.Users.DTOs
         [Required]
         public string RoleName { get; set; } = string.Empty;
 
-        public ICollection<UserDto>? Users { get; set; }
-        public ICollection<UserRoleDto>? UserRoles { get; set; }
     }
 }

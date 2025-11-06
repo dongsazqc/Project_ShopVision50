@@ -13,11 +13,18 @@ using ShopVision50.API.Repositories.ProductsRepo_FD.OrderRepo;
 using ShopVision50.API.Service.OrderService_FD;
 using ShopVision50.API.Repositories.ProductVariantsRepo_FD;
 using ShopVision50.API.Services.ProductVariantService_FD;
-
+using ShopVision50.API.Services.StyleService_FD;
+using ShopVision50.API.Repositories.StyleRepo_FD;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using ShopVision50.API.Services.Login_FD;
+using ShopVision50.API.Repositories.MaterialRepo_FD;
+using ShopVision50.API.Services.MaterialService_FD;
+using ShopVision50.API.Repositories.GenderRepository_FD;
+using ShopVision50.API.Services.GenderService_FD;
+using ShopVision50.API.Repositories.OriginRepo_FD;
+using ShopVision50.API.Services.OriginService_FD;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -85,6 +92,17 @@ builder.Services.AddScoped<IProductVariantService,ProductVariantService>();
 
 builder.Services.AddScoped<ILoginService, LoginService>();
 
+builder.Services.AddScoped<IStyleRepo, StyleRepo>();
+builder.Services.AddScoped<IStyleService,StyleService >();
+
+builder.Services.AddScoped<IMaterialRepository, MaterialRepository>();
+builder.Services.AddScoped<IMaterialService, MaterialService>();
+
+builder.Services.AddScoped<IGenderRepository, GenderRepository>();
+builder.Services.AddScoped<IGenderService, GenderService>();
+
+builder.Services.AddScoped<IOriginRepository, OriginRepository>();
+builder.Services.AddScoped<IOriginService, OriginService>();
 
 
 // CORS - cho phép tất cả origin (FE khác host thì bật)

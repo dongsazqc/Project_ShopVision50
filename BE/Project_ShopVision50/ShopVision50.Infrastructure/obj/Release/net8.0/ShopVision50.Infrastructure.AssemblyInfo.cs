@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("ShopVision50.Infrastructure")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Release")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+b6aeb9158150f2782af8fecce814cb5ab91c05b4")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+96b0928d85128038a2eca2b3560239849cf253f4")]
 [assembly: System.Reflection.AssemblyProductAttribute("ShopVision50.Infrastructure")]
 [assembly: System.Reflection.AssemblyTitleAttribute("ShopVision50.Infrastructure")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

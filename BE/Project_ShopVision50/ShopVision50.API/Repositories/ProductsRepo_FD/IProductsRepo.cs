@@ -9,6 +9,7 @@ namespace ShopVision50.API.Repositories.ProductsRepo_FD
         Task <List<Product>>GetAllProductsAsync();
         Task <Product> GetProductDetailAsync(int productId);
         Task DeleteProductsAsync(Product productid);
+        Task UpdateProductAsync(Product product);
     }
 
 

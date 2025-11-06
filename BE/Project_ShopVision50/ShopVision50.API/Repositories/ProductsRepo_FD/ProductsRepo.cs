@@ -31,15 +31,24 @@ namespace ShopVision50.API.Repositories.ProductsRepo_FD
 
         public async Task<List<Product>> GetAllProductsAsync()
         {
-            try
-            {
-                return await _context.Products.ToListAsync();
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine($"Lỗi API của GetAllProductsAsync: {ex.Message}");
-                return new List<Product>(); // Tránh null reference
-            }
+           try
+    {
+        return await _context.Products
+            .Include(p => p.Material)
+            .Include(p => p.Style)
+            .Include(p => p.Gender)
+            .Include(p => p.Origin)
+            .Include(p => p.Category)
+            .Include(p => p.ProductVariants) // Nếu muốn load biến thể luôn (cân nhắc performance)
+             .Include(p => p.ProductImages)   // Nếu cần ảnh
+            .AsSplitQuery()
+            .ToListAsync();
+    }
+    catch (Exception ex)
+    {
+        Console.WriteLine($"Lỗi API của GetAllProductsAsync: {ex.Message}");
+        return new List<Product>();
+    }
         }
 
 
@@ -81,7 +90,25 @@ namespace ShopVision50.API.Repositories.ProductsRepo_FD
                 _context.SaveChanges();
             });
         }
+
+
+public async Task UpdateProductAsync(Product product)
+{
+    try
+    {
+        _context.Products.Update(product);
+        await _context.SaveChangesAsync();
     }
+    catch (Exception ex)
+    {
+        Console.WriteLine($"Lỗi khi cập nhật sản phẩm: {ex.Message}");
+        throw;
+    }
+}
+
+
+    }
+
 
 
 }
