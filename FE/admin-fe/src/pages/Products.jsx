@@ -50,27 +50,33 @@ export default function Products() {
   };
 
   // ==================== FETCH META DATA ====================
-  const fetchMetaData = async () => {
-    try {
-      const [cat, chat, style, gen, origin] = await Promise.all([
-        api.get("/Category/GetAll"), // TODO
-        api.get("/ChatLieu/GetAll"), // TODO
-        api.get("/PhongCach/GetAll"), // TODO
-        api.get("/GioiTinh/GetAll"), // TODO
-        api.get("/XuatXu/GetAll"), // TODO
-      ]);
-      setMetaData({
-        categories: cat.data?.$values || cat.data || [],
-        chatlieus: chat.data?.$values || chat.data || [],
-        phongcachs: style.data?.$values || style.data || [],
-        gioitinhs: gen.data?.$values || gen.data || [],
-        xuatxus: origin.data?.$values || origin.data || [],
-      });
-    } catch (err) {
-      console.error(err);
-      message.error("Không thể tải dữ liệu meta");
-    }
-  };
+const fetchMetaData = async () => {
+  try {
+    const [cat, chat, style, gen, origin] = await Promise.all([
+      api.get("/Category/GetAll"),
+      api.get("/Material/GetAll"),
+      api.get("/Style/GetAll"),
+      api.get("/Gender/GetAll"),
+      api.get("/Origin/GetAll"),
+    ]);
+
+    const newMeta = {
+      categories: cat.data?.$values || cat.data || [],
+      chatlieus: chat.data?.$values || chat.data || [],
+      phongcachs: style.data?.$values || style.data || [],
+      gioitinhs: gen.data?.$values || gen.data || [],
+      xuatxus: origin.data?.$values || origin.data || [],
+    };
+
+    setMetaData(newMeta);
+    return newMeta; // Trả về để có thể await
+  } catch (err) {
+    console.error(err);
+    message.error("Không thể tải dữ liệu meta");
+    return null;
+  }
+};
+
 
   useEffect(() => {
     fetchProducts();
@@ -102,22 +108,45 @@ export default function Products() {
 
   // ==================== SAVE PRODUCT ====================
   const handleSave = async (values) => {
-    try {
-      if (editingProduct) {
-        await api.put(`/Products/Update/${editingProduct.sanPhamId}`, values); // TODO
-        message.success("Cập nhật sản phẩm thành công!");
-      } else {
-        await api.post("/Products/Add", values); // TODO
-        message.success("Thêm sản phẩm thành công!");
-      }
-      fetchProducts();
-      setOpenModal(false);
-      form.resetFields();
-    } catch (err) {
-      console.error(err);
-      message.error("Lưu sản phẩm thất bại");
+  try {
+    if (editingProduct) {
+      await api.put(`/Products/UpdateProducts/${editingProduct.productId}`, {
+        name: values.Name,
+        description: values.Description,
+        price: values.Price,
+        brand: values.Brand,
+        warranty: values.Warranty,
+        categoryId: values.CategoryId,
+        materialId: values.MaterialId,
+        styleId: values.StyleId,
+        genderId: values.GenderId,
+        originId: values.OriginId,
+      });
+      message.success("Cập nhật sản phẩm thành công!");
+    } else {
+      await api.post("/Products/addProduct", {
+        name: values.Name,
+        description: values.Description,
+        price: values.Price,
+        brand: values.Brand,
+        warranty: values.Warranty,
+        categoryId: values.CategoryId,
+        materialId: values.MaterialId,
+        styleId: values.StyleId,
+        genderId: values.GenderId,
+        originId: values.OriginId,
+      });
+      message.success("Thêm sản phẩm thành công!");
     }
-  };
+    fetchProducts();
+    setOpenModal(false);
+    form.resetFields();
+  } catch (err) {
+    console.error(err);
+    message.error("Lưu sản phẩm thất bại");
+  }
+};
+
 
   // ==================== UPDATE VARIANT ====================
   const handleUpdateVariant = async (record) => {
@@ -127,7 +156,7 @@ export default function Products() {
         soLuongTon: record.soLuongTon,
       }); // TODO
       message.success("Cập nhật biến thể thành công!");
-      fetchVariants(record.sanPhamId);
+      fetchVariants(record.ProductId);
     } catch (err) {
       console.error(err);
       message.error("Không thể cập nhật biến thể");
@@ -138,11 +167,11 @@ export default function Products() {
   const handleUploadImage = async ({ file }) => {
     const formData = new FormData();
     formData.append("file", file);
-    formData.append("sanPhamId", editingProduct?.sanPhamId);
+    formData.append("ProductId", editingProduct?.ProductId);
     try {
       await api.post("/Images/Upload", formData); // TODO
       message.success("Tải ảnh thành công!");
-      fetchImages(editingProduct?.sanPhamId);
+      fetchImages(editingProduct?.ProductId);
     } catch (err) {
       console.error(err);
       message.error("Tải ảnh thất bại");
@@ -150,18 +179,42 @@ export default function Products() {
   };
 
   // ==================== OPEN MODAL ====================
-  const openEditModal = (record) => {
-    setEditingProduct(record);
-    form.setFieldsValue(record);
-    setOpenModal(true);
-    fetchVariants(record.sanPhamId);
-    fetchImages(record.sanPhamId);
-  };
+const openEditModal = async (record) => {
+  // Nếu metaData chưa load đủ, load lại
+  if (
+    !metaData.categories?.length ||
+    !metaData.chatlieus?.length ||
+    !metaData.phongcachs?.length ||
+    !metaData.gioitinhs?.length ||
+    !metaData.xuatxus?.length
+  ) {
+    await fetchMetaData();
+  }
+
+  setEditingProduct(record);
+  
+  form.setFieldsValue({
+    Name: record.name,
+    Description: record.description,
+    Price: record.price,
+    Brand: record.brand,
+    Warranty: record.warranty,
+    CategoryId: record.categoryId,
+    MaterialId: record.materialId,
+    StyleId: record.styleId,
+    GenderId: record.genderId,
+    OriginId: record.originId,
+  });
+
+  setOpenModal(true);
+  fetchVariants(record.productId);
+  fetchImages(record.productId);
+};
 
   // ==================== DELETE PRODUCT ====================
   const handleDelete = async (id) => {
     try {
-      await api.delete(`/Products/Delete/${id}`); // TODO
+      await api.delete(`/Products/DeleteProducts/${id}`); // TODO
       message.success("Xóa sản phẩm thành công!");
       fetchProducts();
     } catch (err) {
@@ -211,20 +264,35 @@ export default function Products() {
     <div>
       <Space style={{ display: "flex", justifyContent: "space-between", marginBottom: 16 }}>
         <h2>Quản lý sản phẩm</h2>
-        <Button
-          type="primary"
-          icon={<PlusOutlined />}
-          onClick={() => {
-            setEditingProduct(null);
-            form.resetFields();
-            setOpenModal(true);
-          }}
-        >
-          Thêm sản phẩm
-        </Button>
+<Button
+  type="primary"
+  icon={<PlusOutlined />}
+  onClick={async () => {
+    if (
+      !metaData.categories?.length ||
+      !metaData.chatlieus?.length ||
+      !metaData.phongcachs?.length ||
+      !metaData.gioitinhs?.length ||
+      !metaData.xuatxus?.length
+    ) {
+      await fetchMetaData();
+    }
+    setEditingProduct(null);
+    form.resetFields();
+    setOpenModal(true);
+  }}
+>
+  Thêm sản phẩm
+</Button>
       </Space>
 
-      <Table dataSource={products} columns={columns} loading={loading} rowKey="sanPhamId" bordered />
+<Table
+  dataSource={products}
+  columns={columns}
+  loading={loading} 
+  rowKey="productId"
+  bordered
+/>
 
       {/* ==================== MODAL ==================== */}
       <Modal
@@ -240,60 +308,60 @@ export default function Products() {
           {/* TAB 1: THÔNG TIN CHUNG */}
           <TabPane tab="Thông tin chung" key="1">
             <Form layout="vertical" form={form} onFinish={handleSave}>
-              <Form.Item label="Tên sản phẩm" name="tenSanPham" rules={[{ required: true }]}>
+              <Form.Item label="Tên sản phẩm" name="Name" rules={[{ required: true }]}>
                 <Input />
               </Form.Item>
-              <Form.Item label="Mô tả" name="moTa">
+              <Form.Item label="Mô tả" name="Description">
                 <Input.TextArea rows={3} />
               </Form.Item>
-              <Form.Item label="Giá gốc" name="giaGoc">
+              <Form.Item label="Giá gốc" name="Price">
                 <InputNumber min={0} style={{ width: "100%" }} />
               </Form.Item>
-              <Form.Item label="Thương hiệu" name="thuongHieu">
+              <Form.Item label="Thương hiệu" name="Brand">
                 <Input />
               </Form.Item>
-              <Form.Item label="Bảo hành" name="baoHanh">
+              <Form.Item label="Bảo hành" name="Warranty">
                 <Input />
               </Form.Item>
 
               {/* Dropdown các bảng con */}
-              <Form.Item label="Danh mục" name="danhMucId">
+              <Form.Item label="Danh mục" name="CategoryId">
                 <Select
                   options={metaData.categories?.map((x) => ({
-                    value: x.danhMucId,
-                    label: x.tenDanhMuc,
+                    value: x.categoryId,
+                    label: x.name,
                   }))}
                 />
               </Form.Item>
-              <Form.Item label="Chất liệu" name="chatLieuId">
+              <Form.Item label="Chất liệu" name="MaterialId">
                 <Select
                   options={metaData.chatlieus?.map((x) => ({
-                    value: x.chatLieuId,
-                    label: x.tenChatLieu,
+                    value: x.materialId,
+                    label: x.name,
                   }))}
                 />
               </Form.Item>
-              <Form.Item label="Phong cách" name="phongCachId">
+              <Form.Item label="Phong cách" name="StyleId">
                 <Select
                   options={metaData.phongcachs?.map((x) => ({
-                    value: x.phongCachId,
-                    label: x.tenPhongCach,
+                    value: x.styleId,
+                    label: x.name,
                   }))}
                 />
               </Form.Item>
-              <Form.Item label="Giới tính" name="gioiTinhId">
+              <Form.Item label="Giới tính" name="GenderId">
                 <Select
                   options={metaData.gioitinhs?.map((x) => ({
-                    value: x.gioiTinhId,
-                    label: x.tenGioiTinh,
+                    value: x.genderId,
+                    label: x.name,
                   }))}
                 />
               </Form.Item>
-              <Form.Item label="Xuất xứ" name="xuatXuId">
+              <Form.Item label="Xuất xứ" name="OriginId">
                 <Select
                   options={metaData.xuatxus?.map((x) => ({
-                    value: x.xuatXuId,
-                    label: x.tenNuoc,
+                    value: x.originId,
+                    label: x.country,
                   }))}
                 />
               </Form.Item>

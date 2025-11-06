@@ -69,5 +69,6 @@ namespace ShopVision50.API.Controllers
             await _service.DeleteAsync(id);
             return Ok(new { message = "Order deleted successfully." });
         }
+
     }
 }

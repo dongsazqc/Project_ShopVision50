@@ -1,4 +1,5 @@
 using Shop_Db.Models;
+using ShopVision50.API.Models.Users.DTOs;
 using ShopVision50.API.Repositories.CategoriesRepo_FD;
 
 namespace ShopVision50.API.Services.CategoriesService_FD
@@ -12,9 +13,15 @@ namespace ShopVision50.API.Services.CategoriesService_FD
             _repository = repository;
         }
 
-        public async Task<IEnumerable<Category>> GetAllAsync()
+        public async Task<IEnumerable<CategoryDto>> GetAllAsync()
         {
-            return await _repository.GetAllAsync();
+            var category = await _repository.GetAllAsync();
+
+            return category.Select(c => new CategoryDto
+            {
+                CategoryId = c.CategoryId,
+                Name = c.Name,  
+            });
         }
 
         public async Task<Category?> GetByIdAsync(int id)

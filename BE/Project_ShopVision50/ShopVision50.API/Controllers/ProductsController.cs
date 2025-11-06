@@ -82,5 +82,33 @@ namespace ShopVision50.API.Controllers
                 return NotFound(result.Message); // "Không tìm thấy sản phẩm để xóa"
             }
         }
+
+        [HttpPut("UpdateProducts/{productId}")]
+[Authorize]
+public async Task<IActionResult> UpdateProduct([FromRoute] int productId, [FromBody] ProductDto request)
+{
+    if (request == null)
+        return BadRequest("Dữ liệu sản phẩm không hợp lệ.");
+
+    var result = await _productsService.UpdateProductAsync(productId, request);
+
+    if (result.Success)
+        return Ok(result.Message);
+    else
+        return BadRequest(result.Message);
+}
+
+
+                [HttpGet("GetProductById/{id}")]
+        public async Task<IActionResult> GetProductById(int id)
+        {
+            var result = await _productsService.GetProductDetails(id);
+            if (result.Success)
+                return Ok(result.Data);
+            else
+                return NotFound(new { message = result.Message });
+        }
+
+
     }
 }
