@@ -1,26 +1,31 @@
 {
   "format": 1,
   "restore": {
-    "/home/saz/Desktop/Project_ShopVision50/BE/Project_ShopVision50/ShopVision50.Domain/ShopVision50.Domain.csproj": {}
+    "C:\\Users\\ADMIN\\Desktop\\New folder (5)\\Project_ShopVision50\\BE\\Project_ShopVision50\\ShopVision50.Domain\\ShopVision50.Domain.csproj": {}
   },
   "projects": {
-    "/home/saz/Desktop/Project_ShopVision50/BE/Project_ShopVision50/ShopVision50.Domain/ShopVision50.Domain.csproj": {
+    "C:\\Users\\ADMIN\\Desktop\\New folder (5)\\Project_ShopVision50\\BE\\Project_ShopVision50\\ShopVision50.Domain\\ShopVision50.Domain.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "/home/saz/Desktop/Project_ShopVision50/BE/Project_ShopVision50/ShopVision50.Domain/ShopVision50.Domain.csproj",
+        "projectUniqueName": "C:\\Users\\ADMIN\\Desktop\\New folder (5)\\Project_ShopVision50\\BE\\Project_ShopVision50\\ShopVision50.Domain\\ShopVision50.Domain.csproj",
         "projectName": "ShopVision50.Domain",
-        "projectPath": "/home/saz/Desktop/Project_ShopVision50/BE/Project_ShopVision50/ShopVision50.Domain/ShopVision50.Domain.csproj",
-        "packagesPath": "/home/saz/.nuget/packages/",
-        "outputPath": "/home/saz/Desktop/Project_ShopVision50/BE/Project_ShopVision50/ShopVision50.Domain/obj/",
+        "projectPath": "C:\\Users\\ADMIN\\Desktop\\New folder (5)\\Project_ShopVision50\\BE\\Project_ShopVision50\\ShopVision50.Domain\\ShopVision50.Domain.csproj",
+        "packagesPath": "C:\\Users\\ADMIN\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\ADMIN\\Desktop\\New folder (5)\\Project_ShopVision50\\BE\\Project_ShopVision50\\ShopVision50.Domain\\obj\\",
         "projectStyle": "PackageReference",
+        "fallbackFolders": [
+          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
+        ],
         "configFilePaths": [
-          "/home/saz/.nuget/NuGet/NuGet.Config"
+          "C:\\Users\\ADMIN\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
           "net8.0"
         ],
         "sources": {
-          "/usr/lib/dotnet/library-packs": {},
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
@@ -39,7 +44,7 @@
           "auditLevel": "low",
           "auditMode": "direct"
         },
-        "SdkAnalysisLevel": "9.0.100"
+        "SdkAnalysisLevel": "9.0.200"
       },
       "frameworks": {
         "net8.0": {
@@ -66,7 +71,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "/usr/lib/dotnet/sdk/9.0.111/PortableRuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.200/PortableRuntimeIdentifierGraph.json"
         }
       }
     }
