@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -31,25 +31,25 @@ namespace ShopVision50.API.Services.ProductVariantService_FD
             return await _repository.GetAllAsync();
         }
 
-        public async Task<ProductVariant?> GetByIdAsync(int id)
+        public async Task<IEnumerable<ProductVariant>> GetByIdAsync(int productId)
         {
-             return await _repository.GetByIdAsync(id);
+            return await _repository.GetByIdAsync(productId);  // 🔥 gọi đúng hàm
         }
 
-        public async Task<bool> UpdateAsync(ProductVariant variant)
-        {
-            var existing = await _repository.GetByIdAsync(variant.ProductVariantId);
-            if (existing == null) return false;
+        //public async Task<bool> UpdateAsync(Product product)
+        //{
+        //    var existing = await _repository.GetByIdAsync(product.ProductId);
+        //    if (existing == null) return false;
 
-            existing.SalePrice = variant.SalePrice;
-            existing.Stock = variant.Stock;
-            existing.SizeId = variant.SizeId;
-            existing.ColorId = variant.ColorId;
-            existing.ProductId = variant.ProductId; 
+        //    existing.SalePrice = variant.SalePrice;
+        //    existing.Stock = variant.Stock;
+        //    existing.SizeId = variant.SizeId;
+        //    existing.ColorId = variant.ColorId;
+        //    existing.ProductId = variant.ProductId; 
 
-            await _repository.UpdateAsync(existing);
-            return true;
+        //    await _repository.UpdateAsync(existing);
+        //    return true;
 
-        }
+        //}
     }
 }

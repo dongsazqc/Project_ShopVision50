@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -41,13 +41,14 @@ namespace ShopVision50.API.Repositories.ProductVariantsRepo_FD
                 .ToListAsync();
         }
 
-        public async Task<ProductVariant?> GetByIdAsync(int id)
+        public async Task<IEnumerable<ProductVariant>> GetByIdAsync(int productId)
         {
-             return await _context.ProductVariants
+            return await _context.ProductVariants
                 .Include(p => p.Product)
                 .Include(p => p.Color)
                 .Include(p => p.Size)
-                .FirstOrDefaultAsync(p => p.ProductVariantId == id);
+                .Where(p => p.ProductId == productId)   // 🔥 id = ProductId
+                .ToListAsync();
         }
 
         public async Task UpdateAsync(ProductVariant variant)
