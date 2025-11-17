@@ -1641,3 +1641,4 @@ C:\Users\ADMIN\Desktop\New folder (5)\Project_ShopVision50\BE\Project_ShopVision
 C:\Users\ADMIN\Desktop\New folder (5)\Project_ShopVision50\BE\Project_ShopVision50\ShopVision50.API\obj\Debug\net8.0\ShopVision50.API.pdb
 C:\Users\ADMIN\Desktop\New folder (5)\Project_ShopVision50\BE\Project_ShopVision50\ShopVision50.API\obj\Debug\net8.0\ShopVision50.API.genruntimeconfig.cache
 C:\Users\ADMIN\Desktop\New folder (5)\Project_ShopVision50\BE\Project_ShopVision50\ShopVision50.API\obj\Debug\net8.0\ref\ShopVision50.API.dll
+C:\Users\ADMIN\Desktop\New folder (5)\Project_ShopVision50\BE\Project_ShopVision50\ShopVision50.API\obj\Debug\net8.0\staticwebassets.upToDateCheck.txt

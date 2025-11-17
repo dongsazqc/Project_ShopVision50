@@ -510,6 +510,16 @@
     "ReturnTypes": []
   },
   {
+    "ContainingType": "ShopVision50.API.Controllers.ProductColorController",
+    "Method": "GetAll",
+    "RelativePath": "api/ProductColor/GetAll",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
     "ContainingType": "ShopVision50.API.Controllers.ProductImageController",
     "Method": "UploadImage",
     "RelativePath": "api/products/{productId}/images",
@@ -680,6 +690,16 @@
         "IsRequired": true
       }
     ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "ShopVision50.API.Controllers.ProductSizeController",
+    "Method": "GetAll",
+    "RelativePath": "api/ProductSize/GetAll",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
     "ReturnTypes": []
   },
   {

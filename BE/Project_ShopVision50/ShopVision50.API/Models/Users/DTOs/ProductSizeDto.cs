@@ -14,6 +14,5 @@ namespace ShopVision50.API.Models.Users.DTOs
         [Required]
         public string Name { get; set; } = string.Empty;
 
-        public ICollection<ProductVariantDto>? ProductVariants { get; set; }
     }
 }
