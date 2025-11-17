@@ -1,4 +1,0 @@
-/home/saz/Desktop/Fodels/Project_ShopVision50/BE/Project_ShopVision50/ShopVision50.Domain/bin/Release/net8.0/publish/ShopVision50.Domain.dll
-/home/saz/Desktop/Fodels/Project_ShopVision50/BE/Project_ShopVision50/ShopVision50.Domain/bin/Release/net8.0/publish/ShopVision50.Domain.deps.json
-/home/saz/Desktop/Fodels/Project_ShopVision50/BE/Project_ShopVision50/ShopVision50.Domain/bin/Release/net8.0/publish/ShopVision50.Domain.pdb
-/home/saz/Desktop/Fodels/Project_ShopVision50/BE/Project_ShopVision50/ShopVision50.Domain/bin/Release/net8.0/publish/BCrypt.Net-Next.dll
