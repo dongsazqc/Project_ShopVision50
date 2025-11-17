@@ -16,9 +16,9 @@ namespace ShopVision50.API.Repositories.ProductVariantsRepo_FD
             _context = context;
         }
 
-        public async Task AddAsync(ProductVariant variant)
+    public async Task AddAsync(ProductVariant variant)
         {
-             await _context.ProductVariants.AddAsync(variant);
+            await _context.ProductVariants.AddAsync(variant);
             await _context.SaveChangesAsync();
         }
 

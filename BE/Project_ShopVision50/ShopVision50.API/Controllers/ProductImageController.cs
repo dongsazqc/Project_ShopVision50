@@ -40,6 +40,13 @@ public class ProductImageController : ControllerBase
         var images = await _service.GetImagesByProductIdAsync(productId);
         return Ok(images);
     }
+
+        [HttpGet("test")]
+    public IActionResult Test()
+    {
+        return Ok("API alive");
+    }
+
 }
 
 }
