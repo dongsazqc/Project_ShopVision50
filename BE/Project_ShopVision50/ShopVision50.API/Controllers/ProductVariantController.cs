@@ -1,71 +1,48 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Authorization;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
-using Shop_Db.Models;
-using ShopVision50.API.Services.ProductVariantService_FD;
+using ShopVision50.API.Models.Users.DTOs;
+using System.Threading.Tasks;
 
-namespace ShopVision50.API.Controllers
-{
-   [Route("api/[controller]")]
+[Route("api/[controller]")]
 [ApiController]
 public class ProductVariantController : ControllerBase
+{
+    private readonly IProductVariantService _service;
+    public ProductVariantController(IProductVariantService service)
     {
-        private readonly IProductVariantService _service;
-         public ProductVariantController(IProductVariantService service)
-        {
-            _service = service;
-        }
+        _service = service;
+    }
 
-         [HttpGet]
-         [Authorize]
-        public async Task<IActionResult> GetAll()
-        {
-            var variants = await _service.GetAllAsync();
-            return Ok(variants);
-        }
+    [HttpGet]
+    [Authorize]
+    public async Task<IActionResult> GetAll()
+    {
+        var result = await _service.GetAllAsync();
+        return Ok(result);
+    }
 
-        [HttpGet("{id}")]
-        [Authorize]
-        public async Task<IActionResult> GetById(int id)
-        {
-            var variants = await _service.GetByIdAsync(id); // 🔥 id = ProductId
+    [HttpGet("{productId}")]
+    [Authorize]
+    public async Task<IActionResult> GetByProductId(int productId)
+    {
+        var result = await _service.GetByProductIdAsync(productId);
+        if (!result.Any())
+            return NotFound();
 
-            if (!variants.Any())
-                return NotFound(new { message = "No variants found for this product" });
+        return Ok(result);
+    }
 
-            return Ok(variants);
-        }
+    [HttpPost]
+    [Authorize]
+    public async Task<IActionResult> Create([FromBody] BienTheDto dto)
+    {
+        if (!ModelState.IsValid)
+            return BadRequest(ModelState);
 
-        [HttpPost]
-        [Authorize]
-        public async Task<IActionResult> Create([FromBody] ProductVariant variant)
-        {
-            if (!ModelState.IsValid) return BadRequest(ModelState);
-            await _service.CreateAsync(variant);
-            return Ok(new { message = "Product variant created successfully" });
-        }
+        var success = await _service.CreateAsync(dto);
+        if (!success)
+            return BadRequest("Màu sắc, kích cỡ hoặc sản phẩm không tồn tại");
 
-        //[HttpPut("{id}")]
-        //[Authorize]
-        //public async Task<IActionResult> Update(int id, [FromBody] ProductVariant variant)
-        //{
-        //    if (id != variant.ProductVariantId) return BadRequest("ID mismatch");
-        //    var success = await _service.UpdateAsync(variant);
-        //    if (!success) return NotFound();
-        //    return Ok(new { message = "Product variant updated successfully" });
-        //}
-    
-        [HttpDelete("{id}")]
-        [Authorize]
-        public async Task<IActionResult> Delete(int id)
-        {
-            await _service.DeleteAsync(id);
-            return Ok(new { message = "Product variant deleted successfully" });
-        }
+        return Ok(new { message = "Tạo biến thể thành công" });
     }
 }

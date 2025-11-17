@@ -12,7 +12,6 @@ using ShopVision50.API.Repositories.OrderRepo_FD;
 using ShopVision50.API.Repositories.ProductsRepo_FD.OrderRepo;
 using ShopVision50.API.Service.OrderService_FD;
 using ShopVision50.API.Repositories.ProductVariantsRepo_FD;
-using ShopVision50.API.Services.ProductVariantService_FD;
 using ShopVision50.API.Services.StyleService_FD;
 using ShopVision50.API.Repositories.StyleRepo_FD;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -91,7 +90,7 @@ builder.Services.AddScoped<IPromotionService, PromotionService>();
 builder.Services.AddScoped<IOrderRepository,OrderRepository>();
 builder.Services.AddScoped<IOrderService, OrderService>();
 
-builder.Services.AddScoped<IProductVariantsRepo, ProductVariantsRepo>();
+builder.Services.AddScoped<IProductVariantsRepo, ProductVariantRepository>();
 builder.Services.AddScoped<IProductVariantService,ProductVariantService>();
 
 builder.Services.AddScoped<ILoginService, LoginService>();
