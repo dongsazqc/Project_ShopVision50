@@ -25,6 +25,8 @@ using ShopVision50.API.Repositories.GenderRepository_FD;
 using ShopVision50.API.Services.GenderService_FD;
 using ShopVision50.API.Repositories.OriginRepo_FD;
 using ShopVision50.API.Services.OriginService_FD;
+using ShopVision50.API.Repositories.ProductImageRepo_FD;
+using ShopVision50.API.Services.ProductImageService_FD;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -103,6 +105,9 @@ builder.Services.AddScoped<IGenderService, GenderService>();
 
 builder.Services.AddScoped<IOriginRepository, OriginRepository>();
 builder.Services.AddScoped<IOriginService, OriginService>();
+
+builder.Services.AddScoped<IProductImageRepository,ProductImageRepository >();
+builder.Services.AddScoped<IProductImageService,ProductImageService>();
 
 
 // CORS - cho phép tất cả origin (FE khác host thì bật)
