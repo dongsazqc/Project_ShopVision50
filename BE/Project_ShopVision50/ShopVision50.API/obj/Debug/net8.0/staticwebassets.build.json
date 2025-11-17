@@ -1,12 +1,331 @@
 {
   "Version": 1,
-  "Hash": "zswsrdhZ7f3hKqZeKZnfsDNxRrav2QzbLENrmjIPNUk=",
+  "Hash": "bR7S33YQsVSf6gmmYf7dD/4ehRPkKeVkqw3iclcIocw=",
   "Source": "ShopVision50.API",
   "BasePath": "_content/ShopVision50.API",
   "Mode": "Default",
   "ManifestType": "Build",
   "ReferencedProjectsConfiguration": [],
-  "DiscoveryPatterns": [],
-  "Assets": [],
-  "Endpoints": []
+  "DiscoveryPatterns": [
+    {
+      "Name": "ShopVision50.API/wwwroot",
+      "Source": "ShopVision50.API",
+      "ContentRoot": "/home/saz/Desktop/Project_ShopVision50/BE/Project_ShopVision50/ShopVision50.API/wwwroot/",
+      "BasePath": "_content/ShopVision50.API",
+      "Pattern": "**"
+    }
+  ],
+  "Assets": [
+    {
+      "Identity": "/home/saz/Desktop/Project_ShopVision50/BE/Project_ShopVision50/ShopVision50.API/wwwroot/images/products/007c5f24-14e6-40aa-9a0d-c0f64fe0764e.png",
+      "SourceId": "ShopVision50.API",
+      "SourceType": "Discovered",
+      "ContentRoot": "/home/saz/Desktop/Project_ShopVision50/BE/Project_ShopVision50/ShopVision50.API/wwwroot/",
+      "BasePath": "_content/ShopVision50.API",
+      "RelativePath": "images/products/007c5f24-14e6-40aa-9a0d-c0f64fe0764e#[.{fingerprint}]?.png",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "Fingerprint": "izu20oe3ep",
+      "Integrity": "XgnBuEpN+zwPD7qq1cxnJEHn5FioUjRkktDmvczQfGM=",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot/images/products/007c5f24-14e6-40aa-9a0d-c0f64fe0764e.png"
+    },
+    {
+      "Identity": "/home/saz/Desktop/Project_ShopVision50/BE/Project_ShopVision50/ShopVision50.API/wwwroot/wwwroot/images/products/554f1081-68b4-4eb6-98a9-43f55369f366.png",
+      "SourceId": "ShopVision50.API",
+      "SourceType": "Discovered",
+      "ContentRoot": "/home/saz/Desktop/Project_ShopVision50/BE/Project_ShopVision50/ShopVision50.API/wwwroot/",
+      "BasePath": "_content/ShopVision50.API",
+      "RelativePath": "wwwroot/images/products/554f1081-68b4-4eb6-98a9-43f55369f366#[.{fingerprint}]?.png",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "Fingerprint": "izu20oe3ep",
+      "Integrity": "XgnBuEpN+zwPD7qq1cxnJEHn5FioUjRkktDmvczQfGM=",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot/wwwroot/images/products/554f1081-68b4-4eb6-98a9-43f55369f366.png"
+    },
+    {
+      "Identity": "/home/saz/Desktop/Project_ShopVision50/BE/Project_ShopVision50/ShopVision50.API/wwwroot/wwwroot/images/products/f5b54c10-a27b-45af-a8a9-03053c781203.png",
+      "SourceId": "ShopVision50.API",
+      "SourceType": "Discovered",
+      "ContentRoot": "/home/saz/Desktop/Project_ShopVision50/BE/Project_ShopVision50/ShopVision50.API/wwwroot/",
+      "BasePath": "_content/ShopVision50.API",
+      "RelativePath": "wwwroot/images/products/f5b54c10-a27b-45af-a8a9-03053c781203#[.{fingerprint}]?.png",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "Fingerprint": "izu20oe3ep",
+      "Integrity": "XgnBuEpN+zwPD7qq1cxnJEHn5FioUjRkktDmvczQfGM=",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot/wwwroot/images/products/f5b54c10-a27b-45af-a8a9-03053c781203.png"
+    }
+  ],
+  "Endpoints": [
+    {
+      "Route": "images/products/007c5f24-14e6-40aa-9a0d-c0f64fe0764e.izu20oe3ep.png",
+      "AssetFile": "/home/saz/Desktop/Project_ShopVision50/BE/Project_ShopVision50/ShopVision50.API/wwwroot/images/products/007c5f24-14e6-40aa-9a0d-c0f64fe0764e.png",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "225427"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "image/png"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"XgnBuEpN+zwPD7qq1cxnJEHn5FioUjRkktDmvczQfGM=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Mon, 17 Nov 2025 10:20:48 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=31536000, immutable"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "fingerprint",
+          "Value": "izu20oe3ep"
+        },
+        {
+          "Name": "label",
+          "Value": "images/products/007c5f24-14e6-40aa-9a0d-c0f64fe0764e.png"
+        },
+        {
+          "Name": "integrity",
+          "Value": "sha256-XgnBuEpN+zwPD7qq1cxnJEHn5FioUjRkktDmvczQfGM="
+        }
+      ]
+    },
+    {
+      "Route": "images/products/007c5f24-14e6-40aa-9a0d-c0f64fe0764e.png",
+      "AssetFile": "/home/saz/Desktop/Project_ShopVision50/BE/Project_ShopVision50/ShopVision50.API/wwwroot/images/products/007c5f24-14e6-40aa-9a0d-c0f64fe0764e.png",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "225427"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "image/png"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"XgnBuEpN+zwPD7qq1cxnJEHn5FioUjRkktDmvczQfGM=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Mon, 17 Nov 2025 10:20:48 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=3600, must-revalidate"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "integrity",
+          "Value": "sha256-XgnBuEpN+zwPD7qq1cxnJEHn5FioUjRkktDmvczQfGM="
+        }
+      ]
+    },
+    {
+      "Route": "wwwroot/images/products/554f1081-68b4-4eb6-98a9-43f55369f366.izu20oe3ep.png",
+      "AssetFile": "/home/saz/Desktop/Project_ShopVision50/BE/Project_ShopVision50/ShopVision50.API/wwwroot/wwwroot/images/products/554f1081-68b4-4eb6-98a9-43f55369f366.png",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "225427"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "image/png"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"XgnBuEpN+zwPD7qq1cxnJEHn5FioUjRkktDmvczQfGM=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Mon, 17 Nov 2025 10:27:07 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=31536000, immutable"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "fingerprint",
+          "Value": "izu20oe3ep"
+        },
+        {
+          "Name": "label",
+          "Value": "wwwroot/images/products/554f1081-68b4-4eb6-98a9-43f55369f366.png"
+        },
+        {
+          "Name": "integrity",
+          "Value": "sha256-XgnBuEpN+zwPD7qq1cxnJEHn5FioUjRkktDmvczQfGM="
+        }
+      ]
+    },
+    {
+      "Route": "wwwroot/images/products/554f1081-68b4-4eb6-98a9-43f55369f366.png",
+      "AssetFile": "/home/saz/Desktop/Project_ShopVision50/BE/Project_ShopVision50/ShopVision50.API/wwwroot/wwwroot/images/products/554f1081-68b4-4eb6-98a9-43f55369f366.png",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "225427"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "image/png"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"XgnBuEpN+zwPD7qq1cxnJEHn5FioUjRkktDmvczQfGM=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Mon, 17 Nov 2025 10:27:07 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=3600, must-revalidate"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "integrity",
+          "Value": "sha256-XgnBuEpN+zwPD7qq1cxnJEHn5FioUjRkktDmvczQfGM="
+        }
+      ]
+    },
+    {
+      "Route": "wwwroot/images/products/f5b54c10-a27b-45af-a8a9-03053c781203.izu20oe3ep.png",
+      "AssetFile": "/home/saz/Desktop/Project_ShopVision50/BE/Project_ShopVision50/ShopVision50.API/wwwroot/wwwroot/images/products/f5b54c10-a27b-45af-a8a9-03053c781203.png",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "225427"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "image/png"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"XgnBuEpN+zwPD7qq1cxnJEHn5FioUjRkktDmvczQfGM=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Mon, 17 Nov 2025 10:26:34 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=31536000, immutable"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "fingerprint",
+          "Value": "izu20oe3ep"
+        },
+        {
+          "Name": "label",
+          "Value": "wwwroot/images/products/f5b54c10-a27b-45af-a8a9-03053c781203.png"
+        },
+        {
+          "Name": "integrity",
+          "Value": "sha256-XgnBuEpN+zwPD7qq1cxnJEHn5FioUjRkktDmvczQfGM="
+        }
+      ]
+    },
+    {
+      "Route": "wwwroot/images/products/f5b54c10-a27b-45af-a8a9-03053c781203.png",
+      "AssetFile": "/home/saz/Desktop/Project_ShopVision50/BE/Project_ShopVision50/ShopVision50.API/wwwroot/wwwroot/images/products/f5b54c10-a27b-45af-a8a9-03053c781203.png",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "225427"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "image/png"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"XgnBuEpN+zwPD7qq1cxnJEHn5FioUjRkktDmvczQfGM=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Mon, 17 Nov 2025 10:26:34 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=3600, must-revalidate"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "integrity",
+          "Value": "sha256-XgnBuEpN+zwPD7qq1cxnJEHn5FioUjRkktDmvczQfGM="
+        }
+      ]
+    }
+  ]
 }
