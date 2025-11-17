@@ -28,6 +28,10 @@ using ShopVision50.API.Repositories.ProductImageRepo_FD;
 using ShopVision50.API.Services.ProductImageService_FD;
 using ShopVision50.API.Repositories.TopCustomersRepo_FD;
 using ShopVision50.API.Services.TopCustomersService_FD;
+using ShopVision50.API.Repositories.ProductColorRepo_FD;
+using ShopVision50.API.Services.ProductColorService_FD;
+using ShopVision50.API.Repositories.ProductSizeRepo_FD;
+using ShopVision50.API.Services.ProductSizeService_FD;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -112,6 +116,13 @@ builder.Services.AddScoped<IProductImageService,ProductImageService>();
 
 builder.Services.AddScoped<ITopCustomersRepository, TopCustomersRepository>();
 builder.Services.AddScoped<ITopCustomersService, TopCustomersService>();
+
+builder.Services.AddScoped<IProductColorRepository, ProductColorRepository>();
+builder.Services.AddScoped<IProductColorService, ProductColorService>();
+
+builder.Services.AddScoped<IProductSizeRepository, ProductSizeRepository>();
+builder.Services.AddScoped<IProductSizeService, ProductSizeService>();
+
 
 
 // CORS - cho phép tất cả origin (FE khác host thì bật)
