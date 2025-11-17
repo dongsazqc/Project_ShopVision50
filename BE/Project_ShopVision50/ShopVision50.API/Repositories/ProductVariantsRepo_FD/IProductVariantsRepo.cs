@@ -10,7 +10,7 @@ namespace ShopVision50.API.Repositories.ProductVariantsRepo_FD
     {
         
         Task<IEnumerable<ProductVariant>> GetAllAsync();
-        Task<ProductVariant?> GetByIdAsync(int id);
+        Task<IEnumerable<ProductVariant>> GetByIdAsync(int productId);
         Task AddAsync(ProductVariant variant);
         Task UpdateAsync(ProductVariant variant);
         Task DeleteAsync(int id);

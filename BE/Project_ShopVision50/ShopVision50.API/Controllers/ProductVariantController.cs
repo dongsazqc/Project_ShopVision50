@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
@@ -33,9 +33,12 @@ public class ProductVariantController : ControllerBase
         [Authorize]
         public async Task<IActionResult> GetById(int id)
         {
-            var variant = await _service.GetByIdAsync(id);
-            if (variant == null) return NotFound();
-            return Ok(variant);
+            var variants = await _service.GetByIdAsync(id); // 🔥 id = ProductId
+
+            if (!variants.Any())
+                return NotFound(new { message = "No variants found for this product" });
+
+            return Ok(variants);
         }
 
         [HttpPost]
@@ -47,15 +50,15 @@ public class ProductVariantController : ControllerBase
             return Ok(new { message = "Product variant created successfully" });
         }
 
-        [HttpPut("{id}")]
-        [Authorize]
-        public async Task<IActionResult> Update(int id, [FromBody] ProductVariant variant)
-        {
-            if (id != variant.ProductVariantId) return BadRequest("ID mismatch");
-            var success = await _service.UpdateAsync(variant);
-            if (!success) return NotFound();
-            return Ok(new { message = "Product variant updated successfully" });
-        }
+        //[HttpPut("{id}")]
+        //[Authorize]
+        //public async Task<IActionResult> Update(int id, [FromBody] ProductVariant variant)
+        //{
+        //    if (id != variant.ProductVariantId) return BadRequest("ID mismatch");
+        //    var success = await _service.UpdateAsync(variant);
+        //    if (!success) return NotFound();
+        //    return Ok(new { message = "Product variant updated successfully" });
+        //}
     
         [HttpDelete("{id}")]
         [Authorize]

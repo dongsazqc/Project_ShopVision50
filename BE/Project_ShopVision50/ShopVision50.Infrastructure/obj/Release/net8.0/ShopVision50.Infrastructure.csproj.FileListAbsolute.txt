@@ -70,3 +70,21 @@ C:/Users/Saz/OneDrive/Desktop/Api50/Project_ShopVision50/BE/Project_ShopVision50
 /home/saz/Desktop/Project_ShopVision50/BE/Project_ShopVision50/ShopVision50.Infrastructure/obj/Release/net8.0/ShopVision50.Infrastructure.pdb
 /home/saz/Desktop/Project_ShopVision50/BE/Project_ShopVision50/ShopVision50.Infrastructure/obj/Release/net8.0/ShopVision50.Infrastructure.genruntimeconfig.cache
 /home/saz/Desktop/Project_ShopVision50/BE/Project_ShopVision50/ShopVision50.Infrastructure/obj/Release/net8.0/ref/ShopVision50.Infrastructure.dll
+C:\Users\ADMIN\Desktop\New folder (5)\Project_ShopVision50\BE\Project_ShopVision50\ShopVision50.Infrastructure\bin\Release\net8.0\ShopVision50.Infrastructure.deps.json
+C:\Users\ADMIN\Desktop\New folder (5)\Project_ShopVision50\BE\Project_ShopVision50\ShopVision50.Infrastructure\bin\Release\net8.0\ShopVision50.Infrastructure.runtimeconfig.json
+C:\Users\ADMIN\Desktop\New folder (5)\Project_ShopVision50\BE\Project_ShopVision50\ShopVision50.Infrastructure\bin\Release\net8.0\ShopVision50.Infrastructure.dll
+C:\Users\ADMIN\Desktop\New folder (5)\Project_ShopVision50\BE\Project_ShopVision50\ShopVision50.Infrastructure\bin\Release\net8.0\ShopVision50.Infrastructure.pdb
+C:\Users\ADMIN\Desktop\New folder (5)\Project_ShopVision50\BE\Project_ShopVision50\ShopVision50.Infrastructure\bin\Release\net8.0\ShopVision50.Domain.dll
+C:\Users\ADMIN\Desktop\New folder (5)\Project_ShopVision50\BE\Project_ShopVision50\ShopVision50.Infrastructure\bin\Release\net8.0\ShopVision50.Domain.pdb
+C:\Users\ADMIN\Desktop\New folder (5)\Project_ShopVision50\BE\Project_ShopVision50\ShopVision50.Infrastructure\obj\Release\net8.0\ShopVision50.Infrastructure.csproj.AssemblyReference.cache
+C:\Users\ADMIN\Desktop\New folder (5)\Project_ShopVision50\BE\Project_ShopVision50\ShopVision50.Infrastructure\obj\Release\net8.0\ShopVision50.Infrastructure.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\ADMIN\Desktop\New folder (5)\Project_ShopVision50\BE\Project_ShopVision50\ShopVision50.Infrastructure\obj\Release\net8.0\ShopVision50.Infrastructure.AssemblyInfoInputs.cache
+C:\Users\ADMIN\Desktop\New folder (5)\Project_ShopVision50\BE\Project_ShopVision50\ShopVision50.Infrastructure\obj\Release\net8.0\ShopVision50.Infrastructure.AssemblyInfo.cs
+C:\Users\ADMIN\Desktop\New folder (5)\Project_ShopVision50\BE\Project_ShopVision50\ShopVision50.Infrastructure\obj\Release\net8.0\ShopVision50.Infrastructure.csproj.CoreCompileInputs.cache
+C:\Users\ADMIN\Desktop\New folder (5)\Project_ShopVision50\BE\Project_ShopVision50\ShopVision50.Infrastructure\obj\Release\net8.0\ShopVision50.Infrastructure.sourcelink.json
+C:\Users\ADMIN\Desktop\New folder (5)\Project_ShopVision50\BE\Project_ShopVision50\ShopVision50.Infrastructure\obj\Release\net8.0\ShopVisi.4D9461BB.Up2Date
+C:\Users\ADMIN\Desktop\New folder (5)\Project_ShopVision50\BE\Project_ShopVision50\ShopVision50.Infrastructure\obj\Release\net8.0\ShopVision50.Infrastructure.dll
+C:\Users\ADMIN\Desktop\New folder (5)\Project_ShopVision50\BE\Project_ShopVision50\ShopVision50.Infrastructure\obj\Release\net8.0\refint\ShopVision50.Infrastructure.dll
+C:\Users\ADMIN\Desktop\New folder (5)\Project_ShopVision50\BE\Project_ShopVision50\ShopVision50.Infrastructure\obj\Release\net8.0\ShopVision50.Infrastructure.pdb
+C:\Users\ADMIN\Desktop\New folder (5)\Project_ShopVision50\BE\Project_ShopVision50\ShopVision50.Infrastructure\obj\Release\net8.0\ShopVision50.Infrastructure.genruntimeconfig.cache
+C:\Users\ADMIN\Desktop\New folder (5)\Project_ShopVision50\BE\Project_ShopVision50\ShopVision50.Infrastructure\obj\Release\net8.0\ref\ShopVision50.Infrastructure.dll

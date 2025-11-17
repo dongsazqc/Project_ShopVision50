@@ -510,6 +510,68 @@
     "ReturnTypes": []
   },
   {
+    "ContainingType": "ShopVision50.API.Controllers.ProductImageController",
+    "Method": "UploadImage",
+    "RelativePath": "api/products/{productId}/images",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "productId",
+        "Type": "System.Int32",
+        "IsRequired": true
+      },
+      {
+        "Name": "ContentType",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "ContentDisposition",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "Headers",
+        "Type": "Microsoft.AspNetCore.Http.IHeaderDictionary",
+        "IsRequired": false
+      },
+      {
+        "Name": "Length",
+        "Type": "System.Int64",
+        "IsRequired": false
+      },
+      {
+        "Name": "Name",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "FileName",
+        "Type": "System.String",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "ShopVision50.API.Controllers.ProductImageController",
+    "Method": "GetProductImages",
+    "RelativePath": "api/products/{productId}/images/checkimages",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "productId",
+        "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
     "ContainingType": "ShopVision50.API.Controllers.ProductsController",
     "Method": "AddProduct",
     "RelativePath": "api/Products/addProduct",
@@ -664,27 +726,6 @@
   },
   {
     "ContainingType": "ShopVision50.API.Controllers.ProductVariantController",
-    "Method": "Update",
-    "RelativePath": "api/ProductVariant/{id}",
-    "HttpMethod": "PUT",
-    "IsController": true,
-    "Order": 0,
-    "Parameters": [
-      {
-        "Name": "id",
-        "Type": "System.Int32",
-        "IsRequired": true
-      },
-      {
-        "Name": "variant",
-        "Type": "Shop_Db.Models.ProductVariant",
-        "IsRequired": true
-      }
-    ],
-    "ReturnTypes": []
-  },
-  {
-    "ContainingType": "ShopVision50.API.Controllers.ProductVariantController",
     "Method": "Delete",
     "RelativePath": "api/ProductVariant/{id}",
     "HttpMethod": "DELETE",
@@ -776,6 +817,22 @@
     "IsController": true,
     "Order": 0,
     "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "ShopVision50.API.Controllers.TopCustomersController",
+    "Method": "GetTopCustomers",
+    "RelativePath": "api/TopCustomers",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "limit",
+        "Type": "System.Int32",
+        "IsRequired": false
+      }
+    ],
     "ReturnTypes": []
   },
   {

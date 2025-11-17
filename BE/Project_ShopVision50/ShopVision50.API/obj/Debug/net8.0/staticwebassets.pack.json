@@ -1,35 +1,35 @@
 {
   "Files": [
     {
-      "Id": "/home/saz/Desktop/Project_ShopVision50/BE/Project_ShopVision50/ShopVision50.API/wwwroot/images/products/007c5f24-14e6-40aa-9a0d-c0f64fe0764e.png",
-      "PackagePath": "staticwebassets/images/products/007c5f24-14e6-40aa-9a0d-c0f64fe0764e.png"
+      "Id": "C:\\Users\\ADMIN\\Desktop\\New folder (5)\\Project_ShopVision50\\BE\\Project_ShopVision50\\ShopVision50.API\\wwwroot\\images\\products\\007c5f24-14e6-40aa-9a0d-c0f64fe0764e.png",
+      "PackagePath": "staticwebassets\\images\\products\\007c5f24-14e6-40aa-9a0d-c0f64fe0764e.png"
     },
     {
-      "Id": "/home/saz/Desktop/Project_ShopVision50/BE/Project_ShopVision50/ShopVision50.API/wwwroot/wwwroot/images/products/554f1081-68b4-4eb6-98a9-43f55369f366.png",
-      "PackagePath": "staticwebassets/wwwroot/images/products/554f1081-68b4-4eb6-98a9-43f55369f366.png"
+      "Id": "C:\\Users\\ADMIN\\Desktop\\New folder (5)\\Project_ShopVision50\\BE\\Project_ShopVision50\\ShopVision50.API\\wwwroot\\wwwroot\\images\\products\\554f1081-68b4-4eb6-98a9-43f55369f366.png",
+      "PackagePath": "staticwebassets\\wwwroot\\images\\products\\554f1081-68b4-4eb6-98a9-43f55369f366.png"
     },
     {
-      "Id": "/home/saz/Desktop/Project_ShopVision50/BE/Project_ShopVision50/ShopVision50.API/wwwroot/wwwroot/images/products/f5b54c10-a27b-45af-a8a9-03053c781203.png",
-      "PackagePath": "staticwebassets/wwwroot/images/products/f5b54c10-a27b-45af-a8a9-03053c781203.png"
+      "Id": "C:\\Users\\ADMIN\\Desktop\\New folder (5)\\Project_ShopVision50\\BE\\Project_ShopVision50\\ShopVision50.API\\wwwroot\\wwwroot\\images\\products\\f5b54c10-a27b-45af-a8a9-03053c781203.png",
+      "PackagePath": "staticwebassets\\wwwroot\\images\\products\\f5b54c10-a27b-45af-a8a9-03053c781203.png"
     },
     {
-      "Id": "obj/Debug/net8.0/staticwebassets/msbuild.ShopVision50.API.Microsoft.AspNetCore.StaticWebAssetEndpoints.props",
+      "Id": "obj\\Debug\\net8.0\\staticwebassets\\msbuild.ShopVision50.API.Microsoft.AspNetCore.StaticWebAssetEndpoints.props",
       "PackagePath": "build\\Microsoft.AspNetCore.StaticWebAssetEndpoints.props"
     },
     {
-      "Id": "obj/Debug/net8.0/staticwebassets/msbuild.ShopVision50.API.Microsoft.AspNetCore.StaticWebAssets.props",
+      "Id": "obj\\Debug\\net8.0\\staticwebassets\\msbuild.ShopVision50.API.Microsoft.AspNetCore.StaticWebAssets.props",
       "PackagePath": "build\\Microsoft.AspNetCore.StaticWebAssets.props"
     },
     {
-      "Id": "obj/Debug/net8.0/staticwebassets/msbuild.build.ShopVision50.API.props",
+      "Id": "obj\\Debug\\net8.0\\staticwebassets\\msbuild.build.ShopVision50.API.props",
       "PackagePath": "build\\ShopVision50.API.props"
     },
     {
-      "Id": "obj/Debug/net8.0/staticwebassets/msbuild.buildMultiTargeting.ShopVision50.API.props",
+      "Id": "obj\\Debug\\net8.0\\staticwebassets\\msbuild.buildMultiTargeting.ShopVision50.API.props",
       "PackagePath": "buildMultiTargeting\\ShopVision50.API.props"
     },
     {
-      "Id": "obj/Debug/net8.0/staticwebassets/msbuild.buildTransitive.ShopVision50.API.props",
+      "Id": "obj\\Debug\\net8.0\\staticwebassets\\msbuild.buildTransitive.ShopVision50.API.props",
       "PackagePath": "buildTransitive\\ShopVision50.API.props"
     }
   ],

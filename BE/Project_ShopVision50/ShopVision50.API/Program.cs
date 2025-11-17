@@ -27,6 +27,8 @@ using ShopVision50.API.Repositories.OriginRepo_FD;
 using ShopVision50.API.Services.OriginService_FD;
 using ShopVision50.API.Repositories.ProductImageRepo_FD;
 using ShopVision50.API.Services.ProductImageService_FD;
+using ShopVision50.API.Repositories.TopCustomersRepo_FD;
+using ShopVision50.API.Services.TopCustomersService_FD;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -108,6 +110,9 @@ builder.Services.AddScoped<IOriginService, OriginService>();
 
 builder.Services.AddScoped<IProductImageRepository,ProductImageRepository >();
 builder.Services.AddScoped<IProductImageService,ProductImageService>();
+
+builder.Services.AddScoped<ITopCustomersRepository, TopCustomersRepository>();
+builder.Services.AddScoped<ITopCustomersService, TopCustomersService>();
 
 
 // CORS - cho phép tất cả origin (FE khác host thì bật)
