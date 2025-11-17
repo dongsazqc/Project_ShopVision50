@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("ShopVision50.API")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+32ca6cc08258b6d700ea9e0f527c9c7279c5d990")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+7a5c6f3617b417de125ee9ba3e6a7e6d52b34228")]
 [assembly: System.Reflection.AssemblyProductAttribute("ShopVision50.API")]
 [assembly: System.Reflection.AssemblyTitleAttribute("ShopVision50.API")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
