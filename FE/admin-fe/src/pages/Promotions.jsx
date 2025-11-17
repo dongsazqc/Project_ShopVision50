@@ -256,7 +256,19 @@ export default function Promotions() {
           <Form.Item
             label="Mã khuyến mãi"
             name="code"
-            rules={[{ required: true, message: "Nhập mã khuyến mãi" }]}
+            rules={[
+              { required: true, message: "Nhập mã khuyến mãi" },
+              { min: 5, max: 20, message: "Mã khuyến mãi phải có từ 5 đến 20 ký tự" },
+              { pattern: /^[A-Za-z0-9]+$/, message: "Mã khuyến mãi chỉ chấp nhận chữ và số" },
+              async ({ getFieldValue }) => {
+                const code = getFieldValue('code').trim();
+                const exists = promotions.some((p) => p.code.toLowerCase() === code.toLowerCase());
+                if (exists) {
+                  return Promise.reject("⚠️ Mã khuyến mãi này đã tồn tại, vui lòng chọn mã khác!");
+                }
+                return Promise.resolve();
+              }
+            ]}
           >
             <Input
               placeholder="VD: SALE50"
@@ -267,7 +279,10 @@ export default function Promotions() {
           <Form.Item
             label="Giá trị giảm (%)"
             name="discountValue"
-            rules={[{ required: true, message: "Nhập phần trăm giảm" }]}
+            rules={[
+              { required: true, message: "Nhập phần trăm giảm" },
+              { type: "number", min: 1, max: 100, message: "Giá trị giảm phải trong khoảng từ 1% đến 100%" }
+            ]}
           >
             <InputNumber
               min={1}

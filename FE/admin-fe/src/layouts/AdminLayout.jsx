@@ -8,7 +8,6 @@ import {
   Input,
 } from "antd";
 import {
-  DashboardOutlined,
   ShoppingOutlined,
   ShoppingCartOutlined,
   TagsOutlined,
@@ -55,6 +54,10 @@ export default function AdminLayout() {
     ],
   };
 
+  // Kiểm tra vai trò của người dùng để điều chỉnh menu
+  const isStaff = user?.roleId === 3;
+  const isAdmin = user?.roleId === 1;
+
   return (
     <Layout style={{ minHeight: "100vh" }}>
       {/* ===== SIDEBAR ===== */}
@@ -95,42 +98,68 @@ export default function AdminLayout() {
           defaultOpenKeys={["product-management"]}
           style={{ marginTop: 10 }}
         >
-          <Menu.Item key="/admin/dashboard" icon={<DashboardOutlined />}>
-            <Link to="/admin/dashboard">Bảng điều khiển</Link>
-          </Menu.Item>
+          {/* Quản lý sản phẩm chỉ dành cho admin */}
+          {isAdmin && (
+            <Menu.SubMenu
+              key="product-management"
+              icon={<ShoppingOutlined />}
+              title="Quản lý sản phẩm"
+            >
+              <Menu.Item key="/admin/products">
+                <Link to="/admin/products">Sản phẩm</Link>
+              </Menu.Item>
+              <Menu.Item key="/admin/categories">
+                <Link to="/admin/categories">Danh mục</Link>
+              </Menu.Item>
+              <Menu.Item key="/admin/materials">
+                <Link to="/admin/materials">Chất liệu</Link>
+              </Menu.Item>
+              <Menu.Item key="/admin/styles">
+                <Link to="/admin/styles">Phong cách</Link>
+              </Menu.Item>
+              <Menu.Item key="/admin/genders">
+                <Link to="/admin/genders">Giới tính</Link>
+              </Menu.Item>
+              <Menu.Item key="/admin/origins">
+                <Link to="/admin/origins">Xuất xứ</Link>
+              </Menu.Item>
+            </Menu.SubMenu>
+          )}
 
-          <Menu.SubMenu
-            key="product-management"
-            icon={<ShoppingOutlined />}
-            title="Quản lý sản phẩm"
-          >
-            <Menu.Item key="/admin/products">
-              <Link to="/admin/products">Sản phẩm</Link>
+          {/* Đơn hàng */}
+          {isAdmin && (
+            <Menu.Item key="/admin/orders" icon={<ShoppingCartOutlined />}>
+              <Link to="/admin/orders">Đơn hàng</Link>
             </Menu.Item>
-            <Menu.Item key="/admin/categories">
-              <Link to="/admin/categories">Danh mục</Link>
+          )}
+
+          {/* Khuyến mãi */}
+          {isAdmin && (
+            <Menu.Item key="/admin/promotions" icon={<TagsOutlined />}>
+              <Link to="/admin/promotions">Khuyến mãi</Link>
             </Menu.Item>
-          </Menu.SubMenu>
+          )}
 
-          <Menu.Item key="/admin/orders" icon={<ShoppingCartOutlined />}>
-            <Link to="/admin/orders">Đơn hàng</Link>
-          </Menu.Item>
+          {/* Người dùng (chỉ cho admin) */}
+          {isAdmin && (
+            <Menu.Item key="/admin/users" icon={<UserOutlined />}>
+              <Link to="/admin/users">Người dùng</Link>
+            </Menu.Item>
+          )}
 
-          <Menu.Item key="/admin/promotions" icon={<TagsOutlined />}>
-            <Link to="/admin/promotions">Khuyến mãi</Link>
-          </Menu.Item>
+          {/* Báo cáo (chỉ cho admin) */}
+          {isAdmin && (
+            <Menu.Item key="/admin/reports" icon={<BarChartOutlined />}>
+              <Link to="/admin/reports">Báo cáo</Link>
+            </Menu.Item>
+          )}
 
-          <Menu.Item key="/admin/users" icon={<UserOutlined />}>
-            <Link to="/admin/users">Người dùng</Link>
-          </Menu.Item>
-
-          <Menu.Item key="/admin/reports" icon={<BarChartOutlined />}>
-            <Link to="/admin/reports">Báo cáo</Link>
-          </Menu.Item>
-
-          <Menu.Item key="/admin/pos" icon={<ShopOutlined />}>
-            <Link to="/admin/pos">Bán hàng tại quầy (POS)</Link>
-          </Menu.Item>
+          {/* POS - Dành cho cả nhân viên và admin */}
+          {(isAdmin || isStaff) && (
+            <Menu.Item key="/admin/pos" icon={<ShopOutlined />}>
+              <Link to="/admin/pos">Bán hàng tại quầy (POS)</Link>
+            </Menu.Item>
+          )}
         </Menu>
       </Sider>
 

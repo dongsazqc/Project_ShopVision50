@@ -1,4 +1,3 @@
-// src/pages/Orders.jsx
 import {
   Table,
   Tag,
