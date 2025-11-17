@@ -14,8 +14,6 @@ namespace Shop_Db.Models
         [Required]
         public string Url { get; set; } = string.Empty;
         public bool IsMain { get; set; }
-        public int Stock { get; set; }
-
         public int ProductId { get; set; }
         public Product Product { get; set; } = null!;
     }

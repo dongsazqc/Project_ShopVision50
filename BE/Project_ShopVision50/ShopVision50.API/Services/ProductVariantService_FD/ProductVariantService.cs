@@ -1,55 +1,76 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Shop_Db.Models;
+using ShopVision50.API.Models.Users.DTOs;
 using ShopVision50.API.Repositories.ProductVariantsRepo_FD;
 
-namespace ShopVision50.API.Services.ProductVariantService_FD
+public class ProductVariantService : IProductVariantService
 {
-    public class ProductVariantService : IProductVariantService
+    private readonly IProductVariantsRepo _repository;
+    public ProductVariantService(IProductVariantsRepo repository)
     {
-        private readonly IProductVariantsRepo _repository;
-        public ProductVariantService(IProductVariantsRepo repo)
+        _repository = repository;
+    }
+
+    public async Task<IEnumerable<BienTheResponseDto>> GetAllAsync()
+    {
+        var variants = await _repository.GetAllAsync();
+
+        return variants.Select(v => new BienTheResponseDto
         {
-            _repository = repo ;
-        }
+            ProductVariantId = v.ProductVariantId,
+            GiaBan = v.SalePrice,
+            SoLuongTon = v.Stock,
+            TenMau = v.Color?.Name ?? "Unknown",
+            TenKichCo = v.Size?.Name ?? "Unknown",
+            ProductId = v.ProductId,
+            TenSanPham = v.Product?.Name ?? "Unknown",
+            DiscountPercent = 0 // Nếu m có chỗ lưu discount thì xử lý thêm
+        });
+    }
 
-        public async Task<bool> CreateAsync(ProductVariant variant)
+    public async Task<IEnumerable<BienTheResponseDto>> GetByProductIdAsync(int productId)
+    {
+        var variants = await _repository.GetByProductIdAsync(productId);
+
+        return variants.Select(v => new BienTheResponseDto
         {
-                 await _repository.AddAsync(variant);
-            return true;
-        }
+            ProductVariantId = v.ProductVariantId,
+            GiaBan = v.SalePrice,
+            SoLuongTon = v.Stock,
+            TenMau = v.Color?.Name ?? "Unknown",
+            TenKichCo = v.Size?.Name ?? "Unknown",
+            ProductId = v.ProductId,
+            TenSanPham = v.Product?.Name ?? "Unknown",
+            DiscountPercent = 0
+        });
+    }
 
-        public async Task<bool> DeleteAsync(int id)
+    public async Task<bool> CreateAsync(BienTheDto dto)
+    {
+        var color = await _repository.GetColorByNameAsync(dto.tenMau);
+        if (color == null) return false;
+
+        var size = await _repository.GetSizeByNameAsync(dto.tenKichCo);
+        if (size == null) return false;
+
+        var product = await _repository.GetProductByIdAsync(dto.ProductId);
+        if (product == null) return false;
+
+        var variant = new ProductVariant
         {
-            await _repository.DeleteAsync(id);
-                        return true;        }
+            ProductId = dto.ProductId,
+            ColorId = color.ColorId,
+            SizeId = size.SizeId,
+            SalePrice = dto.giaBan,
+            Stock = dto.soLuongTon,
+            // discountPercent nếu lưu ở đâu thì xử lý sau
+        };
 
-        public async Task<IEnumerable<ProductVariant>> GetAllAsync()
-        {
-            return await _repository.GetAllAsync();
-        }
+        await _repository.AddAsync(variant);
+        await _repository.SaveChangesAsync();
 
-        public async Task<IEnumerable<ProductVariant>> GetByIdAsync(int productId)
-        {
-            return await _repository.GetByIdAsync(productId);  // 🔥 gọi đúng hàm
-        }
-
-        //public async Task<bool> UpdateAsync(Product product)
-        //{
-        //    var existing = await _repository.GetByIdAsync(product.ProductId);
-        //    if (existing == null) return false;
-
-        //    existing.SalePrice = variant.SalePrice;
-        //    existing.Stock = variant.Stock;
-        //    existing.SizeId = variant.SizeId;
-        //    existing.ColorId = variant.ColorId;
-        //    existing.ProductId = variant.ProductId; 
-
-        //    await _repository.UpdateAsync(existing);
-        //    return true;
-
-        //}
+        return true;
     }
 }
