@@ -10,6 +10,10 @@ import Promotions from "../pages/Promotions";
 import Users from "../pages/Users";
 import Reports from "../pages/Reports";
 import POS from "../pages/POS";
+import Material from "../pages/Material";
+import Style from "../pages/Style";
+import Gender from "../pages/Gender";
+import Origin from "../pages/Origin";
 
 export default function AdminRoutes() {
   const { user } = useAuth();
@@ -49,7 +53,11 @@ export default function AdminRoutes() {
         {/* Quản lý sản phẩm */}
         <Route path="products" element={<Products />} />
         <Route path="categories" element={<Categories />} />
-
+        <Route path="materials" element={<Material />} />       
+        <Route path="styles" element={<Style />} />            
+        <Route path="genders" element={<Gender />} />         
+        <Route path="origins" element={<Origin />} />           
+      
         {/* Đơn hàng */}
         <Route path="orders" element={<Orders />} />
 

@@ -29,7 +29,7 @@ export default function Gender() {
   const fetchGenders = async () => {
     try {
       setLoading(true);
-      const res = await api.get("/Gender/GetAll");
+      const res = await api.get("/Gender/GetAllGender");
       const list = res.data?.$values || res.data || [];
       setGenders(list);
       setAllGenders(list);

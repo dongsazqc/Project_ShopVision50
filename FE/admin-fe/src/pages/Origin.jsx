@@ -71,7 +71,7 @@ export default function Origin() {
         return;
       }
 
-      await api.post("/Origin/CreateOrigin", { country });
+      await api.post("/Origin", { country });
       message.success("Thêm xuất xứ thành công!");
       setAddModalOpen(false);
       formAdd.resetFields();
@@ -87,7 +87,7 @@ export default function Origin() {
   // ================= MỞ MODAL CHỈNH SỬA =================
   const openEditModal = async (record) => {
     try {
-      const res = await api.get(`/Origin/GetOriginById/${record.originId}`);
+      const res = await api.get(`/Origin/${record.originId}`);
       const origin = res.data;
       setSelectedOrigin(origin);
       formEdit.setFieldsValue({ country: origin.country });
@@ -113,7 +113,7 @@ export default function Origin() {
         return;
       }
 
-      await api.put(`/Origin/UpdateOrigin/${selectedOrigin.originId}`, {
+      await api.put(`/Origin/${selectedOrigin.originId}`, {
         originId: selectedOrigin.originId,
         country,
       });
@@ -133,7 +133,7 @@ export default function Origin() {
   // ================= XÓA ORIGIN =================
   const handleDelete = async (id) => {
     try {
-      await api.delete(`/Origin/DeleteOrigin/${id}`);
+      await api.delete(`/Origin/${id}`);
       message.success("Xóa xuất xứ thành công!");
       fetchOrigins();
     } catch (err) {

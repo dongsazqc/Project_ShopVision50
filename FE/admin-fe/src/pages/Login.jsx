@@ -10,28 +10,28 @@ export default function Login() {
   const { login } = useAuth();
   const navigate = useNavigate();
 
-  const handleLogin = async (values) => {
-    setLoading(true);
-    try {
-      const success = await login(values.email, values.password);
-      if (success) {
-        const storedUser = JSON.parse(localStorage.getItem("user"));
+const handleLogin = async (values) => {
+  setLoading(true);
+  try {
+    const success = await login(values.email, values.password);
+    if (success) {
+      const storedUser = JSON.parse(localStorage.getItem("user"));
 
-        if (storedUser?.roleId === 1) {
-          navigate("/admin/dashboard");
-        } else if (storedUser?.roleId === 3) {
-          navigate("/admin/pos");
-        } else {
-          message.warning("Tài khoản không có quyền truy cập trang quản trị!");
-        }
+      if (storedUser?.roleId === 1) {
+        navigate("/admin/dashboard");
+      } else if (storedUser?.roleId === 3) {
+        navigate("/admin/pos");
+      } else {
+        message.warning("Tài khoản không có quyền truy cập trang quản trị!");
       }
-    } catch (error) {
-      message.error("Lỗi đăng nhập, thử lại sau!");
-    } finally {
-      setLoading(false);
     }
-  };
-
+  } catch (error) {
+    console.error("Lỗi đăng nhập:", error); // Log lỗi để debug nếu cần
+    message.error("Lỗi đăng nhập, thử lại sau!"); // Hiển thị thông báo lỗi cho người dùng
+  } finally {
+    setLoading(false);
+  }
+};
   return (
     <div
       style={{
@@ -93,4 +93,4 @@ export default function Login() {
       </Card>
     </div>
   );
-}
+} 

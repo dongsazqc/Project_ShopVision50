@@ -21,6 +21,7 @@ import {
 import { useEffect, useState } from "react";
 import api from "../utils/axios";
 
+
 const FIXED_BRAND = "StyleWear";
 const FIXED_WARRANTY = "1 đổi 1 trong 3 ngày nếu chưa tháo mác";
 
@@ -35,6 +36,9 @@ export default function Products() {
   const [variants, setVariants] = useState([]);
   const [images, setImages] = useState([]);
   const [imageLoading, setImageLoading] = useState(false);
+
+  const [colors, setColors] = useState([]);
+  const [sizes, setSizes] = useState([]);
 
   // meta data
   const [metaData, setMetaData] = useState({});
@@ -66,9 +70,9 @@ export default function Products() {
     try {
       const [cat, chat, style, gen, origin] = await Promise.all([
         api.get("/Category/GetAll"),
-        api.get("/Material/GetAll"),
+        api.get("/Material/GetAllMaterial"),
         api.get("/Style/GetAll"),
-        api.get("/Gender/GetAll"),
+        api.get("/Gender/GetAllGender"),
         api.get("/Origin/GetAll"),
       ]);
       setMetaData({
@@ -87,8 +91,27 @@ export default function Products() {
   useEffect(() => {
     fetchProducts();
     fetchMetaData();
+    fetchColorAndSizes();
   }, []);
+// ===== FETCH COLORS & SIZES =====
+const fetchColorAndSizes = async () => {
+try {
+const [colorRes, sizeRes] = await Promise.all([
+api.get("/ProductColor/GetAll"),
+api.get("/ProductSize/GetAll"),
+]);
 
+
+const uniqueColors = Array.from(new Map((colorRes.data?.$values || []).map(c => [c.name, c])).values());
+const uniqueSizes = Array.from(new Map((sizeRes.data?.$values || []).map(s => [s.name, s])).values());
+
+
+setColors(uniqueColors);
+setSizes(uniqueSizes);
+} catch {
+message.error("Không thể tải màu hoặc size");
+}
+};
   // ==================== FETCH VARIANTS ====================
   const fetchVariants = async (productId) => {
     if (!productId) {
@@ -96,6 +119,7 @@ export default function Products() {
       return;
     }
     try {
+      // THAY API VÀO CHỖ NÀY
       const res = await api.get(`/ProductVariants/GetByProductId/${productId}`);
       // Expect each variant includes: bienTheId, tenMau, tenKichCo, giaBan, soLuongTon, discountPercent (optional)
       const data = res.data?.$values || res.data || [];
@@ -118,7 +142,7 @@ export default function Products() {
     }
     try {
       setImageLoading(true);
-      const res = await api.get(`/Images/GetByProductId/${productId}`);
+      const res = await api.get(`/products/${productId}/images/checkimages`); 
       const data = res.data?.$values || res.data || [];
       setImages(data);
     } catch (err) {
@@ -129,66 +153,94 @@ export default function Products() {
   };
 
   // ==================== SAVE PRODUCT ====================
-  const handleSave = async (values) => {
-    try {
-      if (editingProduct && editingProduct.productId) {
-        // Update existing product
-        await api.put(`/Products/UpdateProducts/${editingProduct.productId}`, {
-          name: values.Name,
-          description: values.Description,
-          price: values.Price,
-          brand: FIXED_BRAND,
-          warranty: FIXED_WARRANTY,
-          categoryId: values.CategoryId,
-          materialId: values.MaterialId,
-          styleId: values.StyleId,
-          genderId: values.GenderId,
-          originId: values.OriginId,
-        });
-        message.success("Cập nhật sản phẩm thành công!");
-        // refresh
-        fetchProducts();
-        fetchVariants(editingProduct.productId);
-        fetchImages(editingProduct.productId);
-        // keep modal open for further actions
-        setOpenModal(true);
-      } else {
-        // Create new product
-        const res = await api.post("/Products/addProduct", {
-          name: values.Name,
-          description: values.Description,
-          price: values.Price,
-          brand: FIXED_BRAND,
-          warranty: FIXED_WARRANTY,
-          categoryId: values.CategoryId,
-          materialId: values.MaterialId,
-          styleId: values.StyleId,
-          genderId: values.GenderId,
-          originId: values.OriginId,
-        });
-        message.success("Thêm sản phẩm thành công!");
-        const created = res.data;
-        const createdProduct = created?.$values ? created.$values[0] : created;
-        if (createdProduct) {
-          setEditingProduct(createdProduct);
-          // set fields so brand/warranty display properly
-          form.setFieldsValue({
-            Brand: FIXED_BRAND,
-            Warranty: FIXED_WARRANTY,
-          });
-          // fetch empty variants/images
-          fetchVariants(createdProduct.productId);
-          fetchImages(createdProduct.productId);
-        }
-        fetchProducts();
-        // keep modal open so user can upload images / add variants
-        setOpenModal(true);
-      }
-    } catch (err) {
-      console.error(err);
-      message.error("Lưu sản phẩm thất bại");
+const handleSave = async (values) => {
+  try {
+    // ===== VALIDATE TÊN SẢN PHẨM TRÙNG =====
+    const lowerName = values.Name.trim().toLowerCase();
+    const isNameExist = products.some(
+      (p) =>
+        p.name.trim().toLowerCase() === lowerName &&
+        p.productId !== editingProduct?.productId
+    );
+
+    if (isNameExist) {
+      message.error("Tên sản phẩm đã tồn tại");
+      return;
     }
-  };
+
+    // ===== VALIDATE PHẢI CÓ ÍT NHẤT 1 ẢNH =====
+    /*if (images.length === 0) {
+      message.error("Sản phẩm phải có ít nhất 1 ảnh");
+      return;
+    }*/
+
+    // ===== UPDATE PRODUCT =====
+    if (editingProduct && editingProduct.productId) {
+      await api.put(`/Products/UpdateProducts/${editingProduct.productId}`, {
+        name: values.Name,
+        description: values.Description,
+        price: values.Price,
+        brand: FIXED_BRAND,
+        warranty: FIXED_WARRANTY,
+        categoryId: values.CategoryId,
+        materialId: values.MaterialId,
+        styleId: values.StyleId,
+        genderId: values.GenderId,
+        originId: values.OriginId,
+      });
+
+      message.success("Cập nhật sản phẩm thành công!");
+
+      fetchProducts();
+      fetchVariants(editingProduct.productId);
+      fetchImages(editingProduct.productId);
+
+      setOpenModal(false);
+    }
+
+    // ===== CREATE PRODUCT =====
+    else {
+      const res = await api.post("/Products/addProduct", {
+        name: values.Name,
+        description: values.Description,
+        price: values.Price,
+        brand: FIXED_BRAND,
+        warranty: FIXED_WARRANTY,
+        categoryId: values.CategoryId,
+        materialId: values.MaterialId,
+        styleId: values.StyleId,
+        genderId: values.GenderId,
+        originId: values.OriginId,
+      });
+
+      message.success("Thêm sản phẩm thành công!");
+
+      const created = res.data;
+      const createdProduct = created?.$values ? created.$values[0] : created;
+
+      if (createdProduct) {
+        setEditingProduct(createdProduct);
+
+        form.setFieldsValue({
+          Brand: FIXED_BRAND,
+          Warranty: FIXED_WARRANTY,
+        });
+
+        fetchVariants(createdProduct.productId);
+        fetchImages(createdProduct.productId);
+      }
+
+      fetchProducts();
+
+      // mở modal lại để thêm ảnh, thêm biến thể
+      setOpenModal(true);
+    }
+  } catch (err) {
+    console.error(err);
+    message.error("Lưu sản phẩm thất bại");
+  }
+};
+
 
   // ==================== VARIANTS: add / update / delete ====================
   // Open variant modal for add
@@ -216,48 +268,70 @@ export default function Products() {
   };
 
   // Submit add or edit variant
-  const submitVariant = async (values) => {
-    try {
-      if (!editingProduct?.productId) {
-        message.warning("Sản phẩm chưa được lưu.");
-        return;
-      }
-
-      if (editingVariant && editingVariant.bienTheId) {
-        // update existing variant
-        await api.put(`/ProductVariants/Update/${editingVariant.bienTheId}`, {
-          giaBan: values.giaBan,
-          soLuongTon: values.soLuongTon,
-          discountPercent: values.discountPercent ?? 0,
-        });
-        message.success("Cập nhật biến thể thành công!");
-      } else {
-        // add new variant
-        await api.post("/ProductVariants/Add", {
-          ProductId: editingProduct.productId,
-          tenMau: values.tenMau,
-          tenKichCo: values.tenKichCo,
-          giaBan: values.giaBan,
-          soLuongTon: values.soLuongTon,
-          discountPercent: values.discountPercent ?? 0,
-        });
-        message.success("Thêm biến thể thành công!");
-      }
-
-      setVariantModalOpen(false);
-      variantForm.resetFields();
-      await fetchVariants(editingProduct.productId);
-      await checkProductStatus(editingProduct.productId);
-    } catch (err) {
-      console.error(err);
-      message.error("Thao tác biến thể thất bại");
+ const submitVariant = async (values) => {
+  try {
+    if (!editingProduct?.productId) {
+      message.warning("Sản phẩm chưa được lưu.");
+      return;
     }
-  };
+
+    // ===== VALIDATE TRÙNG BIẾN THỂ (MÀU + SIZE) =====
+    const duplicate = variants.some(
+      (v) =>
+        v.tenMau === values.tenMau &&
+        v.tenKichCo === values.tenKichCo &&
+        v.bienTheId !== editingVariant?.bienTheId // không so với chính nó khi sửa
+    );
+
+    if (duplicate) {
+      message.error("Biến thể với màu và kích cỡ này đã tồn tại");
+      return;
+    }
+
+    // ===== UPDATE EXISTING VARIANT =====
+    if (editingVariant && editingVariant.bienTheId) {
+      await api.put(`/ProductVariant/${editingVariant.bienTheId}`, {
+        tenMau: values.tenMau,
+        tenKichCo: values.tenKichCo,
+        giaBan: values.giaBan,
+        soLuongTon: values.soLuongTon,
+        discountPercent: values.discountPercent ?? 0,
+      });
+
+      message.success("Cập nhật biến thể thành công!");
+    }
+
+    // ===== ADD NEW VARIANT =====
+    else {
+      await api.post("/ProductVariant", {
+        ProductId: editingProduct.productId,
+        tenMau: values.tenMau,
+        tenKichCo: values.tenKichCo,
+        giaBan: values.giaBan,
+        soLuongTon: values.soLuongTon,
+        discountPercent: values.discountPercent ?? 0,
+      });
+
+      message.success("Thêm biến thể thành công!");
+    }
+
+    setVariantModalOpen(false);
+    variantForm.resetFields();
+
+    await fetchVariants(editingProduct.productId);
+    await checkProductStatus(editingProduct.productId);
+
+  } catch (err) {
+    console.error(err);
+    message.error("Thao tác biến thể thất bại");
+  }
+};
+
 
   const handleUpdateVariant = async (record) => {
     try {
       // record should include latest giaBan/soLuongTon/discountPercent
-      await api.put(`/ProductVariants/Update/${record.bienTheId}`, {
+      await api.put(`/ProductVariants/${record.bienTheId}`, {
         giaBan: record.giaBan,
         soLuongTon: record.soLuongTon,
         discountPercent: record.discountPercent ?? 0,
@@ -275,7 +349,7 @@ export default function Products() {
 
   const handleDeleteVariant = async (bienTheId, productId) => {
     try {
-      await api.delete(`/ProductVariants/Delete/${bienTheId}`);
+      await api.delete(`/ProductVariants/${bienTheId}`);
       message.success("Xóa biến thể thành công!");
       await fetchVariants(productId);
       await checkProductStatus(productId);
@@ -290,10 +364,11 @@ export default function Products() {
   // else status = true
   const checkProductStatus = async (productId) => {
     try {
+      //CHỖ NÀY API ẢO
       const res = await api.get(`/ProductVariants/GetByProductId/${productId}`);
       const data = res.data?.$values || res.data || [];
       const allZero = data.length === 0 ? true : data.every((v) => Number(v.soLuongTon) === 0);
-      // call update status endpoint on BE (BE must implement)
+      //CHỖ NÀY API ẢO
       await api.put(`/Products/UpdateStatus/${productId}`, {
         status: !allZero, // true = active, false = not active
       });
@@ -349,6 +424,7 @@ export default function Products() {
 
   const handleSetMainImage = async (imageId) => {
     try {
+      // CHỖ NÀY API ẢO
       await api.put(`/Images/SetMain/${imageId}`);
       message.success("Đặt ảnh chính thành công!");
       if (editingProduct?.productId) fetchImages(editingProduct.productId);
@@ -537,17 +613,40 @@ export default function Products() {
         <Spin spinning={imageLoading}>
           <Form layout="vertical" form={form} onFinish={handleSave}>
             {/* Thông tin cơ bản */}
-            <Form.Item label="Tên sản phẩm" name="Name" rules={[{ required: true }]}>
-              <Input />
-            </Form.Item>
+        <Form.Item
+          label="Tên sản phẩm"
+          name="Name"
+          rules={[
+            { required: true, message: "Tên sản phẩm không được để trống" },
+            { min: 3, message: "Tên sản phẩm phải từ 3 ký tự" },
+          ]}
+          >
+          <Input />
+        </Form.Item>
+        <Form.Item
+          label="Mô tả"
+          name="Description"
+          rules={[
+            { max: 1000, message: "Mô tả tối đa 1000 ký tự" }
+          ]}
+          >
+          <Input.TextArea rows={3} />
+        </Form.Item>
 
-            <Form.Item label="Mô tả" name="Description">
-              <Input.TextArea rows={3} />
-            </Form.Item>
+        <Form.Item
+        label="Giá gốc"
+        name="Price"
+        rules={[
+          { required: true, message: "Giá không được để trống" },
+          {
+            validator: (_, value) =>
+              value > 0 ? Promise.resolve() : Promise.reject("Giá phải lớn hơn 0"),
+          },
+        ]}
+      >
+        <InputNumber min={1} style={{ width: "100%" }} />
+      </Form.Item>
 
-            <Form.Item label="Giá gốc" name="Price">
-              <InputNumber min={0} style={{ width: "100%" }} />
-            </Form.Item>
 
             {/* Brand & Warranty (readonly but visible) */}
             <Form.Item label="Thương hiệu" name="Brand" initialValue={FIXED_BRAND}>
@@ -559,25 +658,76 @@ export default function Products() {
             </Form.Item>
 
             {/* Dropdowns */}
-            <Form.Item label="Danh mục" name="CategoryId">
-              <Select options={metaData.categories?.map((x) => ({ value: x.categoryId, label: x.name }))} />
-            </Form.Item>
+            <Form.Item
+  label="Danh mục"
+  name="CategoryId"
+  rules={[{ required: true, message: "Vui lòng chọn danh mục" }]}
+>
+  <Select
+    placeholder="Chọn danh mục"
+    options={metaData.categories?.map((x) => ({
+      value: x.categoryId,
+      label: x.name,
+    }))}
+  />
+</Form.Item>
 
-            <Form.Item label="Chất liệu" name="MaterialId">
-              <Select options={metaData.chatlieus?.map((x) => ({ value: x.materialId, label: x.name }))} />
-            </Form.Item>
+<Form.Item
+  label="Chất liệu"
+  name="MaterialId"
+  rules={[{ required: true, message: "Vui lòng chọn chất liệu" }]}
+>
+  <Select
+    placeholder="Chọn chất liệu"
+    options={metaData.chatlieus?.map((x) => ({
+      value: x.materialId,
+      label: x.name,
+    }))}
+  />
+</Form.Item>
 
-            <Form.Item label="Phong cách" name="StyleId">
-              <Select options={metaData.phongcachs?.map((x) => ({ value: x.styleId, label: x.name }))} />
-            </Form.Item>
+<Form.Item
+  label="Phong cách"
+  name="StyleId"
+  rules={[{ required: true, message: "Vui lòng chọn phong cách" }]}
+>
+  <Select
+    placeholder="Chọn phong cách"
+    options={metaData.phongcachs?.map((x) => ({
+      value: x.styleId,
+      label: x.name,
+    }))}
+  />
+</Form.Item>
 
-            <Form.Item label="Giới tính" name="GenderId">
-              <Select options={metaData.gioitinhs?.map((x) => ({ value: x.genderId, label: x.name }))} />
-            </Form.Item>
+<Form.Item
+  label="Giới tính"
+  name="GenderId"
+  rules={[{ required: true, message: "Vui lòng chọn giới tính" }]}
+>
+  <Select
+    placeholder="Chọn giới tính"
+    options={metaData.gioitinhs?.map((x) => ({
+      value: x.genderId,
+      label: x.name,
+    }))}
+  />
+</Form.Item>
 
-            <Form.Item label="Xuất xứ" name="OriginId">
-              <Select options={metaData.xuatxus?.map((x) => ({ value: x.originId, label: x.country }))} />
-            </Form.Item>
+<Form.Item
+  label="Xuất xứ"
+  name="OriginId"
+  rules={[{ required: true, message: "Vui lòng chọn xuất xứ" }]}
+>
+  <Select
+    placeholder="Chọn xuất xứ"
+    options={metaData.xuatxus?.map((x) => ({
+      value: x.originId,
+      label: x.country,
+    }))}
+  />
+</Form.Item>
+
 
             {/* Upload ảnh */}
             <Form.Item label="Ảnh sản phẩm">
@@ -593,6 +743,7 @@ export default function Products() {
                   url: img.url,
                 }))}
               >
+             
                 <div>
                   <PlusOutlined />
                   <div style={{ marginTop: 8 }}>Upload</div>
@@ -603,7 +754,7 @@ export default function Products() {
                 {images.map((img) => (
                   <div key={img.hinhAnhId} style={{ position: "relative" }}>
                     <img
-                      src={img.url}
+                      src={`http://160.250.5.26:5000${img.url}`}
                       alt=""
                       style={{
                         width: 100,
@@ -662,25 +813,79 @@ export default function Products() {
       >
         <Form layout="vertical" form={variantForm} onFinish={submitVariant}>
           {/* For adding new variant we require color/size; when editing we still allow changing them */}
-          <Form.Item label="Màu sắc" name="tenMau" rules={[{ required: true }]}>
-            <Input />
+         <Form.Item
+  label="Màu sắc"
+  name="tenMau"
+  rules={[{ required: true, message: "Vui lòng chọn màu sắc" }]}
+>
+  <Select
+    showSearch
+    placeholder="Chọn màu"
+    options={colors.map((c) => ({
+      value: c.name,
+      label: c.name,
+    }))}
+  />
+</Form.Item>
+
+<Form.Item
+  label="Kích cỡ"
+  name="tenKichCo"
+  rules={[{ required: true, message: "Vui lòng chọn kích cỡ" }]}
+>
+  <Select
+    showSearch
+    placeholder="Chọn kích cỡ"
+    options={sizes.map((s) => ({
+      value: s.name,
+      label: s.name,
+    }))}
+  />
+</Form.Item>
+
+
+          <Form.Item
+            label="Giá bán"
+            name="giaBan"
+            rules={[
+              { required: true, message: "Giá bán không được để trống" },
+              {
+                validator: (_, value) =>
+                  value > 0 ? Promise.resolve() : Promise.reject("Giá bán phải lớn hơn 0"),
+              },
+            ]}
+          >
+            <InputNumber min={1} style={{ width: "100%" }} />
           </Form.Item>
 
-          <Form.Item label="Kích cỡ" name="tenKichCo" rules={[{ required: true }]}>
-            <Input />
-          </Form.Item>
+          <Form.Item
+          label="Số lượng tồn"
+          name="soLuongTon"
+          rules={[
+            { required: true, message: "Số lượng tồn không được để trống" },
+            {
+              validator: (_, value) =>
+                value >= 0 ? Promise.resolve() : Promise.reject("Tồn kho phải ≥ 0"),
+            },
+          ]}
+        >
+          <InputNumber min={0} style={{ width: "100%" }} />
+        </Form.Item>    
 
-          <Form.Item label="Giá bán" name="giaBan" rules={[{ required: true }]}>
-            <InputNumber min={0} style={{ width: "100%" }} />
-          </Form.Item>
-
-          <Form.Item label="Số lượng tồn" name="soLuongTon" rules={[{ required: true }]}>
-            <InputNumber min={0} style={{ width: "100%" }} />
-          </Form.Item>
-
-          <Form.Item label="Khuyến mãi (%)" name="discountPercent" initialValue={0}>
-            <InputNumber min={0} max={100} style={{ width: "100%" }} />
-          </Form.Item>
+          <Form.Item
+          label="Khuyến mãi (%)"
+          name="discountPercent"
+          rules={[
+            {
+              validator: (_, value) =>
+                value >= 0 && value <= 100
+                  ? Promise.resolve()
+                  : Promise.reject("Khuyến mãi phải từ 0–100%"),
+            },
+          ]}
+        >
+          <InputNumber min={0} max={100} style={{ width: "100%" }} />
+        </Form.Item>
         </Form>
       </Modal>
     </div>

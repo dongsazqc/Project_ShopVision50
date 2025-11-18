@@ -29,7 +29,7 @@ export default function Material() {
   const fetchMaterials = async () => {
     try {
       setLoading(true);
-      const res = await api.get("/Material/GetAll");
+      const res = await api.get("/Material/GetAllMaterial");
       const list = res.data?.$values || res.data || [];
       setMaterials(list);
       setAllMaterials(list);
@@ -72,7 +72,7 @@ export default function Material() {
         return;
       }
 
-      await api.post("/Material/Create", { name });
+      await api.post("/Material/CreateMaterial", { name });
       message.success("Thêm chất liệu thành công!");
       setAddModalOpen(false);
       formAdd.resetFields();
@@ -88,7 +88,7 @@ export default function Material() {
   // ================= MỞ MODAL CHỈNH SỬA =================
   const openEditModal = async (record) => {
     try {
-      const res = await api.get(`/Material/GetById/${record.materialId}`);
+      const res = await api.get(`/Material/GetMaterialById/${record.materialId}`);
       const material = res.data;
       setSelectedMaterial(material);
 
@@ -124,7 +124,7 @@ export default function Material() {
         name,
       };
 
-      await api.put(`/Material/Update/${selectedMaterial.materialId}`, payload);
+      await api.put(`/Material/UpdateMaterial/${selectedMaterial.materialId}`, payload);
       message.success("Cập nhật chất liệu thành công!");
       setEditModalOpen(false);
       setSelectedMaterial(null);

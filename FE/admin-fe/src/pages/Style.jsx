@@ -71,7 +71,7 @@ export default function StylePage() {
         return;
       }
 
-      await api.post("/Style/CreateStyle", { name });
+      await api.post("/Style", { name });
       message.success("Thêm phong cách thành công!");
       setAddModalOpen(false);
       formAdd.resetFields();
@@ -87,7 +87,7 @@ export default function StylePage() {
   // ================= MỞ MODAL CHỈNH SỬA =================
   const openEditModal = async (record) => {
     try {
-      const res = await api.get(`/Style/GetStyleById/${record.styleId}`);
+      const res = await api.get(`/Style/${record.styleId}`);
       const style = res.data;
       setSelectedStyle(style);
 
@@ -122,7 +122,7 @@ export default function StylePage() {
         name,
       };
 
-      await api.put(`/Style/UpdateStyle/${selectedStyle.styleId}`, payload);
+      await api.put(`/Style/${selectedStyle.styleId}`, payload);
       message.success("Cập nhật phong cách thành công!");
       setEditModalOpen(false);
       setSelectedStyle(null);
@@ -138,7 +138,7 @@ export default function StylePage() {
   // ================= XÓA STYLE =================
   const handleDelete = async (id) => {
     try {
-      await api.delete(`/Style/DeleteStyle/${id}`);
+      await api.delete(`/Style/${id}`);
       message.success("Xóa phong cách thành công!");
       fetchStyles();
     } catch (err) {
