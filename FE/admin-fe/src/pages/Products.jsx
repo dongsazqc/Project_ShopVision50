@@ -147,26 +147,31 @@ message.error("Không thể tải màu hoặc size");
 }
 };
   // ==================== FETCH VARIANTS ====================
-  const fetchVariants = async (productId) => {
-    if (!productId) {
-      setVariants([]);
-      return;
-    }
-    try {
-      // THAY API VÀO CHỖ NÀY
-      const res = await api.get(`/ProductVariant/${productId}/variants`);
-      // Expect each variant includes: bienTheId, tenMau, tenKichCo, giaBan, soLuongTon, discountPercent (optional)
-      const data = res.data?.$values || res.data || [];
-      setVariants(
-        data.map((v) => ({
-          ...v,
-          discountPercent: v.discountPercent ?? v.khuyenMaiPercent ?? 0,
-        }))
-      );
-    } catch (err) {
-      console.error(err);
-    }
-  };
+const fetchVariants = async (productId) => {
+  if (!productId) {
+    setVariants([]);
+    return;
+  }
+  try {
+    const res = await api.get(`/ProductVariant/${productId}/variants`);
+    
+    // Lấy mảng variants từ res.data.variants.$values
+    const data = res.data?.variants?.$values || [];
+
+    setVariants(
+      data.map((v) => ({
+        bienTheId: v.productVariantId, // dùng bienTheId để làm rowKey
+        tenMau: v.tenMau,
+        tenKichCo: v.tenKichCo,
+        giaBan: v.giaBan,
+        soLuongTon: v.soLuongTon,
+      }))
+    );
+  } catch (err) {
+    console.error(err);
+    message.error("Không thể tải biến thể");
+  }
+};
 
   // ==================== FETCH IMAGES ====================
   const fetchImages = async (productId) => {
@@ -517,18 +522,16 @@ const handleSave = async (values) => {
 const columns = [
   {
     title: "Mã SP",
-    dataIndex: "productId", // map từ sanPhamId -> productId
+    dataIndex: "productId",
     width: 80,
     align: "center",
   },
-
   {
     title: "Ảnh",
     dataIndex: "productImages",
     width: 100,
     render: (_, record) => {
-      const img =
-        record.productImages?.[0]?.url || "/no-image.png"; // BE trả về null hoặc mảng
+      const img = record.productImages?.[0]?.url || "/no-image.png";
       return (
         <img
           src={img}
@@ -544,10 +547,9 @@ const columns = [
       );
     },
   },
-
   {
     title: "Tên sản phẩm",
-    dataIndex: "name", // map từ tenSanPham -> name
+    dataIndex: "name",
     render: (text, record) => (
       <span
         style={{ color: "#1677ff", cursor: "pointer" }}
@@ -557,44 +559,36 @@ const columns = [
       </span>
     ),
   },
-
   {
     title: "Danh mục",
-    dataIndex: "categoryId", // map từ danhMucId -> categoryId
+    dataIndex: "categoryId",
     render: (val) => {
       const dm = metaData.categories?.find((x) => x.categoryId === val);
-      return dm ? dm.name : "—"; // giả sử trong metaData, tên danh mục là name
+      return dm ? dm.name : "—";
     },
   },
-
   {
     title: "Thương hiệu",
-    dataIndex: "brand", // map từ thuongHieu -> brand
+    dataIndex: "brand",
     render: (val) => val || "—",
   },
-
   {
     title: "Country",
-    dataIndex: "originId", // map từ xuatXuId -> originId
+    dataIndex: "originId",
     render: (val) => {
       const xx = metaData.xuatxus?.find((x) => x.originId === val);
-      return xx ? xx.country : "—"; // giả sử tên nước là name
+      return xx ? xx.country : "—";
     },
   },
-
   {
     title: "Thao tác",
-    width: 120,
+    width: 100,
     render: (_, record) => (
       <Space>
         <Button
-          icon={<EditOutlined />}
-          onClick={() => openEditModal(record)}
-        />
-        <Button
           danger
           icon={<DeleteOutlined />}
-          onClick={() => handleDeleteProduct (record.productId)}
+          onClick={() => handleDeleteProduct(record.productId)}
         />
       </Space>
     ),

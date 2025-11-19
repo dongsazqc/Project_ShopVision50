@@ -23,27 +23,17 @@ import {
 } from "@ant-design/icons";
 import { useState, useEffect } from "react";
 import api from "../utils/axios";
-// Giải mã JWT không cần thư viện
-function parseJwt(token) {
-  try {
-    return JSON.parse(atob(token.split(".")[1]));
-  } catch (e) {
-    console.error("Token decode failed:", e);
-    return null;
-  }
-}
+
+
+
 export default function POS() {
-  // Lấy token từ localStorage
-const token = localStorage.getItem("token");
+  const token = localStorage.getItem("token"); 
+  const storedUser = localStorage.getItem("user");
+  const user = storedUser ? JSON.parse(storedUser) : null;
 
-// Decode token để lấy thông tin nhân viên
-const user = token ? parseJwt(token) : null;
-
-// Lấy tên nhân viên từ token (tùy backend trả trường gì)
   const staffName =
-  user?.fullName ||
-  user?.["http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name"] ||
-  "Không xác định";
+    user?.fullName ||
+    "Không xác định";
   const [products, setProducts] = useState([]);
   const [cart, setCart] = useState([]);
   const [openPayment, setOpenPayment] = useState(false);
@@ -221,58 +211,92 @@ const user = token ? parseJwt(token) : null;
 
 
 
-  const handleSubmitOrder = async () => {
+const handleSubmitOrder = async () => {
+  try {
+    // Lấy dữ liệu từ form
+    const customerName = form.getFieldValue("customerName");
+    const customerPhone = form.getFieldValue("customerPhone");
+    const shippingAddress = form.getFieldValue("shippingAddress") || "";
+    const cashReceived = form.getFieldValue("cashReceived") || 0;
+    const cashChange = form.getFieldValue("cashChange") || 0;
+
+    // Tạo payload gửi lên BE
     const orderData = {
-  orderDate: new Date().toISOString(),
-  orderType: "Offline",  // backend trả "Offline"
-  status: true,
+      orderDate: new Date().toISOString(),
+      orderType: "Online", // nếu BE sau này hỗ trợ Offline thì đổi lại
+      status: true,
 
-  // --- khách hàng ---
-  recipientName: form.getFieldValue("customerName"),
-  recipientPhone: form.getFieldValue("customerPhone"),
-  shippingAddress: "Tại quầy", // FE không có -> gán mặc định
+      recipientName: customerName,
+      recipientPhone: customerPhone,
+      shippingAddress: shippingAddress,
+      totalAmount: totalAfterDiscount,
+      userId: user?.userId, // userId từ localStorage
 
-  // --- tổng tiền ---
-  totalAmount: totalAfterDiscount,
+      // MẢNG THUẦN, KHÔNG DÙNG $values
+      orderItems: cart.map((item) => ({
+        productVariantId: item.productVariantId,
+        quantity: item.soLuong,
+        price: item.giaBan || item.price,
+      })),
 
-  // --- nhân viên bán hàng ---
-  userId: user?.userId,         // LẤY TỪ TOKEN
-  nhanVienBanHang: staffName,   
+      // Có thể bỏ hẳn orderPromotions nếu BE không yêu cầu
+      // orderPromotions: [],
 
-  // --- chi tiết đơn hàng ---
-  orderItems: cart.map(item => ({
-    productVariantId: item.productVariantId,
-    quantity: item.soLuong,
-    price: item.giaBan || item.price,
-  })),
+      payments: [
+        {
+          method: paymentMethod, // "TienMat" | "ChuyenKhoan"
+          amount: totalAfterDiscount,
+          cashReceived: cashReceived,
+          cashChange: cashChange,
+        },
+      ],
+    };
 
-  // --- giảm giá ---
-  promotionCode: discountCode || null,
+    console.log("ORDER DATA:", JSON.stringify(orderData, null, 2));
 
-  // --- thanh toán ---
-  payments: [
-    {
-      method: paymentMethod, // "TienMat" / "ChuyenKhoan"
-      amount: totalAfterDiscount,
-      cashReceived: form.getFieldValue("cashReceived") || 0,
-      cashChange: form.getFieldValue("cashChange") || 0
-    }
-  ]
+    // Gửi lên API
+    await api.post("/Orders/Add", orderData);
+
+    message.success("Tạo đơn hàng thành công!");
+
+    // In hóa đơn (nếu bạn muốn hiển thị tên nhân viên)
+    printInvoice({
+      ...orderData,
+      nhanVienBanHang: staffName, // lấy từ token/localStorage
+      khachHang: {
+        ten: customerName,
+        soDienThoai: customerPhone,
+        diaChi: shippingAddress,
+      },
+      ngayThanhToan: new Date().toLocaleString(),
+      phuongThucThanhToan: paymentMethod,
+      chiTietDonHang: orderData.orderItems.map((item) => ({
+        sanPhamId: item.productVariantId,
+        soLuong: item.quantity,
+        donGia: item.price,
+      })),
+      tongTien: totalAfterDiscount,
+      tienKhachDua: cashReceived,
+      tienThoiLai: cashChange,
+    });
+
+    // Reset lại UI
+    setCart([]);
+    setOpenPayment(false);
+    setDiscount(null);
+    setDiscountCode(null);
+    form.resetFields([
+      "customerName",
+      "customerPhone",
+      "shippingAddress",
+      "cashReceived",
+      "cashChange",
+    ]);
+  } catch (err) {
+    console.error("Lỗi tạo đơn hàng:", err);
+    message.error("Tạo đơn hàng thất bại!");
+  }
 };
-
-    try {
-      await api.post("/Orders/Add", orderData);
-      message.success("Tạo đơn hàng thành công!");
-      printInvoice(orderData);
-      setCart([]);
-      setOpenPayment(false);
-      setDiscount(null);
-      setDiscountCode(null);
-    } catch (err) {
-      console.error(err);
-      message.error("Tạo đơn hàng thất bại!");
-    }
-  };
 
   return (
     <div>
@@ -456,6 +480,13 @@ const user = token ? parseJwt(token) : null;
     <Form.Item label="Nhân viên bán hàng" name="staffName">
       <Input readOnly />
     </Form.Item>  
+    <Form.Item
+  label="Địa chỉ nhận hàng (tùy chọn)"
+  name="shippingAddress"
+>
+  <Input placeholder="Nhập địa chỉ nhận hàng" />
+</Form.Item>
+
 
     {/* PHƯƠNG THỨC THANH TOÁN */}
     <Form.Item label="Phương thức thanh toán">
