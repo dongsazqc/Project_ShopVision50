@@ -9,6 +9,7 @@ import {
   InputNumber,
   Tag,
   message,
+   Select, 
 } from "antd";
 import { PlusOutlined, GiftOutlined } from "@ant-design/icons";
 import dayjs from "dayjs";
@@ -23,7 +24,7 @@ export default function Promotions() {
   const [form] = Form.useForm();
   const [openModal, setOpenModal] = useState(false);
   const [selectedPromo, setSelectedPromo] = useState(null);
-
+  const [statusFilter, setStatusFilter] = useState("all");
   // ================= Lấy danh sách khuyến mãi =================
   const fetchPromotions = async () => {
     try {
@@ -40,7 +41,7 @@ export default function Promotions() {
         }))
         .sort((a, b) => b.promotionId - a.promotionId);
 
-      setPromotions(formatted);
+     setPromotions(filterByStatus(formatted, statusFilter));
     } catch (err) {
       console.error(err);
       message.error("Không thể tải danh sách khuyến mãi");
@@ -52,6 +53,17 @@ export default function Promotions() {
   useEffect(() => {
     fetchPromotions();
   }, []);
+
+
+  const filterByStatus = (list, status) => {
+  if (status === "active") {
+    return list.filter((p) => dayjs().isBefore(dayjs(p.endDate)));
+  }
+  if (status === "expired") {
+    return list.filter((p) => dayjs().isAfter(dayjs(p.endDate)));
+  }
+  return list; // all
+};
 
   // ================= Thêm / Cập nhật =================
   const handleSave = async (values) => {
@@ -194,42 +206,64 @@ export default function Promotions() {
 
   return (
     <div>
-      <Space
-        style={{
-          marginBottom: 16,
-          display: "flex",
-          justifyContent: "space-between",
-        }}
-      >
-        <Input.Search
-          placeholder="Tìm mã khuyến mãi..."
-          allowClear
-          onSearch={(value) => {
-            if (!value.trim()) {
-              fetchPromotions();
-            } else {
-              setPromotions((prev) =>
-                prev.filter((p) =>
-                  p.code.toLowerCase().includes(value.toLowerCase())
-                )
-              );
-            }
-          }}
-          style={{ width: 300 }}
-        />
-        <Button
-          type="primary"
-          icon={<PlusOutlined />}
-          onClick={() => {
-            form.resetFields();
-            setSelectedPromo(null);
-            setOpenModal(true);
-          }}
-        >
-          Thêm khuyến mãi
-        </Button>
-      </Space>
+<Space
+  style={{
+    marginBottom: 16,
+    display: "flex",
+    justifyContent: "space-between",
+  }}
+>
+  <Space>
+    <Input.Search
+      placeholder="Tìm mã khuyến mãi..."
+      allowClear
+      onSearch={(value) => {
+        if (!value.trim()) {
+          fetchPromotions();
+        } else {
+          setPromotions((prev) =>
+            filterByStatus(
+              prev.filter((p) =>
+                p.code.toLowerCase().includes(value.toLowerCase())
+              ),
+              statusFilter
+            )
+          );
+        }
+      }}
+      style={{ width: 240 }}
+    />
 
+    {/* 🔥 Select trạng thái */}
+    <Select
+      value={statusFilter}
+      style={{ width: 160 }}
+      onChange={(value) => {
+        setStatusFilter(value);
+        setPromotions((prev) =>
+          filterByStatus(prev, value)
+        );
+      }}
+      options={[
+        { label: "Tất cả", value: "all" },
+        { label: "Đang áp dụng", value: "active" },
+        { label: "Hết hạn", value: "expired" },
+      ]}
+    />
+  </Space>
+
+  <Button
+    type="primary"
+    icon={<PlusOutlined />}
+    onClick={() => {
+      form.resetFields();
+      setSelectedPromo(null);
+      setOpenModal(true);
+    }}
+  >
+    Thêm khuyến mãi
+  </Button>
+</Space>
       <Table
         dataSource={promotions}
         columns={columns}

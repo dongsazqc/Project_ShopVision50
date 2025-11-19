@@ -50,6 +50,40 @@ export default function Products() {
   const [variantModalOpen, setVariantModalOpen] = useState(false);
   const [variantForm] = Form.useForm();
   const [editingVariant, setEditingVariant] = useState(null); // object when editing, null when adding
+  // ================= SEARCH / FILTER STATES =================
+const [searchText, setSearchText] = useState(""); // Tìm theo tên
+const [searchId, setSearchId] = useState("");     // Tìm theo Mã SP
+const [filterCategory, setFilterCategory] = useState(null); // Lọc danh mục
+
+// ================= APPLY FILTER =================
+const applyFilter = () => {
+  let filtered = products; // bắt đầu từ danh sách đầy đủ
+
+  if (searchText.trim()) {
+    const lowerText = searchText.trim().toLowerCase();
+    filtered = filtered.filter(p => p.name.toLowerCase().includes(lowerText));
+  }
+
+  if (searchId.trim()) {
+    filtered = filtered.filter(p => String(p.productId).includes(searchId.trim()));
+  }
+
+  if (filterCategory) {
+    filtered = filtered.filter(p => p.categoryId === filterCategory);
+  }
+
+  setProducts(filtered);
+};
+
+// ================= RESET FILTER =================
+const resetFilter = () => {
+  setSearchText("");
+  setSearchId("");
+  setFilterCategory(null);
+  fetchProducts(); // reload danh sách gốc từ API
+};
+
+
 
   // ==================== FETCH PRODUCTS ====================
   const fetchProducts = async () => {
@@ -120,7 +154,7 @@ message.error("Không thể tải màu hoặc size");
     }
     try {
       // THAY API VÀO CHỖ NÀY
-      const res = await api.get(`/ProductVariants/GetByProductId/${productId}`);
+      const res = await api.get(`/ProductVariant/${productId}/variants`);
       // Expect each variant includes: bienTheId, tenMau, tenKichCo, giaBan, soLuongTon, discountPercent (optional)
       const data = res.data?.$values || res.data || [];
       setVariants(
@@ -364,11 +398,11 @@ const handleSave = async (values) => {
   // else status = true
   const checkProductStatus = async (productId) => {
     try {
-      //CHỖ NÀY API ẢO
-      const res = await api.get(`/ProductVariants/GetByProductId/${productId}`);
+     
+      const res = await api.get(`/ProductVariant/${productId}/variants`);
       const data = res.data?.$values || res.data || [];
       const allZero = data.length === 0 ? true : data.every((v) => Number(v.soLuongTon) === 0);
-      //CHỖ NÀY API ẢO
+      //CHỖ NÀY API ẢO chưa có api
       await api.put(`/Products/UpdateStatus/${productId}`, {
         status: !allZero, // true = active, false = not active
       });
@@ -480,41 +514,92 @@ const handleSave = async (values) => {
   };
 
   // ==================== COLUMNS ====================
-  const columns = [
-    { title: "ID", dataIndex: "productId", width: 70 },
-    {
-      title: "Tên sản phẩm",
-      dataIndex: "name",
-      render: (text, record) => (
-        <span
-          style={{ color: "#1677ff", cursor: "pointer" }}
+const columns = [
+  {
+    title: "Mã SP",
+    dataIndex: "productId", // map từ sanPhamId -> productId
+    width: 80,
+    align: "center",
+  },
+
+  {
+    title: "Ảnh",
+    dataIndex: "productImages",
+    width: 100,
+    render: (_, record) => {
+      const img =
+        record.productImages?.[0]?.url || "/no-image.png"; // BE trả về null hoặc mảng
+      return (
+        <img
+          src={img}
+          alt="product"
+          style={{
+            width: 60,
+            height: 60,
+            borderRadius: 6,
+            objectFit: "cover",
+            border: "1px solid #ddd",
+          }}
+        />
+      );
+    },
+  },
+
+  {
+    title: "Tên sản phẩm",
+    dataIndex: "name", // map từ tenSanPham -> name
+    render: (text, record) => (
+      <span
+        style={{ color: "#1677ff", cursor: "pointer" }}
+        onClick={() => openEditModal(record)}
+      >
+        {text}
+      </span>
+    ),
+  },
+
+  {
+    title: "Danh mục",
+    dataIndex: "categoryId", // map từ danhMucId -> categoryId
+    render: (val) => {
+      const dm = metaData.categories?.find((x) => x.categoryId === val);
+      return dm ? dm.name : "—"; // giả sử trong metaData, tên danh mục là name
+    },
+  },
+
+  {
+    title: "Thương hiệu",
+    dataIndex: "brand", // map từ thuongHieu -> brand
+    render: (val) => val || "—",
+  },
+
+  {
+    title: "Country",
+    dataIndex: "originId", // map từ xuatXuId -> originId
+    render: (val) => {
+      const xx = metaData.xuatxus?.find((x) => x.originId === val);
+      return xx ? xx.country : "—"; // giả sử tên nước là name
+    },
+  },
+
+  {
+    title: "Thao tác",
+    width: 120,
+    render: (_, record) => (
+      <Space>
+        <Button
+          icon={<EditOutlined />}
           onClick={() => openEditModal(record)}
-        >
-          {text}
-        </span>
-      ),
-    },
-    {
-      title: "Giá gốc",
-      dataIndex: "price",
-      render: (v) => `${Number(v).toLocaleString()} ₫`,
-    },
-    { title: "Thương hiệu", dataIndex: "brand" },
-    {
-      title: "Trạng thái",
-      dataIndex: "status",
-      render: (val) => (val ? "Hoạt động" : "Không hoạt động"),
-    },
-    {
-      title: "Thao tác",
-      render: (_, record) => (
-        <Space>
-          <Button icon={<EditOutlined />} onClick={() => openEditModal(record)} />
-          <Button danger icon={<DeleteOutlined />} onClick={() => handleDeleteProduct(record.productId)} />
-        </Space>
-      ),
-    },
-  ];
+        />
+        <Button
+          danger
+          icon={<DeleteOutlined />}
+          onClick={() => handleDeleteProduct (record.productId)}
+        />
+      </Space>
+    ),
+  },
+];
 
   // ==================== VARIANT TABLE COLUMNS ====================
   const variantColumns = [
@@ -529,7 +614,7 @@ const handleSave = async (values) => {
           min={0}
           formatter={(val) => `${val}`}
           onChange={(val) =>
-            setVariants((prev) => prev.map((x) => (x.bienTheId === r.bienTheId ? { ...x, giaBan: val } : x)))
+            setVariants((prev) => prev.map((x) => (x.productVariantId === r.productVariantId? { ...x, giaBan: val } : x)))
           }
         />
       ),
@@ -547,7 +632,7 @@ const handleSave = async (values) => {
         />
       ),
     },
-    {
+   /* {
       title: "Khuyến mãi (%)",
       dataIndex: "discountPercent",
       render: (v, r) => (
@@ -561,7 +646,7 @@ const handleSave = async (values) => {
           }
         />
       ),
-    },
+    },*/
     {
       title: "Hành động",
       render: (_, record) => (
@@ -590,6 +675,39 @@ const handleSave = async (values) => {
           Thêm sản phẩm
         </Button>
       </Space>
+      {/* ================= SEARCH & FILTER ================= */}
+<Space style={{ display: "flex", marginBottom: 16, gap: 8, flexWrap: "wrap" }}>
+  <Input
+    placeholder="Tìm theo tên sản phẩm"
+    value={searchText}
+    onChange={(e) => setSearchText(e.target.value)}
+    allowClear
+    style={{ width: 200 }}
+  />
+  <Input
+    placeholder="Tìm theo Mã SP"
+    value={searchId}
+    onChange={(e) => setSearchId(e.target.value)}
+    allowClear
+    style={{ width: 120 }}
+  />
+  <Select
+    placeholder="Lọc theo danh mục"
+    value={filterCategory}
+    onChange={(val) => setFilterCategory(val)}
+    allowClear
+    style={{ width: 180 }}
+  >
+    {metaData.categories?.map((c) => (
+      <Select.Option key={c.categoryId} value={c.categoryId}>
+        {c.name}
+      </Select.Option>
+    ))}
+  </Select>
+  <Button onClick={applyFilter}>Áp dụng</Button>
+  <Button onClick={resetFilter}>Reset</Button>
+</Space>
+
 
       <Table dataSource={products} columns={columns} loading={loading} rowKey="productId" bordered />
 
@@ -890,4 +1008,4 @@ const handleSave = async (values) => {
       </Modal>
     </div>
   );
-}
+} 

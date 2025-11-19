@@ -237,11 +237,11 @@ const user = token ? parseJwt(token) : null;
 
   // --- nhân viên bán hàng ---
   userId: user?.userId,         // LẤY TỪ TOKEN
-  nhanVienBanHang: staffName,   // bạn muốn lưu tên
+  nhanVienBanHang: staffName,   
 
   // --- chi tiết đơn hàng ---
   orderItems: cart.map(item => ({
-    productId: item.productId,
+    productVariantId: item.productVariantId,
     quantity: item.soLuong,
     price: item.giaBan || item.price,
   })),
