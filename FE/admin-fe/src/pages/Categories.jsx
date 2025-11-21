@@ -8,11 +8,7 @@ import {
   message,
   Popconfirm,
 } from "antd";
-import {
-  PlusOutlined,
-  DeleteOutlined,
-  FolderOutlined,
-} from "@ant-design/icons";
+import { PlusOutlined, DeleteOutlined, FolderOutlined } from "@ant-design/icons";
 import { useEffect, useState } from "react";
 import api from "../utils/axios";
 
@@ -58,7 +54,7 @@ export default function Categories() {
     } else {
       setCategories(
         allCategories.filter((c) =>
-          c.name.toLowerCase().includes(value.toLowerCase())
+          (c.name || "").toLowerCase().includes(value.toLowerCase())
         )
       );
     }
@@ -68,28 +64,30 @@ export default function Categories() {
   const handleAdd = async (values) => {
     try {
       setSaving(true);
+      const name = values.name.trim();
+
       const exists = allCategories.some(
-        (c) => c.name.toLowerCase() === values.name.trim().toLowerCase()
+        (c) => (c.name || "").trim().toLowerCase() === name.toLowerCase()
       );
       if (exists) {
-        message.warning(" Tên danh mục đã tồn tại!");
+        message.warning("Tên danh mục đã tồn tại!");
         return;
       }
 
-      await api.post("/Category", values);
+      await api.post("/Category", { name, description: values.description });
       message.success("Thêm danh mục thành công!");
       setAddModalOpen(false);
       formAdd.resetFields();
       fetchCategories();
     } catch (err) {
       console.error(err);
-      message.error(" Không thể thêm danh mục");
+      message.error("Không thể thêm danh mục");
     } finally {
       setSaving(false);
     }
   };
 
-  // ================= XEM + CHỈNH SỬA =================
+  // ================= MỞ MODAL CHỈNH SỬA =================
   const openEditModal = async (record) => {
     try {
       const res = await api.get(`/Category/${record.categoryId}`);
@@ -110,20 +108,21 @@ export default function Categories() {
   const handleUpdate = async (values) => {
     try {
       setSaving(true);
+      const name = values.name.trim();
+
       const exists = allCategories.some(
         (c) =>
-          c.name.toLowerCase() === values.name.trim().toLowerCase() &&
+          (c.name || "").trim().toLowerCase() === name.toLowerCase() &&
           c.categoryId !== selectedCategory.categoryId
       );
       if (exists) {
-        message.warning(" Tên danh mục đã tồn tại!");
+        message.warning("Tên danh mục đã tồn tại!");
         return;
       }
 
-      // Gộp thêm ID vào payload để tránh lỗi “ID không khớp”
       const payload = {
         categoryId: selectedCategory.categoryId,
-        name: values.name,
+        name,
         description: values.description,
       };
 
@@ -134,7 +133,7 @@ export default function Categories() {
       fetchCategories();
     } catch (err) {
       console.error(err);
-      message.error(" Không thể cập nhật danh mục");
+      message.error("Không thể cập nhật danh mục");
     } finally {
       setSaving(false);
     }
@@ -143,20 +142,20 @@ export default function Categories() {
   // ================= XÓA DANH MỤC =================
   const handleDelete = async (id) => {
     try {
-      //  Kiểm tra danh mục có sản phẩm không
+      // Kiểm tra danh mục có sản phẩm không
       const res = await api.get(`/Category/${id}`);
       const hasProducts = res.data?.products?.$values?.length > 0;
       if (hasProducts) {
-        message.warning(" Không thể xóa vì danh mục này vẫn còn sản phẩm.");
+        message.warning("Không thể xóa vì danh mục này vẫn còn sản phẩm.");
         return;
       }
 
       await api.delete(`/Category/${id}`);
-      message.success(" Xóa danh mục thành công!");
+      message.success("Xóa danh mục thành công!");
       fetchCategories();
     } catch (err) {
       console.error(err);
-      message.error(" Không thể xóa danh mục");
+      message.error("Không thể xóa danh mục");
     }
   };
 
@@ -228,7 +227,7 @@ export default function Categories() {
         }}
       >
         <Input.Search
-          placeholder="🔍 Tìm danh mục..."
+          placeholder="Tìm theo tên danh mục"
           onSearch={handleSearch}
           allowClear
           style={{ width: 300 }}
@@ -264,11 +263,35 @@ export default function Categories() {
         cancelText="Hủy"
         confirmLoading={saving}
       >
-        <Form layout="vertical" form={formAdd} onFinish={handleAdd}>
+        <Form
+          layout="vertical"
+          form={formAdd}
+          onFinish={handleAdd}
+          preserve={false}
+        >
           <Form.Item
             label="Tên danh mục"
             name="name"
-            rules={[{ required: true, message: "Nhập tên danh mục" }]}
+            rules={[
+              { required: true, message: "Nhập tên danh mục" },
+              {
+                validator: (_, value) => {
+                  if (!value || !value.trim()) {
+                    return Promise.reject(
+                      "Tên danh mục không được chỉ chứa khoảng trắng"
+                    );
+                  }
+                  const name = value.trim().toLowerCase();
+                  const exists = allCategories.some(
+                    (c) => (c.name || "").trim().toLowerCase() === name
+                  );
+                  if (exists) {
+                    return Promise.reject("Tên danh mục đã tồn tại");
+                  }
+                  return Promise.resolve();
+                },
+              },
+            ]}
           >
             <Input placeholder="VD: Áo phông, Unisex..." />
           </Form.Item>
@@ -288,11 +311,37 @@ export default function Categories() {
         cancelText="Hủy"
         confirmLoading={saving}
       >
-        <Form layout="vertical" form={formEdit} onFinish={handleUpdate}>
+        <Form
+          layout="vertical"
+          form={formEdit}
+          onFinish={handleUpdate}
+          preserve={false}
+        >
           <Form.Item
             label="Tên danh mục"
             name="name"
-            rules={[{ required: true, message: "Nhập tên danh mục" }]}
+            rules={[
+              { required: true, message: "Nhập tên danh mục" },
+              {
+                validator: (_, value) => {
+                  if (!value || !value.trim()) {
+                    return Promise.reject(
+                      "Tên danh mục không được chỉ chứa khoảng trắng"
+                    );
+                  }
+                  const name = value.trim().toLowerCase();
+                  const exists = allCategories.some(
+                    (c) =>
+                      (c.name || "").trim().toLowerCase() === name &&
+                      c.categoryId !== selectedCategory?.categoryId
+                  );
+                  if (exists) {
+                    return Promise.reject("Tên danh mục đã tồn tại");
+                  }
+                  return Promise.resolve();
+                },
+              },
+            ]}
           >
             <Input />
           </Form.Item>
