@@ -10,6 +10,11 @@ import Login from "../pages/Login";
 import Register from "../pages/Register";
 
 const clientRoutes = createBrowserRouter([
+  // 🔹 Login/Register không dùng layout
+  { path: "/login", element: <Login /> },
+  { path: "/register", element: <Register /> },
+
+  // 🔹 Các trang còn lại dùng layout
   {
     path: "/",
     element: <ClientLayout />,
@@ -18,8 +23,6 @@ const clientRoutes = createBrowserRouter([
       { path: "products", element: <Products /> },
       { path: "products/:id", element: <ProductDetail /> },
       { path: "cart", element: <Cart /> },
-      { path: "login", element: <Login /> },
-      { path: "register", element: <Register /> },
     ],
   },
 ]);
