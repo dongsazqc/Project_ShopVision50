@@ -49,7 +49,7 @@ namespace ShopVision50.API.Services.ProductImageService_FD
         ProductId = productId,
         Url = $"/images/products/{fileName}",
         IsMain = false,
-        Stock = 0
+
     };
 
     await _repo.AddAsync(productImage);
