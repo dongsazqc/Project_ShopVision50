@@ -27,7 +27,7 @@ import api from "../utils/axios";
 
 
 export default function POS() {
-  const token = localStorage.getItem("token"); 
+  //const token = localStorage.getItem("token"); 
   const storedUser = localStorage.getItem("user");
   const user = storedUser ? JSON.parse(storedUser) : null;
 
@@ -47,29 +47,50 @@ export default function POS() {
     form.setFieldsValue({ staffName });
   }, [staffName]);
 
-  const fetchProducts = async () => {
-    try {
-      setLoading(true);
-      const res = await api.get("/ProductVariant");
-      const data = res.data?.$values || [];
+const fetchProducts = async () => {
+  try {
+    setLoading(true);
+    const res = await api.get("/ProductVariant");
+    const data = res.data?.$values || [];
 
-      const formatted = data.map((p) => ({
+    const formatted = data.map((p) => {
+      // Lấy product từ variant (theo JSON bạn gửi)
+      const product = p.product || {};
+
+      // Chuẩn hóa mảng ảnh (có $values)
+      const imgs = product.productImages?.$values || [];
+
+      // Tìm cover image: ưu tiên isMain = true, không có thì lấy ảnh đầu
+      const cover =
+        imgs.find((img) => img.isMain === true) ||
+        imgs[0] ||
+        null;
+
+      // Lấy url gốc
+      const rawUrl = cover?.url || null;
+
+      // Nếu BE trả về path tương đối thì thêm domain BE vào
+      const fullUrl = rawUrl
+        ? rawUrl.startsWith("http")
+          ? rawUrl
+          : `http://160.250.5.26:5000${rawUrl}` // sửa domain nếu BE khác
+        : "/default-image.png";
+
+      return {
         ...p,
-        price: p.price || 0,
-        imageUrl:
-          p.productImages && p.productImages.length > 0
-            ? p.productImages[0].url
-            : "/default-image.png",
-      }));
+        price: p.price || p.giaBan || 0,
+        imageUrl: fullUrl,
+      };
+    });
 
-      setProducts(formatted);
-    } catch (err) {
-      console.error(err);
-      message.error("Không thể tải sản phẩm");
-    } finally {
-      setLoading(false);
-    }
-  };
+    setProducts(formatted);
+  } catch (err) {
+    console.error(err);
+    message.error("Không thể tải sản phẩm");
+  } finally {
+    setLoading(false);
+  }
+};
 
   const fetchPromotions = async () => {
     try {
