@@ -34,6 +34,8 @@ using ShopVision50.API.Repositories.ProductSizeRepo_FD;
 using ShopVision50.API.Services.ProductSizeService_FD;
 using ShopVision50.API.Repositories.CartRepository_FD;
 using ShopVision50.API.Services.CartService_FD;
+using ShopVision50.API.Repositories.TopProductsRepo_FD;
+using ShopVision50.API.Services.TopProductsService_FD;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -127,6 +129,9 @@ builder.Services.AddScoped<IProductSizeService, ProductSizeService>();
 
 builder.Services.AddScoped<ICartRepository, CartRepository>();
 builder.Services.AddScoped<ICartService, CartService>();
+
+builder.Services.AddScoped<ITopProductsRepository, TopProductsRepository>();
+builder.Services.AddScoped<ITopProductsService, TopProductsService>();
 
 // CORS - cho phép tất cả origin (FE khác host thì bật)
 builder.Services.AddCors(options =>
