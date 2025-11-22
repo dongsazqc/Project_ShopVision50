@@ -160,7 +160,7 @@ export default function Users() {
                 role:
                   values.roleId === 1
                     ? "Admin"
-                    : values.roleId === 3
+                    : values.roleId === 2
                     ? "Nhân viên"
                     : "Khách hàng",
               }
@@ -183,7 +183,7 @@ export default function Users() {
                 role:
                   values.roleId === 1
                     ? "Admin"
-                    : values.roleId === 3
+                    : values.roleId === 2
                     ? "Nhân viên"
                     : "Khách hàng",
               }
@@ -231,7 +231,7 @@ export default function Users() {
 
       const res = await api.post("/Users/register", payload);
 
-      console.log("👉 Response từ backend:", res.data); // kiểm tra cấu trúc backend trả về
+      console.log(" Response từ backend:", res.data); // kiểm tra cấu trúc backend trả về
 
       message.success("Thêm người dùng thành công!");
 
@@ -338,8 +338,8 @@ export default function Users() {
             onChange={setFilterRole}
           >
             <Option value="1">Admin</Option>
-            <Option value="3">Nhân viên</Option>
-            <Option value="2">Khách hàng</Option>
+            <Option value="2">Nhân viên</Option>
+            <Option value="3">Khách hàng</Option>
           </Select>
         </Col>
         <Col span={6} style={{ textAlign: "right" }}>
@@ -397,8 +397,8 @@ export default function Users() {
           <Form.Item name="roleId" label="Vai trò">
             <Select>
               <Option value={1}>Admin</Option>
-              <Option value={3}>Nhân viên</Option>
-              <Option value={2}>Khách hàng</Option>
+              <Option value={2}>Nhân viên</Option>
+              <Option value={3}>Khách hàng</Option>
             </Select>
           </Form.Item>
           <Form.Item name="status" label="Trạng thái">
@@ -427,35 +427,71 @@ export default function Users() {
         ]}
       >
         <Form form={formAdd} layout="vertical" onFinish={submitAdd}>
-          <Form.Item name="fullName" label="Họ tên" rules={[{ required: true }]}>
-            <Input />
-          </Form.Item>
-          <Form.Item name="email" label="Email" rules={[{ required: true }]}>
-            <Input />
-          </Form.Item>
-          <Form.Item name="phone" label="Số điện thoại">
-            <Input />
-          </Form.Item>
-          <Form.Item name="defaultAddress" label="Địa chỉ mặc định">
-            <Input />
-          </Form.Item>
-          <Form.Item name="joinDate" label="Ngày tham gia">
-            <Input disabled />
-          </Form.Item>
-          <Form.Item name="roleId" label="Vai trò" rules={[{ required: true }]}>
-            <Select>
-              <Option value={1}>Admin</Option>
-              <Option value={2}>Nhân viên</Option>
-              <Option value={3}>Khách hàng</Option>
-            </Select>
-          </Form.Item>
-          <Form.Item name="status" label="Trạng thái">
-            <Select>
-              <Option value={true}>Hoạt động</Option>
-              <Option value={false}>Khóa</Option>
-            </Select>
-          </Form.Item>
-        </Form>
+  <Form.Item
+    name="fullName"
+    label="Họ tên"
+    rules={[{ required: true, message: "Vui lòng nhập họ tên!" }, { min: 3, message: "Họ tên phải có ít nhất 3 ký tự" }]}
+  >
+    <Input />
+  </Form.Item>
+
+  <Form.Item
+    name="email"
+    label="Email"
+    rules={[
+      { required: true, message: "Vui lòng nhập email!" },
+      { type: 'email', message: "Email không hợp lệ!" }
+    ]}
+  >
+    <Input />
+  </Form.Item>
+
+  <Form.Item
+    name="phone"
+    label="Số điện thoại"
+    rules={[
+      { required: true, message: "Vui lòng nhập số điện thoại!" },
+      { pattern: /^[0-9]{10}$/, message: "Số điện thoại phải có 10 số" }
+    ]}
+  >
+    <Input />
+  </Form.Item>
+
+  <Form.Item
+    name="defaultAddress"
+    label="Địa chỉ mặc định"
+    rules={[{ min: 5, message: "Địa chỉ phải có ít nhất 5 ký tự" }]}
+  >
+    <Input />
+  </Form.Item>
+
+  <Form.Item name="joinDate" label="Ngày tham gia">
+    <Input disabled />
+  </Form.Item>
+
+  <Form.Item
+    name="roleId"
+    label="Vai trò"
+    rules={[{ required: true, message: "Vui lòng chọn vai trò!" }]}
+  >
+    <Select>
+      <Option value={1}>Admin</Option>
+      <Option value={2}>Nhân viên</Option>
+      <Option value={3}>Khách hàng</Option>
+    </Select>
+  </Form.Item>
+
+  <Form.Item
+    name="status"
+    label="Trạng thái"
+    rules={[{ required: true, message: "Vui lòng chọn trạng thái!" }]}
+  >
+    <Select>
+      <Option value={true}>Hoạt động</Option>
+      <Option value={false}>Khóa</Option>
+    </Select>
+  </Form.Item>
+</Form>
       </Modal>
     </div>
   );

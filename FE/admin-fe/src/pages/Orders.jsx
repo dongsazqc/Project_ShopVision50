@@ -1,4 +1,3 @@
-// src/pages/Orders.jsx
 import {
   Table,
   Tag,
@@ -9,30 +8,38 @@ import {
   Form,
   Input,
   Select,
+  DatePicker,
 } from "antd";
-import {
-  EyeOutlined,
-  ReloadOutlined,
-  SaveOutlined,
-} from "@ant-design/icons";
+import { ReloadOutlined, SaveOutlined } from "@ant-design/icons";
 import { useState, useEffect } from "react";
 import api from "../utils/axios";
 import dayjs from "dayjs";
 
+const { RangePicker } = DatePicker;
+
 export default function Orders() {
   const [orders, setOrders] = useState([]);
+  const [filteredOrders, setFilteredOrders] = useState([]);
   const [loading, setLoading] = useState(false);
+
   const [detailModal, setDetailModal] = useState(false);
   const [selectedOrder, setSelectedOrder] = useState(null);
+
   const [form] = Form.useForm();
 
-  // ================= FETCH ORDERS =================
+  // --- Filter States ---
+  const [searchText, setSearchText] = useState("");
+  const [phoneFilter, setPhoneFilter] = useState("");
+  const [dateRange, setDateRange] = useState(null);
+  const [statusFilter, setStatusFilter] = useState("all");
+
   const fetchOrders = async () => {
     try {
       setLoading(true);
       const res = await api.get("/Orders/GetAll");
       const list = res.data?.$values || res.data || [];
       setOrders(list);
+      setFilteredOrders(list);
     } catch (err) {
       console.error(err);
       message.error("Không thể tải danh sách đơn hàng");
@@ -44,6 +51,46 @@ export default function Orders() {
   useEffect(() => {
     fetchOrders();
   }, []);
+
+  // ======================= HANDLE FILTER =========================
+  const applyFilters = () => {
+    let result = [...orders];
+
+    // 🔎 Lọc theo tên người nhận
+    if (searchText.trim() !== "") {
+      result = result.filter((o) =>
+        o.recipientName?.toLowerCase().includes(searchText.toLowerCase())
+      );
+    }
+
+    // 🔎 Lọc theo số điện thoại
+    if (phoneFilter.trim() !== "") {
+      result = result.filter((o) =>
+        o.recipientPhone?.includes(phoneFilter)
+      );
+    }
+
+    // 📅 Lọc theo ngày
+    if (dateRange && dateRange.length === 2) {
+      const [start, end] = dateRange;
+      result = result.filter((o) => {
+        const date = dayjs(o.orderDate);
+        return date.isAfter(start.startOf("day")) && date.isBefore(end.endOf("day"));
+      });
+    }
+
+    // 🔖 Lọc theo trạng thái
+    if (statusFilter !== "all") {
+      const boolStatus = statusFilter === "completed";
+      result = result.filter((o) => o.status === boolStatus);
+    }
+
+    setFilteredOrders(result);
+  };
+
+  useEffect(() => {
+    applyFilters();
+  }, [searchText, phoneFilter, dateRange, statusFilter, orders]);
 
   // ================= VIEW + EDIT ORDER =================
   const handleView = async (record) => {
@@ -64,7 +111,6 @@ export default function Orders() {
     }
   };
 
-  // ================= SAVE UPDATE =================
   const handleSaveUpdate = async () => {
     try {
       const values = await form.validateFields();
@@ -81,7 +127,6 @@ export default function Orders() {
     }
   };
 
-  // ================= STATUS RENDER =================
   const renderStatus = (status) => {
     switch (status) {
       case true:
@@ -97,7 +142,6 @@ export default function Orders() {
     {
       title: "Mã đơn hàng",
       dataIndex: "orderId",
-      key: "orderId",
       width: 100,
     },
     {
@@ -134,9 +178,11 @@ export default function Orders() {
 
   return (
     <div>
+      {/* HEADER + FILTER */}
       <Space
         style={{
           marginBottom: 16,
+          width: "100%",
           display: "flex",
           justifyContent: "space-between",
         }}
@@ -147,9 +193,45 @@ export default function Orders() {
         </Button>
       </Space>
 
+      {/* FILTER BAR */}
+      <Space style={{ marginBottom: 16 }} wrap>
+
+        <Input
+          placeholder="Tìm theo tên người nhận..."
+          style={{ width: 220 }}
+          allowClear
+          onChange={(e) => setSearchText(e.target.value)}
+        />
+
+        <Input
+          placeholder="Tìm theo số điện thoại..."
+          style={{ width: 180 }}
+          allowClear
+          onChange={(e) => setPhoneFilter(e.target.value)}
+        />
+
+        <RangePicker
+          style={{ width: 260 }}
+          onChange={(values) => setDateRange(values)}
+        />
+
+        <Select
+          value={statusFilter}
+          style={{ width: 180 }}
+          onChange={(v) => setStatusFilter(v)}
+          options={[
+            { label: "Tất cả", value: "all" },
+            { label: "Đang xử lý", value: "processing" },
+            { label: "Hoàn tất", value: "completed" },
+          ]}
+        />
+
+      </Space>
+
+      {/* TABLE */}
       <Table
         columns={columns}
-        dataSource={orders}
+        dataSource={filteredOrders}
         rowKey="orderId"
         loading={loading}
         bordered

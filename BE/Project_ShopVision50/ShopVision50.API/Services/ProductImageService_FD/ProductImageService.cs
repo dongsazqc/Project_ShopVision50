@@ -54,7 +54,12 @@ public async Task<bool> AddProductImageAsync(int productId, IFormFile file)
     {
         ProductId = productId,
         Url = $"/images/products/{fileName}",
+<<<<<<< HEAD
         IsMain = false
+=======
+        IsMain = false,
+
+>>>>>>> main
     };
 
     await _repo.AddAsync(productImage);
