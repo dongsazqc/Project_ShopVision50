@@ -32,7 +32,9 @@ using ShopVision50.API.Repositories.ProductColorRepo_FD;
 using ShopVision50.API.Services.ProductColorService_FD;
 using ShopVision50.API.Repositories.ProductSizeRepo_FD;
 using ShopVision50.API.Services.ProductSizeService_FD;
-
+using Microsoft.Extensions.FileProviders;
+using ShopVision50.API.Services.RevenueService_FD;
+using ShopVision50.API.Repositories.RevenueSummary_FD;
 var builder = WebApplication.CreateBuilder(args);
 
 // Kestrel listen all IP trên port 5000
@@ -123,6 +125,8 @@ builder.Services.AddScoped<IProductColorService, ProductColorService>();
 builder.Services.AddScoped<IProductSizeRepository, ProductSizeRepository>();
 builder.Services.AddScoped<IProductSizeService, ProductSizeService>();
 
+builder.Services.AddScoped<IRevenueSummaryRepo, RevenueRepository>();
+builder.Services.AddScoped<IRevenueService, RevenueService>();
 
 
 // CORS - cho phép tất cả origin (FE khác host thì bật)
@@ -152,6 +156,16 @@ builder.Services.AddAuthorization();
 var app = builder.Build();
 
 app.UseCors("AllowAll");
+
+
+app.UseStaticFiles(new StaticFileOptions
+{
+    FileProvider = new PhysicalFileProvider(
+        Path.Combine(Directory.GetCurrentDirectory(), "images")
+    ),
+    RequestPath = "/images"
+});
+
 
 if (app.Environment.IsDevelopment())
 {

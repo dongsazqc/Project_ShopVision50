@@ -27,11 +27,13 @@ namespace ShopVision50.API.Repositories.ProductsRepo_FD.OrderRepo
             return await _context.Orders.ToListAsync();
         }
 
-        public async Task AddAsync(Order order)
-        {
-            await _context.Orders.AddAsync(order);
-            await _context.SaveChangesAsync();
-        }
+       
+    public async Task<Order> AddOrderAsync(Order order)
+    {
+        _context.Orders.Add(order);
+        await _context.SaveChangesAsync();
+        return order;
+    }
 
         public async Task UpdateAsync(Order order)
 {

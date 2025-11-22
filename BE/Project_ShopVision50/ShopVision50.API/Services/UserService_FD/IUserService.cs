@@ -19,5 +19,6 @@ namespace ShopVision50.API.Services.UserService_FD
         // UPDATE/DELETE
         Task<ServiceResult<User>> UpdateUserAsync(User id);
         Task<ServiceResult<string>> DeleteUserAsync(int id);
+        Task<bool> CheckEmailExistsAsync(string email);
     }
 }

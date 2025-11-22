@@ -8,7 +8,7 @@ namespace ShopVision50.API.Services.ProductImageService_FD
 {
     public interface IProductImageService
     {
-          Task<ProductImage> UploadProductImageAsync(int productId, IFormFile file);
+Task<bool> AddProductImageAsync(int productId, IFormFile file);
           Task<IEnumerable<ProductImage>> GetImagesByProductIdAsync(int productId);
 }
     }

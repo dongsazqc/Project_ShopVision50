@@ -8,8 +8,7 @@ namespace ShopVision50.API.Repositories.ProductImageRepo_FD
 {
     public interface IProductImageRepository
     {
-    Task AddAsync(ProductImage productImage);
-
+   Task AddAsync(ProductImage image);
      Task<IEnumerable<ProductImage>> GetByProductIdAsync(int productId);
     Task SaveChangesAsync();
 }

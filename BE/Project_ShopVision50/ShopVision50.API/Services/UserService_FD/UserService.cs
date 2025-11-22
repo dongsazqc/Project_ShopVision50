@@ -95,5 +95,8 @@ namespace ShopVision50.API.Services.UserService_FD
                 return ServiceResult<string>.Fail("Xóa người dùng thất bại");
         }
 
+        public async Task<bool> CheckEmailExistsAsync(string email)
+        {
+            return await _repo.CheckEmailExistsAsync(email);        }
     }
 }

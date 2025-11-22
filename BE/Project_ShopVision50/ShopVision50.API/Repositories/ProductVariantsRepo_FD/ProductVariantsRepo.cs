@@ -57,4 +57,15 @@ public class ProductVariantRepository : IProductVariantsRepo
     {
         await _context.SaveChangesAsync();
     }
+    public async Task<Product?> GetProductWithVariantsAsync(int productId)
+    {
+        return await _context.Products
+            .Include(p => p.ProductVariants)
+                .ThenInclude(v => v.Color)
+            .Include(p => p.ProductVariants)
+                .ThenInclude(v => v.Size)
+            .FirstOrDefaultAsync(p => p.ProductId == productId);
+    }
+
+
 }

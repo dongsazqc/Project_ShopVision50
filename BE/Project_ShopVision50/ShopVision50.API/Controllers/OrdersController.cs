@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Shop_Db.Models;
+using ShopVision50.API.Models.Users.DTOs;
 using ShopVision50.API.Service.OrderService_FD;
 namespace ShopVision50.API.Controllers
 {
@@ -37,11 +38,12 @@ namespace ShopVision50.API.Controllers
 
         [HttpPost("Add")]
         [Authorize]
-        public async Task<IActionResult> Create(Order order)
-        {
-            await _service.AddAsync(order);
-            return CreatedAtAction(nameof(GetById), new { id = order.OrderId }, order);
-        }
+         [HttpPost]
+    public async Task<IActionResult> CreateOrder([FromBody] CreateOrderRequest request)
+    {
+        var order = await _service.CreateOrderAsync(request);
+        return CreatedAtAction(nameof(GetAll), new { id = order.OrderId }, order);
+    }
 
         [HttpPut("Update/{id}")]
         [Authorize]
