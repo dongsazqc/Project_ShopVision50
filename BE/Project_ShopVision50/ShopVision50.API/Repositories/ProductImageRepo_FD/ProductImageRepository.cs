@@ -22,9 +22,9 @@ namespace ShopVision50.API.Repositories.ProductImageRepo_FD
             .ToListAsync();
     }
 
-    public async Task AddAsync(ProductImage productImage)
+    public async Task AddAsync(ProductImage image)
     {
-        await _context.ProductImages.AddAsync(productImage);
+        await _context.ProductImages.AddAsync(image);
     }
 
     public async Task SaveChangesAsync()

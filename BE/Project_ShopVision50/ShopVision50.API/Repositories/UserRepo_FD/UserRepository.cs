@@ -48,5 +48,9 @@ namespace ShopVision50.API.Repositories
             _db.Users.Remove(user);
             return await _db.SaveChangesAsync() > 0;
         }
+
+        public async Task<bool> CheckEmailExistsAsync(string email)
+        {
+            return await _db.Users.AnyAsync(u => u.Email == email);        }
     }
 }

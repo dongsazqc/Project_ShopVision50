@@ -1,12 +1,16 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
 using Shop_Db.Models;
 using ShopVision50.API.Models.Users.DTOs;
 using ShopVision50.API.Repositories.ProductVariantsRepo_FD;
+using ShopVision50.Infrastructure;
 
 public class ProductVariantService : IProductVariantService
 {
+        private readonly AppDbContext _context;
+
     private readonly IProductVariantsRepo _repository;
     public ProductVariantService(IProductVariantsRepo repository)
     {
@@ -73,4 +77,25 @@ public class ProductVariantService : IProductVariantService
 
         return true;
     }
+public async Task<ProductWithVariantsDto?> GetProductWithVariantsAsync(int productId)
+{
+    var product = await _repository.GetProductWithVariantsAsync(productId);
+    if (product == null) return null;
+
+    return new ProductWithVariantsDto
+    {
+        ProductId = product.ProductId,
+        TenSanPham = product.Name,
+        Variants = product.ProductVariants?.Select(v => new VariantDto
+        {
+            ProductVariantId = v.ProductVariantId,
+            GiaBan = v.SalePrice,
+            SoLuongTon = v.Stock,
+            TenMau = v.Color?.Name ?? "Unknown",
+            TenKichCo = v.Size?.Name ?? "Unknown"
+        }).ToList() ?? new List<VariantDto>()
+    };
+}
+
+
 }

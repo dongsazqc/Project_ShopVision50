@@ -9,7 +9,7 @@ using ShopVision50.API.Services.ProductImageService_FD;
 
 namespace ShopVision50.API.Controllers
 {
-    [ApiController]
+[ApiController]
 [Route("api/products/{productId}/images")]
 public class ProductImageController : ControllerBase
 {
@@ -20,22 +20,20 @@ public class ProductImageController : ControllerBase
         _service = service;
     }
 
-    [HttpPost]
-    public async Task<IActionResult> UploadImage([FromRoute] int productId, [FromForm] IFormFile file)
+    [HttpPost]  // POST api/products/{productId}/images
+    public async Task<IActionResult> AddImage(int productId, IFormFile file)
     {
-        try
-        {
-            var productImage = await _service.UploadProductImageAsync(productId, file);
-            return Ok(productImage);
-        }
-        catch (Exception ex)
-        {
-            return BadRequest(new { message = ex.Message });
-        }
+        if (file == null)
+            return BadRequest("File không được để trống");
+
+        var result = await _service.AddProductImageAsync(productId, file);
+
+        if (result) return Ok("Upload thành công");
+        return StatusCode(500, "Upload thất bại");
     }
 
-    [HttpGet("checkimages")]
-    public async Task<IActionResult> GetProductImages([FromRoute] int productId)
+    [HttpGet("checkimages")]  // GET api/products/{productId}/images
+    public async Task<IActionResult> GetProductImages(int productId)
     {
         var images = await _service.GetImagesByProductIdAsync(productId);
         return Ok(images);

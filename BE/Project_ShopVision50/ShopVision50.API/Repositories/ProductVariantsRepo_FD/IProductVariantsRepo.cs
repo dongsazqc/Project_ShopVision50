@@ -14,8 +14,9 @@ namespace ShopVision50.API.Repositories.ProductVariantsRepo_FD
     Task<ProductColor?> GetColorByNameAsync(string tenMau);
     Task<ProductSize?> GetSizeByNameAsync(string tenKichCo);
     Task<Product?> GetProductByIdAsync(int productId);
+    Task<Product?> GetProductWithVariantsAsync(int productId);
     Task AddAsync(ProductVariant variant);
-    Task SaveChangesAsync();
+        Task SaveChangesAsync();
      
     }
 }

@@ -69,5 +69,23 @@ namespace ShopVision50.API.Controllers
             if (!result.Success) return BadRequest(result.Message);
             return Ok(result.Message);
         }
+
+
+
+    [HttpPost("check-email")]
+    public async Task<IActionResult> CheckEmail([FromBody] CheckEmail dto)
+    {
+        if (string.IsNullOrEmpty(dto.Email))
+            return BadRequest("Email không được để trống.");
+
+        var exists = await _svc.CheckEmailExistsAsync(dto.Email);
+
+        return Ok(new
+        {
+            email = dto.Email,
+            exists
+        });
+    }
+         
     }
 }

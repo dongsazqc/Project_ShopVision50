@@ -45,4 +45,16 @@ public class ProductVariantController : ControllerBase
 
         return Ok(new { message = "Tạo biến thể thành công" });
     }
+
+      [HttpGet("{productId}/variants")]
+public async Task<IActionResult> GetProductWithVariants(int productId)
+{
+    var result = await _service.GetProductWithVariantsAsync(productId);
+
+    if (result == null)
+        return NotFound("Không tìm thấy sản phẩm hoặc biến thể");
+
+    return Ok(result);
+}
+
 }
