@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate} from "react-router-dom";
 import {
   Card,
   Button,
@@ -17,6 +17,7 @@ import api from "../utils/axios";
 
 const ProductDetail = () => {
   const { id } = useParams();
+  const navigate = useNavigate();
   const baseURL = "http://160.250.5.26:5000";
 
   const [product, setProduct] = useState(null);
@@ -104,6 +105,30 @@ const ProductDetail = () => {
     localStorage.setItem("cart", JSON.stringify(cart));
     message.success("Đã thêm vào giỏ hàng");
   };
+
+
+
+  const handleBuyNow = () => {
+  if (!selectedColor || !selectedSize || !activeVariant) {
+    message.warning("Vui lòng chọn màu và kích cỡ trước khi mua");
+    return;
+  }
+
+  const buyNowData = {
+    variantId: activeVariant.productVariantId,
+    productId: product.productId,
+    name: product.name,
+    giaBan: activeVariant.giaBan,
+    quantity,
+    color: selectedColor,
+    size: selectedSize,
+    image: activeImage
+  };
+
+  sessionStorage.setItem("buyNow", JSON.stringify(buyNowData));
+  navigate("/checkout");
+};
+
 
   if (loading) return <Spin style={{ marginTop: 100 }} size="large" />;
   if (!product)
@@ -239,7 +264,7 @@ const ProductDetail = () => {
               <Button style={styles.btnAdd} onClick={handleAddToCart}>
                 Thêm vào giỏ
               </Button>
-              <Button style={styles.btnBuy}>Mua ngay</Button>
+              <Button style={styles.btnBuy} onClick={handleBuyNow}>Mua ngay</Button>
             </div>
           </Card>
         </Col>

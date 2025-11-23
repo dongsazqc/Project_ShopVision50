@@ -17,7 +17,7 @@ const AppHeader = () => {
       <Menu.Item key="profile" onClick={() => navigate("/profile")}>
         Quản lý thông tin cá nhân
       </Menu.Item>
-      <Menu.Item key="orders" onClick={() => navigate("/orders")}>
+      <Menu.Item key="orders" onClick={() => navigate("/orderhistory")}>
         Lịch sử đơn hàng
       </Menu.Item>
       <Menu.Item key="logout" onClick={() => {
