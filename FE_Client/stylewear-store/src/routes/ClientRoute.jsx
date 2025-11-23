@@ -8,7 +8,9 @@ import ProductDetail from "../pages/ProductDetail";
 import Cart from "../pages/Cart";
 import Login from "../pages/Login";
 import Register from "../pages/Register";
-
+import Checkout from "../pages/Checkout";
+import OrderSuccess from "../pages/Ordersuccess";
+import OrderHistory from "../pages/Orderhistory";
 const clientRoutes = createBrowserRouter([
   // 🔹 Login/Register không dùng layout
   { path: "/login", element: <Login /> },
@@ -23,6 +25,9 @@ const clientRoutes = createBrowserRouter([
       { path: "products", element: <Products /> },
       { path: "products/:id", element: <ProductDetail /> },
       { path: "cart", element: <Cart /> },
+      { path: "checkout", element: <Checkout /> },
+      { path: "ordersuccess", element: <OrderSuccess /> },
+      { path: "orderhistory", element: <OrderHistory /> },  
     ],
   },
 ]);
