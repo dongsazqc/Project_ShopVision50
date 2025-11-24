@@ -39,8 +39,13 @@
     using ShopVision50.API.Services.CartService_FD;
     using ShopVision50.API.Repositories.TopProductsRepo_FD;
     using ShopVision50.API.Services.TopProductsService_FD;
+using ShopVision50.API.Services;
+using ShopVision50.API.Repositories.OrderItemRepository_FD;
+using ShopVision50.API.Services.OrderItemService_FD;
+using ShopVision50.API.Services.CartItemService;
+using ShopVision50.API.Repositories.CartItemRepository;
 
-    var builder = WebApplication.CreateBuilder(args);
+var builder = WebApplication.CreateBuilder(args);
 
     // Kestrel listen all IP trên port 5000
     builder.WebHost.ConfigureKestrel(options =>
@@ -136,9 +141,26 @@
     builder.Services.AddScoped<ICartRepository, CartRepository>();
     builder.Services.AddScoped<ICartService, CartService>();
 
-
     builder.Services.AddScoped<ITopProductsRepository, TopProductsRepository>();
     builder.Services.AddScoped<ITopProductsService, TopProductsService>();
+
+    builder.Services.AddMemoryCache();
+    builder.Services.AddScoped<IEmailService, EmailService>();
+    builder.Services.AddScoped<IUserService, UserService>();    
+
+    builder.Services.AddScoped<IOrderItemRepository, OrderItemRepository>();
+    builder.Services.AddScoped<IOrderItemService, OrderItemService>();
+
+    builder.Services.AddScoped<ICartItemRepository, CartItemRepository>();
+    builder.Services.AddScoped<ICartItemService, CartItemService>();
+
+    builder.Services.AddScoped<ICartItemRepository, CartItemRepository>();
+    builder.Services.AddScoped<ICartItemService, CartItemService>();
+
+
+
+
+
 
     // CORS - cho phép tất cả origin (FE khác host thì bật)
     builder.Services.AddCors(options =>
