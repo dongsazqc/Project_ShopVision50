@@ -1,4 +1,5 @@
 ﻿using Shop_Db.Models;
+using ShopVision50.API.Models.Login;
 using ShopVision50.API.Models.Users.DTOs;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -14,7 +15,9 @@ namespace ShopVision50.API.Services.UserService_FD
         Task<ServiceResult<User>> GetUserByIdAsync(int id);
 
         // REGISTER
-        Task<ServiceResult<string>> RegisterUserAsync( User user);   
+        // Task<ServiceResult<string>> RegisterUserAsync( User user);   
+        Task<ServiceResult<string>> SendOtpAsync(string email);
+        Task<ServiceResult<string>> RegisterUserWithOtpAsync(RegisterConfirmDto dto);
 
         // UPDATE/DELETE
         Task<ServiceResult<User>> UpdateUserAsync(User id);

@@ -1,0 +1,125 @@
+1. User mở app / web
+
+Mục đích: Xem sản phẩm, lựa chọn mua
+
+API: GET /api/products (hoặc tương tự) để lấy danh sách sản phẩm + biến thể (size, màu…)
+
+Dữ liệu: Danh sách sản phẩm, mô tả, giá, stock
+
+2. User chọn sản phẩm + biến thể, số lượng muốn mua
+
+Mục đích: Chuẩn bị cho thêm vào giỏ hàng
+
+Không cần gọi API ở bước này (nếu làm frontend tạm giữ) hoặc có thể gọi API để check stock (tuỳ)
+
+3. User thêm sản phẩm vào giỏ hàng (Cart)
+
+API: POST /api/cart/add
+
+Dữ liệu gửi:
+
+{
+  "userId": 123,
+  "productVariantId": 456,
+  "quantity": 2
+}
+
+
+Hành động:
+
+Nếu user chưa có cart thì tạo mới cart
+
+Nếu sản phẩm đã có trong cart rồi thì tăng quantity
+
+Nếu chưa có thì tạo mới cart item
+
+Response: Trả về giỏ hàng hiện tại (hoặc cart item mới)
+
+4. User xem giỏ hàng
+
+API: GET /api/cart/getcartbyuser/{userId}
+
+Dữ liệu trả về: Giỏ hàng kèm danh sách cart items, giá, tổng tiền
+
+5. User chỉnh sửa giỏ hàng (thay đổi số lượng hoặc xóa item)
+
+API:
+
+PUT /api/cart/updatecartitem để thay đổi số lượng
+
+DELETE /api/cart/removecartitem/{cartItemId} để xóa món
+
+Dữ liệu gửi (ví dụ update):
+
+{
+  "cartItemId": 789,
+  "quantity": 3
+}
+
+6. User bấm “Thanh toán”
+
+API: POST /api/orders/create
+
+Dữ liệu gửi:
+
+{
+  "userId": 123,
+  "recipientName": "Nguyen Van A",
+  "recipientPhone": "0123456789",
+  "shippingAddress": "123 Le Loi, HN",
+  "orderType": "Online",
+  "cartItems": [
+    {
+      "productVariantId": 456,
+      "quantity": 2,
+      "discountAmount": 0
+    },
+    ...
+  ]
+}
+
+
+Hành động:
+
+Tạo Order + OrderItems từ cart items
+
+Tính tổng tiền, áp dụng khuyến mãi nếu có
+
+Xóa hoặc làm trống giỏ hàng
+
+Response: Thông tin order đã tạo
+
+7. User thanh toán (Payment)
+
+API: POST /api/payments/create
+
+Dữ liệu gửi:
+
+{
+  "orderId": 101,
+  "method": "Credit Card",
+  "amount": 1500000,
+  "status": true,
+  "paymentDate": "2025-11-24T10:00:00"
+}
+
+
+Hành động: Lưu thông tin thanh toán, cập nhật trạng thái order
+
+Response: Trả về xác nhận thanh toán
+
+8. Xác nhận và theo dõi đơn hàng
+
+API: GET /api/orders/getbyuserid/{userId} hoặc GET /api/orders/{orderId}
+
+Dữ liệu: Thông tin order, trạng thái, lịch sử thanh toán
+
+Tổng kết API chính
+Bước	API	Mục đích
+1. Xem sản phẩm	GET /api/products	Lấy danh sách sản phẩm
+3. Thêm sản phẩm vào cart	POST /api/cart/add	Thêm món vào giỏ hàng
+4. Xem giỏ hàng	GET /api/cart/getcartbyuser/{userId}	Lấy giỏ hàng user
+5. Sửa giỏ hàng	PUT /api/cart/updatecartitem / DELETE /api/cart/removecartitem/{id}	Thay đổi số lượng hoặc xóa item
+6. Tạo đơn hàng	POST /api/orders/create	Tạo đơn hàng mới từ giỏ hàng
+7. Thanh toán	POST /api/payments/create	Lưu thông tin thanh toán
+8. Xem đơn hàng	GET /api/orders/getbyuserid/{userId}	Theo dõi trạng thái đơn
