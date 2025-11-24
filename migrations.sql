@@ -1,4 +1,6 @@
-﻿CREATE TABLE IF NOT EXISTS `__EFMigrationsHistory` (
+Build started...
+Build succeeded.
+CREATE TABLE IF NOT EXISTS `__EFMigrationsHistory` (
     `MigrationId` varchar(150) CHARACTER SET utf8mb4 NOT NULL,
     `ProductVersion` varchar(32) CHARACTER SET utf8mb4 NOT NULL,
     CONSTRAINT `PK___EFMigrationsHistory` PRIMARY KEY (`MigrationId`)
@@ -86,13 +88,14 @@ CREATE TABLE `Users` (
 
 CREATE TABLE `Products` (
     `ProductId` int NOT NULL AUTO_INCREMENT,
-    `Name` longtext CHARACTER SET utf8mb4 NOT NULL,
-    `Description` longtext CHARACTER SET utf8mb4 NULL,
+    `Name` varchar(200) CHARACTER SET utf8mb4 NOT NULL,
+    `Description` varchar(1000) CHARACTER SET utf8mb4 NULL,
     `Price` decimal(65,30) NOT NULL,
-    `Brand` longtext CHARACTER SET utf8mb4 NULL,
-    `Warranty` longtext CHARACTER SET utf8mb4 NULL,
+    `Brand` varchar(100) CHARACTER SET utf8mb4 NULL,
+    `Warranty` varchar(100) CHARACTER SET utf8mb4 NULL,
     `CreatedDate` datetime(6) NOT NULL,
     `Status` tinyint(1) NOT NULL,
+    `ImageData` longtext CHARACTER SET utf8mb4 NOT NULL,
     `MaterialId` int NULL,
     `StyleId` int NULL,
     `GenderId` int NULL,
@@ -291,7 +294,34 @@ CREATE INDEX `IX_UserRoles_UserId` ON `UserRoles` (`UserId`);
 CREATE INDEX `IX_Users_RoleId` ON `Users` (`RoleId`);
 
 INSERT INTO `__EFMigrationsHistory` (`MigrationId`, `ProductVersion`)
-VALUES ('20251024190413_OneMySql', '8.0.0');
+VALUES ('20251104032732_resstdatabase', '8.0.0');
 
 COMMIT;
+
+START TRANSACTION;
+
+ALTER TABLE `Products` DROP COLUMN `ImageData`;
+
+ALTER TABLE `Products` MODIFY COLUMN `Warranty` longtext CHARACTER SET utf8mb4 NULL;
+
+ALTER TABLE `Products` MODIFY COLUMN `Name` longtext CHARACTER SET utf8mb4 NOT NULL;
+
+ALTER TABLE `Products` MODIFY COLUMN `Description` longtext CHARACTER SET utf8mb4 NULL;
+
+ALTER TABLE `Products` MODIFY COLUMN `Brand` longtext CHARACTER SET utf8mb4 NULL;
+
+INSERT INTO `__EFMigrationsHistory` (`MigrationId`, `ProductVersion`)
+VALUES ('20251117165217_Loi', '8.0.0');
+
+COMMIT;
+
+START TRANSACTION;
+
+ALTER TABLE `ProductImages` DROP COLUMN `Stock`;
+
+INSERT INTO `__EFMigrationsHistory` (`MigrationId`, `ProductVersion`)
+VALUES ('20251124045604_restlinux', '8.0.0');
+
+COMMIT;
+
 

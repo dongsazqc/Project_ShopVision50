@@ -5,6 +5,7 @@ using Shop_Db.Models;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
+using ShopVision50.API.Models.Login;
 
 namespace ShopVision50.API.Controllers
 {
@@ -36,15 +37,15 @@ namespace ShopVision50.API.Controllers
         }
 
         // POST api/users/register
-        [HttpPost("register")]
-        [Authorize]
-        public async Task<IActionResult> Register([FromBody] User user)
-        {
-            if (user == null) return BadRequest("Body trống");
-            var result = await _svc.RegisterUserAsync(user);
-            if (!result.Success) return BadRequest(result.Message);
-            return Ok(result.Message);
-        }
+        // [HttpPost("register")]
+        // [Authorize]
+        // public async Task<IActionResult> Register([FromBody] User user)
+        // {
+        //     if (user == null) return BadRequest("Body trống");
+        //     var result = await _svc.RegisterUserAsync(user);
+        //     if (!result.Success) return BadRequest(result.Message);
+        //     return Ok(result.Message);
+        // }
 
         // PUT api/users/update
        [HttpPut("update/{id}")]
@@ -85,7 +86,26 @@ namespace ShopVision50.API.Controllers
             email = dto.Email,
             exists
         });
+
+
+        
+    }
+
+    [HttpPost("send-otp")]
+    public async Task<IActionResult> SendOtp([FromBody] EmailDto dto)
+    {
+        if (string.IsNullOrEmpty(dto.Email)) return BadRequest("Email không được để trống");
+        var result = await _svc.SendOtpAsync(dto.Email);
+        if (!result.Success) return BadRequest(result.Message);
+        return Ok(result.Message);
     }
          
+            [HttpPost("register-with-otp")]
+    public async Task<IActionResult> RegisterWithOtp([FromBody] RegisterConfirmDto dto)
+    {
+        var result = await _svc.RegisterUserWithOtpAsync(dto);
+        if (!result.Success) return BadRequest(result.Message);
+        return Ok(result.Message);
+    }
     }
 }

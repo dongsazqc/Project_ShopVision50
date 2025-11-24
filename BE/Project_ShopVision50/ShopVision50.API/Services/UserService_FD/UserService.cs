@@ -1,5 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Caching.Memory;
 using Shop_Db.Models;
+using ShopVision50.API.Models.Login;
 using ShopVision50.API.Models.Users.DTOs;
 using ShopVision50.API.Repositories;
 using ShopVision50.Infrastructure;
@@ -12,12 +14,15 @@ namespace ShopVision50.API.Services.UserService_FD
 {
     public class UserService : IUserService
     {
-        private readonly IUserRepository _repo;
-
-        public UserService(IUserRepository repo, AppDbContext db)
-        {
-            _repo = repo;
-        }
+  private readonly IUserRepository _repo;
+    private readonly IEmailService _emailService;
+    private readonly IMemoryCache _cache;
+    public UserService(IUserRepository repo, IEmailService emailService, IMemoryCache cache)
+    {
+        _repo = repo;
+        _emailService = emailService;
+        _cache = cache;
+    }
 
         public UserService(IUserRepository repo) => _repo = repo;
 
@@ -44,26 +49,26 @@ namespace ShopVision50.API.Services.UserService_FD
         
         }
 
-        public async Task<ServiceResult<string>> RegisterUserAsync( User userClient)
-        {
-            var checkemail = await _repo.GetByEmailAsync(userClient.Email);
-            if (checkemail != null)
-            {
-                return await Task.FromResult(ServiceResult<string>.Fail("Người dùng đã tồn tại"));
-            }
-            else
-            {
+        // public async Task<ServiceResult<string>> RegisterUserAsync( User userClient)
+        // {
+        //     var checkemail = await _repo.GetByEmailAsync(userClient.Email);
+        //     if (checkemail != null)
+        //     {
+        //         return await Task.FromResult(ServiceResult<string>.Fail("Người dùng đã tồn tại"));
+        //     }
+        //     else
+        //     {
 
-                userClient.Password = BCrypt.Net.BCrypt.HashPassword(userClient.Password);
+        //         userClient.Password = BCrypt.Net.BCrypt.HashPassword(userClient.Password);
                  
-                userClient.JoinDate = DateTime.Now;
-                userClient.Status = true;
+        //         userClient.JoinDate = DateTime.Now;
+        //         userClient.Status = true;
 
-                await _repo.AddAsync(userClient);
+        //         await _repo.AddAsync(userClient);
 
-                return await Task.FromResult(ServiceResult<string>.Ok("Đăng ký thành công"));
-            }
-        }
+        //         return await Task.FromResult(ServiceResult<string>.Ok("Đăng ký thành công"));
+        //     }
+        // }
         public async Task<ServiceResult<User>> UpdateUserAsync(User user)
         {
             var existingUser = await _repo.GetByIdAsync(user.UserId);
@@ -98,5 +103,68 @@ namespace ShopVision50.API.Services.UserService_FD
         public async Task<bool> CheckEmailExistsAsync(string email)
         {
             return await _repo.CheckEmailExistsAsync(email);        }
+
+
+             public async Task<ServiceResult<string>> SendOtpAsync(string email)
+    {
+        var exists = await _repo.CheckEmailExistsAsync(email);
+        if (exists)
+            return ServiceResult<string>.Fail("Email đã được đăng ký");
+
+        var otp = new Random().Next(100000, 999999).ToString();
+
+        _cache.Set($"otp_{email}", otp, TimeSpan.FromMinutes(5));
+
+        await _emailService.SendEmailAsync(email, "Mã OTP đăng ký ShopVision50", $"Mã OTP của bạn là: {otp}. Hết hạn sau 5 phút.");
+
+        return ServiceResult<string>.Ok("OTP đã được gửi đến email");
     }
+
+    public bool VerifyOtp(string email, string otp)
+    {
+        if (_cache.TryGetValue($"otp_{email}", out string cachedOtp))
+        {
+            return cachedOtp == otp;
+        }
+        return false;
+    }
+
+    public async Task<ServiceResult<string>> RegisterUserWithOtpAsync(RegisterConfirmDto dto)
+    {
+        if (!VerifyOtp(dto.Email, dto.Otp))
+            return ServiceResult<string>.Fail("OTP không hợp lệ hoặc đã hết hạn");
+
+        var checkEmail = await _repo.GetByEmailAsync(dto.Email);
+        if (checkEmail != null)
+            return ServiceResult<string>.Fail("Email đã tồn tại");
+            
+        if (dto == null ||
+    string.IsNullOrWhiteSpace(dto.Email) ||
+    string.IsNullOrWhiteSpace(dto.Otp) ||
+    string.IsNullOrWhiteSpace(dto.Password))
+{
+    return ServiceResult<string>.Fail("Thông tin đăng ký không hợp lệ");
 }
+    
+
+        var user = new User
+        {
+            Email = dto.Email,
+            FullName = dto.FullName,
+            Password = BCrypt.Net.BCrypt.HashPassword(dto.Password),
+            Phone = dto.Phone,
+            JoinDate = DateTime.Now,
+            Status = true,
+            RoleId = dto.RoleId,
+        };
+
+        await _repo.AddAsync(user);
+        _cache.Remove($"otp_{dto.Email}"); // Xóa OTP sau khi dùng
+
+        return ServiceResult<string>.Ok("Đăng ký thành công");
+    }
+
+        
+    }
+    }
+

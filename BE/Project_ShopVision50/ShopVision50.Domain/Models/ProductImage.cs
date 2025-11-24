@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 namespace Shop_Db.Models
 {
     public class ProductImage
-    {
+    {   
         [Key]
         public int ProductImageId { get; set; }
         [Required]
