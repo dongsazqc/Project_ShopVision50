@@ -163,8 +163,51 @@ namespace ShopVision50.API.Services.UserService_FD
 
         return ServiceResult<string>.Ok("Đăng ký thành công");
     }
+        // Gửi OTP đổi mật khẩu
+        public async Task<ServiceResult<string>> SendOtpChangePasswordAsync(int userId)
+        {
+            var user = await _repo.GetByIdAsync(userId);
+            if (user == null) return ServiceResult<string>.Fail("Không tìm thấy user");
 
-        
+            if (string.IsNullOrEmpty(user.Email))
+                return ServiceResult<string>.Fail("User không có email");
+
+            var otp = new Random().Next(100000, 999999).ToString();
+            _cache.Set($"otp_change_pw_{user.Email}", otp, TimeSpan.FromMinutes(5));
+
+            await _emailService.SendEmailAsync(
+                user.Email,
+                "OTP đổi mật khẩu ShopVision50",
+                $"Mã OTP của bạn là: {otp}. Hết hạn sau 5 phút."
+            );
+
+            return ServiceResult<string>.Ok("OTP đã được gửi");
+        }
+
+
+        // Đổi mật khẩu bằng OTP
+        public async Task<ServiceResult<string>> ChangePasswordWithOtpAsync(ChangePasswordOtpDto dto)
+        {
+            var user = await _repo.GetByIdAsync(dto.UserId);
+            if (user == null) return ServiceResult<string>.Fail("Không tìm thấy user");
+
+            if (!_cache.TryGetValue($"otp_change_pw_{user.Email}", out string cachedOtp))
+                return ServiceResult<string>.Fail("OTP hết hạn hoặc không tồn tại");
+
+            if (cachedOtp != dto.Otp)
+                return ServiceResult<string>.Fail("OTP không chính xác");
+
+            // cập nhật mật khẩu mới
+            user.Password = BCrypt.Net.BCrypt.HashPassword(dto.NewPassword);
+            await _repo.UpdateAsync(user);
+
+            // xóa otp
+            _cache.Remove($"otp_change_pw_{user.Email}");
+
+            return ServiceResult<string>.Ok("Đổi mật khẩu thành công");
+        }
+
+
     }
     }
 
