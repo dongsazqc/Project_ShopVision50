@@ -6,76 +6,76 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Shop_Db.Models;
+using ShopVision50.API.Models.Users.DTOs;
 using ShopVision50.API.Repositories.ProductImageRepo_FD;
 using ShopVision50.Infrastructure;
 
 namespace ShopVision50.API.Services.ProductImageService_FD
 {
-    public class ProductImageService : IProductImageService
-    {
-        private readonly IProductImageRepository _repo;
-        private readonly AppDbContext _context;
-        private readonly IWebHostEnvironment _env;
-        private readonly string _imageFolderPath;
-
-        public ProductImageService(IProductImageRepository repo, AppDbContext context, IWebHostEnvironment env)
-        {
-            _repo = repo;
-            _context = context;
-            _env = env;
-            _imageFolderPath = Path.Combine(_env.ContentRootPath, "images");
-
-            if (!Directory.Exists(_imageFolderPath))
-                Directory.CreateDirectory(_imageFolderPath);
-        }
-
-public async Task<bool> AddProductImageAsync(int productId, IFormFile file)
+public class ProductImageService : IProductImageService
 {
-    if (file == null || file.Length == 0)
-        return false;
+    private readonly IProductImageRepository _repo;
+    private readonly IWebHostEnvironment _env;
 
-    // Tạo folder images/products nếu chưa có
-    var productImageFolder = Path.Combine(_env.ContentRootPath, "images", "products");
-    if (!Directory.Exists(productImageFolder))
-        Directory.CreateDirectory(productImageFolder);
-
-    // Tạo tên file mới tránh trùng
-    var fileName = $"{Guid.NewGuid()}{Path.GetExtension(file.FileName)}";
-    var filePath = Path.Combine(productImageFolder, fileName);
-
-    // Lưu file vào ổ cứng
-    using (var stream = new FileStream(filePath, FileMode.Create))
+    public ProductImageService(IProductImageRepository repo, IWebHostEnvironment env)
     {
-        await file.CopyToAsync(stream);
+        _repo = repo;
+        _env = env;
     }
 
-    // Tạo đối tượng ProductImage lưu vào DB
-    var productImage = new ProductImage
+    public async Task<List<ImageDetailDto>> GetImagesByProductIdAsync(int productId)
     {
-        ProductId = productId,
-        Url = $"/images/products/{fileName}",
-        IsMain = false,
+        var images = await _repo.GetByProductIdWithRelationsAsync(productId);
 
-    };
-
-    await _repo.AddAsync(productImage);
-    await _repo.SaveChangesAsync();
-
-    return true;
-}
-        public async Task<IEnumerable<ProductImage>> GetImagesByProductIdAsync(int productId)
-        {
-            var product = await _context.Products.FindAsync(productId);
-            if (product == null)
+        var dtos = images
+            .OrderByDescending(img => img.IsMain)
+            .Select(img => new ImageDetailDto
             {
-                Console.WriteLine("Product not found!");
-                return Enumerable.Empty<ProductImage>();
-            }
+                ImageId = img.ProductImageId,
+                Url = img.Url,
+                IsPrimary = img.IsMain,
+                ProductId = img.ProductId,
+                Product = img.Product == null ? null : new ProductSummaryDto
+                {
+                    Id = img.Product.ProductId,
+                    Name = img.Product.Name,
+                    Price = img.Product.Price,
+                    Brand = img.Product.Brand
+                },
+                Variant = null // map nếu có variant
+            }).ToList();
 
-            var images = await _repo.GetByProductIdAsync(productId);
-            Console.WriteLine($"Found {images.Count()} images");
-
-            return images;
-        }
+        return dtos;
     }
+
+    public async Task<bool> AddProductImageAsync(int productId, IFormFile file)
+    {
+        if (file == null || file.Length == 0)
+            return false;
+
+        var productImageFolder = Path.Combine(_env.ContentRootPath, "images", "products");
+        if (!Directory.Exists(productImageFolder))
+            Directory.CreateDirectory(productImageFolder);
+
+        var fileName = $"{Guid.NewGuid()}{Path.GetExtension(file.FileName)}";
+        var filePath = Path.Combine(productImageFolder, fileName);
+
+        using (var stream = new FileStream(filePath, FileMode.Create))
+        {
+            await file.CopyToAsync(stream);
+        }
+
+        var productImage = new ProductImage
+        {
+            ProductId = productId,
+            Url = $"/images/products/{fileName}",
+            IsMain = false,
+        };
+
+        await _repo.AddAsync(productImage);
+        await _repo.SaveChangesAsync();
+
+        return true;
+    }
+}
 }

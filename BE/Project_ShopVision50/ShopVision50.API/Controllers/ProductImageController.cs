@@ -1,14 +1,8 @@
-using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
+using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http;
 using ShopVision50.API.Services.ProductImageService_FD;
 
-namespace ShopVision50.API.Controllers
-{
 [ApiController]
 [Route("api/products/{productId}/images")]
 public class ProductImageController : ControllerBase
@@ -32,13 +26,10 @@ public class ProductImageController : ControllerBase
         return StatusCode(500, "Upload thất bại");
     }
 
-    [HttpGet("checkimages")]  // GET api/products/{productId}/images
+    [HttpGet("checkimages")]  // GET api/products/{productId}/images/checkimages
     public async Task<IActionResult> GetProductImages(int productId)
     {
         var images = await _service.GetImagesByProductIdAsync(productId);
         return Ok(images);
     }
 }
-
-}
-
