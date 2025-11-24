@@ -76,7 +76,6 @@ namespace ShopVision50.API.Services.UserService_FD
                 return  ServiceResult<User>.Fail("Không tìm thấy người dùng");
             // Update mấy property cần thiết
             existingUser.FullName = user.FullName;
-            existingUser.Email = user.Email;
             existingUser.Phone = user.Phone;
             existingUser.DefaultAddress = user.DefaultAddress;
             existingUser.Addresses = user.Addresses;
@@ -129,42 +128,43 @@ namespace ShopVision50.API.Services.UserService_FD
         return false;
     }
 
-    public async Task<ServiceResult<string>> RegisterUserWithOtpAsync(RegisterConfirmDto dto)
-    {
-        if (!VerifyOtp(dto.Email, dto.Otp))
-            return ServiceResult<string>.Fail("OTP không hợp lệ hoặc đã hết hạn");
-
-        var checkEmail = await _repo.GetByEmailAsync(dto.Email);
-        if (checkEmail != null)
-            return ServiceResult<string>.Fail("Email đã tồn tại");
-            
-        if (dto == null ||
-    string.IsNullOrWhiteSpace(dto.Email) ||
-    string.IsNullOrWhiteSpace(dto.Otp) ||
-    string.IsNullOrWhiteSpace(dto.Password))
+public async Task<ServiceResult<string>> RegisterUserWithOtpAsync(RegisterConfirmDto dto)
 {
-    return ServiceResult<string>.Fail("Thông tin đăng ký không hợp lệ");
+    if (dto == null ||
+        string.IsNullOrWhiteSpace(dto.Email) ||
+        string.IsNullOrWhiteSpace(dto.Otp) ||
+        string.IsNullOrWhiteSpace(dto.Password))
+    {
+        return ServiceResult<string>.Fail("Thông tin đăng ký không hợp lệ");
+    }
+
+    if (!VerifyOtp(dto.Email, dto.Otp))
+        return ServiceResult<string>.Fail("OTP không hợp lệ hoặc đã hết hạn");
+
+    var checkEmail = await _repo.GetByEmailAsync(dto.Email);
+    if (checkEmail != null)
+        return ServiceResult<string>.Fail("Email đã tồn tại");
+
+    var user = new User
+    {
+        Email = dto.Email,
+        FullName = dto.FullName,
+        Password = BCrypt.Net.BCrypt.HashPassword(dto.Password),
+        Phone = dto.Phone,
+        JoinDate = DateTime.Now,
+        Status = true,
+        RoleId = dto.RoleId,
+    };
+
+    await _repo.AddAsync(user);
+
+    // Chỗ này check _cache null chưa
+    if (_cache != null)
+    {
+        _cache.Remove($"otp_{dto.Email}");
+    }
+
+    return ServiceResult<string>.Ok("Đăng ký thành công");
 }
-    
-
-        var user = new User
-        {
-            Email = dto.Email,
-            FullName = dto.FullName,
-            Password = BCrypt.Net.BCrypt.HashPassword(dto.Password),
-            Phone = dto.Phone,
-            JoinDate = DateTime.Now,
-            Status = true,
-            RoleId = dto.RoleId,
-        };
-
-        await _repo.AddAsync(user);
-        _cache.Remove($"otp_{dto.Email}"); // Xóa OTP sau khi dùng
-
-        return ServiceResult<string>.Ok("Đăng ký thành công");
-    }
-
-        
-    }
-    }
+}}
 
