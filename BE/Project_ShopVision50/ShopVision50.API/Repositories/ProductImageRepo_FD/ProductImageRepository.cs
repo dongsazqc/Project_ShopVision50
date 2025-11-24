@@ -8,17 +8,21 @@ using ShopVision50.Infrastructure;
 
 namespace ShopVision50.API.Repositories.ProductImageRepo_FD
 {
-    public class ProductImageRepository : IProductImageRepository
+public class ProductImageRepository : IProductImageRepository
 {
     private readonly AppDbContext _context;
+
     public ProductImageRepository(AppDbContext context)
     {
         _context = context;
     }
-     public async Task<IEnumerable<ProductImage>> GetByProductIdAsync(int productId)
+
+    public async Task<List<ProductImage>> GetByProductIdWithRelationsAsync(int productId)
     {
         return await _context.ProductImages
             .Where(pi => pi.ProductId == productId)
+            .Include(pi => pi.Product)
+            //.Include(pi => pi.ProductVariant) // nếu có entity variant thì include nè
             .ToListAsync();
     }
 
@@ -32,4 +36,5 @@ namespace ShopVision50.API.Repositories.ProductImageRepo_FD
         await _context.SaveChangesAsync();
     }
 }
+
 }
