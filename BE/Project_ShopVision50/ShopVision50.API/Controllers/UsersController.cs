@@ -107,5 +107,30 @@ namespace ShopVision50.API.Controllers
         if (!result.Success) return BadRequest(result.Message);
         return Ok(result.Message);
     }
+
+        // ================================
+        // GỬI OTP ĐỔI MẬT KHẨU
+        // ================================
+        [HttpPost("send-otp-change-password/{userId}")]
+        public async Task<IActionResult> SendOtpChangePassword(int userId)
+        {
+            var result = await _svc.SendOtpChangePasswordAsync(userId);
+            if (!result.Success) return BadRequest(result.Message);
+
+            return Ok(new { message = "OTP đổi mật khẩu đã được gửi đến email" });
+        }
+
+        // ================================
+        // ĐỔI MẬT KHẨU BẰNG OTP
+        // ================================
+        [HttpPost("change-password-with-otp")]
+        public async Task<IActionResult> ChangePasswordWithOtp([FromBody] ChangePasswordOtpDto dto)
+        {
+            var result = await _svc.ChangePasswordWithOtpAsync(dto);
+            if (!result.Success) return BadRequest(result.Message);
+
+            return Ok(new { message = "Đổi mật khẩu thành công" });
+        }
+
     }
 }

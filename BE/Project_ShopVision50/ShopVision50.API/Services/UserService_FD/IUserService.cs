@@ -23,5 +23,7 @@ namespace ShopVision50.API.Services.UserService_FD
         Task<ServiceResult<User>> UpdateUserAsync(User id);
         Task<ServiceResult<string>> DeleteUserAsync(int id);
         Task<bool> CheckEmailExistsAsync(string email);
+        Task<ServiceResult<string>> SendOtpChangePasswordAsync(int userId);
+        Task<ServiceResult<string>> ChangePasswordWithOtpAsync(ChangePasswordOtpDto dto);
     }
 }
