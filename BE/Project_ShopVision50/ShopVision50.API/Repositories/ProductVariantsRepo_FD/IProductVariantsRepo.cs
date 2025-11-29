@@ -17,6 +17,8 @@ namespace ShopVision50.API.Repositories.ProductVariantsRepo_FD
     Task<Product?> GetProductWithVariantsAsync(int productId);
     Task AddAsync(ProductVariant variant);
         Task SaveChangesAsync();
+
+        Task<IEnumerable<ProductVariant>> GetVariantsByCategoryIdAsync(int categoryId);
      
     }
 }

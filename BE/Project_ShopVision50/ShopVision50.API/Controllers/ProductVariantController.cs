@@ -57,4 +57,17 @@ public async Task<IActionResult> GetProductWithVariants(int productId)
     return Ok(result);
 }
 
+[HttpGet("filter-by-category/{categoryId}")]
+[Authorize]
+public async Task<IActionResult> GetVariantsByCategory(int categoryId)
+{
+    var variants = await _service.GetVariantsByCategoryIdAsync(categoryId);
+
+    if (!variants.Any())
+        return NotFound(new { message = "Không tìm thấy biến thể thuộc danh mục này" });
+
+    return Ok(variants);
+}
+
+
 }

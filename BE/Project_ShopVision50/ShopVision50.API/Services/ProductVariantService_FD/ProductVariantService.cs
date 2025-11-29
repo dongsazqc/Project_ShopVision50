@@ -95,7 +95,24 @@ public async Task<ProductWithVariantsDto?> GetProductWithVariantsAsync(int produ
             TenKichCo = v.Size?.Name ?? "Unknown"
         }).ToList() ?? new List<VariantDto>()
     };
+
+
+    
 }
 
+    public async Task<IEnumerable<BienTheResponseDto>> GetVariantsByCategoryIdAsync(int categoryId)
+    {
+    var variants = await _repository.GetVariantsByCategoryIdAsync(categoryId);
 
+    return variants.Select(v => new BienTheResponseDto
+    {
+        ProductVariantId = v.ProductVariantId,
+        GiaBan = v.SalePrice,
+        SoLuongTon = v.Stock,
+        TenMau = v.Color?.Name ?? "Unknown",
+        TenKichCo = v.Size?.Name ?? "Unknown",
+        ProductId = v.ProductId,
+        TenSanPham = v.Product?.Name ?? "Unknown",
+        DiscountPercent = 0
+    });    }
 }

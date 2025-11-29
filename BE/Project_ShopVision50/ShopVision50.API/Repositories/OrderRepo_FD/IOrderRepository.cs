@@ -10,5 +10,6 @@ namespace ShopVision50.API.Repositories.OrderRepo_FD
  Task<Order> AddOrderAsync(Order order);
          Task UpdateAsync(Order order);
         Task DeleteAsync(int id);
+        Task<List<Order>> GetOrdersByUserIdAsync(int userId);
     }
 }

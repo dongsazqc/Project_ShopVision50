@@ -67,5 +67,17 @@ public class ProductVariantRepository : IProductVariantsRepo
             .FirstOrDefaultAsync(p => p.ProductId == productId);
     }
 
+    // Implement trong ProductVariantRepository.cs
+public async Task<IEnumerable<ProductVariant>> GetVariantsByCategoryIdAsync(int categoryId)
+{
+    return await _context.ProductVariants
+        .Include(pv => pv.Color)
+        .Include(pv => pv.Size)
+        .Include(pv => pv.Product)
+        .Where(pv => pv.Product.CategoryId == categoryId)
+        .ToListAsync();
+}
+
+
 
 }

@@ -39,5 +39,14 @@ namespace ShopVision50.API.Repositories.CartRepository_FD
         {
             await _context.SaveChangesAsync();
         }
+            public void AddCart(Cart cart)
+    {
+        _context.Carts.Add(cart);
+    }
+
+    public void AddCartItem(CartItem cartItem)
+    {
+        _context.CartItems.Add(cartItem);
+    }
     }
 }

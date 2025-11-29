@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using ShopVision50.API.Services.ProductSizeService_FD;
 
@@ -17,6 +18,8 @@ namespace ShopVision50.API.Controllers
 
         // GET: /api/ProductSize/GetAll
         [HttpGet("GetAll")]
+        [Authorize]
+
         public async Task<IActionResult> GetAll()
         {
             var sizes = await _service.GetAllAsync();

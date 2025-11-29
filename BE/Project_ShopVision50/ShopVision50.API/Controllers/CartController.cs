@@ -1,5 +1,8 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using System.Security.Claims;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using ShopVision50.API.Models.Users.DTOs;
 using ShopVision50.API.Services.CartService_FD;
 
 namespace ShopVision50.API.Controllers
@@ -17,6 +20,8 @@ namespace ShopVision50.API.Controllers
 
         // Lấy giỏ hàng theo user
         [HttpGet("GetCartByUser/{userId}")]
+            [Authorize]
+
         public async Task<IActionResult> GetCartByUser(int userId)
         {
             var cart = await _service.GetCartByUserIdAsync(userId);
@@ -28,6 +33,8 @@ namespace ShopVision50.API.Controllers
 
         // Xóa cart item
         [HttpDelete("RemoveCartItem/{cartItemId}")]
+            [Authorize]
+
         public async Task<IActionResult> RemoveCartItem(int cartItemId)
         {
             var success = await _service.RemoveCartItemAsync(cartItemId);
@@ -36,5 +43,19 @@ namespace ShopVision50.API.Controllers
 
             return Ok(new { message = "Deleted successfully" });
         }
+        [HttpPost("AddToCart")]
+    [Authorize]
+    public async Task<IActionResult> AddToCart([FromBody] AddToCartRequest request)
+    {
+        var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier);
+        if (userIdClaim == null)
+            return Unauthorized("User ID không có trong token");
+
+        if (!int.TryParse(userIdClaim.Value, out int userId))
+            return BadRequest("User ID không hợp lệ");
+
+        await _service.AddToCartAsync(userId, request);
+        return Ok(new { message = "Thêm vào giỏ hàng thành công" });
+    }
     }
 }

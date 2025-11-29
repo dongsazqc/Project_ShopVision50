@@ -98,5 +98,11 @@ namespace ShopVision50.API.Repositories.ProductsRepo_FD.OrderRepo
                 await _context.SaveChangesAsync();
             }
         }
+         public async Task<List<Order>> GetOrdersByUserIdAsync(int userId)
+    {
+        return await _context.Orders
+            .Where(o => o.UserId == userId)
+            .ToListAsync();
+    }
     }
 }
