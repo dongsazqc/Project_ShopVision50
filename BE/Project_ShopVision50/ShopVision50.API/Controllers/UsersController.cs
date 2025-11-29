@@ -74,6 +74,8 @@ namespace ShopVision50.API.Controllers
 
 
     [HttpPost("check-email")]
+            [Authorize]
+
     public async Task<IActionResult> CheckEmail([FromBody] CheckEmail dto)
     {
         if (string.IsNullOrEmpty(dto.Email))
@@ -92,6 +94,7 @@ namespace ShopVision50.API.Controllers
     }
 
     [HttpPost("send-otp")]
+
     public async Task<IActionResult> SendOtp([FromBody] EmailDto dto)
     {
         if (string.IsNullOrEmpty(dto.Email)) return BadRequest("Email không được để trống");
@@ -124,6 +127,8 @@ namespace ShopVision50.API.Controllers
         // ĐỔI MẬT KHẨU BẰNG OTP
         // ================================
         [HttpPost("change-password-with-otp")]
+        [Authorize]
+
         public async Task<IActionResult> ChangePasswordWithOtp([FromBody] ChangePasswordOtpDto dto)
         {
             var result = await _svc.ChangePasswordWithOtpAsync(dto);

@@ -77,5 +77,25 @@ public class ProductImageService : IProductImageService
 
         return true;
     }
+
+    public async Task<bool> DeleteProductImageAsync(int productId, int imageId)
+{
+    var image = await _repo.GetByIdAsync(imageId);
+    if (image == null || image.ProductId != productId)
+        return false;
+
+    // Xóa file ảnh trên disk
+    var filePath = Path.Combine(_env.ContentRootPath, image.Url.TrimStart('/').Replace('/', Path.DirectorySeparatorChar));
+    if (File.Exists(filePath))
+    {
+        File.Delete(filePath);
+    }
+
+    // Xóa record trong database
+    _repo.Remove(image);
+    await _repo.SaveChangesAsync();
+    return true;
+}
+
 }
 }

@@ -10,6 +10,6 @@ namespace ShopVision50.API.Service.OrderService_FD
 Task<Order> CreateOrderAsync(CreateOrderRequest request);
         Task UpdateAsync(Order order);
         Task DeleteAsync(int id);
-    }
-
+Task<List<UserOrderResponse>> GetOrdersByUserIdAsync(int userId);
+}
 }

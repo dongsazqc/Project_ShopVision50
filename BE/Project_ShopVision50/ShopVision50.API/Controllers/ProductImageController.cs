@@ -32,4 +32,14 @@ public class ProductImageController : ControllerBase
         var images = await _service.GetImagesByProductIdAsync(productId);
         return Ok(images);
     }
+    
+    
+    [HttpDelete("deleteimage/{imageId}")]  // DELETE api/products/{productId}/images/{imageId}
+public async Task<IActionResult> DeleteImage(int productId, int imageId)
+{
+    var result = await _service.DeleteProductImageAsync(productId, imageId);
+    if (result) return Ok("Xóa ảnh thành công");
+    return NotFound("Ảnh không tồn tại hoặc xóa thất bại");
+}
+
 }

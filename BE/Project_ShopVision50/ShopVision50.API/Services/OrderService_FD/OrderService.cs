@@ -71,6 +71,20 @@ var order = new Order
         return createdOrder;
     }
 
+        public async Task<List<UserOrderResponse>> GetOrdersByUserIdAsync(int userId)
+    {
+        var orders = await _repository.GetOrdersByUserIdAsync(userId);
 
+        return orders.Select(o => new UserOrderResponse
+        {
+            Id = o.OrderId,
+            DateOrdered = o.OrderDate,
+            AmountTotal = o.TotalAmount,
+            OrderStatus = o.Status ? 1 : 0,
+            ReceiverName = o.RecipientName,
+            ReceiverPhone = o.RecipientPhone,
+            DeliveryAddress = o.ShippingAddress
+        }).ToList();
+    }
     }
 }

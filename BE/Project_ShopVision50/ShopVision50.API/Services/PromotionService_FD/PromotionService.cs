@@ -30,6 +30,7 @@ namespace ShopVision50.API.Services.PromotionService_FD
                 EndDate = p.EndDate,
                 Status = p.Status
             });
+
         }
 
         // 🔹 Lấy chi tiết khuyến mãi (sản phẩm + đơn hàng áp dụng)

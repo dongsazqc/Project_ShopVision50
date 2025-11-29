@@ -35,6 +35,16 @@ public class ProductImageRepository : IProductImageRepository
     {
         await _context.SaveChangesAsync();
     }
+
+    public async Task<ProductImage?> GetByIdAsync(int imageId)
+{
+    return await _context.ProductImages.FindAsync(imageId);
+}
+
+public void Remove(ProductImage image)
+{
+    _context.ProductImages.Remove(image);
+}
 }
 
 }

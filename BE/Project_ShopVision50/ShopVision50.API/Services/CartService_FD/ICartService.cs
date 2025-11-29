@@ -6,5 +6,6 @@ namespace ShopVision50.API.Services.CartService_FD
     {
         Task<CartDto?> GetCartByUserIdAsync(int userId);
         Task<bool> RemoveCartItemAsync(int cartItemId);
+        Task AddToCartAsync(int userId, AddToCartRequest request);
     }
 }

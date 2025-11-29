@@ -1,3 +1,4 @@
+using System.Security.Claims;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Shop_Db.Models;
@@ -71,6 +72,22 @@ namespace ShopVision50.API.Controllers
             await _service.DeleteAsync(id);
             return Ok(new { message = "Order deleted successfully." });
         }
+
+    [HttpGet("my-orders")]
+    [Authorize]
+    public async Task<IActionResult> GetMyOrders()
+    {
+        var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier);
+        if (userIdClaim == null)
+            return Unauthorized("User ID không có trong token");
+
+        if (!int.TryParse(userIdClaim.Value, out int userId))
+            return BadRequest("User ID không hợp lệ");
+
+        var orders = await _service.GetOrdersByUserIdAsync(userId);
+
+        return Ok(orders);
+    }
 
     }
 }
