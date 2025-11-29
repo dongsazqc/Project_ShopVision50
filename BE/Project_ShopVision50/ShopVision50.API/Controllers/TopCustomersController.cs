@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using ShopVision50.API.Services.TopCustomersService_FD;
 
@@ -16,6 +17,7 @@ namespace ShopVision50.API.Controllers
         }
 
         [HttpGet]
+        [Authorize]
         public async Task<IActionResult> GetTopCustomers([FromQuery] int limit = 10)
         {
             var data = await _service.GetTopCustomersAsync(limit);

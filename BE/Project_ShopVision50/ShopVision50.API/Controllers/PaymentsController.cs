@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Shop_Db.Models;
@@ -22,14 +23,16 @@ public class PaymentsController : ControllerBase
     }
 
     [HttpGet]
-    public async Task<IActionResult> GetAll()
+        [Authorize]
+        public async Task<IActionResult> GetAll()
     {
         var payments = await _paymentService.GetAllAsync();
         return Ok(payments);
     }
 
     [HttpGet("{id}")]
-    public async Task<IActionResult> GetById(int id)
+        [Authorize]
+        public async Task<IActionResult> GetById(int id)
     {
         var payment = await _paymentService.GetByIdAsync(id);
         if (payment == null) return NotFound();
@@ -37,14 +40,16 @@ public class PaymentsController : ControllerBase
     }
 
     [HttpPost]
-    public async Task<IActionResult> Create([FromBody] Payment payment)
+        [Authorize]
+        public async Task<IActionResult> Create([FromBody] Payment payment)
     {
         await _paymentService.AddAsync(payment);
         return CreatedAtAction(nameof(GetById), new { id = payment.PaymentId }, payment);
     }
 
     [HttpPut("{id}")]
-    public async Task<IActionResult> Update(int id, [FromBody] Payment payment)
+        [Authorize]
+        public async Task<IActionResult> Update(int id, [FromBody] Payment payment)
     {
         if (id != payment.PaymentId) return BadRequest();
 
@@ -56,7 +61,8 @@ public class PaymentsController : ControllerBase
     }
 
     [HttpDelete("{id}")]
-    public async Task<IActionResult> Delete(int id)
+        [Authorize]
+        public async Task<IActionResult> Delete(int id)
     {
         var exist = await _paymentService.GetByIdAsync(id);
         if (exist == null) return NotFound();

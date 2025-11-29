@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using ShopVision50.API.Models.Users.DTOs;
 using ShopVision50.API.Services.OriginService_FD;
@@ -18,6 +19,7 @@ namespace ShopVision50.API.Controllers
 
         // GET: api/Origin
         [HttpGet("GetAll")]
+        [Authorize]
         public async Task<IActionResult> GetAll()
         {
             var origins = await _service.GetAllAsync();
@@ -26,6 +28,7 @@ namespace ShopVision50.API.Controllers
 
         // GET: api/Origin/5
         [HttpGet("{id}")]
+        [Authorize]
         public async Task<IActionResult> GetById(int id)
         {
             var origin = await _service.GetByIdAsync(id);
@@ -37,6 +40,7 @@ namespace ShopVision50.API.Controllers
 
         // POST: api/Origin
         [HttpPost]
+        [Authorize]
         public async Task<IActionResult> Create([FromBody] OriginDto dto)
         {
             if (!ModelState.IsValid)
@@ -51,6 +55,7 @@ namespace ShopVision50.API.Controllers
 
         // PUT: api/Origin/5
         [HttpPut("{id}")]
+        [Authorize]
         public async Task<IActionResult> Update(int id, [FromBody] OriginDto dto)
         {
             if (!ModelState.IsValid)
@@ -65,6 +70,7 @@ namespace ShopVision50.API.Controllers
 
         // DELETE: api/Origin/5
         [HttpDelete("{id}")]
+        [Authorize]
         public async Task<IActionResult> Delete(int id)
         {
             var success = await _service.DeleteAsync(id);

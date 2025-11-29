@@ -39,7 +39,6 @@ namespace ShopVision50.API.Controllers
 
         [HttpPost("Add")]
         [Authorize]
-         [HttpPost]
     public async Task<IActionResult> CreateOrder([FromBody] CreateOrderRequest request)
     {
         var order = await _service.CreateOrderAsync(request);

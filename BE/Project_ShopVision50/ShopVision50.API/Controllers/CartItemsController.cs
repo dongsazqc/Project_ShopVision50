@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Shop_Db.Models;
@@ -22,14 +23,16 @@ public class CartItemsController : ControllerBase
     }
 
     [HttpGet]
-    public async Task<IActionResult> GetAll()
+        [Authorize]
+        public async Task<IActionResult> GetAll()
     {
         var cartItems = await _cartItemService.GetAllAsync();
         return Ok(cartItems);
     }
 
     [HttpGet("{id}")]
-    public async Task<IActionResult> GetById(int id)
+        [Authorize]
+        public async Task<IActionResult> GetById(int id)
     {
         var cartItem = await _cartItemService.GetByIdAsync(id);
         if (cartItem == null) return NotFound();
@@ -37,14 +40,16 @@ public class CartItemsController : ControllerBase
     }
 
     [HttpPost]
-    public async Task<IActionResult> Create([FromBody] CartItem cartItem)
+        [Authorize]
+        public async Task<IActionResult> Create([FromBody] CartItem cartItem)
     {
         await _cartItemService.AddAsync(cartItem);
         return CreatedAtAction(nameof(GetById), new { id = cartItem.CartItemId }, cartItem);
     }
 
     [HttpPut("{id}")]
-    public async Task<IActionResult> Update(int id, [FromBody] CartItem cartItem)
+        [Authorize]
+        public async Task<IActionResult> Update(int id, [FromBody] CartItem cartItem)
     {
         if (id != cartItem.CartItemId) return BadRequest();
 
@@ -56,7 +61,8 @@ public class CartItemsController : ControllerBase
     }
 
     [HttpDelete("{id}")]
-    public async Task<IActionResult> Delete(int id)
+        [Authorize]
+        public async Task<IActionResult> Delete(int id)
     {
         var exist = await _cartItemService.GetByIdAsync(id);
         if (exist == null) return NotFound();

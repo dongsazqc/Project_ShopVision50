@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Shop_Db.Models;
@@ -22,13 +23,15 @@ public class OrderItemController : ControllerBase
     }
 
     [HttpGet]
-    public async Task<IActionResult> GetAll()
+        [Authorize]
+        public async Task<IActionResult> GetAll()
     {
         return Ok(await _service.GetAllAsync());
     }
 
     [HttpGet("{id}")]
-    public async Task<IActionResult> GetById(int id)
+        [Authorize]
+        public async Task<IActionResult> GetById(int id)
     {
         var item = await _service.GetByIdAsync(id);
         if (item == null) return NotFound();
@@ -37,21 +40,24 @@ public class OrderItemController : ControllerBase
     }
 
     [HttpPost]
-    public async Task<IActionResult> Create(OrderItem dto)
+        [Authorize]
+        public async Task<IActionResult> Create(OrderItem dto)
     {
         var created = await _service.CreateAsync(dto);
         return CreatedAtAction(nameof(GetById), new { id = created.OrderItemId }, created);
     }
 
     [HttpPut("{id}")]
-    public async Task<IActionResult> Update(int id, OrderItem dto)
+        [Authorize]
+        public async Task<IActionResult> Update(int id, OrderItem dto)
     {
         var updated = await _service.UpdateAsync(id, dto);
         return Ok(updated);
     }
 
     [HttpDelete("{id}")]
-    public async Task<IActionResult> Delete(int id)
+        [Authorize]
+        public async Task<IActionResult> Delete(int id)
     {
         bool success = await _service.DeleteAsync(id);
         if (!success) return NotFound();

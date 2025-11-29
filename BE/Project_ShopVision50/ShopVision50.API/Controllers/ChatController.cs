@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using RabbitMQ.Client;
@@ -10,6 +11,7 @@ namespace ShopVision50.API.Controllers
     public class ChatController : ControllerBase
     {
         [HttpPost("send")]
+        [Authorize]
         public IActionResult SendChat([FromBody] ChatMessage message)
         {
             try
