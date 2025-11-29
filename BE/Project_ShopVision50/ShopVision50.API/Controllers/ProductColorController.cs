@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using ShopVision50.API.Services.ProductColorService_FD;
 
@@ -17,6 +18,7 @@ namespace ShopVision50.API.Controllers
 
         // GET: /api/ProductColor/GetAll
         [HttpGet("GetAll")]
+        [Authorize]
         public async Task<IActionResult> GetAll()
         {
             var colors = await _service.GetAllAsync();

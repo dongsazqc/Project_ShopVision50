@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using ShopVision50.API.Services.ProductImageService_FD;
+using Microsoft.AspNetCore.Authorization;
 
 [ApiController]
 [Route("api/products/{productId}/images")]
@@ -15,6 +16,7 @@ public class ProductImageController : ControllerBase
     }
 
     [HttpPost]  // POST api/products/{productId}/images
+    [Authorize]
     public async Task<IActionResult> AddImage(int productId, IFormFile file)
     {
         if (file == null)
@@ -27,6 +29,7 @@ public class ProductImageController : ControllerBase
     }
 
     [HttpGet("checkimages")]  // GET api/products/{productId}/images/checkimages
+    [Authorize]
     public async Task<IActionResult> GetProductImages(int productId)
     {
         var images = await _service.GetImagesByProductIdAsync(productId);
@@ -35,7 +38,8 @@ public class ProductImageController : ControllerBase
     
     
     [HttpDelete("deleteimage/{imageId}")]  // DELETE api/products/{productId}/images/{imageId}
-public async Task<IActionResult> DeleteImage(int productId, int imageId)
+    [Authorize]
+    public async Task<IActionResult> DeleteImage(int productId, int imageId)
 {
     var result = await _service.DeleteProductImageAsync(productId, imageId);
     if (result) return Ok("Xóa ảnh thành công");

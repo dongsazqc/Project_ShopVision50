@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using ShopVision50.API.Models.Users.DTOs;
 using ShopVision50.API.Services.CategoriesService_FD;
 using ShopVision50.API.Services.GenderService_FD;
@@ -17,6 +18,7 @@ namespace ShopVision50.API.Controllers
         }
 
         [HttpGet("GetAllGender")]
+        [Authorize]
         public async Task<IActionResult> GetAll()
         {
             var result = await _service.GetAllAsync();
@@ -27,6 +29,7 @@ namespace ShopVision50.API.Controllers
         // NEW: Get by id
         // --------------------------- //
         [HttpGet("GetGenderById/{id}")]
+        [Authorize]
         public async Task<IActionResult> GetById(int id)
         {
             var result = await _service.GetByIdAsync(id);
@@ -40,6 +43,7 @@ namespace ShopVision50.API.Controllers
         // NEW: Create
         // --------------------------- //
         [HttpPost("CreateGender")]
+        [Authorize]
         public async Task<IActionResult> Create([FromBody] GenderDto dto)
         {
             var result = await _service.CreateAsync(dto);
@@ -53,6 +57,7 @@ namespace ShopVision50.API.Controllers
         // NEW: Update
         // --------------------------- //
         [HttpPut("UpdateGender/{id}")]
+        [Authorize]
         public async Task<IActionResult> Update(int id, [FromBody] GenderDto dto)
         {
             var result = await _service.UpdateAsync(id, dto);
@@ -66,6 +71,7 @@ namespace ShopVision50.API.Controllers
         // NEW: Delete
         // --------------------------- //
         [HttpDelete("DeleteGender/{id}")]
+        [Authorize]
         public async Task<IActionResult> Delete(int id)
         {
             var result = await _service.DeleteAsync(id);

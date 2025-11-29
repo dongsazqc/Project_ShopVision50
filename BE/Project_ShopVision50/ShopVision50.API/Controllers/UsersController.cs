@@ -104,7 +104,8 @@ namespace ShopVision50.API.Controllers
     }
          
             [HttpPost("register-with-otp")]
-    public async Task<IActionResult> RegisterWithOtp([FromBody] RegisterConfirmDto dto)
+        [Authorize]
+        public async Task<IActionResult> RegisterWithOtp([FromBody] RegisterConfirmDto dto)
     {
         var result = await _svc.RegisterUserWithOtpAsync(dto);
         if (!result.Success) return BadRequest(result.Message);
