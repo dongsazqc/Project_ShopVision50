@@ -29,72 +29,108 @@ import {
   Bar,
 } from "recharts";
 import dayjs from "dayjs";
-import api from "../utils/axios"; // TODO: gắn API thật sau
+import api from "../utils/axios";
 
 const { RangePicker } = DatePicker;
 
 export default function Reports() {
   const [range, setRange] = useState([dayjs().startOf("month"), dayjs()]);
-  const [period, setPeriod] = useState("month");
+
   const [summary, setSummary] = useState({
     totalRevenue: 0,
     totalOrders: 0,
     totalCustomers: 0,
   });
+
   const [revenueData, setRevenueData] = useState([]);
   const [topProducts, setTopProducts] = useState([]);
   const [topCustomers, setTopCustomers] = useState([]);
 
-  // 📊 Lấy báo cáo doanh thu
+  // ======================================================
+  // GET DOANH THU - API THẬT
+  // ======================================================
   const fetchRevenue = async () => {
     try {
-      // TODO: ⚙️ API thật: GET /api/baocao/doanhthu?from=...&to=...
-      const res = await api.get("/baocao/doanhthu", {
+      const res = await api.get("/revenue/summary", {
         params: {
-          from: range[0].toISOString(),
-          to: range[1].toISOString(),
-          period,
+          from: range[0].format("YYYY-MM-DD"),
+          to: range[1].format("YYYY-MM-DD"),
         },
       });
-      setRevenueData(res.data?.chart || []);
+
+      const data = res.data;
+
+      // Tổng quan
       setSummary({
-        totalRevenue: res.data?.totalRevenue || 0,
-        totalOrders: res.data?.totalOrders || 0,
-        totalCustomers: res.data?.totalCustomers || 0,
+        totalRevenue: data.totalRevenue || 0,
+        totalOrders: data.totalOrders || 0,
+        totalCustomers: data.totalCustomers || 0,
       });
+
+      // Biểu đồ doanh thu theo tháng
+      const chart =
+        data?.monthlyRevenue?.$values?.map((item) => ({
+          label: `${item.month}/${item.year}`,
+          doanhThu: item.revenue,
+        })) || [];
+
+      setRevenueData(chart);
     } catch (err) {
       console.error(err);
       message.error("Không thể tải dữ liệu doanh thu");
     }
   };
 
-  // 🔝 Lấy sản phẩm bán chạy
+  // ======================================================
+  // GET TOP SẢN PHẨM BÁN CHẠY
+  // ======================================================
   const fetchTopProducts = async () => {
     try {
-      // TODO: ⚙️ API thật: GET /api/baocao/top-sanpham
-      const res = await api.get("/baocao/top-sanpham");
-      setTopProducts(res.data || []);
-    } catch {
+      const res = await api.get("/TopSanPham");
+
+      const list =
+        res.data?.$values?.map((item) => ({
+          tenSanPham: item.productName,
+          soLuongBan: item.totalSold,
+        })) || [];
+
+      setTopProducts(list);
+    } catch (err) {
+      console.error(err);
       message.error("Không thể tải top sản phẩm");
     }
   };
 
-  // 👥 Lấy khách hàng thân thiết
+  // ======================================================
+  // GET TOP KHÁCH HÀNG
+  // ======================================================
   const fetchTopCustomers = async () => {
     try {
-      // TODO: ⚙️ API thật: GET /api/baocao/top-khachhang
-      const res = await api.get("/baocao/top-khachhang");
-      setTopCustomers(res.data || []);
-    } catch {
+      const res = await api.get("/TopCustomers");
+
+      const list =
+        res.data?.$values?.map((item) => ({
+          nguoiDungId: item.userId,
+          hoTen: item.fullName,
+          tongChiTieu: item.totalSpent,
+          soDonHang: item.orderCount,
+        })) || [];
+
+      setTopCustomers(list);
+    } catch (err) {
+      console.error(err);
       message.error("Không thể tải danh sách khách hàng thân thiết");
     }
   };
 
+  // ======================================================
+  // LOAD TẤT CẢ API KHI ĐỔI NGÀY
+  // ======================================================
   useEffect(() => {
     fetchRevenue();
     fetchTopProducts();
     fetchTopCustomers();
-  }, [range, period]);
+  }, [range]);
 
   return (
     <div>
@@ -108,18 +144,9 @@ export default function Reports() {
           format="DD/MM/YYYY"
           allowClear={false}
         />
-        <Select
-          value={period}
-          onChange={setPeriod}
-          options={[
-            { value: "day", label: "Theo ngày" },
-            { value: "month", label: "Theo tháng" },
-            { value: "year", label: "Theo năm" },
-          ]}
-        />
       </Space>
 
-      {/* Tóm tắt */}
+      {/* Tổng hợp */}
       <Row gutter={16}>
         <Col span={8}>
           <Card>
@@ -128,10 +155,10 @@ export default function Reports() {
               value={summary.totalRevenue}
               prefix={<DollarOutlined />}
               suffix="₫"
-              precision={0}
             />
           </Card>
         </Col>
+
         <Col span={8}>
           <Card>
             <Statistic
@@ -141,10 +168,11 @@ export default function Reports() {
             />
           </Card>
         </Col>
+
         <Col span={8}>
           <Card>
             <Statistic
-              title="Số khách hàng"
+              title="Tổng khách hàng"
               value={summary.totalCustomers}
               prefix={<UserOutlined />}
             />
@@ -153,11 +181,7 @@ export default function Reports() {
       </Row>
 
       {/* Biểu đồ doanh thu */}
-      <Card
-        title="Biểu đồ doanh thu"
-        style={{ marginTop: 24 }}
-        bodyStyle={{ height: 320 }}
-      >
+      <Card title="Biểu đồ doanh thu" style={{ marginTop: 24 }} bodyStyle={{ height: 320 }}>
         <ResponsiveContainer width="100%" height="100%">
           <LineChart data={revenueData}>
             <CartesianGrid strokeDasharray="3 3" />
@@ -170,16 +194,11 @@ export default function Reports() {
         </ResponsiveContainer>
       </Card>
 
-      {/* Top sản phẩm */}
+      {/* Top sản phẩm & khách hàng */}
       <Row gutter={24} style={{ marginTop: 24 }}>
         <Col span={12}>
-          <Card title="Sản phẩm bán chạy">
-            <BarChart
-              width={500}
-              height={300}
-              data={topProducts}
-              layout="vertical"
-            >
+          <Card title="Sản phẩm bán chạy nhất">
+            <BarChart width={500} height={300} data={topProducts} layout="vertical">
               <CartesianGrid strokeDasharray="3 3" />
               <XAxis type="number" />
               <YAxis type="category" dataKey="tenSanPham" width={150} />
@@ -189,13 +208,13 @@ export default function Reports() {
           </Card>
         </Col>
 
-        {/* Khách hàng thân thiết */}
         <Col span={12}>
           <Card title="Khách hàng thân thiết">
             <Table
               dataSource={topCustomers}
               rowKey="nguoiDungId"
               pagination={false}
+              size="small"
               columns={[
                 { title: "Khách hàng", dataIndex: "hoTen" },
                 {
@@ -205,7 +224,6 @@ export default function Reports() {
                 },
                 { title: "Số đơn hàng", dataIndex: "soDonHang" },
               ]}
-              size="small"
             />
           </Card>
         </Col>
