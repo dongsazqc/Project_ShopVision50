@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import {
     Card,
     Button,
@@ -26,27 +26,71 @@ import { useNavigate } from "react-router-dom";
 const Cart = () => {
     const navigate = useNavigate();
     const [cartItems, setCartItems] = useState([]);
+    const [cartId, setCartId] = useState(0);
     const [loading, setLoading] = useState(true);
     const [promoCode, setPromoCode] = useState("");
     const [discount, setDiscount] = useState(0);
 
-    const userId = localStorage.getItem("userId"); // Giả sử lưu userId
+    const userId = Number(localStorage.getItem("userId")); // Giả sử lưu userId
 
-    // Load giỏ hàng từ backend
     useEffect(() => {
         const fetchCart = async () => {
             try {
                 setLoading(true);
-                const res = await api.get(`/Cart/GetCartByUser/${7}`);
-                setCartItems(res.data.cartItems.$values || []);
+                const res = await api.get(`/Cart/GetCartByUser/${userId}`);
+
+                if (res?.data?.cartItems?.$values?.length) {
+                    const fetchProduct = async (id) => {
+                        return await api.get(
+                            `/products/${id}/images/checkimages`
+                        );
+                    };
+
+                    const getVariant = async (id) => {
+                        return await api.get(`/ProductVariant/${id}/variants`);
+                    };
+
+                    // map → array of Promise
+                    const newDataPromises = res.data.cartItems.$values.map(
+                        async (i) => {
+                            const productData = await fetchProduct(
+                                i?.productVariant?.productId
+                            );
+
+                            const variantRes = await getVariant(
+                                i?.productVariant?.productId
+                            );
+                            const variant =
+                                variantRes?.data?.variants?.$values?.find(
+                                    (v) =>
+                                        v.productVariantId ===
+                                        i?.productVariantId
+                                );
+
+                            return {
+                                ...i,
+                                variant: variant || {},
+                                product:
+                                    productData?.data?.$values?.[0]?.product ||
+                                    {},
+                                thumbnail:
+                                    productData?.data?.$values?.[0]?.url || "",
+                            };
+                        }
+                    );
+                    const newData = await Promise.all(newDataPromises);
+                    setCartItems(newData);
+                }
+
+                setCartId(res.data.cartId);
             } catch (err) {
-                message.error("Không thể tải giỏ hàng");
+                message.error("Không thể tải giỏ hàng", err);
             } finally {
                 setLoading(false);
             }
         };
 
-        setTimeout(fetchCart, 0); // tránh cảnh báo cascading render
+        setTimeout(fetchCart, 0);
     }, [userId]);
 
     // Cập nhật số lượng
@@ -58,9 +102,11 @@ const Cart = () => {
                 quantity: value,
                 price: item.productVariant.salePrice * value,
                 productVariantId: item.productVariantId,
-                cartId: 7,
+                cartId: cartId,
+                cart: null,
+                ProductVariant: null,
             };
-            await api.patch(`/CartItems/${item.cartItemId}`, payload);
+            await api.put(`/CartItems/${item.cartItemId}`, payload);
             setCartItems((items) =>
                 items.map((item) =>
                     item.variantId === item.variantId
@@ -101,13 +147,17 @@ const Cart = () => {
     };
 
     // Tính toán tiền
-    const subtotal = cartItems.reduce(
-        (sum, item) => sum + item.giaBan * item.quantity,
-        0
+    const total = useMemo(
+        () =>
+            cartItems.reduce((sum, item) => {
+                const quantity = item.quantity || 0;
+                const price = item.productVariant?.salePrice || 0;
+                return sum + quantity * price;
+            }, 0),
+        [cartItems]
     );
-    const discountAmount = (subtotal * discount) / 100;
-    const shipping = subtotal > 500000 ? 0 : 30000;
-    const total = subtotal - discountAmount + shipping;
+    const shipping = useMemo(() => (total > 5000000 ? 0 : 30000), [total]);
+    const finalTotal = useMemo(() => total - shipping, [total, shipping]);
 
     const formatPrice = (price) =>
         new Intl.NumberFormat("vi-VN", {
@@ -215,8 +265,8 @@ const Cart = () => {
                                             <Col xs={8} sm={6}>
                                                 <img
                                                     src={
-                                                        item.image
-                                                            ? item.image
+                                                        item?.thumbnail
+                                                            ? `http://160.250.5.26:5000${item?.thumbnail}`
                                                             : "https://via.placeholder.com/150"
                                                     }
                                                     alt={item.name}
@@ -241,7 +291,8 @@ const Cart = () => {
                                                                 marginBottom: 8,
                                                             }}
                                                         >
-                                                            {item.name}
+                                                            {item?.product
+                                                                ?.name || ""}
                                                         </h3>
                                                         <div
                                                             style={{
@@ -269,10 +320,12 @@ const Cart = () => {
                                                                     marginTop: 4,
                                                                 }}
                                                             >
-                                                                {item.color &&
-                                                                    `Màu: ${item.color}`}{" "}
-                                                                {item.size &&
-                                                                    `| Size: ${item.size}`}
+                                                                {item?.variant
+                                                                    ?.tenMau &&
+                                                                    `Màu: ${item?.variant?.tenMau}`}{" "}
+                                                                {item?.variant
+                                                                    ?.tenKichCo &&
+                                                                    `| Size: ${item?.variant?.tenKichCo}`}
                                                             </div>
                                                         </div>
                                                     </Col>
@@ -430,15 +483,7 @@ const Cart = () => {
                                     <Row justify="space-between">
                                         <Col>Tạm tính</Col>
                                         <Col style={{ fontWeight: 500 }}>
-                                            {formatPrice(
-                                                cartItems.reduce((i) => {
-                                                    return (
-                                                        i.productVariant
-                                                            .salePrice *
-                                                        i.quantity
-                                                    );
-                                                })
-                                            )}
+                                            {total}
                                         </Col>
                                     </Row>
                                     {discount > 0 && (
@@ -448,7 +493,8 @@ const Cart = () => {
                                         >
                                             <Col>Giảm giá ({discount}%)</Col>
                                             <Col style={{ fontWeight: 600 }}>
-                                                -{formatPrice(discountAmount)}
+                                                {/* -{formatPrice(discountAmount)} */}
+                                                aa
                                             </Col>
                                         </Row>
                                     )}
@@ -464,21 +510,6 @@ const Cart = () => {
                                             )}
                                         </Col>
                                     </Row>
-                                    {subtotal < 500000 && (
-                                        <div
-                                            style={{
-                                                padding: 12,
-                                                background: "#f0f5ff",
-                                                borderRadius: 8,
-                                                fontSize: 12,
-                                                color: "#1890ff",
-                                            }}
-                                        >
-                                            Mua thêm{" "}
-                                            {formatPrice(500000 - subtotal)} để
-                                            được miễn phí vận chuyển!
-                                        </div>
-                                    )}
                                 </Space>
 
                                 <Divider />
@@ -507,15 +538,7 @@ const Cart = () => {
                                                 color: "#667eea",
                                             }}
                                         >
-                                            {formatPrice(
-                                                cartItems.reduce((i) => {
-                                                    return (
-                                                        i.productVariant
-                                                            .salePrice *
-                                                        i.quantity
-                                                    );
-                                                }) - 30000
-                                            )}
+                                            {finalTotal}
                                         </span>
                                     </Col>
                                 </Row>

@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import {
     Card,
@@ -86,14 +86,12 @@ const ProductDetail = () => {
     }, [selectedColor, selectedSize, variants]);
 
     const handleAddToCart = async () => {
-        console.log("1");
         if (!selectedColor || !selectedSize || !activeVariant) {
             message.warning(
                 "Vui lòng chọn màu và kích cỡ trước khi thêm vào giỏ hàng"
             );
             return;
         }
-        console.log("2");
 
         const cart = JSON.parse(localStorage.getItem("cart") || "[]");
 
@@ -147,15 +145,6 @@ const ProductDetail = () => {
         sessionStorage.setItem("buyNow", JSON.stringify(buyNowData));
         navigate("/checkout");
     };
-
-    if (loading) return <Spin style={{ marginTop: 100 }} size="large" />;
-    if (!product)
-        return (
-            <Empty
-                description="Sản phẩm không tồn tại"
-                style={{ marginTop: 100 }}
-            />
-        );
 
     const minPrice = variants.length
         ? Math.min(...variants.map((v) => Number(v.giaBan)))
@@ -212,7 +201,43 @@ const ProductDetail = () => {
     const sizes = [
         ...new Set(variants.map((v) => v.tenKichCo).filter(Boolean)),
     ];
+    const checkIsDisable = useCallback(
+        (type, value) => {
+            if (type === "color" && selectedSize) {
+                if (
+                    !variants.find(
+                        (i) =>
+                            i.tenKichCo === selectedSize && i.tenMau === value
+                    )
+                ) {
+                    return true;
+                }
+            }
+            if (type === "size" && selectedColor) {
+                if (
+                    !variants.find(
+                        (i) =>
+                            i.tenMau === selectedColor && i.tenKichCo === value
+                    )
+                ) {
+                    return true;
+                }
+            }
+            return false;
+        },
+        [selectedColor, selectedSize]
+    );
 
+    console.log("selectedColor", selectedColor);
+    console.log("selectedSize", selectedSize);
+    if (loading) return <Spin style={{ marginTop: 100 }} size="large" />;
+    if (!product)
+        return (
+            <Empty
+                description="Sản phẩm không tồn tại"
+                style={{ marginTop: 100 }}
+            />
+        );
     return (
         <div style={{ padding: 24 }}>
             <Row gutter={[24, 24]}>
@@ -291,6 +316,10 @@ const ProductDetail = () => {
                                                     ? "primary"
                                                     : "default"
                                             }
+                                            disabled={checkIsDisable(
+                                                "color",
+                                                c
+                                            )}
                                             onClick={() => setSelectedColor(c)}
                                         >
                                             {c}
@@ -314,6 +343,7 @@ const ProductDetail = () => {
                                                     : "default"
                                             }
                                             onClick={() => setSelectedSize(s)}
+                                            disabled={checkIsDisable("size", s)}
                                         >
                                             {s}
                                         </Button>
