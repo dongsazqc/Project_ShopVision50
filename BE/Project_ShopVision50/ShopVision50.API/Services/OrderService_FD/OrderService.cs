@@ -1,90 +1,96 @@
-using Shop_Db.Models;
-using ShopVision50.API.Models.Users.DTOs;
-using ShopVision50.API.Repositories.OrderRepo_FD;
+    using Shop_Db.Models;
+    using ShopVision50.API.Models.Users.DTOs;
+    using ShopVision50.API.Repositories.OrderRepo_FD;
 
-namespace ShopVision50.API.Service.OrderService_FD
-{
-    public class OrderService : IOrderService{
-
-        private readonly IOrderRepository _repository;
-        public OrderService(IOrderRepository repository)
-        {
-            _repository = repository;
-        }
-
-        public async Task<Order?> GetByIdAsync(int id)
-        {
-            return await _repository.GetByIdAsync(id);
-        }
-
-        public async Task<IEnumerable<Order>> GetAllAsync()
-        {
-            return await _repository.GetAllAsync();
-        }
-
-        
-
-        public async Task UpdateAsync(Order order)
-        {
-            // Logic validate, check trạng thái,...
-            await _repository.UpdateAsync(order);
-        }
-
-        public async Task DeleteAsync(int id)
-        {
-            await _repository.DeleteAsync(id);
-        }
-
-
-
- public async Task<Order> CreateOrderAsync(CreateOrderRequest request)
+    namespace ShopVision50.API.Service.OrderService_FD
     {
-var order = new Order
-{
-    OrderDate = request.OrderDate,
-    OrderType = request.OrderType,
-    Status = request.Status,
-    RecipientName = request.RecipientName,
-    RecipientPhone = request.RecipientPhone,
-    ShippingAddress = request.ShippingAddress,
-    TotalAmount = request.TotalAmount,
-    UserId = request.UserId,  // Đừng quên
-// Service
-    OrderItems = request.Products.Select(p => new OrderItem
+        public class OrderService : IOrderService{
+
+            private readonly IOrderRepository _repository;
+            public OrderService(IOrderRepository repository)
+            {
+                _repository = repository;
+            }
+
+            public async Task<Order?> GetByIdAsync(int id)
+            {
+                return await _repository.GetByIdAsync(id);
+            }
+
+            public async Task<IEnumerable<Order>> GetAllAsync()
+            {
+                return await _repository.GetAllAsync();
+            }
+
+            
+
+            public async Task UpdateAsync(Order order)
+            {
+                // Logic validate, check trạng thái,...
+                await _repository.UpdateAsync(order);
+            }
+
+            public async Task DeleteAsync(int id)
+            {
+                await _repository.DeleteAsync(id);
+            }
+
+
+
+    public async Task<Order> CreateOrderAsync(CreateOrderRequest request)
     {
-        ProductVariantId = p.ProductVariantId,  // đúng nè bro
-        Quantity = p.Quantity,
-        DiscountAmount = p.DiscountAmount
-    }).ToList(),
+        var order = new Order
+        {
+            OrderDate = request.OrderDate,
+            OrderType = request.OrderType,
+            RecipientName = request.RecipientName,
+            RecipientPhone = request.RecipientPhone,
+            ShippingAddress = request.ShippingAddress,
+            TotalAmount = request.TotalAmount,
+            UserId = request.UserId,
 
-    Payments = request.Payments.Select(p => new Payment
-    {
-        Method = p.Method,
-        Amount = p.Amount,
-        PaymentDate = DateTime.UtcNow,
-        Status = true
-    }).ToList()
-};
+            OrderItems = request.Products.Select(p => new OrderItem
+            {
+                ProductVariantId = p.ProductVariantId,
+                
+                Quantity = p.Quantity,
+                DiscountAmount = p.DiscountAmount
+            }).ToList(),
 
+            Payments = request.Payments.Select(p => new Payment
+            {
+                Method = p.Method,
+                Amount = p.Amount,
+                PaymentDate = DateTime.UtcNow,
+                Status = true
+            }).ToList()
+        };
 
-        var createdOrder = await _repository.AddOrderAsync(order);
-        return createdOrder;
+        // THÊM MỚI – kiểm tra đã thanh toán?
+        var totalPaid = order.Payments.Sum(p => p.Amount);
+        order.Status = totalPaid >= order.TotalAmount;
+
+        return await _repository.AddOrderAsync(order);
     }
 
-        public async Task<List<UserOrderResponse>> GetOrdersByUserIdAsync(int userId)
-    {
-        var orders = await _repository.GetOrdersByUserIdAsync(userId);
+
+            public async Task<List<UserOrderResponse>> GetOrdersByUserIdAsync(int userId)
+        {
+            var orders = await _repository.GetOrdersByUserIdAsync(userId);
 
         return orders.Select(o => new UserOrderResponse
-        {
-            Id = o.OrderId,
-            DateOrdered = o.OrderDate,
-            AmountTotal = o.TotalAmount,
-            OrderStatus = o.Status ? 1 : 0,
-            ReceiverName = o.RecipientName,
-            ReceiverPhone = o.RecipientPhone,
-            DeliveryAddress = o.ShippingAddress
-        }).ToList();
+    {
+        Id = o.OrderId,
+        DateOrdered = o.OrderDate,
+        AmountTotal = o.TotalAmount,
+        OrderStatus = o.Status ? 1 : 0,
+        ReceiverName = o.RecipientName,
+        ReceiverPhone = o.RecipientPhone,
+        DeliveryAddress = o.ShippingAddress,
+
+        Status = o.Status
+    }).ToList();
+
+        }
+        }
     }
-    }
-}

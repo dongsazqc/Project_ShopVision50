@@ -80,8 +80,7 @@ namespace ShopVision50.API.Services.UserService_FD
         public async Task<ServiceResult<string>> SendOtpAsync(string email)
         {
             var exists = await _repo.CheckEmailExistsAsync(email);
-            if (exists)
-                return ServiceResult<string>.Fail("Email đã được đăng ký");
+
 
             var otp = new Random().Next(100000, 999999).ToString();
             _cache.Set($"otp_{email}", otp, TimeSpan.FromMinutes(5));

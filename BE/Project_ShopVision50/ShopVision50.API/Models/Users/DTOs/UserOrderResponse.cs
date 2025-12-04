@@ -14,6 +14,7 @@ namespace ShopVision50.API.Models.Users.DTOs
     public string ReceiverName { get; set; }
     public string ReceiverPhone { get; set; }
     public string DeliveryAddress { get; set; }
+    public bool Status { get; set; }
 }
 
 }

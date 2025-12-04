@@ -79,7 +79,6 @@ namespace ShopVision50.API.Services.CartService_FD
                 ProductVariantId = request.ProductVariantId,
                 Quantity = request.Quantity,
                 CartId = cart.CartId,
-                Price = 0 // Cần set giá thực tế nếu cần
             };
             _repo.AddCartItem(newItem);
         }
