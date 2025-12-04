@@ -1,7 +1,8 @@
-import React, { useState } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import { Layout, Menu, Input, Badge, Dropdown, Avatar } from "antd";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { ShoppingFilled, UserOutlined, SearchOutlined } from "@ant-design/icons";
+import api from "../utils/axios";
 
 const { Header } = Layout;
 const { Search } = Input;
@@ -9,26 +10,83 @@ const { Search } = Input;
 const AppHeader = () => {
   const location = useLocation();
   const navigate = useNavigate();
-  const [cartCount, setCartCount] = useState(2); // mock số lượng giỏ hàng
 
-  // User menu
+  const [cartCount, setCartCount] = useState(0);
+
+  const token = localStorage.getItem("token");
+  const userId = localStorage.getItem("userId");
+
+  // ==================== UPDATE CART COUNT ====================
+  const updateCartCount = useCallback(async () => {
+    try {
+      if (!token || !userId) {
+        // GUEST
+        const cart = JSON.parse(localStorage.getItem("cart")) || [];
+        const total = cart.reduce((sum, i) => sum + i.quantity, 0);
+        setCartCount(total);
+        return;
+      }
+
+      // LOGGED IN
+      const res = await api.get(`/Cart/GetCartByUser/${userId}`);
+      const items = res.data?.cartItems?.$values || [];
+      const total = items.reduce((sum, i) => sum + i.quantity, 0);
+      setCartCount(total);
+    } catch (err) {
+      console.error("Không thể load giỏ hàng:", err);
+    }
+  }, [token, userId]);
+
+  useEffect(() => {
+    updateCartCount();
+  }, [location.pathname, updateCartCount]);
+
+  // ==================== LISTEN CART CHANGE ====================
+  useEffect(() => {
+    const handleCartChange = () => {
+      // Lấy dữ liệu cart mới từ localStorage hoặc tính tổng FE
+      const cart = JSON.parse(localStorage.getItem("cartFE")) || [];
+      const total = cart.reduce((sum, i) => sum + i.quantity, 0);
+      setCartCount(total);
+    };
+
+    window.addEventListener("cartChanged", handleCartChange);
+
+    return () => {
+      window.removeEventListener("cartChanged", handleCartChange);
+    };
+  }, []);
+
+  // ==================== USER MENU ====================
   const userMenu = (
     <Menu>
-      <Menu.Item key="profile" onClick={() => navigate("/profile")}>
-        Quản lý thông tin cá nhân
-      </Menu.Item>
-      <Menu.Item key="orders" onClick={() => navigate("/orderhistory")}>
-        Lịch sử đơn hàng
-      </Menu.Item>
-      <Menu.Item key="logout" onClick={() => {
-        localStorage.removeItem("token"); // hoặc logout logic khác
-        navigate("/login");
-      }}>
-        Đăng xuất
-      </Menu.Item>
+      {token ? (
+        <>
+          <Menu.Item key="userprofile" onClick={() => navigate("/userprofile")}>
+            Quản lý thông tin cá nhân
+          </Menu.Item>
+          <Menu.Item key="orders" onClick={() => navigate("/orderhistory")}>
+            Lịch sử đơn hàng
+          </Menu.Item>
+          <Menu.Item
+            key="logout"
+            onClick={() => {
+              localStorage.clear();
+              navigate("/login");
+            }}
+          >
+            Đăng xuất
+          </Menu.Item>
+        </>
+      ) : (
+        <Menu.Item key="login" onClick={() => navigate("/login")}>
+          Đăng nhập
+        </Menu.Item>
+      )}
     </Menu>
   );
 
+  // ==================== HEADER UI ====================
   return (
     <Header
       style={{
@@ -83,34 +141,28 @@ const AppHeader = () => {
             <Link to="/products">Sản phẩm</Link>
           </Menu.Item>
         </Menu>
-          <Link
-            to="/cart"
-            style={{
-              color: "#fff",
-              fontSize: 26,
-              padding: "8px 15px",
-              borderRadius: "50%",
-              transition: "all 0.3s ease",
-            }}
-          >
-            <Badge count={cartCount} size="small" offset={[-4, 4]}>
-              <ShoppingFilled />
-            </Badge>
-          </Link>
-        {/* ICONS */}
-        <div style={{ display: "flex", gap: 20, alignItems: "center" }}>
-          {/* User Dropdown */}
-          <Dropdown overlay={userMenu} placement="bottomRight" arrow>
-            <Avatar
-              size={36}
-              icon={<UserOutlined />}
-              style={{ cursor: "pointer" }}
-            />
-          </Dropdown>
 
-          {/* Giỏ hàng */}
-          
-        </div>
+        {/* CART ICON */}
+        <Link
+          to="/cart"
+          style={{
+            color: "#fff",
+            fontSize: 26,
+            padding: "8px 15px",
+            borderRadius: "50%",
+            transition: "all 0.3s ease",
+            marginRight: 20,
+          }}
+        >
+          <Badge count={cartCount} size="small" offset={[-4, 4]}>
+            <ShoppingFilled />
+          </Badge>
+        </Link>
+
+        {/* USER DROPDOWN */}
+        <Dropdown overlay={userMenu} placement="bottomRight" arrow>
+          <Avatar size={36} icon={<UserOutlined />} style={{ cursor: "pointer" }} />
+        </Dropdown>
       </div>
     </Header>
   );
