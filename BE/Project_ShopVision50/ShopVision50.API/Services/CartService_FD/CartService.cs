@@ -35,7 +35,23 @@ namespace ShopVision50.API.Services.CartService_FD
                         ProductVariantId = ci.ProductVariant.ProductVariantId,
                         SalePrice = ci.ProductVariant.SalePrice,
                         Stock = ci.ProductVariant.Stock,
-                        ProductId = ci.ProductVariant.ProductId
+                        ProductId = ci.ProductVariant.ProductId,
+
+                        // Map thêm chi tiết Product, Size, Color
+                        Product = ci.ProductVariant.Product == null ? null : new ProductDto
+                        {
+                            ProductId = ci.ProductVariant.Product.ProductId,
+                            Name = ci.ProductVariant.Product.Name,
+                       
+                        },
+                        Size = ci.ProductVariant.Size == null ? null : new ProductSizeDto
+                        {
+                            Name = ci.ProductVariant.Size.Name
+                        },
+                        Color = ci.ProductVariant.Color == null ? null : new ProductColorDto
+                        {
+                            Name = ci.ProductVariant.Color.Name
+                        }
                     }
                 }).ToList()
             };
@@ -49,43 +65,47 @@ namespace ShopVision50.API.Services.CartService_FD
             await _repo.RemoveCartItemAsync(item);
             return true;
         }
-          public async Task AddToCartAsync(int userId, AddToCartRequest request)
-    {
-        var cart = await _repo.GetCartByUserIdAsync(userId);
-
-        if (cart == null)
+        public async Task AddToCartAsync(int userId, AddToCartRequest request)
         {
-            cart = new Cart
+            var cart = await _repo.GetCartByUserIdAsync(userId);
+
+            if (cart == null)
             {
-                UserId = userId,
-                CreatedDate = DateTime.Now,
-                Status = true,
-                CartItems = new List<CartItem>()
-            };
-            _repo.AddCart(cart);
+                cart = new Cart
+                {
+                    UserId = userId,
+                    CreatedDate = DateTime.Now,
+                    Status = true,
+                    CartItems = new List<CartItem>()
+                };
+                _repo.AddCart(cart);
+                await _repo.SaveChangesAsync();
+            }
+
+            var existingItem = cart.CartItems?.FirstOrDefault(ci => ci.ProductVariantId == request.ProductVariantId);
+
+            if (existingItem != null)
+            {
+                existingItem.Quantity += request.Quantity;
+            }
+            else
+            {
+                // Lấy giá thực của product variant
+                var productVariant = await _repo.GetProductVariantByIdAsync(request.ProductVariantId);
+
+                var newItem = new CartItem
+                {
+                    ProductVariantId = request.ProductVariantId,
+                    Quantity = request.Quantity,
+                    CartId = cart.CartId,
+                    Price = productVariant?.SalePrice ?? 0 // Gán giá thực
+                };
+                _repo.AddCartItem(newItem);
+            }
+
             await _repo.SaveChangesAsync();
         }
 
-        var existingItem = cart.CartItems?.FirstOrDefault(ci => ci.ProductVariantId == request.ProductVariantId);
-
-        if (existingItem != null)
-        {
-            existingItem.Quantity += request.Quantity;
-        }
-        else
-        {
-            var newItem = new CartItem
-            {
-                ProductVariantId = request.ProductVariantId,
-                Quantity = request.Quantity,
-                CartId = cart.CartId,
-                Price = 0 // Cần set giá thực tế nếu cần
-            };
-            _repo.AddCartItem(newItem);
-        }
-
-        await _repo.SaveChangesAsync();
-    }
 
         
     }

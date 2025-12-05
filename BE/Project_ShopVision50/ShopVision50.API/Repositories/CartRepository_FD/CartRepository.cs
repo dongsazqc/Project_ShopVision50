@@ -14,13 +14,20 @@ namespace ShopVision50.API.Repositories.CartRepository_FD
         }
 
         // Lấy giỏ hàng theo User + bao gồm CartItems + ProductVariant
-        public async Task<Cart?> GetCartByUserIdAsync(int userId)
-        {
-            return await _context.Carts
-                .Include(c => c.CartItems!)
-                    .ThenInclude(ci => ci.ProductVariant)
-                .FirstOrDefaultAsync(c => c.UserId == userId);
-        }
+            public async Task<Cart?> GetCartByUserIdAsync(int userId)
+    {
+                    return await _context.Carts
+            .Include(c => c.CartItems!)
+                .ThenInclude(ci => ci.ProductVariant!)
+                    .ThenInclude(pv => pv.Size)
+            .Include(c => c.CartItems!)
+                .ThenInclude(ci => ci.ProductVariant!)
+                    .ThenInclude(pv => pv.Color)
+            .FirstOrDefaultAsync(c => c.UserId == userId);
+
+
+    }
+
 
         public async Task<CartItem?> GetCartItemByIdAsync(int cartItemId)
         {
@@ -48,5 +55,12 @@ namespace ShopVision50.API.Repositories.CartRepository_FD
     {
         _context.CartItems.Add(cartItem);
     }
+
+    public async Task<ProductVariant?> GetProductVariantByIdAsync(int productVariantId)
+    {
+        return await _context.ProductVariants.FindAsync(productVariantId);
+    }
+
+
     }
 }
