@@ -21,18 +21,24 @@ public class CartItemRepository : ICartItemRepository
     {
         return await _context.CartItems
             .Include(ci => ci.ProductVariant)
+                .ThenInclude(pv => pv.Size)
+            .Include(ci => ci.ProductVariant)
+                .ThenInclude(pv => pv.Color)
             .Include(ci => ci.Cart)
             .ToListAsync();
     }
 
-    public async Task<CartItem?> GetByIdAsync(int id)
-    {
-        return await _context.CartItems
-            .Include(ci => ci.ProductVariant)
-            .Include(ci => ci.Cart)
-            .FirstOrDefaultAsync(ci => ci.CartItemId == id);
-    }
 
+        public async Task<CartItem?> GetByIdAsync(int id)
+        {
+            return await _context.CartItems
+                .Include(ci => ci.ProductVariant)
+                    .ThenInclude(pv => pv.Size)
+                .Include(ci => ci.ProductVariant)
+                    .ThenInclude(pv => pv.Color)
+                .Include(ci => ci.Cart)
+                .FirstOrDefaultAsync(ci => ci.CartItemId == id);
+        }
     public async Task AddAsync(CartItem cartItem)
     {
         await _context.CartItems.AddAsync(cartItem);

@@ -80,7 +80,6 @@ namespace ShopVision50.API.Services.UserService_FD
         public async Task<ServiceResult<string>> SendOtpAsync(string email)
         {
             var exists = await _repo.CheckEmailExistsAsync(email);
-
             var otp = new Random().Next(100000, 999999).ToString();
             _cache.Set($"otp_{email}", otp, TimeSpan.FromMinutes(5));
 
@@ -96,7 +95,7 @@ namespace ShopVision50.API.Services.UserService_FD
 
             return false;
         }
-
+    
         public async Task<ServiceResult<string>> RegisterUserWithOtpAsync(RegisterConfirmDto dto)
         {
             if (dto == null ||

@@ -17,16 +17,19 @@ namespace Shop_Db.Models
         public int Stock { get; set; }
 
         public int? SizeId { get; set; }
-        public ProductSize? Size { get; set; }
+        public virtual ProductSize? Size { get; set; }
 
         public int? ColorId { get; set; }
-        public ProductColor? Color { get; set; }
+        public virtual ProductColor? Color { get; set; }
 
         public int ProductId { get; set; }
-        public Product Product { get; set; } = null!;
+        public virtual Product Product { get; set; } = null!;
 
         public ICollection<CartItem>? CartItems { get; set; }
         public ICollection<OrderItem>? OrderItems { get; set; }
         public ICollection<ReturnItem>? ReturnItems { get; set; }
+
+    
+        
     }
 }
