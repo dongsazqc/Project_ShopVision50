@@ -2,9 +2,6 @@ import { useState, useEffect } from "react";
 import {
   Card,
   Button,
-  InputNumber,
-  Input,
-  Tag,
   Space,
   Row,
   Col,
@@ -13,105 +10,131 @@ import {
   Empty,
   Badge,
   Spin,
+  Select,
+  Checkbox,
 } from "antd";
-import {
-  DeleteOutlined,
-  ShoppingCartOutlined,
-  TagOutlined,
-  GiftOutlined,
-} from "@ant-design/icons";
+import { ShoppingCartOutlined, GiftOutlined, DeleteOutlined } from "@ant-design/icons";
 import api from "../utils/axios";
 import { useNavigate } from "react-router-dom";
+
+const { Option } = Select;
 
 const Cart = () => {
   const navigate = useNavigate();
   const [cartItems, setCartItems] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [promoCode, setPromoCode] = useState("");
-  const [discount, setDiscount] = useState(0);
+  const [promotions, setPromotions] = useState([]);
+  const [selectedPromo, setSelectedPromo] = useState(null);
+  const [selectedItems, setSelectedItems] = useState([]);
 
-  const userId = localStorage.getItem("userId"); // Giả sử lưu userId
+  const userId = localStorage.getItem("userId");
 
-  // Load giỏ hàng từ backend
+  // ================= LOAD CART =================
   useEffect(() => {
     const fetchCart = async () => {
+      if (!userId) {
+        setCartItems([]);
+        setLoading(false);
+        return;
+      }
+
       try {
         setLoading(true);
-        const res = await api.get(`/Cart/GetByUser/${userId}`);
-        setCartItems(res.data || []);
+        const res = await api.get(`/Cart/GetCartByUser/${userId}`);
+        const rawItems = res.data?.cartItems?.$values || [];
+
+        const mapped = rawItems.map((item) => ({
+          variantId: item.productVariantId,
+          cartItemId: item.cartItemId,
+          quantity: item.quantity,
+          giaBan: item.productVariant?.salePrice || 0,
+          name:
+            item.productVariant?.product?.tenSanPham ||
+            `Sản phẩm #${item.productVariantId}`,
+          color: item.productVariant?.color?.tenMau || null,
+          size: item.productVariant?.size?.tenKichCo || null,
+          stock: item.productVariant?.stock || 9999,
+          image:
+            item.productVariant?.images?.[0]?.url ||
+            "https://via.placeholder.com/150",
+        }));
+
+        setCartItems(mapped);
+        setSelectedItems(mapped.map((i) => i.variantId)); // mặc định chọn tất cả
       } catch (err) {
+        console.log(err);
         message.error("Không thể tải giỏ hàng");
       } finally {
         setLoading(false);
       }
     };
 
-    setTimeout(fetchCart, 0); // tránh cảnh báo cascading render
+    fetchCart();
   }, [userId]);
 
-  // Cập nhật số lượng
-  const updateQuantity = async (variantId, value) => {
+  // ================= LOAD PROMOTIONS =================
+  useEffect(() => {
+    const fetchPromotions = async () => {
+      try {
+        const res = await api.get("/KhuyenMai/GetAllPromotions");
+        const raw = res.data?.$values || [];
+        setPromotions(raw.filter((p) => p.status)); // chỉ lấy khuyến mãi còn hiệu lực
+      } catch (err) {
+        console.log(err);
+      }
+    };
+    fetchPromotions();
+  }, []);
+
+  // ================= UPDATE QUANTITY FE =================
+  const updateQuantityFE = (variantId, value) => {
     if (value < 1) return;
-    try {
-      await api.patch(`/Cart/UpdateQuantity`, { variantId, quantity: value });
-      setCartItems((items) =>
-        items.map((item) =>
-          item.variantId === variantId ? { ...item, quantity: value } : item
-        )
-      );
-      message.success("Cập nhật số lượng thành công");
-    } catch {
-      message.error("Cập nhật thất bại");
-    }
+    setCartItems((prev) =>
+      prev.map((item) =>
+        item.variantId === variantId ? { ...item, quantity: value } : item
+      )
+    );
   };
 
-  // Xóa sản phẩm
-  const removeItem = async (variantId) => {
-    try {
-      await api.delete(`/Cart/Remove/${variantId}`);
-      setCartItems((items) => items.filter((item) => item.variantId !== variantId));
-      message.success("Đã xóa sản phẩm khỏi giỏ hàng");
-    } catch {
-      message.error("Xóa thất bại");
-    }
+  // ================= REMOVE ITEM FE =================
+  const removeItemFE = (variantId) => {
+    setCartItems((prev) => prev.filter((item) => item.variantId !== variantId));
+    setSelectedItems((prev) => prev.filter((id) => id !== variantId));
   };
 
-  // Áp dụng mã giảm giá
-  const applyPromo = async () => {
-    if (!promoCode) return;
-    try {
-      const res = await api.post(`/Cart/ApplyPromo`, { promoCode });
-      setDiscount(res.data.discountPercent || 0);
-      message.success(`Áp dụng mã giảm giá ${res.data.discountPercent}%`);
-    } catch {
-      message.error("Mã giảm giá không hợp lệ");
-    }
-  };
+  // ================= PAYMENT CALC =================
+  const selectedCartItems = cartItems.filter((item) =>
+    selectedItems.includes(item.variantId)
+  );
 
-  // Tính toán tiền
-  const subtotal = cartItems.reduce(
+  const subtotal = selectedCartItems.reduce(
     (sum, item) => sum + item.giaBan * item.quantity,
     0
   );
-  const discountAmount = (subtotal * discount) / 100;
+  const discountAmount = selectedPromo
+    ? (subtotal * selectedPromo.discountValue) / 100
+    : 0;
   const shipping = subtotal > 500000 ? 0 : 30000;
   const total = subtotal - discountAmount + shipping;
 
   const formatPrice = (price) =>
-    new Intl.NumberFormat("vi-VN", { style: "currency", currency: "VND" }).format(price);
+    new Intl.NumberFormat("vi-VN", { style: "currency", currency: "VND" }).format(
+      price
+    );
 
-  if (loading) return <Spin style={{ marginTop: 100 }} size="large" />;
+  if (loading)
+    return <Spin size="large" style={{ marginTop: 100, display: "block" }} />;
 
+  // ===================== RENDER =====================
   return (
     <div style={{ padding: "20px" }}>
       <div style={{ maxWidth: 1200, margin: "0 auto" }}>
-        {/* Header */}
+        {/* HEADER */}
         <Card
           style={{
             marginBottom: 24,
             borderRadius: 8,
             background: "rgba(255, 255, 255, 0.95)",
-            backdropFilter: "blur(10px)",
             border: "1px solid #ccc",
           }}
           bordered={false}
@@ -121,7 +144,7 @@ const Cart = () => {
               <ShoppingCartOutlined style={{ fontSize: 32, color: "#667eea" }} />
             </Badge>
             <div>
-              <h1 style={{ margin: 0, fontSize: 28, fontWeight: "bold", color: "#1a1a1a" }}>
+              <h1 style={{ margin: 0, fontSize: 28, fontWeight: "bold" }}>
                 Giỏ Hàng Của Bạn
               </h1>
               <p style={{ margin: 0, color: "#666" }}>
@@ -131,87 +154,109 @@ const Cart = () => {
           </Space>
         </Card>
 
+        {/* EMPTY CART */}
         {cartItems.length === 0 ? (
-          <Card
-            style={{
-              borderRadius: 8,
-              background: "rgba(255, 255, 255, 0.95)",
-            }}
-            bordered={false}
-          >
-            <Empty
-              image={Empty.PRESENTED_IMAGE_SIMPLE}
-              description={
-                <div>
-                  <h2 style={{ fontSize: 20, fontWeight: 600, marginBottom: 8 }}>
-                    Giỏ hàng trống
-                  </h2>
-                  <p style={{ color: "#666" }}>Hãy thêm sản phẩm vào giỏ hàng của bạn!</p>
-                </div>
-              }
-            >
-              <Button type="primary" size="large" style={{ borderRadius: 8 }}>
-                Tiếp Tục Mua Sắm
+          <Card bordered={false} style={{ borderRadius: 8 }}>
+            <Empty description="Giỏ hàng trống">
+              <Button type="primary" size="large">
+                Tiếp tục mua sắm
               </Button>
             </Empty>
           </Card>
         ) : (
           <Row gutter={24}>
-            {/* List sản phẩm */}
+            {/* LEFT LIST */}
             <Col xs={24} lg={16}>
-              <Space direction="vertical" size="middle" style={{ width: "100%" }}>
+              <Space direction="vertical" style={{ width: "100%" }}>
                 {cartItems.map((item) => (
                   <Card
                     key={item.variantId}
                     hoverable
                     style={{
                       borderRadius: 8,
-                      background: "rgba(255, 255, 255, 0.95)",
+                      background: "rgba(255,255,255,0.95)",
                       border: "1px solid #ccc",
                     }}
-                    bordered={false}
                   >
                     <Row gutter={16} align="middle">
-                      <Col xs={8} sm={6}>
-                        <img
-                          src={item.image ? item.image : "https://via.placeholder.com/150"}
-                          alt={item.name}
-                          style={{ width: "100%", height: 120, objectFit: "cover", borderRadius: 8 }}
+                      <Col xs={2}>
+                        <Checkbox
+                          checked={selectedItems.includes(item.variantId)}
+                          onChange={(e) => {
+                            if (e.target.checked) {
+                              setSelectedItems([...selectedItems, item.variantId]);
+                            } else {
+                              setSelectedItems(
+                                selectedItems.filter((id) => id !== item.variantId)
+                              );
+                            }
+                          }}
                         />
                       </Col>
-                      <Col xs={16} sm={18}>
-                        <Row justify="space-between" align="top">
-                          <Col span={18}>
-                            <h3 style={{ fontSize: 18, fontWeight: 600, marginBottom: 8 }}>{item.name}</h3>
-                            <div style={{ marginTop: 12 }}>
-                              <span style={{ fontSize: 20, fontWeight: "bold", color: "#667eea" }}>
-                                {formatPrice(item.giaBan)}
-                              </span>
-                              <div style={{ fontSize: 12, color: "#888", marginTop: 4 }}>
-                                {item.color && `Màu: ${item.color}`} {item.size && `| Size: ${item.size}`}
-                              </div>
-                            </div>
+
+                      <Col xs={6}>
+                        <img
+                          src={item.image}
+                          alt={item.name}
+                          style={{
+                            width: "100%",
+                            height: 120,
+                            objectFit: "cover",
+                            borderRadius: 8,
+                          }}
+                        />
+                      </Col>
+
+                      <Col xs={16}>
+                        <Row justify="space-between">
+                          <Col>
+                            <h3>{item.name}</h3>
+                            <p style={{ color: "#888" }}>
+                              {item.color && `Màu: ${item.color}`}{" "}
+                              {item.size && ` | Size: ${item.size}`}
+                            </p>
+                            <strong style={{ color: "#667eea" }}>
+                              {formatPrice(item.giaBan)}
+                            </strong>
                           </Col>
-                          <Col span={6} style={{ textAlign: "right" }}>
-                            <Button type="text" danger icon={<DeleteOutlined />} onClick={() => removeItem(item.variantId)} />
+
+                          <Col>
+                            <Button
+                              danger
+                              type="text"
+                              icon={<DeleteOutlined />}
+                              onClick={() => removeItemFE(item.variantId)}
+                            />
                           </Col>
                         </Row>
-                        <Row justify="space-between" align="middle" style={{ marginTop: 16 }}>
+
+                        <Row justify="space-between" style={{ marginTop: 16 }}>
                           <Col>
                             <Space>
-                              <span style={{ fontWeight: 500 }}>Số lượng:</span>
-                              <InputNumber
-                                min={1}
-                                value={item.quantity}
-                                onChange={(value) => updateQuantity(item.variantId, value)}
-                                style={{ borderRadius: 8 }}
-                              />
+                              Số lượng:
+                              <Button
+                                onClick={() =>
+                                  updateQuantityFE(
+                                    item.variantId,
+                                    Math.max(item.quantity - 1, 1)
+                                  )
+                                }
+                              >
+                                -
+                              </Button>
+                              <span>{item.quantity}</span>
+                              <Button
+                                onClick={() =>
+                                  updateQuantityFE(item.variantId, item.quantity + 1)
+                                }
+                              >
+                                +
+                              </Button>
                             </Space>
                           </Col>
+
                           <Col>
-                            <span style={{ fontSize: 16, fontWeight: 600 }}>
-                              {formatPrice(item.giaBan * item.quantity)}
-                            </span>
+                            <strong>{formatPrice(item.giaBan * item.quantity)}</strong>
                           </Col>
                         </Row>
                       </Col>
@@ -221,111 +266,77 @@ const Cart = () => {
               </Space>
             </Col>
 
-            {/* Order Summary */}
+            {/* RIGHT SUMMARY */}
             <Col xs={24} lg={8}>
               <Card
                 title={
                   <Space>
-                    <GiftOutlined style={{ fontSize: 20, color: "#667eea" }} />
-                    <span style={{ fontSize: 18, fontWeight: "bold" }}>Tổng Đơn Hàng</span>
+                    <GiftOutlined style={{ color: "#667eea" }} />
+                    <span>Tổng đơn hàng</span>
                   </Space>
                 }
-                style={{
-                  borderRadius: 8,
-                  background: "rgba(255, 255, 255, 0.95)",
-                  position: "sticky",
-                  top: 24,
-                  border: "1px solid #ccc",
-                }}
-                bordered={false}
               >
-                {/* Promo Code */}
-                <div style={{ marginBottom: 24 }}>
-                  <Space direction="vertical" style={{ width: "100%" }}>
-                    <Space>
-                      <TagOutlined style={{ color: "#667eea" }} />
-                      <span style={{ fontWeight: 500 }}>Mã giảm giá</span>
-                    </Space>
-                    <Input.Search
-                      placeholder="Nhập mã giảm giá..."
-                      value={promoCode}
-                      onChange={(e) => setPromoCode(e.target.value)}
-                      onSearch={applyPromo}
-                      enterButton="Áp dụng"
-                      size="large"
-                      style={{ borderRadius: 8 }}
-                    />
-                    {discount > 0 && (
-                      <Tag color="success" style={{ fontSize: 13 }}>
-                        ✓ Giảm {discount}% đã được áp dụng!
-                      </Tag>
-                    )}
-                  </Space>
-                </div>
+                <Select
+                  style={{ width: "100%" }}
+                  placeholder="Chọn khuyến mãi"
+                  value={selectedPromo?.promotionId || undefined}
+                  onChange={(val) => {
+                    const promo = promotions.find((p) => p.promotionId === val);
+                    setSelectedPromo(promo || null);
+                  }}
+                >
+                  {promotions.map((promo) => (
+                    <Option key={promo.promotionId} value={promo.promotionId}>
+                      {promo.code} - {promo.discountDisplay} ({promo.condition})
+                    </Option>
+                  ))}
+                </Select>
 
                 <Divider />
 
-                {/* Price Breakdown */}
-                <Space direction="vertical" style={{ width: "100%" }} size="middle">
-                  <Row justify="space-between">
-                    <Col>Tạm tính</Col>
-                    <Col style={{ fontWeight: 500 }}>{formatPrice(subtotal)}</Col>
-                  </Row>
-                  {discount > 0 && (
-                    <Row justify="space-between" style={{ color: "#52c41a" }}>
-                      <Col>Giảm giá ({discount}%)</Col>
-                      <Col style={{ fontWeight: 600 }}>-{formatPrice(discountAmount)}</Col>
-                    </Row>
-                  )}
-                  <Row justify="space-between">
-                    <Col>Phí vận chuyển</Col>
-                    <Col style={{ fontWeight: 500 }}>
-                      {shipping === 0 ? <Tag color="success">Miễn phí</Tag> : formatPrice(shipping)}
-                    </Col>
-                  </Row>
-                  {subtotal < 500000 && (
-                    <div style={{ padding: 12, background: "#f0f5ff", borderRadius: 8, fontSize: 12, color: "#1890ff" }}>
-                      Mua thêm {formatPrice(500000 - subtotal)} để được miễn phí vận chuyển!
-                    </div>
-                  )}
-                </Space>
-
-                <Divider />
-
-                {/* Total */}
-                <Row justify="space-between" align="middle" style={{ marginBottom: 24 }}>
-                  <Col>
-                    <span style={{ fontSize: 18, fontWeight: "bold" }}>Tổng cộng</span>
-                  </Col>
-                  <Col>
-                    <span style={{ fontSize: 24, fontWeight: "bold", color: "#667eea" }}>{formatPrice(total)}</span>
-                  </Col>
+                <Row justify="space-between">
+                  <Col>Tạm tính</Col>
+                  <Col>{formatPrice(subtotal)}</Col>
                 </Row>
 
-                {/* Checkout Button */}
+                {selectedPromo && (
+                  <Row justify="space-between">
+                    <Col>Giảm ({selectedPromo.discountDisplay})</Col>
+                    <Col>-{formatPrice(discountAmount)}</Col>
+                  </Row>
+                )}
+
+                <Row justify="space-between">
+                  <Col>Vận chuyển</Col>
+                  <Col>{shipping === 0 ? "Miễn phí" : formatPrice(shipping)}</Col>
+                </Row>
+
+                <Divider />
+
+                <Row justify="space-between">
+                  <strong>Tổng cộng</strong>
+                  <strong style={{ color: "#667eea" }}>{formatPrice(total)}</strong>
+                </Row>
+
                 <Button
                   type="primary"
-                  size="large"
                   block
-                  style={{
-                    height: 50,
-                    fontSize: 16,
-                    fontWeight: 600,
-                    borderRadius: 8,
-                    background: "linear-gradient(135deg, #667eea 0%, #764ba2 100%)",
-                    border: "none",
-                  }}
+                  size="large"
+                  style={{ marginTop: 20 }}
                   onClick={() => {
-                    sessionStorage.setItem("checkoutCart", JSON.stringify(cartItems));
+                    if (selectedItems.length === 0) {
+                      message.warning("Vui lòng chọn sản phẩm để thanh toán");
+                      return;
+                    }
+                    const checkoutItems = cartItems.filter((item) =>
+                      selectedItems.includes(item.variantId)
+                    );
+                    sessionStorage.setItem("checkoutItems", JSON.stringify(checkoutItems));
                     navigate("/checkout");
                   }}
                 >
-                  Tiến Hành Thanh Toán
+                  Thanh toán
                 </Button>
-
-                <p style={{ textAlign: "center", fontSize: 12, color: "#999", marginTop: 16, marginBottom: 0 }}>
-                  🛡️ Miễn phí đổi trả trong 30 ngày
-                </p>
               </Card>
             </Col>
           </Row>

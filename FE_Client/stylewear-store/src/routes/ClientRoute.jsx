@@ -11,6 +11,7 @@ import Register from "../pages/Register";
 import Checkout from "../pages/Checkout";
 import OrderSuccess from "../pages/Ordersuccess";
 import OrderHistory from "../pages/Orderhistory";
+import Userprofile from "../pages/Userprofile";
 const clientRoutes = createBrowserRouter([
   // 🔹 Login/Register không dùng layout
   { path: "/login", element: <Login /> },
@@ -28,6 +29,7 @@ const clientRoutes = createBrowserRouter([
       { path: "checkout", element: <Checkout /> },
       { path: "ordersuccess", element: <OrderSuccess /> },
       { path: "orderhistory", element: <OrderHistory /> },  
+      { path : "userprofile", element : <Userprofile />}
     ],
   },
 ]);

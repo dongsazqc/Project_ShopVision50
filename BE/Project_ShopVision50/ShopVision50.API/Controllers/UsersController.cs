@@ -104,7 +104,6 @@ namespace ShopVision50.API.Controllers
     }
          
             [HttpPost("register-with-otp")]
-        [Authorize]
         public async Task<IActionResult> RegisterWithOtp([FromBody] RegisterConfirmDto dto)
     {
         var result = await _svc.RegisterUserWithOtpAsync(dto);
@@ -138,5 +137,15 @@ namespace ShopVision50.API.Controllers
             return Ok(new { message = "Đổi mật khẩu thành công" });
         }
 
+        // Quên mật khẩu
+
+        [HttpPost("forgot-password")]
+        public async Task<IActionResult> ForgotPassword([FromBody] ForgotPasswordDto dto)
+        {
+            var result = await _svc.ForgotPasswordAsync(dto);
+            if (!result.Success) return BadRequest(result.Message);
+
+            return Ok(new { message = "Mật khẩu mới đã được gửi đến email" });
+        }
     }
 }

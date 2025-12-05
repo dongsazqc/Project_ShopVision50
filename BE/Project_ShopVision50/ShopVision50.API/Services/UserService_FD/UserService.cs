@@ -172,5 +172,47 @@ namespace ShopVision50.API.Services.UserService_FD
 
             return ServiceResult<string>.Ok("Đổi mật khẩu thành công");
         }
+        //Quên mật khẩu
+        public async Task<ServiceResult<string>> ForgotPasswordAsync(ForgotPasswordDto dto)
+        {
+            var user = await _repo.GetByEmailAsync(dto.Email);
+            if (user == null)
+                return ServiceResult<string>.Fail("Email không tồn tại trong hệ thống");
+
+            // Kiểm tra OTP
+            if (!_cache.TryGetValue($"otp_{dto.Email}", out string cachedOtp))
+                return ServiceResult<string>.Fail("OTP đã hết hạn hoặc không tồn tại");
+
+            if (cachedOtp != dto.Otp)
+                return ServiceResult<string>.Fail("OTP không chính xác");
+
+            // Tạo mật khẩu ngẫu nhiên 10 ký tự mạnh
+            string newPassword = GenerateStrongPassword(10);
+
+            // Hash mật khẩu
+            user.Password = BCrypt.Net.BCrypt.HashPassword(newPassword);
+            await _repo.UpdateAsync(user);
+
+            // Xóa OTP sau khi dùng
+            _cache.Remove($"otp_{dto.Email}");
+
+            // Gửi mật khẩu mới qua email
+            await _emailService.SendEmailAsync(
+                dto.Email,
+                "Mật khẩu mới - ShopVision50",
+                $"Mật khẩu mới của bạn là: {newPassword}"
+            );
+
+            return ServiceResult<string>.Ok("Đổi mật khẩu thành công");
+        }
+
+        // Hàm tạo mật khẩu mạnh 10 ký tự
+        private string GenerateStrongPassword(int length)
+        {
+            const string chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&*()";
+            var random = new Random();
+            return new string(Enumerable.Repeat(chars, length)
+                .Select(s => s[random.Next(s.Length)]).ToArray());
+        }
     }
 }

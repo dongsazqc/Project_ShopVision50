@@ -17,27 +17,38 @@ const Login = () => {
   const [userEmail, setUserEmail] = useState("");
 
   // ================= LOGIN =================
-  const onFinish = async (values) => {
-    try {
-      setLoading(true);
-      const res = await api.post("/Login/login", {
-        Email: values.email,
-        Password: values.password,
-      });
+const onFinish = async (values) => {
+  try {
+    setLoading(true);
+    const res = await api.post("/Login/login", {
+      Email: values.email,
+      Password: values.password,
+    });
 
-      if (res.data?.token) {
-        localStorage.setItem("token", res.data.token);
-        message.success("Đăng nhập thành công");
-        navigate("/");
-      } else {
-        message.error("Sai tài khoản hoặc mật khẩu");
-      }
-    } catch {
-      message.error("Đăng nhập thất bại");
-    } finally {
-      setLoading(false);
+    console.log("Login response:", res.data); // debug
+
+    if (res.data?.token && res.data?.user) {
+      localStorage.setItem("token", res.data.token);
+      localStorage.setItem("userId", res.data.user.userId);
+      localStorage.setItem("email", res.data.user.email);
+      localStorage.setItem("fullName", res.data.user.fullName);
+      localStorage.setItem("role", res.data.user.roleId);
+
+      message.success("Đăng nhập thành công");
+
+      // Redirect về trang cũ hoặc home
+      const redirect = new URLSearchParams(window.location.search).get("redirect") || "/";
+      navigate(redirect, { replace: true });
+    } else {
+      message.error("Sai tài khoản hoặc mật khẩu");
     }
-  };
+  } catch (err) {
+    console.error(err);
+    message.error("Đăng nhập thất bại");
+  } finally {
+    setLoading(false);
+  }
+};
 
   // ================= GỬI OTP =================
   const handleSendOTP = async (values) => {

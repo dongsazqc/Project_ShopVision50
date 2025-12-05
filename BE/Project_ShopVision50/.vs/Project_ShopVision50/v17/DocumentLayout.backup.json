@@ -3,24 +3,127 @@
   "WorkspaceRootPath": "C:\\Users\\ADMIN\\Desktop\\New folder (5)\\Project_ShopVision50\\BE\\Project_ShopVision50\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{003B4D77-11AF-45B7-94A4-EB2502E4818F}|ShopVision50.API\\ShopVision50.API.csproj|c:\\users\\admin\\desktop\\new folder (5)\\project_shopvision50\\be\\project_shopvision50\\shopvision50.api\\controllers\\cartitemscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{003B4D77-11AF-45B7-94A4-EB2502E4818F}|ShopVision50.API\\ShopVision50.API.csproj|solutionrelative:shopvision50.api\\controllers\\cartitemscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{003B4D77-11AF-45B7-94A4-EB2502E4818F}|ShopVision50.API\\ShopVision50.API.csproj|c:\\users\\admin\\desktop\\new folder (5)\\project_shopvision50\\be\\project_shopvision50\\shopvision50.api\\services\\userservice_fd\\userservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{003B4D77-11AF-45B7-94A4-EB2502E4818F}|ShopVision50.API\\ShopVision50.API.csproj|solutionrelative:shopvision50.api\\services\\userservice_fd\\userservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{003B4D77-11AF-45B7-94A4-EB2502E4818F}|ShopVision50.API\\ShopVision50.API.csproj|c:\\users\\admin\\desktop\\new folder (5)\\project_shopvision50\\be\\project_shopvision50\\shopvision50.api\\controllers\\cartcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{003B4D77-11AF-45B7-94A4-EB2502E4818F}|ShopVision50.API\\ShopVision50.API.csproj|solutionrelative:shopvision50.api\\controllers\\cartcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{003B4D77-11AF-45B7-94A4-EB2502E4818F}|ShopVision50.API\\ShopVision50.API.csproj|c:\\users\\admin\\desktop\\new folder (5)\\project_shopvision50\\be\\project_shopvision50\\shopvision50.api\\services\\userservice_fd\\iuserservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{003B4D77-11AF-45B7-94A4-EB2502E4818F}|ShopVision50.API\\ShopVision50.API.csproj|solutionrelative:shopvision50.api\\services\\userservice_fd\\iuserservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{003B4D77-11AF-45B7-94A4-EB2502E4818F}|ShopVision50.API\\ShopVision50.API.csproj|c:\\users\\admin\\desktop\\new folder (5)\\project_shopvision50\\be\\project_shopvision50\\shopvision50.api\\controllers\\userscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{003B4D77-11AF-45B7-94A4-EB2502E4818F}|ShopVision50.API\\ShopVision50.API.csproj|solutionrelative:shopvision50.api\\controllers\\userscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\ADMIN\\Desktop\\New folder (5)\\Project_ShopVision50\\BE\\Project_ShopVision50\\ShopVision50.API\\appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}",
-      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:ShopVision50.API\\appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}"
+      "AbsoluteMoniker": "D:0:0:{003B4D77-11AF-45B7-94A4-EB2502E4818F}|ShopVision50.API\\ShopVision50.API.csproj|c:\\users\\admin\\desktop\\new folder (5)\\project_shopvision50\\be\\project_shopvision50\\shopvision50.api\\appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}",
+      "RelativeMoniker": "D:0:0:{003B4D77-11AF-45B7-94A4-EB2502E4818F}|ShopVision50.API\\ShopVision50.API.csproj|solutionrelative:shopvision50.api\\appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\ADMIN\\Desktop\\New folder\\appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{BCAEED6A-BFB5-4C25-BEFC-A44E5062E00B}|ShopVision50.Infrastructure\\ShopVision50.Infrastructure.csproj|c:\\users\\admin\\desktop\\new folder (5)\\project_shopvision50\\be\\project_shopvision50\\shopvision50.infrastructure\\migrations\\20251201155404_loitest.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{BCAEED6A-BFB5-4C25-BEFC-A44E5062E00B}|ShopVision50.Infrastructure\\ShopVision50.Infrastructure.csproj|solutionrelative:shopvision50.infrastructure\\migrations\\20251201155404_loitest.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\ADMIN\\Desktop\\New folder (5)\\Project_ShopVision50\\BE\\Project_ShopVision50\\ShopVision50.Infrastructure\\Migrations\\20251201154445_LoiTest.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:ShopVision50.Infrastructure\\Migrations\\20251201154445_LoiTest.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{003B4D77-11AF-45B7-94A4-EB2502E4818F}|ShopVision50.API\\ShopVision50.API.csproj|c:\\users\\admin\\desktop\\new folder (5)\\project_shopvision50\\be\\project_shopvision50\\shopvision50.api\\models\\users\\dtos\\forgotpassworddto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{003B4D77-11AF-45B7-94A4-EB2502E4818F}|ShopVision50.API\\ShopVision50.API.csproj|solutionrelative:shopvision50.api\\models\\users\\dtos\\forgotpassworddto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{003B4D77-11AF-45B7-94A4-EB2502E4818F}|ShopVision50.API\\ShopVision50.API.csproj|c:\\users\\admin\\desktop\\new folder (5)\\project_shopvision50\\be\\project_shopvision50\\shopvision50.api\\repositories\\userrepo_fd\\userrepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{003B4D77-11AF-45B7-94A4-EB2502E4818F}|ShopVision50.API\\ShopVision50.API.csproj|solutionrelative:shopvision50.api\\repositories\\userrepo_fd\\userrepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{003B4D77-11AF-45B7-94A4-EB2502E4818F}|ShopVision50.API\\ShopVision50.API.csproj|c:\\users\\admin\\desktop\\new folder (5)\\project_shopvision50\\be\\project_shopvision50\\shopvision50.api\\repositories\\userrepo_fd\\iuserrepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{003B4D77-11AF-45B7-94A4-EB2502E4818F}|ShopVision50.API\\ShopVision50.API.csproj|solutionrelative:shopvision50.api\\repositories\\userrepo_fd\\iuserrepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{003B4D77-11AF-45B7-94A4-EB2502E4818F}|ShopVision50.API\\ShopVision50.API.csproj|c:\\users\\admin\\desktop\\new folder (5)\\project_shopvision50\\be\\project_shopvision50\\shopvision50.api\\controllers\\topsanphamcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{003B4D77-11AF-45B7-94A4-EB2502E4818F}|ShopVision50.API\\ShopVision50.API.csproj|solutionrelative:shopvision50.api\\controllers\\topsanphamcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{003B4D77-11AF-45B7-94A4-EB2502E4818F}|ShopVision50.API\\ShopVision50.API.csproj|c:\\users\\admin\\desktop\\new folder (5)\\project_shopvision50\\be\\project_shopvision50\\shopvision50.api\\controllers\\topcustomerscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{003B4D77-11AF-45B7-94A4-EB2502E4818F}|ShopVision50.API\\ShopVision50.API.csproj|solutionrelative:shopvision50.api\\controllers\\topcustomerscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{003B4D77-11AF-45B7-94A4-EB2502E4818F}|ShopVision50.API\\ShopVision50.API.csproj|c:\\users\\admin\\desktop\\new folder (5)\\project_shopvision50\\be\\project_shopvision50\\shopvision50.api\\controllers\\stylecontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{003B4D77-11AF-45B7-94A4-EB2502E4818F}|ShopVision50.API\\ShopVision50.API.csproj|solutionrelative:shopvision50.api\\controllers\\stylecontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{003B4D77-11AF-45B7-94A4-EB2502E4818F}|ShopVision50.API\\ShopVision50.API.csproj|c:\\users\\admin\\desktop\\new folder (5)\\project_shopvision50\\be\\project_shopvision50\\shopvision50.api\\controllers\\revenuecontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{003B4D77-11AF-45B7-94A4-EB2502E4818F}|ShopVision50.API\\ShopVision50.API.csproj|solutionrelative:shopvision50.api\\controllers\\revenuecontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{003B4D77-11AF-45B7-94A4-EB2502E4818F}|ShopVision50.API\\ShopVision50.API.csproj|c:\\users\\admin\\desktop\\new folder (5)\\project_shopvision50\\be\\project_shopvision50\\shopvision50.api\\controllers\\productvariantcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{003B4D77-11AF-45B7-94A4-EB2502E4818F}|ShopVision50.API\\ShopVision50.API.csproj|solutionrelative:shopvision50.api\\controllers\\productvariantcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{003B4D77-11AF-45B7-94A4-EB2502E4818F}|ShopVision50.API\\ShopVision50.API.csproj|c:\\users\\admin\\desktop\\new folder (5)\\project_shopvision50\\be\\project_shopvision50\\shopvision50.api\\controllers\\productsizecontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{003B4D77-11AF-45B7-94A4-EB2502E4818F}|ShopVision50.API\\ShopVision50.API.csproj|solutionrelative:shopvision50.api\\controllers\\productsizecontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{003B4D77-11AF-45B7-94A4-EB2502E4818F}|ShopVision50.API\\ShopVision50.API.csproj|c:\\users\\admin\\desktop\\new folder (5)\\project_shopvision50\\be\\project_shopvision50\\shopvision50.api\\controllers\\productscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{003B4D77-11AF-45B7-94A4-EB2502E4818F}|ShopVision50.API\\ShopVision50.API.csproj|solutionrelative:shopvision50.api\\controllers\\productscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{003B4D77-11AF-45B7-94A4-EB2502E4818F}|ShopVision50.API\\ShopVision50.API.csproj|c:\\users\\admin\\desktop\\new folder (5)\\project_shopvision50\\be\\project_shopvision50\\shopvision50.api\\controllers\\productimagecontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{003B4D77-11AF-45B7-94A4-EB2502E4818F}|ShopVision50.API\\ShopVision50.API.csproj|solutionrelative:shopvision50.api\\controllers\\productimagecontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{003B4D77-11AF-45B7-94A4-EB2502E4818F}|ShopVision50.API\\ShopVision50.API.csproj|c:\\users\\admin\\desktop\\new folder (5)\\project_shopvision50\\be\\project_shopvision50\\shopvision50.api\\controllers\\productcolorcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{003B4D77-11AF-45B7-94A4-EB2502E4818F}|ShopVision50.API\\ShopVision50.API.csproj|solutionrelative:shopvision50.api\\controllers\\productcolorcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{003B4D77-11AF-45B7-94A4-EB2502E4818F}|ShopVision50.API\\ShopVision50.API.csproj|c:\\users\\admin\\desktop\\new folder (5)\\project_shopvision50\\be\\project_shopvision50\\shopvision50.api\\controllers\\paymentscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{003B4D77-11AF-45B7-94A4-EB2502E4818F}|ShopVision50.API\\ShopVision50.API.csproj|solutionrelative:shopvision50.api\\controllers\\paymentscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{003B4D77-11AF-45B7-94A4-EB2502E4818F}|ShopVision50.API\\ShopVision50.API.csproj|c:\\users\\admin\\desktop\\new folder (5)\\project_shopvision50\\be\\project_shopvision50\\shopvision50.api\\controllers\\origincontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{003B4D77-11AF-45B7-94A4-EB2502E4818F}|ShopVision50.API\\ShopVision50.API.csproj|solutionrelative:shopvision50.api\\controllers\\origincontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{003B4D77-11AF-45B7-94A4-EB2502E4818F}|ShopVision50.API\\ShopVision50.API.csproj|c:\\users\\admin\\desktop\\new folder (5)\\project_shopvision50\\be\\project_shopvision50\\shopvision50.api\\controllers\\orderscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{003B4D77-11AF-45B7-94A4-EB2502E4818F}|ShopVision50.API\\ShopVision50.API.csproj|solutionrelative:shopvision50.api\\controllers\\orderscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{003B4D77-11AF-45B7-94A4-EB2502E4818F}|ShopVision50.API\\ShopVision50.API.csproj|c:\\users\\admin\\desktop\\new folder (5)\\project_shopvision50\\be\\project_shopvision50\\shopvision50.api\\controllers\\orderitemcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{003B4D77-11AF-45B7-94A4-EB2502E4818F}|ShopVision50.API\\ShopVision50.API.csproj|solutionrelative:shopvision50.api\\controllers\\orderitemcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{003B4D77-11AF-45B7-94A4-EB2502E4818F}|ShopVision50.API\\ShopVision50.API.csproj|c:\\users\\admin\\desktop\\new folder (5)\\project_shopvision50\\be\\project_shopvision50\\shopvision50.api\\controllers\\materialcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{003B4D77-11AF-45B7-94A4-EB2502E4818F}|ShopVision50.API\\ShopVision50.API.csproj|solutionrelative:shopvision50.api\\controllers\\materialcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{003B4D77-11AF-45B7-94A4-EB2502E4818F}|ShopVision50.API\\ShopVision50.API.csproj|c:\\users\\admin\\desktop\\new folder (5)\\project_shopvision50\\be\\project_shopvision50\\shopvision50.api\\controllers\\logincontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{003B4D77-11AF-45B7-94A4-EB2502E4818F}|ShopVision50.API\\ShopVision50.API.csproj|solutionrelative:shopvision50.api\\controllers\\logincontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{003B4D77-11AF-45B7-94A4-EB2502E4818F}|ShopVision50.API\\ShopVision50.API.csproj|c:\\users\\admin\\desktop\\new folder (5)\\project_shopvision50\\be\\project_shopvision50\\shopvision50.api\\controllers\\khuyenmaicontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{003B4D77-11AF-45B7-94A4-EB2502E4818F}|ShopVision50.API\\ShopVision50.API.csproj|solutionrelative:shopvision50.api\\controllers\\khuyenmaicontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{003B4D77-11AF-45B7-94A4-EB2502E4818F}|ShopVision50.API\\ShopVision50.API.csproj|c:\\users\\admin\\desktop\\new folder (5)\\project_shopvision50\\be\\project_shopvision50\\shopvision50.api\\controllers\\gendercontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{003B4D77-11AF-45B7-94A4-EB2502E4818F}|ShopVision50.API\\ShopVision50.API.csproj|solutionrelative:shopvision50.api\\controllers\\gendercontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{003B4D77-11AF-45B7-94A4-EB2502E4818F}|ShopVision50.API\\ShopVision50.API.csproj|c:\\users\\admin\\desktop\\new folder (5)\\project_shopvision50\\be\\project_shopvision50\\shopvision50.api\\controllers\\chatcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{003B4D77-11AF-45B7-94A4-EB2502E4818F}|ShopVision50.API\\ShopVision50.API.csproj|solutionrelative:shopvision50.api\\controllers\\chatcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{003B4D77-11AF-45B7-94A4-EB2502E4818F}|ShopVision50.API\\ShopVision50.API.csproj|c:\\users\\admin\\desktop\\new folder (5)\\project_shopvision50\\be\\project_shopvision50\\shopvision50.api\\controllers\\categorycontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{003B4D77-11AF-45B7-94A4-EB2502E4818F}|ShopVision50.API\\ShopVision50.API.csproj|solutionrelative:shopvision50.api\\controllers\\categorycontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{003B4D77-11AF-45B7-94A4-EB2502E4818F}|ShopVision50.API\\ShopVision50.API.csproj|c:\\users\\admin\\desktop\\new folder (5)\\project_shopvision50\\be\\project_shopvision50\\shopvision50.api\\controllers\\cartitemscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{003B4D77-11AF-45B7-94A4-EB2502E4818F}|ShopVision50.API\\ShopVision50.API.csproj|solutionrelative:shopvision50.api\\controllers\\cartitemscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{003B4D77-11AF-45B7-94A4-EB2502E4818F}|ShopVision50.API\\ShopVision50.API.csproj|c:\\users\\admin\\desktop\\new folder (5)\\project_shopvision50\\be\\project_shopvision50\\shopvision50.api\\controllers\\cartcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{003B4D77-11AF-45B7-94A4-EB2502E4818F}|ShopVision50.API\\ShopVision50.API.csproj|solutionrelative:shopvision50.api\\controllers\\cartcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{003B4D77-11AF-45B7-94A4-EB2502E4818F}|ShopVision50.API\\ShopVision50.API.csproj|c:\\users\\admin\\desktop\\new folder (5)\\project_shopvision50\\be\\project_shopvision50\\shopvision50.api\\services\\paymentservice_fd\\paymentservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
@@ -75,24 +178,8 @@
       "RelativeMoniker": "D:0:0:{96217467-3F9F-7D1E-6569-C04C746645C6}|ShopVision50.Domain\\ShopVision50.Domain.csproj|solutionrelative:shopvision50.domain\\models\\cartitem.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{003B4D77-11AF-45B7-94A4-EB2502E4818F}|ShopVision50.API\\ShopVision50.API.csproj|c:\\users\\admin\\desktop\\new folder (5)\\project_shopvision50\\be\\project_shopvision50\\shopvision50.api\\services\\userservice_fd\\userservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{003B4D77-11AF-45B7-94A4-EB2502E4818F}|ShopVision50.API\\ShopVision50.API.csproj|solutionrelative:shopvision50.api\\services\\userservice_fd\\userservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{003B4D77-11AF-45B7-94A4-EB2502E4818F}|ShopVision50.API\\ShopVision50.API.csproj|c:\\users\\admin\\desktop\\new folder (5)\\project_shopvision50\\be\\project_shopvision50\\shopvision50.api\\services\\userservice_fd\\iuserservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{003B4D77-11AF-45B7-94A4-EB2502E4818F}|ShopVision50.API\\ShopVision50.API.csproj|solutionrelative:shopvision50.api\\services\\userservice_fd\\iuserservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
       "AbsoluteMoniker": "D:0:0:{003B4D77-11AF-45B7-94A4-EB2502E4818F}|ShopVision50.API\\ShopVision50.API.csproj|c:\\users\\admin\\desktop\\new folder (5)\\project_shopvision50\\be\\project_shopvision50\\shopvision50.api\\models\\users\\dtos\\changepasswordotpdto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{003B4D77-11AF-45B7-94A4-EB2502E4818F}|ShopVision50.API\\ShopVision50.API.csproj|solutionrelative:shopvision50.api\\models\\users\\dtos\\changepasswordotpdto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{003B4D77-11AF-45B7-94A4-EB2502E4818F}|ShopVision50.API\\ShopVision50.API.csproj|c:\\users\\admin\\desktop\\new folder (5)\\project_shopvision50\\be\\project_shopvision50\\shopvision50.api\\repositories\\userrepo_fd\\userrepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{003B4D77-11AF-45B7-94A4-EB2502E4818F}|ShopVision50.API\\ShopVision50.API.csproj|solutionrelative:shopvision50.api\\repositories\\userrepo_fd\\userrepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{003B4D77-11AF-45B7-94A4-EB2502E4818F}|ShopVision50.API\\ShopVision50.API.csproj|c:\\users\\admin\\desktop\\new folder (5)\\project_shopvision50\\be\\project_shopvision50\\shopvision50.api\\repositories\\userrepo_fd\\iuserrepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{003B4D77-11AF-45B7-94A4-EB2502E4818F}|ShopVision50.API\\ShopVision50.API.csproj|solutionrelative:shopvision50.api\\repositories\\userrepo_fd\\iuserrepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{96217467-3F9F-7D1E-6569-C04C746645C6}|ShopVision50.Domain\\ShopVision50.Domain.csproj|c:\\users\\admin\\desktop\\new folder (5)\\project_shopvision50\\be\\project_shopvision50\\shopvision50.domain\\models\\userrole.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
@@ -263,10 +350,6 @@
       "RelativeMoniker": "D:0:0:{003B4D77-11AF-45B7-94A4-EB2502E4818F}|ShopVision50.API\\ShopVision50.API.csproj|solutionrelative:shopvision50.api\\models\\users\\dtos\\productdto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{003B4D77-11AF-45B7-94A4-EB2502E4818F}|ShopVision50.API\\ShopVision50.API.csproj|c:\\users\\admin\\desktop\\new folder (5)\\project_shopvision50\\be\\project_shopvision50\\shopvision50.api\\controllers\\stylecontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{003B4D77-11AF-45B7-94A4-EB2502E4818F}|ShopVision50.API\\ShopVision50.API.csproj|solutionrelative:shopvision50.api\\controllers\\stylecontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
       "AbsoluteMoniker": "D:0:0:{003B4D77-11AF-45B7-94A4-EB2502E4818F}|ShopVision50.API\\ShopVision50.API.csproj|c:\\users\\admin\\desktop\\new folder (5)\\project_shopvision50\\be\\project_shopvision50\\shopvision50.api\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{003B4D77-11AF-45B7-94A4-EB2502E4818F}|ShopVision50.API\\ShopVision50.API.csproj|solutionrelative:shopvision50.api\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
@@ -331,10 +414,6 @@
       "RelativeMoniker": "D:0:0:{003B4D77-11AF-45B7-94A4-EB2502E4818F}|ShopVision50.API\\ShopVision50.API.csproj|solutionrelative:shopvision50.api\\models\\users\\dtos\\bienthedto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{003B4D77-11AF-45B7-94A4-EB2502E4818F}|ShopVision50.API\\ShopVision50.API.csproj|c:\\users\\admin\\desktop\\new folder (5)\\project_shopvision50\\be\\project_shopvision50\\shopvision50.api\\controllers\\topsanphamcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{003B4D77-11AF-45B7-94A4-EB2502E4818F}|ShopVision50.API\\ShopVision50.API.csproj|solutionrelative:shopvision50.api\\controllers\\topsanphamcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
       "AbsoluteMoniker": "D:0:0:{003B4D77-11AF-45B7-94A4-EB2502E4818F}|ShopVision50.API\\ShopVision50.API.csproj|c:\\users\\admin\\desktop\\new folder (5)\\project_shopvision50\\be\\project_shopvision50\\shopvision50.api\\repositories\\topproductsrepo_fd\\topproductsrepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{003B4D77-11AF-45B7-94A4-EB2502E4818F}|ShopVision50.API\\ShopVision50.API.csproj|solutionrelative:shopvision50.api\\repositories\\topproductsrepo_fd\\topproductsrepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
@@ -351,36 +430,12 @@
       "RelativeMoniker": "D:0:0:{003B4D77-11AF-45B7-94A4-EB2502E4818F}|ShopVision50.API\\ShopVision50.API.csproj|solutionrelative:shopvision50.api\\services\\topproductsservice_fd\\itopproductsservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{003B4D77-11AF-45B7-94A4-EB2502E4818F}|ShopVision50.API\\ShopVision50.API.csproj|c:\\users\\admin\\desktop\\new folder (5)\\project_shopvision50\\be\\project_shopvision50\\shopvision50.api\\controllers\\categorycontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{003B4D77-11AF-45B7-94A4-EB2502E4818F}|ShopVision50.API\\ShopVision50.API.csproj|solutionrelative:shopvision50.api\\controllers\\categorycontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
       "AbsoluteMoniker": "D:0:0:{003B4D77-11AF-45B7-94A4-EB2502E4818F}|ShopVision50.API\\ShopVision50.API.csproj|c:\\users\\admin\\desktop\\new folder (5)\\project_shopvision50\\be\\project_shopvision50\\shopvision50.api\\shopvision.code-workspace||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}",
       "RelativeMoniker": "D:0:0:{003B4D77-11AF-45B7-94A4-EB2502E4818F}|ShopVision50.API\\ShopVision50.API.csproj|solutionrelative:shopvision50.api\\shopvision.code-workspace||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{003B4D77-11AF-45B7-94A4-EB2502E4818F}|ShopVision50.API\\ShopVision50.API.csproj|c:\\users\\admin\\desktop\\new folder (5)\\project_shopvision50\\be\\project_shopvision50\\shopvision50.api\\shopvision50.api.csproj||{FA3CD31E-987B-443A-9B81-186104E8DAC1}|",
       "RelativeMoniker": "D:0:0:{003B4D77-11AF-45B7-94A4-EB2502E4818F}|ShopVision50.API\\ShopVision50.API.csproj|solutionrelative:shopvision50.api\\shopvision50.api.csproj||{FA3CD31E-987B-443A-9B81-186104E8DAC1}|"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{003B4D77-11AF-45B7-94A4-EB2502E4818F}|ShopVision50.API\\ShopVision50.API.csproj|c:\\users\\admin\\desktop\\new folder (5)\\project_shopvision50\\be\\project_shopvision50\\shopvision50.api\\controllers\\productvariantcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{003B4D77-11AF-45B7-94A4-EB2502E4818F}|ShopVision50.API\\ShopVision50.API.csproj|solutionrelative:shopvision50.api\\controllers\\productvariantcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{003B4D77-11AF-45B7-94A4-EB2502E4818F}|ShopVision50.API\\ShopVision50.API.csproj|c:\\users\\admin\\desktop\\new folder (5)\\project_shopvision50\\be\\project_shopvision50\\shopvision50.api\\controllers\\productsizecontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{003B4D77-11AF-45B7-94A4-EB2502E4818F}|ShopVision50.API\\ShopVision50.API.csproj|solutionrelative:shopvision50.api\\controllers\\productsizecontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{003B4D77-11AF-45B7-94A4-EB2502E4818F}|ShopVision50.API\\ShopVision50.API.csproj|c:\\users\\admin\\desktop\\new folder (5)\\project_shopvision50\\be\\project_shopvision50\\shopvision50.api\\controllers\\productscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{003B4D77-11AF-45B7-94A4-EB2502E4818F}|ShopVision50.API\\ShopVision50.API.csproj|solutionrelative:shopvision50.api\\controllers\\productscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{003B4D77-11AF-45B7-94A4-EB2502E4818F}|ShopVision50.API\\ShopVision50.API.csproj|c:\\users\\admin\\desktop\\new folder (5)\\project_shopvision50\\be\\project_shopvision50\\shopvision50.api\\controllers\\khuyenmaicontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{003B4D77-11AF-45B7-94A4-EB2502E4818F}|ShopVision50.API\\ShopVision50.API.csproj|solutionrelative:shopvision50.api\\controllers\\khuyenmaicontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{003B4D77-11AF-45B7-94A4-EB2502E4818F}|ShopVision50.API\\ShopVision50.API.csproj|c:\\users\\admin\\desktop\\new folder (5)\\project_shopvision50\\be\\project_shopvision50\\shopvision50.api\\controllers\\topcustomerscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{003B4D77-11AF-45B7-94A4-EB2502E4818F}|ShopVision50.API\\ShopVision50.API.csproj|solutionrelative:shopvision50.api\\controllers\\topcustomerscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{003B4D77-11AF-45B7-94A4-EB2502E4818F}|ShopVision50.API\\ShopVision50.API.csproj|c:\\users\\admin\\desktop\\new folder (5)\\project_shopvision50\\be\\project_shopvision50\\shopvision50.api\\services\\productimageservice_fd\\productimageservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
@@ -417,10 +472,6 @@
     {
       "AbsoluteMoniker": "D:0:0:{003B4D77-11AF-45B7-94A4-EB2502E4818F}|ShopVision50.API\\ShopVision50.API.csproj|c:\\users\\admin\\desktop\\new folder (5)\\project_shopvision50\\be\\project_shopvision50\\shopvision50.api\\repositories\\productcolorrepo_fd\\iproductcolorrepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{003B4D77-11AF-45B7-94A4-EB2502E4818F}|ShopVision50.API\\ShopVision50.API.csproj|solutionrelative:shopvision50.api\\repositories\\productcolorrepo_fd\\iproductcolorrepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{003B4D77-11AF-45B7-94A4-EB2502E4818F}|ShopVision50.API\\ShopVision50.API.csproj|c:\\users\\admin\\desktop\\new folder (5)\\project_shopvision50\\be\\project_shopvision50\\shopvision50.api\\controllers\\productcolorcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{003B4D77-11AF-45B7-94A4-EB2502E4818F}|ShopVision50.API\\ShopVision50.API.csproj|solutionrelative:shopvision50.api\\controllers\\productcolorcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{003B4D77-11AF-45B7-94A4-EB2502E4818F}|ShopVision50.API\\ShopVision50.API.csproj|c:\\users\\admin\\desktop\\new folder (5)\\project_shopvision50\\be\\project_shopvision50\\shopvision50.api\\repositories\\productimagerepo_fd\\productimagerepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
@@ -467,10 +518,6 @@
       "RelativeMoniker": "D:0:0:{003B4D77-11AF-45B7-94A4-EB2502E4818F}|ShopVision50.API\\ShopVision50.API.csproj|solutionrelative:shopvision50.api\\repositories\\topcustomersrepo_fd\\itopcustomersrepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{003B4D77-11AF-45B7-94A4-EB2502E4818F}|ShopVision50.API\\ShopVision50.API.csproj|c:\\users\\admin\\desktop\\new folder (5)\\project_shopvision50\\be\\project_shopvision50\\shopvision50.api\\controllers\\origincontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{003B4D77-11AF-45B7-94A4-EB2502E4818F}|ShopVision50.API\\ShopVision50.API.csproj|solutionrelative:shopvision50.api\\controllers\\origincontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
       "AbsoluteMoniker": "D:0:0:{003B4D77-11AF-45B7-94A4-EB2502E4818F}|ShopVision50.API\\ShopVision50.API.csproj|c:\\users\\admin\\desktop\\new folder (5)\\project_shopvision50\\be\\project_shopvision50\\shopvision50.api\\repositories\\stylerepo_fd\\istylerepo.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{003B4D77-11AF-45B7-94A4-EB2502E4818F}|ShopVision50.API\\ShopVision50.API.csproj|solutionrelative:shopvision50.api\\repositories\\stylerepo_fd\\istylerepo.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
@@ -487,14 +534,6 @@
       "RelativeMoniker": "D:0:0:{003B4D77-11AF-45B7-94A4-EB2502E4818F}|ShopVision50.API\\ShopVision50.API.csproj|solutionrelative:shopvision50.api\\repositories\\originrepo_fd\\ioriginrepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{003B4D77-11AF-45B7-94A4-EB2502E4818F}|ShopVision50.API\\ShopVision50.API.csproj|c:\\users\\admin\\desktop\\new folder (5)\\project_shopvision50\\be\\project_shopvision50\\shopvision50.api\\controllers\\materialcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{003B4D77-11AF-45B7-94A4-EB2502E4818F}|ShopVision50.API\\ShopVision50.API.csproj|solutionrelative:shopvision50.api\\controllers\\materialcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{003B4D77-11AF-45B7-94A4-EB2502E4818F}|ShopVision50.API\\ShopVision50.API.csproj|c:\\users\\admin\\desktop\\new folder (5)\\project_shopvision50\\be\\project_shopvision50\\shopvision50.api\\controllers\\gendercontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{003B4D77-11AF-45B7-94A4-EB2502E4818F}|ShopVision50.API\\ShopVision50.API.csproj|solutionrelative:shopvision50.api\\controllers\\gendercontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
       "AbsoluteMoniker": "D:0:0:{003B4D77-11AF-45B7-94A4-EB2502E4818F}|ShopVision50.API\\ShopVision50.API.csproj|c:\\users\\admin\\desktop\\new folder (5)\\project_shopvision50\\be\\project_shopvision50\\shopvision50.api\\services\\materialservice_fd\\materialservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{003B4D77-11AF-45B7-94A4-EB2502E4818F}|ShopVision50.API\\ShopVision50.API.csproj|solutionrelative:shopvision50.api\\services\\materialservice_fd\\materialservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
@@ -509,14 +548,6 @@
     {
       "AbsoluteMoniker": "D:0:0:{003B4D77-11AF-45B7-94A4-EB2502E4818F}|ShopVision50.API\\ShopVision50.API.csproj|c:\\users\\admin\\desktop\\new folder (5)\\project_shopvision50\\be\\project_shopvision50\\shopvision50.api\\repositories\\materialrepo_fd\\imaterialrepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{003B4D77-11AF-45B7-94A4-EB2502E4818F}|ShopVision50.API\\ShopVision50.API.csproj|solutionrelative:shopvision50.api\\repositories\\materialrepo_fd\\imaterialrepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{003B4D77-11AF-45B7-94A4-EB2502E4818F}|ShopVision50.API\\ShopVision50.API.csproj|c:\\users\\admin\\desktop\\new folder (5)\\project_shopvision50\\be\\project_shopvision50\\shopvision50.api\\controllers\\chatcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{003B4D77-11AF-45B7-94A4-EB2502E4818F}|ShopVision50.API\\ShopVision50.API.csproj|solutionrelative:shopvision50.api\\controllers\\chatcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{003B4D77-11AF-45B7-94A4-EB2502E4818F}|ShopVision50.API\\ShopVision50.API.csproj|c:\\users\\admin\\desktop\\new folder (5)\\project_shopvision50\\be\\project_shopvision50\\shopvision50.api\\controllers\\logincontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{003B4D77-11AF-45B7-94A4-EB2502E4818F}|ShopVision50.API\\ShopVision50.API.csproj|solutionrelative:shopvision50.api\\controllers\\logincontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{003B4D77-11AF-45B7-94A4-EB2502E4818F}|ShopVision50.API\\ShopVision50.API.csproj|c:\\users\\admin\\desktop\\new folder (5)\\project_shopvision50\\be\\project_shopvision50\\shopvision50.api\\services\\genderservice_fd\\igenderservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
@@ -676,7 +707,7 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 13,
+          "SelectedChildIndex": 14,
           "Children": [
             {
               "$type": "Bookmark",
@@ -717,25 +748,28 @@
             {
               "$type": "Document",
               "DocumentIndex": 4,
-              "Title": "PaymentsController.cs",
-              "DocumentMoniker": "C:\\Users\\ADMIN\\Desktop\\New folder (5)\\Project_ShopVision50\\BE\\Project_ShopVision50\\ShopVision50.API\\Controllers\\PaymentsController.cs",
-              "RelativeDocumentMoniker": "ShopVision50.API\\Controllers\\PaymentsController.cs",
-              "ToolTip": "C:\\Users\\ADMIN\\Desktop\\New folder (5)\\Project_ShopVision50\\BE\\Project_ShopVision50\\ShopVision50.API\\Controllers\\PaymentsController.cs",
-              "RelativeToolTip": "ShopVision50.API\\Controllers\\PaymentsController.cs",
-              "ViewState": "AgIAAAkAAAAAAAAAAAAAABYAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-11-24T08:43:33.355Z"
+              "Title": "appsettings.json",
+              "DocumentMoniker": "C:\\Users\\ADMIN\\Desktop\\New folder\\appsettings.json",
+              "RelativeDocumentMoniker": "..\\..\\..\\..\\New folder\\appsettings.json",
+              "ToolTip": "C:\\Users\\ADMIN\\Desktop\\New folder\\appsettings.json",
+              "RelativeToolTip": "..\\..\\..\\..\\New folder\\appsettings.json",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABUAAAAVAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001642|",
+              "WhenOpened": "2025-12-01T15:57:26.757Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 3,
-              "Title": "appsettings.json",
-              "DocumentMoniker": "C:\\Users\\ADMIN\\Desktop\\New folder (5)\\Project_ShopVision50\\BE\\Project_ShopVision50\\ShopVision50.API\\appsettings.json",
-              "RelativeDocumentMoniker": "ShopVision50.API\\appsettings.json",
-              "ToolTip": "C:\\Users\\ADMIN\\Desktop\\New folder (5)\\Project_ShopVision50\\BE\\Project_ShopVision50\\ShopVision50.API\\appsettings.json",
-              "RelativeToolTip": "ShopVision50.API\\appsettings.json",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001642|",
-              "WhenOpened": "2025-11-24T07:18:04.513Z"
+              "DocumentIndex": 5,
+              "Title": "20251201155404_LoiTest.cs",
+              "DocumentMoniker": "C:\\Users\\ADMIN\\Desktop\\New folder (5)\\Project_ShopVision50\\BE\\Project_ShopVision50\\ShopVision50.Infrastructure\\Migrations\\20251201155404_LoiTest.cs",
+              "RelativeDocumentMoniker": "ShopVision50.Infrastructure\\Migrations\\20251201155404_LoiTest.cs",
+              "ToolTip": "C:\\Users\\ADMIN\\Desktop\\New folder (5)\\Project_ShopVision50\\BE\\Project_ShopVision50\\ShopVision50.Infrastructure\\Migrations\\20251201155404_LoiTest.cs",
+              "RelativeToolTip": "ShopVision50.Infrastructure\\Migrations\\20251201155404_LoiTest.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-12-01T15:54:04.875Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
@@ -745,39 +779,362 @@
               "RelativeDocumentMoniker": "ShopVision50.API\\Controllers\\UsersController.cs",
               "ToolTip": "C:\\Users\\ADMIN\\Desktop\\New folder (5)\\Project_ShopVision50\\BE\\Project_ShopVision50\\ShopVision50.API\\Controllers\\UsersController.cs",
               "RelativeToolTip": "ShopVision50.API\\Controllers\\UsersController.cs",
-              "ViewState": "AgIAAAYAAAAAAAAAAAAAAEAAAAAjAAAAAAAAAA==",
+              "ViewState": "AgIAAE4AAAAAAAAAAAAUwGQAAAAsAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-10-28T01:48:48.084Z"
+              "WhenOpened": "2025-10-28T01:48:48.084Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "appsettings.json",
+              "DocumentMoniker": "C:\\Users\\ADMIN\\Desktop\\New folder (5)\\Project_ShopVision50\\BE\\Project_ShopVision50\\ShopVision50.API\\appsettings.json",
+              "RelativeDocumentMoniker": "ShopVision50.API\\appsettings.json",
+              "ToolTip": "C:\\Users\\ADMIN\\Desktop\\New folder (5)\\Project_ShopVision50\\BE\\Project_ShopVision50\\ShopVision50.API\\appsettings.json",
+              "RelativeToolTip": "ShopVision50.API\\appsettings.json",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABcAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001642|",
+              "WhenOpened": "2025-11-24T07:18:04.513Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
               "DocumentIndex": 1,
-              "Title": "CartController.cs",
-              "DocumentMoniker": "C:\\Users\\ADMIN\\Desktop\\New folder (5)\\Project_ShopVision50\\BE\\Project_ShopVision50\\ShopVision50.API\\Controllers\\CartController.cs",
-              "RelativeDocumentMoniker": "ShopVision50.API\\Controllers\\CartController.cs",
-              "ToolTip": "C:\\Users\\ADMIN\\Desktop\\New folder (5)\\Project_ShopVision50\\BE\\Project_ShopVision50\\ShopVision50.API\\Controllers\\CartController.cs",
-              "RelativeToolTip": "ShopVision50.API\\Controllers\\CartController.cs",
-              "ViewState": "AgIAAAUAAAAAAAAAAAAAABIAAAAJAAAAAAAAAA==",
+              "Title": "IUserService.cs",
+              "DocumentMoniker": "C:\\Users\\ADMIN\\Desktop\\New folder (5)\\Project_ShopVision50\\BE\\Project_ShopVision50\\ShopVision50.API\\Services\\UserService_FD\\IUserService.cs",
+              "RelativeDocumentMoniker": "ShopVision50.API\\Services\\UserService_FD\\IUserService.cs",
+              "ToolTip": "C:\\Users\\ADMIN\\Desktop\\New folder (5)\\Project_ShopVision50\\BE\\Project_ShopVision50\\ShopVision50.API\\Services\\UserService_FD\\IUserService.cs",
+              "RelativeToolTip": "ShopVision50.API\\Services\\UserService_FD\\IUserService.cs",
+              "ViewState": "AgIAAAQAAAAAAAAAAAAMwBIAAAAkAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-11-21T17:55:02.05Z",
+              "WhenOpened": "2025-10-28T00:58:36.586Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
               "DocumentIndex": 0,
-              "Title": "CartItemsController.cs",
-              "DocumentMoniker": "C:\\Users\\ADMIN\\Desktop\\New folder (5)\\Project_ShopVision50\\BE\\Project_ShopVision50\\ShopVision50.API\\Controllers\\CartItemsController.cs",
-              "RelativeDocumentMoniker": "ShopVision50.API\\Controllers\\CartItemsController.cs",
-              "ToolTip": "C:\\Users\\ADMIN\\Desktop\\New folder (5)\\Project_ShopVision50\\BE\\Project_ShopVision50\\ShopVision50.API\\Controllers\\CartItemsController.cs",
-              "RelativeToolTip": "ShopVision50.API\\Controllers\\CartItemsController.cs",
-              "ViewState": "AgIAAA8AAAAAAAAAAAAswEQAAAABAAAAAAAAAA==",
+              "Title": "UserService.cs",
+              "DocumentMoniker": "C:\\Users\\ADMIN\\Desktop\\New folder (5)\\Project_ShopVision50\\BE\\Project_ShopVision50\\ShopVision50.API\\Services\\UserService_FD\\UserService.cs",
+              "RelativeDocumentMoniker": "ShopVision50.API\\Services\\UserService_FD\\UserService.cs",
+              "ToolTip": "C:\\Users\\ADMIN\\Desktop\\New folder (5)\\Project_ShopVision50\\BE\\Project_ShopVision50\\ShopVision50.API\\Services\\UserService_FD\\UserService.cs*",
+              "RelativeToolTip": "ShopVision50.API\\Services\\UserService_FD\\UserService.cs*",
+              "ViewState": "AgIAAD4AAAAAAAAAAAA/wFEAAABCAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-11-24T08:01:06.731Z",
+              "WhenOpened": "2025-10-28T00:58:37.233Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
               "DocumentIndex": 8,
+              "Title": "UserRepository.cs",
+              "DocumentMoniker": "C:\\Users\\ADMIN\\Desktop\\New folder (5)\\Project_ShopVision50\\BE\\Project_ShopVision50\\ShopVision50.API\\Repositories\\UserRepo_FD\\UserRepository.cs",
+              "RelativeDocumentMoniker": "ShopVision50.API\\Repositories\\UserRepo_FD\\UserRepository.cs",
+              "ToolTip": "C:\\Users\\ADMIN\\Desktop\\New folder (5)\\Project_ShopVision50\\BE\\Project_ShopVision50\\ShopVision50.API\\Repositories\\UserRepo_FD\\UserRepository.cs",
+              "RelativeToolTip": "ShopVision50.API\\Repositories\\UserRepo_FD\\UserRepository.cs",
+              "ViewState": "AgIAABkAAAAAAAAAAAAqwDgAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-10-28T01:47:34.312Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 7,
+              "Title": "ForgotPasswordDto.cs",
+              "DocumentMoniker": "C:\\Users\\ADMIN\\Desktop\\New folder (5)\\Project_ShopVision50\\BE\\Project_ShopVision50\\ShopVision50.API\\Models\\Users\\DTOs\\ForgotPasswordDto.cs",
+              "RelativeDocumentMoniker": "ShopVision50.API\\Models\\Users\\DTOs\\ForgotPasswordDto.cs",
+              "ToolTip": "C:\\Users\\ADMIN\\Desktop\\New folder (5)\\Project_ShopVision50\\BE\\Project_ShopVision50\\ShopVision50.API\\Models\\Users\\DTOs\\ForgotPasswordDto.cs",
+              "RelativeToolTip": "ShopVision50.API\\Models\\Users\\DTOs\\ForgotPasswordDto.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAYAAAAFAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-12-01T15:34:57.824Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 6,
+              "Title": "20251201154445_LoiTest.cs",
+              "DocumentMoniker": "C:\\Users\\ADMIN\\Desktop\\New folder (5)\\Project_ShopVision50\\BE\\Project_ShopVision50\\ShopVision50.Infrastructure\\Migrations\\20251201154445_LoiTest.cs",
+              "RelativeDocumentMoniker": "ShopVision50.Infrastructure\\Migrations\\20251201154445_LoiTest.cs",
+              "ToolTip": "C:\\Users\\ADMIN\\Desktop\\New folder (5)\\Project_ShopVision50\\BE\\Project_ShopVision50\\ShopVision50.Infrastructure\\Migrations\\20251201154445_LoiTest.cs",
+              "RelativeToolTip": "ShopVision50.Infrastructure\\Migrations\\20251201154445_LoiTest.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-12-01T15:44:45.806Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{1c64b9c2-e352-428e-a56d-0ace190b99a6}"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 9,
+              "Title": "IUserRepository.cs",
+              "DocumentMoniker": "C:\\Users\\ADMIN\\Desktop\\New folder (5)\\Project_ShopVision50\\BE\\Project_ShopVision50\\ShopVision50.API\\Repositories\\UserRepo_FD\\IUserRepository.cs",
+              "RelativeDocumentMoniker": "ShopVision50.API\\Repositories\\UserRepo_FD\\IUserRepository.cs",
+              "ToolTip": "C:\\Users\\ADMIN\\Desktop\\New folder (5)\\Project_ShopVision50\\BE\\Project_ShopVision50\\ShopVision50.API\\Repositories\\UserRepo_FD\\IUserRepository.cs",
+              "RelativeToolTip": "ShopVision50.API\\Repositories\\UserRepo_FD\\IUserRepository.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABIAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-10-28T01:47:33.512Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 10,
+              "Title": "TopSanPhamController.cs",
+              "DocumentMoniker": "C:\\Users\\ADMIN\\Desktop\\New folder (5)\\Project_ShopVision50\\BE\\Project_ShopVision50\\ShopVision50.API\\Controllers\\TopSanPhamController.cs",
+              "RelativeDocumentMoniker": "ShopVision50.API\\Controllers\\TopSanPhamController.cs",
+              "ToolTip": "C:\\Users\\ADMIN\\Desktop\\New folder (5)\\Project_ShopVision50\\BE\\Project_ShopVision50\\ShopVision50.API\\Controllers\\TopSanPhamController.cs",
+              "RelativeToolTip": "ShopVision50.API\\Controllers\\TopSanPhamController.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABMAAAATAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-11-22T07:46:14.605Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 11,
+              "Title": "TopCustomersController.cs",
+              "DocumentMoniker": "C:\\Users\\ADMIN\\Desktop\\New folder (5)\\Project_ShopVision50\\BE\\Project_ShopVision50\\ShopVision50.API\\Controllers\\TopCustomersController.cs",
+              "RelativeDocumentMoniker": "ShopVision50.API\\Controllers\\TopCustomersController.cs",
+              "ToolTip": "C:\\Users\\ADMIN\\Desktop\\New folder (5)\\Project_ShopVision50\\BE\\Project_ShopVision50\\ShopVision50.API\\Controllers\\TopCustomersController.cs",
+              "RelativeToolTip": "ShopVision50.API\\Controllers\\TopCustomersController.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABMAAAATAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-11-17T16:31:00.727Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 12,
+              "Title": "StyleController.cs",
+              "DocumentMoniker": "C:\\Users\\ADMIN\\Desktop\\New folder (5)\\Project_ShopVision50\\BE\\Project_ShopVision50\\ShopVision50.API\\Controllers\\StyleController.cs",
+              "RelativeDocumentMoniker": "ShopVision50.API\\Controllers\\StyleController.cs",
+              "ToolTip": "C:\\Users\\ADMIN\\Desktop\\New folder (5)\\Project_ShopVision50\\BE\\Project_ShopVision50\\ShopVision50.API\\Controllers\\StyleController.cs",
+              "RelativeToolTip": "ShopVision50.API\\Controllers\\StyleController.cs",
+              "ViewState": "AgIAACMAAAAAAAAAAAAgwBAAAAAfAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-11-17T06:23:11.787Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 13,
+              "Title": "RevenueController.cs",
+              "DocumentMoniker": "C:\\Users\\ADMIN\\Desktop\\New folder (5)\\Project_ShopVision50\\BE\\Project_ShopVision50\\ShopVision50.API\\Controllers\\RevenueController.cs",
+              "RelativeDocumentMoniker": "ShopVision50.API\\Controllers\\RevenueController.cs",
+              "ToolTip": "C:\\Users\\ADMIN\\Desktop\\New folder (5)\\Project_ShopVision50\\BE\\Project_ShopVision50\\ShopVision50.API\\Controllers\\RevenueController.cs",
+              "RelativeToolTip": "ShopVision50.API\\Controllers\\RevenueController.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABYAAAATAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-11-29T05:02:31.965Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 14,
+              "Title": "ProductVariantController.cs",
+              "DocumentMoniker": "C:\\Users\\ADMIN\\Desktop\\New folder (5)\\Project_ShopVision50\\BE\\Project_ShopVision50\\ShopVision50.API\\Controllers\\ProductVariantController.cs",
+              "RelativeDocumentMoniker": "ShopVision50.API\\Controllers\\ProductVariantController.cs",
+              "ToolTip": "C:\\Users\\ADMIN\\Desktop\\New folder (5)\\Project_ShopVision50\\BE\\Project_ShopVision50\\ShopVision50.API\\Controllers\\ProductVariantController.cs",
+              "RelativeToolTip": "ShopVision50.API\\Controllers\\ProductVariantController.cs",
+              "ViewState": "AgIAADEAAAAAAAAAAAAkwDEAAAAPAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-11-17T16:59:21.943Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 15,
+              "Title": "ProductSizeController.cs",
+              "DocumentMoniker": "C:\\Users\\ADMIN\\Desktop\\New folder (5)\\Project_ShopVision50\\BE\\Project_ShopVision50\\ShopVision50.API\\Controllers\\ProductSizeController.cs",
+              "RelativeDocumentMoniker": "ShopVision50.API\\Controllers\\ProductSizeController.cs",
+              "ToolTip": "C:\\Users\\ADMIN\\Desktop\\New folder (5)\\Project_ShopVision50\\BE\\Project_ShopVision50\\ShopVision50.API\\Controllers\\ProductSizeController.cs",
+              "RelativeToolTip": "ShopVision50.API\\Controllers\\ProductSizeController.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABUAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-11-17T22:09:52.074Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 16,
+              "Title": "ProductsController.cs",
+              "DocumentMoniker": "C:\\Users\\ADMIN\\Desktop\\New folder (5)\\Project_ShopVision50\\BE\\Project_ShopVision50\\ShopVision50.API\\Controllers\\ProductsController.cs",
+              "RelativeDocumentMoniker": "ShopVision50.API\\Controllers\\ProductsController.cs",
+              "ToolTip": "C:\\Users\\ADMIN\\Desktop\\New folder (5)\\Project_ShopVision50\\BE\\Project_ShopVision50\\ShopVision50.API\\Controllers\\ProductsController.cs",
+              "RelativeToolTip": "ShopVision50.API\\Controllers\\ProductsController.cs",
+              "ViewState": "AgIAAFMAAAAAAAAAAAAswGYAAAATAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-10-25T01:03:15.589Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 17,
+              "Title": "ProductImageController.cs",
+              "DocumentMoniker": "C:\\Users\\ADMIN\\Desktop\\New folder (5)\\Project_ShopVision50\\BE\\Project_ShopVision50\\ShopVision50.API\\Controllers\\ProductImageController.cs",
+              "RelativeDocumentMoniker": "ShopVision50.API\\Controllers\\ProductImageController.cs",
+              "ToolTip": "C:\\Users\\ADMIN\\Desktop\\New folder (5)\\Project_ShopVision50\\BE\\Project_ShopVision50\\ShopVision50.API\\Controllers\\ProductImageController.cs",
+              "RelativeToolTip": "ShopVision50.API\\Controllers\\ProductImageController.cs",
+              "ViewState": "AgIAABMAAAAAAAAAAAAQwCgAAAAPAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-11-29T05:01:47.865Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 19,
+              "Title": "PaymentsController.cs",
+              "DocumentMoniker": "C:\\Users\\ADMIN\\Desktop\\New folder (5)\\Project_ShopVision50\\BE\\Project_ShopVision50\\ShopVision50.API\\Controllers\\PaymentsController.cs",
+              "RelativeDocumentMoniker": "ShopVision50.API\\Controllers\\PaymentsController.cs",
+              "ToolTip": "C:\\Users\\ADMIN\\Desktop\\New folder (5)\\Project_ShopVision50\\BE\\Project_ShopVision50\\ShopVision50.API\\Controllers\\PaymentsController.cs",
+              "RelativeToolTip": "ShopVision50.API\\Controllers\\PaymentsController.cs",
+              "ViewState": "AgIAADEAAAAAAAAAAAAkwD8AAAATAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-11-24T08:43:33.355Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 20,
+              "Title": "OriginController.cs",
+              "DocumentMoniker": "C:\\Users\\ADMIN\\Desktop\\New folder (5)\\Project_ShopVision50\\BE\\Project_ShopVision50\\ShopVision50.API\\Controllers\\OriginController.cs",
+              "RelativeDocumentMoniker": "ShopVision50.API\\Controllers\\OriginController.cs",
+              "ToolTip": "C:\\Users\\ADMIN\\Desktop\\New folder (5)\\Project_ShopVision50\\BE\\Project_ShopVision50\\ShopVision50.API\\Controllers\\OriginController.cs",
+              "RelativeToolTip": "ShopVision50.API\\Controllers\\OriginController.cs",
+              "ViewState": "AgIAADcAAAAAAAAAAAAkwEgAAAATAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-11-17T06:23:21.93Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 21,
+              "Title": "OrdersController.cs",
+              "DocumentMoniker": "C:\\Users\\ADMIN\\Desktop\\New folder (5)\\Project_ShopVision50\\BE\\Project_ShopVision50\\ShopVision50.API\\Controllers\\OrdersController.cs",
+              "RelativeDocumentMoniker": "ShopVision50.API\\Controllers\\OrdersController.cs",
+              "ToolTip": "C:\\Users\\ADMIN\\Desktop\\New folder (5)\\Project_ShopVision50\\BE\\Project_ShopVision50\\ShopVision50.API\\Controllers\\OrdersController.cs",
+              "RelativeToolTip": "ShopVision50.API\\Controllers\\OrdersController.cs",
+              "ViewState": "AgIAAEcAAAAAAAAAAAAswCgAAAATAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-11-29T05:00:59.271Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 22,
+              "Title": "OrderItemController.cs",
+              "DocumentMoniker": "C:\\Users\\ADMIN\\Desktop\\New folder (5)\\Project_ShopVision50\\BE\\Project_ShopVision50\\ShopVision50.API\\Controllers\\OrderItemController.cs",
+              "RelativeDocumentMoniker": "ShopVision50.API\\Controllers\\OrderItemController.cs",
+              "ToolTip": "C:\\Users\\ADMIN\\Desktop\\New folder (5)\\Project_ShopVision50\\BE\\Project_ShopVision50\\ShopVision50.API\\Controllers\\OrderItemController.cs",
+              "RelativeToolTip": "ShopVision50.API\\Controllers\\OrderItemController.cs",
+              "ViewState": "AgIAABcAAAAAAAAAAAAQwDoAAAATAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-11-29T05:00:37.165Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 18,
+              "Title": "ProductColorController.cs",
+              "DocumentMoniker": "C:\\Users\\ADMIN\\Desktop\\New folder (5)\\Project_ShopVision50\\BE\\Project_ShopVision50\\ShopVision50.API\\Controllers\\ProductColorController.cs",
+              "RelativeDocumentMoniker": "ShopVision50.API\\Controllers\\ProductColorController.cs",
+              "ToolTip": "C:\\Users\\ADMIN\\Desktop\\New folder (5)\\Project_ShopVision50\\BE\\Project_ShopVision50\\ShopVision50.API\\Controllers\\ProductColorController.cs",
+              "RelativeToolTip": "ShopVision50.API\\Controllers\\ProductColorController.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABQAAAATAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-11-17T21:50:59.63Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 24,
+              "Title": "LoginController.cs",
+              "DocumentMoniker": "C:\\Users\\ADMIN\\Desktop\\New folder (5)\\Project_ShopVision50\\BE\\Project_ShopVision50\\ShopVision50.API\\Controllers\\LoginController.cs",
+              "RelativeDocumentMoniker": "ShopVision50.API\\Controllers\\LoginController.cs",
+              "ToolTip": "C:\\Users\\ADMIN\\Desktop\\New folder (5)\\Project_ShopVision50\\BE\\Project_ShopVision50\\ShopVision50.API\\Controllers\\LoginController.cs",
+              "RelativeToolTip": "ShopVision50.API\\Controllers\\LoginController.cs",
+              "ViewState": "AgIAABkAAAAAAAAAAAAQwAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-11-16T18:26:20.618Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 26,
+              "Title": "GenderController.cs",
+              "DocumentMoniker": "C:\\Users\\ADMIN\\Desktop\\New folder (5)\\Project_ShopVision50\\BE\\Project_ShopVision50\\ShopVision50.API\\Controllers\\GenderController.cs",
+              "RelativeDocumentMoniker": "ShopVision50.API\\Controllers\\GenderController.cs",
+              "ToolTip": "C:\\Users\\ADMIN\\Desktop\\New folder (5)\\Project_ShopVision50\\BE\\Project_ShopVision50\\ShopVision50.API\\Controllers\\GenderController.cs",
+              "RelativeToolTip": "ShopVision50.API\\Controllers\\GenderController.cs",
+              "ViewState": "AgIAADoAAAAAAAAAAAAkwEkAAAATAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-11-16T18:19:31.677Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 27,
+              "Title": "ChatController.cs",
+              "DocumentMoniker": "C:\\Users\\ADMIN\\Desktop\\New folder (5)\\Project_ShopVision50\\BE\\Project_ShopVision50\\ShopVision50.API\\Controllers\\ChatController.cs",
+              "RelativeDocumentMoniker": "ShopVision50.API\\Controllers\\ChatController.cs",
+              "ToolTip": "C:\\Users\\ADMIN\\Desktop\\New folder (5)\\Project_ShopVision50\\BE\\Project_ShopVision50\\ShopVision50.API\\Controllers\\ChatController.cs",
+              "RelativeToolTip": "ShopVision50.API\\Controllers\\ChatController.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA0AAAATAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-11-16T18:30:23.383Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 25,
+              "Title": "KhuyenMaiController.cs",
+              "DocumentMoniker": "C:\\Users\\ADMIN\\Desktop\\New folder (5)\\Project_ShopVision50\\BE\\Project_ShopVision50\\ShopVision50.API\\Controllers\\KhuyenMaiController.cs",
+              "RelativeDocumentMoniker": "ShopVision50.API\\Controllers\\KhuyenMaiController.cs",
+              "ToolTip": "C:\\Users\\ADMIN\\Desktop\\New folder (5)\\Project_ShopVision50\\BE\\Project_ShopVision50\\ShopVision50.API\\Controllers\\KhuyenMaiController.cs",
+              "RelativeToolTip": "ShopVision50.API\\Controllers\\KhuyenMaiController.cs",
+              "ViewState": "AgIAACwAAAAAAAAAAAAgwB8AAAAiAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-10-28T11:59:14.694Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 23,
+              "Title": "MaterialController.cs",
+              "DocumentMoniker": "C:\\Users\\ADMIN\\Desktop\\New folder (5)\\Project_ShopVision50\\BE\\Project_ShopVision50\\ShopVision50.API\\Controllers\\MaterialController.cs",
+              "RelativeDocumentMoniker": "ShopVision50.API\\Controllers\\MaterialController.cs",
+              "ToolTip": "C:\\Users\\ADMIN\\Desktop\\New folder (5)\\Project_ShopVision50\\BE\\Project_ShopVision50\\ShopVision50.API\\Controllers\\MaterialController.cs",
+              "RelativeToolTip": "ShopVision50.API\\Controllers\\MaterialController.cs",
+              "ViewState": "AgIAADcAAAAAAAAAAAAkwEcAAAATAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-11-16T18:30:36.197Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 28,
+              "Title": "CategoryController.cs",
+              "DocumentMoniker": "C:\\Users\\ADMIN\\Desktop\\New folder (5)\\Project_ShopVision50\\BE\\Project_ShopVision50\\ShopVision50.API\\Controllers\\CategoryController.cs",
+              "RelativeDocumentMoniker": "ShopVision50.API\\Controllers\\CategoryController.cs",
+              "ToolTip": "C:\\Users\\ADMIN\\Desktop\\New folder (5)\\Project_ShopVision50\\BE\\Project_ShopVision50\\ShopVision50.API\\Controllers\\CategoryController.cs",
+              "RelativeToolTip": "ShopVision50.API\\Controllers\\CategoryController.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABIAAAAXAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-11-22T07:25:58.094Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 29,
+              "Title": "CartItemsController.cs",
+              "DocumentMoniker": "C:\\Users\\ADMIN\\Desktop\\New folder (5)\\Project_ShopVision50\\BE\\Project_ShopVision50\\ShopVision50.API\\Controllers\\CartItemsController.cs",
+              "RelativeDocumentMoniker": "ShopVision50.API\\Controllers\\CartItemsController.cs",
+              "ToolTip": "C:\\Users\\ADMIN\\Desktop\\New folder (5)\\Project_ShopVision50\\BE\\Project_ShopVision50\\ShopVision50.API\\Controllers\\CartItemsController.cs",
+              "RelativeToolTip": "ShopVision50.API\\Controllers\\CartItemsController.cs",
+              "ViewState": "AgIAAAYAAAAAAAAAAAAAAD8AAAATAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-11-24T08:01:06.731Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 30,
+              "Title": "CartController.cs",
+              "DocumentMoniker": "C:\\Users\\ADMIN\\Desktop\\New folder (5)\\Project_ShopVision50\\BE\\Project_ShopVision50\\ShopVision50.API\\Controllers\\CartController.cs",
+              "RelativeDocumentMoniker": "ShopVision50.API\\Controllers\\CartController.cs",
+              "ToolTip": "C:\\Users\\ADMIN\\Desktop\\New folder (5)\\Project_ShopVision50\\BE\\Project_ShopVision50\\ShopVision50.API\\Controllers\\CartController.cs",
+              "RelativeToolTip": "ShopVision50.API\\Controllers\\CartController.cs",
+              "ViewState": "AgIAACQAAAAAAAAAAAAYwBcAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-11-21T17:55:02.05Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 34,
               "Title": "IPaymentRepository.cs",
               "DocumentMoniker": "C:\\Users\\ADMIN\\Desktop\\New folder (5)\\Project_ShopVision50\\BE\\Project_ShopVision50\\ShopVision50.API\\Repositories\\PaymentRepository_FD\\IPaymentRepository.cs",
               "RelativeDocumentMoniker": "ShopVision50.API\\Repositories\\PaymentRepository_FD\\IPaymentRepository.cs",
@@ -788,12 +1145,8 @@
               "WhenOpened": "2025-11-24T08:43:54.398Z"
             },
             {
-              "$type": "Bookmark",
-              "Name": "ST:0:0:{1c64b9c2-e352-428e-a56d-0ace190b99a6}"
-            },
-            {
               "$type": "Document",
-              "DocumentIndex": 7,
+              "DocumentIndex": 33,
               "Title": "PaymentRepository.cs",
               "DocumentMoniker": "C:\\Users\\ADMIN\\Desktop\\New folder (5)\\Project_ShopVision50\\BE\\Project_ShopVision50\\ShopVision50.API\\Repositories\\PaymentRepository_FD\\PaymentRepository.cs",
               "RelativeDocumentMoniker": "ShopVision50.API\\Repositories\\PaymentRepository_FD\\PaymentRepository.cs",
@@ -805,7 +1158,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 6,
+              "DocumentIndex": 32,
               "Title": "IPaymentService.cs",
               "DocumentMoniker": "C:\\Users\\ADMIN\\Desktop\\New folder (5)\\Project_ShopVision50\\BE\\Project_ShopVision50\\ShopVision50.API\\Services\\PaymentService_FD\\IPaymentService.cs",
               "RelativeDocumentMoniker": "ShopVision50.API\\Services\\PaymentService_FD\\IPaymentService.cs",
@@ -817,7 +1170,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 5,
+              "DocumentIndex": 31,
               "Title": "PaymentService.cs",
               "DocumentMoniker": "C:\\Users\\ADMIN\\Desktop\\New folder (5)\\Project_ShopVision50\\BE\\Project_ShopVision50\\ShopVision50.API\\Services\\PaymentService_FD\\PaymentService.cs",
               "RelativeDocumentMoniker": "ShopVision50.API\\Services\\PaymentService_FD\\PaymentService.cs",
@@ -829,7 +1182,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 15,
+              "DocumentIndex": 41,
               "Title": "ICartItemRepository.cs",
               "DocumentMoniker": "C:\\Users\\ADMIN\\Desktop\\New folder (5)\\Project_ShopVision50\\BE\\Project_ShopVision50\\ShopVision50.API\\Repositories\\CartItemRepository_FD\\ICartItemRepository.cs",
               "RelativeDocumentMoniker": "ShopVision50.API\\Repositories\\CartItemRepository_FD\\ICartItemRepository.cs",
@@ -841,7 +1194,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 13,
+              "DocumentIndex": 39,
               "Title": "ICartItemService.cs",
               "DocumentMoniker": "C:\\Users\\ADMIN\\Desktop\\New folder (5)\\Project_ShopVision50\\BE\\Project_ShopVision50\\ShopVision50.API\\Services\\CartItemService_FD\\ICartItemService.cs",
               "RelativeDocumentMoniker": "ShopVision50.API\\Services\\CartItemService_FD\\ICartItemService.cs",
@@ -853,7 +1206,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 14,
+              "DocumentIndex": 40,
               "Title": "CartItemService.cs",
               "DocumentMoniker": "C:\\Users\\ADMIN\\Desktop\\New folder (5)\\Project_ShopVision50\\BE\\Project_ShopVision50\\ShopVision50.API\\Services\\CartItemService_FD\\CartItemService.cs",
               "RelativeDocumentMoniker": "ShopVision50.API\\Services\\CartItemService_FD\\CartItemService.cs",
@@ -865,7 +1218,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 12,
+              "DocumentIndex": 38,
               "Title": "CartRepository.cs",
               "DocumentMoniker": "C:\\Users\\ADMIN\\Desktop\\New folder (5)\\Project_ShopVision50\\BE\\Project_ShopVision50\\ShopVision50.API\\Repositories\\CartRepository_FD\\CartRepository.cs",
               "RelativeDocumentMoniker": "ShopVision50.API\\Repositories\\CartRepository_FD\\CartRepository.cs",
@@ -877,7 +1230,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 11,
+              "DocumentIndex": 37,
               "Title": "ICartRepository.cs",
               "DocumentMoniker": "C:\\Users\\ADMIN\\Desktop\\New folder (5)\\Project_ShopVision50\\BE\\Project_ShopVision50\\ShopVision50.API\\Repositories\\CartRepository_FD\\ICartRepository.cs",
               "RelativeDocumentMoniker": "ShopVision50.API\\Repositories\\CartRepository_FD\\ICartRepository.cs",
@@ -889,7 +1242,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 10,
+              "DocumentIndex": 36,
               "Title": "CartService.cs",
               "DocumentMoniker": "C:\\Users\\ADMIN\\Desktop\\New folder (5)\\Project_ShopVision50\\BE\\Project_ShopVision50\\ShopVision50.API\\Services\\CartService_FD\\CartService.cs",
               "RelativeDocumentMoniker": "ShopVision50.API\\Services\\CartService_FD\\CartService.cs",
@@ -901,7 +1254,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 9,
+              "DocumentIndex": 35,
               "Title": "ICartService.cs",
               "DocumentMoniker": "C:\\Users\\ADMIN\\Desktop\\New folder (5)\\Project_ShopVision50\\BE\\Project_ShopVision50\\ShopVision50.API\\Services\\CartService_FD\\ICartService.cs",
               "RelativeDocumentMoniker": "ShopVision50.API\\Services\\CartService_FD\\ICartService.cs",
@@ -913,7 +1266,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 16,
+              "DocumentIndex": 42,
               "Title": "CartItemRepository.cs",
               "DocumentMoniker": "C:\\Users\\ADMIN\\Desktop\\New folder (5)\\Project_ShopVision50\\BE\\Project_ShopVision50\\ShopVision50.API\\Repositories\\CartItemRepository_FD\\CartItemRepository.cs",
               "RelativeDocumentMoniker": "ShopVision50.API\\Repositories\\CartItemRepository_FD\\CartItemRepository.cs",
@@ -925,7 +1278,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 20,
+              "DocumentIndex": 44,
               "Title": "ChangePasswordOtpDto.cs",
               "DocumentMoniker": "C:\\Users\\ADMIN\\Desktop\\New folder (5)\\Project_ShopVision50\\BE\\Project_ShopVision50\\ShopVision50.API\\Models\\Users\\DTOs\\ChangePasswordOtpDto.cs",
               "RelativeDocumentMoniker": "ShopVision50.API\\Models\\Users\\DTOs\\ChangePasswordOtpDto.cs",
@@ -937,7 +1290,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 17,
+              "DocumentIndex": 43,
               "Title": "CartItem.cs",
               "DocumentMoniker": "C:\\Users\\ADMIN\\Desktop\\New folder (5)\\Project_ShopVision50\\BE\\Project_ShopVision50\\ShopVision50.Domain\\Models\\CartItem.cs",
               "RelativeDocumentMoniker": "ShopVision50.Domain\\Models\\CartItem.cs",
@@ -949,31 +1302,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 21,
-              "Title": "UserRepository.cs",
-              "DocumentMoniker": "C:\\Users\\ADMIN\\Desktop\\New folder (5)\\Project_ShopVision50\\BE\\Project_ShopVision50\\ShopVision50.API\\Repositories\\UserRepo_FD\\UserRepository.cs",
-              "RelativeDocumentMoniker": "ShopVision50.API\\Repositories\\UserRepo_FD\\UserRepository.cs",
-              "ToolTip": "C:\\Users\\ADMIN\\Desktop\\New folder (5)\\Project_ShopVision50\\BE\\Project_ShopVision50\\ShopVision50.API\\Repositories\\UserRepo_FD\\UserRepository.cs",
-              "RelativeToolTip": "ShopVision50.API\\Repositories\\UserRepo_FD\\UserRepository.cs",
-              "ViewState": "AgIAABkAAAAAAAAAAAAqwDgAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-10-28T01:47:34.312Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 18,
-              "Title": "UserService.cs",
-              "DocumentMoniker": "C:\\Users\\ADMIN\\Desktop\\New folder (5)\\Project_ShopVision50\\BE\\Project_ShopVision50\\ShopVision50.API\\Services\\UserService_FD\\UserService.cs",
-              "RelativeDocumentMoniker": "ShopVision50.API\\Services\\UserService_FD\\UserService.cs",
-              "ToolTip": "C:\\Users\\ADMIN\\Desktop\\New folder (5)\\Project_ShopVision50\\BE\\Project_ShopVision50\\ShopVision50.API\\Services\\UserService_FD\\UserService.cs",
-              "RelativeToolTip": "ShopVision50.API\\Services\\UserService_FD\\UserService.cs",
-              "ViewState": "AgIAAHcAAAAAAAAAAAD4v4UAAAAIAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-10-28T00:58:37.233Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 172,
+              "DocumentIndex": 180,
               "Title": "20251124072435_LoiLocal.cs",
               "DocumentMoniker": "C:\\Users\\ADMIN\\Desktop\\New folder (5)\\Project_ShopVision50\\BE\\Project_ShopVision50\\ShopVision50.Infrastructure\\Migrations\\20251124072435_LoiLocal.cs",
               "RelativeDocumentMoniker": "ShopVision50.Infrastructure\\Migrations\\20251124072435_LoiLocal.cs",
@@ -985,31 +1314,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 19,
-              "Title": "IUserService.cs",
-              "DocumentMoniker": "C:\\Users\\ADMIN\\Desktop\\New folder (5)\\Project_ShopVision50\\BE\\Project_ShopVision50\\ShopVision50.API\\Services\\UserService_FD\\IUserService.cs",
-              "RelativeDocumentMoniker": "ShopVision50.API\\Services\\UserService_FD\\IUserService.cs",
-              "ToolTip": "C:\\Users\\ADMIN\\Desktop\\New folder (5)\\Project_ShopVision50\\BE\\Project_ShopVision50\\ShopVision50.API\\Services\\UserService_FD\\IUserService.cs",
-              "RelativeToolTip": "ShopVision50.API\\Services\\UserService_FD\\IUserService.cs",
-              "ViewState": "AgIAAAYAAAAAAAAAAAAAABoAAABZAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-10-28T00:58:36.586Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 22,
-              "Title": "IUserRepository.cs",
-              "DocumentMoniker": "C:\\Users\\ADMIN\\Desktop\\New folder (5)\\Project_ShopVision50\\BE\\Project_ShopVision50\\ShopVision50.API\\Repositories\\UserRepo_FD\\IUserRepository.cs",
-              "RelativeDocumentMoniker": "ShopVision50.API\\Repositories\\UserRepo_FD\\IUserRepository.cs",
-              "ToolTip": "C:\\Users\\ADMIN\\Desktop\\New folder (5)\\Project_ShopVision50\\BE\\Project_ShopVision50\\ShopVision50.API\\Repositories\\UserRepo_FD\\IUserRepository.cs",
-              "RelativeToolTip": "ShopVision50.API\\Repositories\\UserRepo_FD\\IUserRepository.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAABIAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-10-28T01:47:33.512Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 23,
+              "DocumentIndex": 45,
               "Title": "UserRole.cs",
               "DocumentMoniker": "C:\\Users\\ADMIN\\Desktop\\New folder (5)\\Project_ShopVision50\\BE\\Project_ShopVision50\\ShopVision50.Domain\\Models\\UserRole.cs",
               "RelativeDocumentMoniker": "ShopVision50.Domain\\Models\\UserRole.cs",
@@ -1021,7 +1326,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 24,
+              "DocumentIndex": 46,
               "Title": "UserAddress.cs",
               "DocumentMoniker": "C:\\Users\\ADMIN\\Desktop\\New folder (5)\\Project_ShopVision50\\BE\\Project_ShopVision50\\ShopVision50.Domain\\Models\\UserAddress.cs",
               "RelativeDocumentMoniker": "ShopVision50.Domain\\Models\\UserAddress.cs",
@@ -1033,7 +1338,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 25,
+              "DocumentIndex": 47,
               "Title": "User.cs",
               "DocumentMoniker": "C:\\Users\\ADMIN\\Desktop\\New folder (5)\\Project_ShopVision50\\BE\\Project_ShopVision50\\ShopVision50.Domain\\Models\\User.cs",
               "RelativeDocumentMoniker": "ShopVision50.Domain\\Models\\User.cs",
@@ -1045,7 +1350,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 26,
+              "DocumentIndex": 48,
               "Title": "Style.cs",
               "DocumentMoniker": "C:\\Users\\ADMIN\\Desktop\\New folder (5)\\Project_ShopVision50\\BE\\Project_ShopVision50\\ShopVision50.Domain\\Models\\Style.cs",
               "RelativeDocumentMoniker": "ShopVision50.Domain\\Models\\Style.cs",
@@ -1057,7 +1362,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 27,
+              "DocumentIndex": 49,
               "Title": "Role.cs",
               "DocumentMoniker": "C:\\Users\\ADMIN\\Desktop\\New folder (5)\\Project_ShopVision50\\BE\\Project_ShopVision50\\ShopVision50.Domain\\Models\\Role.cs",
               "RelativeDocumentMoniker": "ShopVision50.Domain\\Models\\Role.cs",
@@ -1069,7 +1374,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 28,
+              "DocumentIndex": 50,
               "Title": "ReturnNote.cs",
               "DocumentMoniker": "C:\\Users\\ADMIN\\Desktop\\New folder (5)\\Project_ShopVision50\\BE\\Project_ShopVision50\\ShopVision50.Domain\\Models\\ReturnNote.cs",
               "RelativeDocumentMoniker": "ShopVision50.Domain\\Models\\ReturnNote.cs",
@@ -1081,7 +1386,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 29,
+              "DocumentIndex": 51,
               "Title": "ReturnItem.cs",
               "DocumentMoniker": "C:\\Users\\ADMIN\\Desktop\\New folder (5)\\Project_ShopVision50\\BE\\Project_ShopVision50\\ShopVision50.Domain\\Models\\ReturnItem.cs",
               "RelativeDocumentMoniker": "ShopVision50.Domain\\Models\\ReturnItem.cs",
@@ -1093,7 +1398,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 30,
+              "DocumentIndex": 52,
               "Title": "Promotion.cs",
               "DocumentMoniker": "C:\\Users\\ADMIN\\Desktop\\New folder (5)\\Project_ShopVision50\\BE\\Project_ShopVision50\\ShopVision50.Domain\\Models\\Promotion.cs",
               "RelativeDocumentMoniker": "ShopVision50.Domain\\Models\\Promotion.cs",
@@ -1105,7 +1410,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 31,
+              "DocumentIndex": 53,
               "Title": "ProductVariant.cs",
               "DocumentMoniker": "C:\\Users\\ADMIN\\Desktop\\New folder (5)\\Project_ShopVision50\\BE\\Project_ShopVision50\\ShopVision50.Domain\\Models\\ProductVariant.cs",
               "RelativeDocumentMoniker": "ShopVision50.Domain\\Models\\ProductVariant.cs",
@@ -1117,7 +1422,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 32,
+              "DocumentIndex": 54,
               "Title": "ProductSize.cs",
               "DocumentMoniker": "C:\\Users\\ADMIN\\Desktop\\New folder (5)\\Project_ShopVision50\\BE\\Project_ShopVision50\\ShopVision50.Domain\\Models\\ProductSize.cs",
               "RelativeDocumentMoniker": "ShopVision50.Domain\\Models\\ProductSize.cs",
@@ -1129,7 +1434,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 33,
+              "DocumentIndex": 55,
               "Title": "ProductImage.cs",
               "DocumentMoniker": "C:\\Users\\ADMIN\\Desktop\\New folder (5)\\Project_ShopVision50\\BE\\Project_ShopVision50\\ShopVision50.Domain\\Models\\ProductImage.cs",
               "RelativeDocumentMoniker": "ShopVision50.Domain\\Models\\ProductImage.cs",
@@ -1141,7 +1446,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 34,
+              "DocumentIndex": 56,
               "Title": "ProductColor.cs",
               "DocumentMoniker": "C:\\Users\\ADMIN\\Desktop\\New folder (5)\\Project_ShopVision50\\BE\\Project_ShopVision50\\ShopVision50.Domain\\Models\\ProductColor.cs",
               "RelativeDocumentMoniker": "ShopVision50.Domain\\Models\\ProductColor.cs",
@@ -1153,7 +1458,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 35,
+              "DocumentIndex": 57,
               "Title": "Product.cs",
               "DocumentMoniker": "C:\\Users\\ADMIN\\Desktop\\New folder (5)\\Project_ShopVision50\\BE\\Project_ShopVision50\\ShopVision50.Domain\\Models\\Product.cs",
               "RelativeDocumentMoniker": "ShopVision50.Domain\\Models\\Product.cs",
@@ -1165,7 +1470,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 36,
+              "DocumentIndex": 58,
               "Title": "Payment.cs",
               "DocumentMoniker": "C:\\Users\\ADMIN\\Desktop\\New folder (5)\\Project_ShopVision50\\BE\\Project_ShopVision50\\ShopVision50.Domain\\Models\\Payment.cs",
               "RelativeDocumentMoniker": "ShopVision50.Domain\\Models\\Payment.cs",
@@ -1177,7 +1482,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 37,
+              "DocumentIndex": 59,
               "Title": "Origin.cs",
               "DocumentMoniker": "C:\\Users\\ADMIN\\Desktop\\New folder (5)\\Project_ShopVision50\\BE\\Project_ShopVision50\\ShopVision50.Domain\\Models\\Origin.cs",
               "RelativeDocumentMoniker": "ShopVision50.Domain\\Models\\Origin.cs",
@@ -1189,7 +1494,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 38,
+              "DocumentIndex": 60,
               "Title": "OrderPromotion.cs",
               "DocumentMoniker": "C:\\Users\\ADMIN\\Desktop\\New folder (5)\\Project_ShopVision50\\BE\\Project_ShopVision50\\ShopVision50.Domain\\Models\\OrderPromotion.cs",
               "RelativeDocumentMoniker": "ShopVision50.Domain\\Models\\OrderPromotion.cs",
@@ -1201,7 +1506,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 39,
+              "DocumentIndex": 61,
               "Title": "OrderItem.cs",
               "DocumentMoniker": "C:\\Users\\ADMIN\\Desktop\\New folder (5)\\Project_ShopVision50\\BE\\Project_ShopVision50\\ShopVision50.Domain\\Models\\OrderItem.cs",
               "RelativeDocumentMoniker": "ShopVision50.Domain\\Models\\OrderItem.cs",
@@ -1213,7 +1518,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 40,
+              "DocumentIndex": 62,
               "Title": "Order.cs",
               "DocumentMoniker": "C:\\Users\\ADMIN\\Desktop\\New folder (5)\\Project_ShopVision50\\BE\\Project_ShopVision50\\ShopVision50.Domain\\Models\\Order.cs",
               "RelativeDocumentMoniker": "ShopVision50.Domain\\Models\\Order.cs",
@@ -1225,7 +1530,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 41,
+              "DocumentIndex": 63,
               "Title": "Material.cs",
               "DocumentMoniker": "C:\\Users\\ADMIN\\Desktop\\New folder (5)\\Project_ShopVision50\\BE\\Project_ShopVision50\\ShopVision50.Domain\\Models\\Material.cs",
               "RelativeDocumentMoniker": "ShopVision50.Domain\\Models\\Material.cs",
@@ -1237,7 +1542,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 42,
+              "DocumentIndex": 64,
               "Title": "Gender.cs",
               "DocumentMoniker": "C:\\Users\\ADMIN\\Desktop\\New folder (5)\\Project_ShopVision50\\BE\\Project_ShopVision50\\ShopVision50.Domain\\Models\\Gender.cs",
               "RelativeDocumentMoniker": "ShopVision50.Domain\\Models\\Gender.cs",
@@ -1249,7 +1554,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 43,
+              "DocumentIndex": 65,
               "Title": "Category.cs",
               "DocumentMoniker": "C:\\Users\\ADMIN\\Desktop\\New folder (5)\\Project_ShopVision50\\BE\\Project_ShopVision50\\ShopVision50.Domain\\Models\\Category.cs",
               "RelativeDocumentMoniker": "ShopVision50.Domain\\Models\\Category.cs",
@@ -1261,7 +1566,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 44,
+              "DocumentIndex": 66,
               "Title": "Cart.cs",
               "DocumentMoniker": "C:\\Users\\ADMIN\\Desktop\\New folder (5)\\Project_ShopVision50\\BE\\Project_ShopVision50\\ShopVision50.Domain\\Models\\Cart.cs",
               "RelativeDocumentMoniker": "ShopVision50.Domain\\Models\\Cart.cs",
@@ -1273,7 +1578,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 45,
+              "DocumentIndex": 67,
               "Title": "AppDbContext.cs",
               "DocumentMoniker": "C:\\Users\\ADMIN\\Desktop\\New folder (5)\\Project_ShopVision50\\BE\\Project_ShopVision50\\ShopVision50.Infrastructure\\AppDbContext.cs",
               "RelativeDocumentMoniker": "ShopVision50.Infrastructure\\AppDbContext.cs",
@@ -1285,7 +1590,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 46,
+              "DocumentIndex": 68,
               "Title": "AppDbContextFactory.cs",
               "DocumentMoniker": "C:\\Users\\ADMIN\\Desktop\\New folder (5)\\Project_ShopVision50\\BE\\Project_ShopVision50\\ShopVision50.Infrastructure\\AppDbContextFactory.cs",
               "RelativeDocumentMoniker": "ShopVision50.Infrastructure\\AppDbContextFactory.cs",
@@ -1297,7 +1602,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 47,
+              "DocumentIndex": 69,
               "Title": "UserUpdateDto.cs",
               "DocumentMoniker": "C:\\Users\\ADMIN\\Desktop\\New folder (5)\\Project_ShopVision50\\BE\\Project_ShopVision50\\ShopVision50.API\\Models\\Users\\DTOs\\UserUpdateDto.cs",
               "RelativeDocumentMoniker": "ShopVision50.API\\Models\\Users\\DTOs\\UserUpdateDto.cs",
@@ -1309,7 +1614,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 48,
+              "DocumentIndex": 70,
               "Title": "UserRoleDto.cs",
               "DocumentMoniker": "C:\\Users\\ADMIN\\Desktop\\New folder (5)\\Project_ShopVision50\\BE\\Project_ShopVision50\\ShopVision50.API\\Models\\Users\\DTOs\\UserRoleDto.cs",
               "RelativeDocumentMoniker": "ShopVision50.API\\Models\\Users\\DTOs\\UserRoleDto.cs",
@@ -1321,7 +1626,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 49,
+              "DocumentIndex": 71,
               "Title": "UserReadDto.cs",
               "DocumentMoniker": "C:\\Users\\ADMIN\\Desktop\\New folder (5)\\Project_ShopVision50\\BE\\Project_ShopVision50\\ShopVision50.API\\Models\\Users\\DTOs\\UserReadDto.cs",
               "RelativeDocumentMoniker": "ShopVision50.API\\Models\\Users\\DTOs\\UserReadDto.cs",
@@ -1333,7 +1638,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 50,
+              "DocumentIndex": 72,
               "Title": "UserDto.cs",
               "DocumentMoniker": "C:\\Users\\ADMIN\\Desktop\\New folder (5)\\Project_ShopVision50\\BE\\Project_ShopVision50\\ShopVision50.API\\Models\\Users\\DTOs\\UserDto.cs",
               "RelativeDocumentMoniker": "ShopVision50.API\\Models\\Users\\DTOs\\UserDto.cs",
@@ -1345,7 +1650,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 51,
+              "DocumentIndex": 73,
               "Title": "UserAddressDto.cs",
               "DocumentMoniker": "C:\\Users\\ADMIN\\Desktop\\New folder (5)\\Project_ShopVision50\\BE\\Project_ShopVision50\\ShopVision50.API\\Models\\Users\\DTOs\\UserAddressDto.cs",
               "RelativeDocumentMoniker": "ShopVision50.API\\Models\\Users\\DTOs\\UserAddressDto.cs",
@@ -1357,7 +1662,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 52,
+              "DocumentIndex": 74,
               "Title": "StyleDto.cs",
               "DocumentMoniker": "C:\\Users\\ADMIN\\Desktop\\New folder (5)\\Project_ShopVision50\\BE\\Project_ShopVision50\\ShopVision50.API\\Models\\Users\\DTOs\\StyleDto.cs",
               "RelativeDocumentMoniker": "ShopVision50.API\\Models\\Users\\DTOs\\StyleDto.cs",
@@ -1369,7 +1674,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 53,
+              "DocumentIndex": 75,
               "Title": "ServiceResult.cs",
               "DocumentMoniker": "C:\\Users\\ADMIN\\Desktop\\New folder (5)\\Project_ShopVision50\\BE\\Project_ShopVision50\\ShopVision50.API\\Models\\Users\\DTOs\\ServiceResult.cs",
               "RelativeDocumentMoniker": "ShopVision50.API\\Models\\Users\\DTOs\\ServiceResult.cs",
@@ -1381,7 +1686,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 54,
+              "DocumentIndex": 76,
               "Title": "RoleDto.cs",
               "DocumentMoniker": "C:\\Users\\ADMIN\\Desktop\\New folder (5)\\Project_ShopVision50\\BE\\Project_ShopVision50\\ShopVision50.API\\Models\\Users\\DTOs\\RoleDto.cs",
               "RelativeDocumentMoniker": "ShopVision50.API\\Models\\Users\\DTOs\\RoleDto.cs",
@@ -1393,7 +1698,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 55,
+              "DocumentIndex": 77,
               "Title": "RevenueSummaryDto.cs",
               "DocumentMoniker": "C:\\Users\\ADMIN\\Desktop\\New folder (5)\\Project_ShopVision50\\BE\\Project_ShopVision50\\ShopVision50.API\\Models\\Users\\DTOs\\RevenueSummaryDto.cs",
               "RelativeDocumentMoniker": "ShopVision50.API\\Models\\Users\\DTOs\\RevenueSummaryDto.cs",
@@ -1405,7 +1710,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 57,
+              "DocumentIndex": 79,
               "Title": "ReturnItemDto.cs",
               "DocumentMoniker": "C:\\Users\\ADMIN\\Desktop\\New folder (5)\\Project_ShopVision50\\BE\\Project_ShopVision50\\ShopVision50.API\\Models\\Users\\DTOs\\ReturnItemDto.cs",
               "RelativeDocumentMoniker": "ShopVision50.API\\Models\\Users\\DTOs\\ReturnItemDto.cs",
@@ -1417,7 +1722,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 58,
+              "DocumentIndex": 80,
               "Title": "RegisterDto.cs",
               "DocumentMoniker": "C:\\Users\\ADMIN\\Desktop\\New folder (5)\\Project_ShopVision50\\BE\\Project_ShopVision50\\ShopVision50.API\\Models\\Users\\DTOs\\RegisterDto.cs",
               "RelativeDocumentMoniker": "ShopVision50.API\\Models\\Users\\DTOs\\RegisterDto.cs",
@@ -1429,7 +1734,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 59,
+              "DocumentIndex": 81,
               "Title": "PromotionDto.cs",
               "DocumentMoniker": "C:\\Users\\ADMIN\\Desktop\\New folder (5)\\Project_ShopVision50\\BE\\Project_ShopVision50\\ShopVision50.API\\Models\\Users\\DTOs\\PromotionDto.cs",
               "RelativeDocumentMoniker": "ShopVision50.API\\Models\\Users\\DTOs\\PromotionDto.cs",
@@ -1441,7 +1746,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 60,
+              "DocumentIndex": 82,
               "Title": "ProductWithVariantsDto.cs",
               "DocumentMoniker": "C:\\Users\\ADMIN\\Desktop\\New folder (5)\\Project_ShopVision50\\BE\\Project_ShopVision50\\ShopVision50.API\\Models\\Users\\DTOs\\ProductWithVariantsDto.cs",
               "RelativeDocumentMoniker": "ShopVision50.API\\Models\\Users\\DTOs\\ProductWithVariantsDto.cs",
@@ -1453,7 +1758,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 56,
+              "DocumentIndex": 78,
               "Title": "ReturnNoteDto.cs",
               "DocumentMoniker": "C:\\Users\\ADMIN\\Desktop\\New folder (5)\\Project_ShopVision50\\BE\\Project_ShopVision50\\ShopVision50.API\\Models\\Users\\DTOs\\ReturnNoteDto.cs",
               "RelativeDocumentMoniker": "ShopVision50.API\\Models\\Users\\DTOs\\ReturnNoteDto.cs",
@@ -1465,7 +1770,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 61,
+              "DocumentIndex": 83,
               "Title": "ProductVariantDto.cs",
               "DocumentMoniker": "C:\\Users\\ADMIN\\Desktop\\New folder (5)\\Project_ShopVision50\\BE\\Project_ShopVision50\\ShopVision50.API\\Models\\Users\\DTOs\\ProductVariantDto.cs",
               "RelativeDocumentMoniker": "ShopVision50.API\\Models\\Users\\DTOs\\ProductVariantDto.cs",
@@ -1477,7 +1782,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 62,
+              "DocumentIndex": 84,
               "Title": "ProductSizeDto.cs",
               "DocumentMoniker": "C:\\Users\\ADMIN\\Desktop\\New folder (5)\\Project_ShopVision50\\BE\\Project_ShopVision50\\ShopVision50.API\\Models\\Users\\DTOs\\ProductSizeDto.cs",
               "RelativeDocumentMoniker": "ShopVision50.API\\Models\\Users\\DTOs\\ProductSizeDto.cs",
@@ -1489,7 +1794,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 63,
+              "DocumentIndex": 85,
               "Title": "ProductImageDto.cs",
               "DocumentMoniker": "C:\\Users\\ADMIN\\Desktop\\New folder (5)\\Project_ShopVision50\\BE\\Project_ShopVision50\\ShopVision50.API\\Models\\Users\\DTOs\\ProductImageDto.cs",
               "RelativeDocumentMoniker": "ShopVision50.API\\Models\\Users\\DTOs\\ProductImageDto.cs",
@@ -1501,7 +1806,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 64,
+              "DocumentIndex": 86,
               "Title": "ProductDto.cs",
               "DocumentMoniker": "C:\\Users\\ADMIN\\Desktop\\New folder (5)\\Project_ShopVision50\\BE\\Project_ShopVision50\\ShopVision50.API\\Models\\Users\\DTOs\\ProductDto.cs",
               "RelativeDocumentMoniker": "ShopVision50.API\\Models\\Users\\DTOs\\ProductDto.cs",
@@ -1513,19 +1818,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 65,
-              "Title": "StyleController.cs",
-              "DocumentMoniker": "C:\\Users\\ADMIN\\Desktop\\New folder (5)\\Project_ShopVision50\\BE\\Project_ShopVision50\\ShopVision50.API\\Controllers\\StyleController.cs",
-              "RelativeDocumentMoniker": "ShopVision50.API\\Controllers\\StyleController.cs",
-              "ToolTip": "C:\\Users\\ADMIN\\Desktop\\New folder (5)\\Project_ShopVision50\\BE\\Project_ShopVision50\\ShopVision50.API\\Controllers\\StyleController.cs",
-              "RelativeToolTip": "ShopVision50.API\\Controllers\\StyleController.cs",
-              "ViewState": "AgIAAAMAAAAAAAAAAAAAABAAAAAfAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-11-17T06:23:11.787Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 66,
+              "DocumentIndex": 87,
               "Title": "Program.cs",
               "DocumentMoniker": "C:\\Users\\ADMIN\\Desktop\\New folder (5)\\Project_ShopVision50\\BE\\Project_ShopVision50\\ShopVision50.API\\Program.cs",
               "RelativeDocumentMoniker": "ShopVision50.API\\Program.cs",
@@ -1537,7 +1830,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 67,
+              "DocumentIndex": 88,
               "Title": "ProductColorDto.cs",
               "DocumentMoniker": "C:\\Users\\ADMIN\\Desktop\\New folder (5)\\Project_ShopVision50\\BE\\Project_ShopVision50\\ShopVision50.API\\Models\\Users\\DTOs\\ProductColorDto.cs",
               "RelativeDocumentMoniker": "ShopVision50.API\\Models\\Users\\DTOs\\ProductColorDto.cs",
@@ -1549,7 +1842,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 68,
+              "DocumentIndex": 89,
               "Title": "PaymentDto.cs",
               "DocumentMoniker": "C:\\Users\\ADMIN\\Desktop\\New folder (5)\\Project_ShopVision50\\BE\\Project_ShopVision50\\ShopVision50.API\\Models\\Users\\DTOs\\PaymentDto.cs",
               "RelativeDocumentMoniker": "ShopVision50.API\\Models\\Users\\DTOs\\PaymentDto.cs",
@@ -1561,7 +1854,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 69,
+              "DocumentIndex": 90,
               "Title": "OriginDto.cs",
               "DocumentMoniker": "C:\\Users\\ADMIN\\Desktop\\New folder (5)\\Project_ShopVision50\\BE\\Project_ShopVision50\\ShopVision50.API\\Models\\Users\\DTOs\\OriginDto.cs",
               "RelativeDocumentMoniker": "ShopVision50.API\\Models\\Users\\DTOs\\OriginDto.cs",
@@ -1573,7 +1866,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 70,
+              "DocumentIndex": 91,
               "Title": "OrderPromotionDto.cs",
               "DocumentMoniker": "C:\\Users\\ADMIN\\Desktop\\New folder (5)\\Project_ShopVision50\\BE\\Project_ShopVision50\\ShopVision50.API\\Models\\Users\\DTOs\\OrderPromotionDto.cs",
               "RelativeDocumentMoniker": "ShopVision50.API\\Models\\Users\\DTOs\\OrderPromotionDto.cs",
@@ -1585,7 +1878,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 71,
+              "DocumentIndex": 92,
               "Title": "OrderItemDto.cs",
               "DocumentMoniker": "C:\\Users\\ADMIN\\Desktop\\New folder (5)\\Project_ShopVision50\\BE\\Project_ShopVision50\\ShopVision50.API\\Models\\Users\\DTOs\\OrderItemDto.cs",
               "RelativeDocumentMoniker": "ShopVision50.API\\Models\\Users\\DTOs\\OrderItemDto.cs",
@@ -1597,7 +1890,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 72,
+              "DocumentIndex": 93,
               "Title": "OrderDto.cs",
               "DocumentMoniker": "C:\\Users\\ADMIN\\Desktop\\New folder (5)\\Project_ShopVision50\\BE\\Project_ShopVision50\\ShopVision50.API\\Models\\Users\\DTOs\\OrderDto.cs",
               "RelativeDocumentMoniker": "ShopVision50.API\\Models\\Users\\DTOs\\OrderDto.cs",
@@ -1609,7 +1902,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 73,
+              "DocumentIndex": 94,
               "Title": "MaterialDto.cs",
               "DocumentMoniker": "C:\\Users\\ADMIN\\Desktop\\New folder (5)\\Project_ShopVision50\\BE\\Project_ShopVision50\\ShopVision50.API\\Models\\Users\\DTOs\\MaterialDto.cs",
               "RelativeDocumentMoniker": "ShopVision50.API\\Models\\Users\\DTOs\\MaterialDto.cs",
@@ -1621,7 +1914,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 74,
+              "DocumentIndex": 95,
               "Title": "GenderDto.cs",
               "DocumentMoniker": "C:\\Users\\ADMIN\\Desktop\\New folder (5)\\Project_ShopVision50\\BE\\Project_ShopVision50\\ShopVision50.API\\Models\\Users\\DTOs\\GenderDto.cs",
               "RelativeDocumentMoniker": "ShopVision50.API\\Models\\Users\\DTOs\\GenderDto.cs",
@@ -1633,7 +1926,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 75,
+              "DocumentIndex": 96,
               "Title": "CreateOrder.cs",
               "DocumentMoniker": "C:\\Users\\ADMIN\\Desktop\\New folder (5)\\Project_ShopVision50\\BE\\Project_ShopVision50\\ShopVision50.API\\Models\\Users\\DTOs\\CreateOrder.cs",
               "RelativeDocumentMoniker": "ShopVision50.API\\Models\\Users\\DTOs\\CreateOrder.cs",
@@ -1645,7 +1938,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 76,
+              "DocumentIndex": 97,
               "Title": "CheckEmail.cs",
               "DocumentMoniker": "C:\\Users\\ADMIN\\Desktop\\New folder (5)\\Project_ShopVision50\\BE\\Project_ShopVision50\\ShopVision50.API\\Models\\Users\\DTOs\\CheckEmail.cs",
               "RelativeDocumentMoniker": "ShopVision50.API\\Models\\Users\\DTOs\\CheckEmail.cs",
@@ -1657,7 +1950,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 79,
+              "DocumentIndex": 100,
               "Title": "CartDto.cs",
               "DocumentMoniker": "C:\\Users\\ADMIN\\Desktop\\New folder (5)\\Project_ShopVision50\\BE\\Project_ShopVision50\\ShopVision50.API\\Models\\Users\\DTOs\\CartDto.cs",
               "RelativeDocumentMoniker": "ShopVision50.API\\Models\\Users\\DTOs\\CartDto.cs",
@@ -1669,7 +1962,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 80,
+              "DocumentIndex": 101,
               "Title": "BienTheResponseDto.cs",
               "DocumentMoniker": "C:\\Users\\ADMIN\\Desktop\\New folder (5)\\Project_ShopVision50\\BE\\Project_ShopVision50\\ShopVision50.API\\Models\\Users\\DTOs\\BienTheResponseDto.cs",
               "RelativeDocumentMoniker": "ShopVision50.API\\Models\\Users\\DTOs\\BienTheResponseDto.cs",
@@ -1681,7 +1974,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 81,
+              "DocumentIndex": 102,
               "Title": "BienTheDto.cs",
               "DocumentMoniker": "C:\\Users\\ADMIN\\Desktop\\New folder (5)\\Project_ShopVision50\\BE\\Project_ShopVision50\\ShopVision50.API\\Models\\Users\\DTOs\\BienTheDto.cs",
               "RelativeDocumentMoniker": "ShopVision50.API\\Models\\Users\\DTOs\\BienTheDto.cs",
@@ -1693,7 +1986,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 78,
+              "DocumentIndex": 99,
               "Title": "CartItemDto.cs",
               "DocumentMoniker": "C:\\Users\\ADMIN\\Desktop\\New folder (5)\\Project_ShopVision50\\BE\\Project_ShopVision50\\ShopVision50.API\\Models\\Users\\DTOs\\CartItemDto.cs",
               "RelativeDocumentMoniker": "ShopVision50.API\\Models\\Users\\DTOs\\CartItemDto.cs",
@@ -1705,7 +1998,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 77,
+              "DocumentIndex": 98,
               "Title": "CategoryDto.cs",
               "DocumentMoniker": "C:\\Users\\ADMIN\\Desktop\\New folder (5)\\Project_ShopVision50\\BE\\Project_ShopVision50\\ShopVision50.API\\Models\\Users\\DTOs\\CategoryDto.cs",
               "RelativeDocumentMoniker": "ShopVision50.API\\Models\\Users\\DTOs\\CategoryDto.cs",
@@ -1717,19 +2010,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 82,
-              "Title": "TopSanPhamController.cs",
-              "DocumentMoniker": "C:\\Users\\ADMIN\\Desktop\\New folder (5)\\Project_ShopVision50\\BE\\Project_ShopVision50\\ShopVision50.API\\Controllers\\TopSanPhamController.cs",
-              "RelativeDocumentMoniker": "ShopVision50.API\\Controllers\\TopSanPhamController.cs",
-              "ToolTip": "C:\\Users\\ADMIN\\Desktop\\New folder (5)\\Project_ShopVision50\\BE\\Project_ShopVision50\\ShopVision50.API\\Controllers\\TopSanPhamController.cs",
-              "RelativeToolTip": "ShopVision50.API\\Controllers\\TopSanPhamController.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAABIAAAA2AAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-11-22T07:46:14.605Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 83,
+              "DocumentIndex": 103,
               "Title": "TopProductsRepository.cs",
               "DocumentMoniker": "C:\\Users\\ADMIN\\Desktop\\New folder (5)\\Project_ShopVision50\\BE\\Project_ShopVision50\\ShopVision50.API\\Repositories\\TopProductsRepo_FD\\TopProductsRepository.cs",
               "RelativeDocumentMoniker": "ShopVision50.API\\Repositories\\TopProductsRepo_FD\\TopProductsRepository.cs",
@@ -1741,7 +2022,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 84,
+              "DocumentIndex": 104,
               "Title": "ITopProductsRepository.cs",
               "DocumentMoniker": "C:\\Users\\ADMIN\\Desktop\\New folder (5)\\Project_ShopVision50\\BE\\Project_ShopVision50\\ShopVision50.API\\Repositories\\TopProductsRepo_FD\\ITopProductsRepository.cs",
               "RelativeDocumentMoniker": "ShopVision50.API\\Repositories\\TopProductsRepo_FD\\ITopProductsRepository.cs",
@@ -1753,7 +2034,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 85,
+              "DocumentIndex": 105,
               "Title": "TopProductsService.cs",
               "DocumentMoniker": "C:\\Users\\ADMIN\\Desktop\\New folder (5)\\Project_ShopVision50\\BE\\Project_ShopVision50\\ShopVision50.API\\Services\\TopProductsService_FD\\TopProductsService.cs",
               "RelativeDocumentMoniker": "ShopVision50.API\\Services\\TopProductsService_FD\\TopProductsService.cs",
@@ -1765,7 +2046,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 86,
+              "DocumentIndex": 106,
               "Title": "ITopProductsService.cs",
               "DocumentMoniker": "C:\\Users\\ADMIN\\Desktop\\New folder (5)\\Project_ShopVision50\\BE\\Project_ShopVision50\\ShopVision50.API\\Services\\TopProductsService_FD\\ITopProductsService.cs",
               "RelativeDocumentMoniker": "ShopVision50.API\\Services\\TopProductsService_FD\\ITopProductsService.cs",
@@ -1777,19 +2058,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 87,
-              "Title": "CategoryController.cs",
-              "DocumentMoniker": "C:\\Users\\ADMIN\\Desktop\\New folder (5)\\Project_ShopVision50\\BE\\Project_ShopVision50\\ShopVision50.API\\Controllers\\CategoryController.cs",
-              "RelativeDocumentMoniker": "ShopVision50.API\\Controllers\\CategoryController.cs",
-              "ToolTip": "C:\\Users\\ADMIN\\Desktop\\New folder (5)\\Project_ShopVision50\\BE\\Project_ShopVision50\\ShopVision50.API\\Controllers\\CategoryController.cs",
-              "RelativeToolTip": "ShopVision50.API\\Controllers\\CategoryController.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-11-22T07:25:58.094Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 88,
+              "DocumentIndex": 107,
               "Title": "shopvision.code-workspace",
               "DocumentMoniker": "C:\\Users\\ADMIN\\Desktop\\New folder (5)\\Project_ShopVision50\\BE\\Project_ShopVision50\\ShopVision50.API\\shopvision.code-workspace",
               "RelativeDocumentMoniker": "ShopVision50.API\\shopvision.code-workspace",
@@ -1801,43 +2070,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 93,
-              "Title": "KhuyenMaiController.cs",
-              "DocumentMoniker": "C:\\Users\\ADMIN\\Desktop\\New folder (5)\\Project_ShopVision50\\BE\\Project_ShopVision50\\ShopVision50.API\\Controllers\\KhuyenMaiController.cs",
-              "RelativeDocumentMoniker": "ShopVision50.API\\Controllers\\KhuyenMaiController.cs",
-              "ToolTip": "C:\\Users\\ADMIN\\Desktop\\New folder (5)\\Project_ShopVision50\\BE\\Project_ShopVision50\\ShopVision50.API\\Controllers\\KhuyenMaiController.cs",
-              "RelativeToolTip": "ShopVision50.API\\Controllers\\KhuyenMaiController.cs",
-              "ViewState": "AgIAAAkAAAAAAAAAAAAAAB8AAAAiAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-10-28T11:59:14.694Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 92,
-              "Title": "ProductsController.cs",
-              "DocumentMoniker": "C:\\Users\\ADMIN\\Desktop\\New folder (5)\\Project_ShopVision50\\BE\\Project_ShopVision50\\ShopVision50.API\\Controllers\\ProductsController.cs",
-              "RelativeDocumentMoniker": "ShopVision50.API\\Controllers\\ProductsController.cs",
-              "ToolTip": "C:\\Users\\ADMIN\\Desktop\\New folder (5)\\Project_ShopVision50\\BE\\Project_ShopVision50\\ShopVision50.API\\Controllers\\ProductsController.cs",
-              "RelativeToolTip": "ShopVision50.API\\Controllers\\ProductsController.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAEoAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-10-25T01:03:15.589Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 91,
-              "Title": "ProductSizeController.cs",
-              "DocumentMoniker": "C:\\Users\\ADMIN\\Desktop\\New folder (5)\\Project_ShopVision50\\BE\\Project_ShopVision50\\ShopVision50.API\\Controllers\\ProductSizeController.cs",
-              "RelativeDocumentMoniker": "ShopVision50.API\\Controllers\\ProductSizeController.cs",
-              "ToolTip": "C:\\Users\\ADMIN\\Desktop\\New folder (5)\\Project_ShopVision50\\BE\\Project_ShopVision50\\ShopVision50.API\\Controllers\\ProductSizeController.cs",
-              "RelativeToolTip": "ShopVision50.API\\Controllers\\ProductSizeController.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAABQAAAAJAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-11-17T22:09:52.074Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 89,
+              "DocumentIndex": 108,
               "Title": "ShopVision50.API.csproj",
               "DocumentMoniker": "C:\\Users\\ADMIN\\Desktop\\New folder (5)\\Project_ShopVision50\\BE\\Project_ShopVision50\\ShopVision50.API\\ShopVision50.API.csproj",
               "RelativeDocumentMoniker": "ShopVision50.API\\ShopVision50.API.csproj",
@@ -1849,31 +2082,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 90,
-              "Title": "ProductVariantController.cs",
-              "DocumentMoniker": "C:\\Users\\ADMIN\\Desktop\\New folder (5)\\Project_ShopVision50\\BE\\Project_ShopVision50\\ShopVision50.API\\Controllers\\ProductVariantController.cs",
-              "RelativeDocumentMoniker": "ShopVision50.API\\Controllers\\ProductVariantController.cs",
-              "ToolTip": "C:\\Users\\ADMIN\\Desktop\\New folder (5)\\Project_ShopVision50\\BE\\Project_ShopVision50\\ShopVision50.API\\Controllers\\ProductVariantController.cs",
-              "RelativeToolTip": "ShopVision50.API\\Controllers\\ProductVariantController.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAuwDAAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-11-17T16:59:21.943Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 94,
-              "Title": "TopCustomersController.cs",
-              "DocumentMoniker": "C:\\Users\\ADMIN\\Desktop\\New folder (5)\\Project_ShopVision50\\BE\\Project_ShopVision50\\ShopVision50.API\\Controllers\\TopCustomersController.cs",
-              "RelativeDocumentMoniker": "ShopVision50.API\\Controllers\\TopCustomersController.cs",
-              "ToolTip": "C:\\Users\\ADMIN\\Desktop\\New folder (5)\\Project_ShopVision50\\BE\\Project_ShopVision50\\ShopVision50.API\\Controllers\\TopCustomersController.cs",
-              "RelativeToolTip": "ShopVision50.API\\Controllers\\TopCustomersController.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA8AAAAJAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-11-17T16:31:00.727Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 95,
+              "DocumentIndex": 109,
               "Title": "ProductImageService.cs",
               "DocumentMoniker": "C:\\Users\\ADMIN\\Desktop\\New folder (5)\\Project_ShopVision50\\BE\\Project_ShopVision50\\ShopVision50.API\\Services\\ProductImageService_FD\\ProductImageService.cs",
               "RelativeDocumentMoniker": "ShopVision50.API\\Services\\ProductImageService_FD\\ProductImageService.cs",
@@ -1885,7 +2094,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 96,
+              "DocumentIndex": 110,
               "Title": "IProductSizeService.cs",
               "DocumentMoniker": "C:\\Users\\ADMIN\\Desktop\\New folder (5)\\Project_ShopVision50\\BE\\Project_ShopVision50\\ShopVision50.API\\Services\\ProductSizeService_FD\\IProductSizeService.cs",
               "RelativeDocumentMoniker": "ShopVision50.API\\Services\\ProductSizeService_FD\\IProductSizeService.cs",
@@ -1897,7 +2106,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 97,
+              "DocumentIndex": 111,
               "Title": "ProductSizeService.cs",
               "DocumentMoniker": "C:\\Users\\ADMIN\\Desktop\\New folder (5)\\Project_ShopVision50\\BE\\Project_ShopVision50\\ShopVision50.API\\Services\\ProductSizeService_FD\\ProductSizeService.cs",
               "RelativeDocumentMoniker": "ShopVision50.API\\Services\\ProductSizeService_FD\\ProductSizeService.cs",
@@ -1909,7 +2118,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 99,
+              "DocumentIndex": 113,
               "Title": "IProductSizeRepository.cs",
               "DocumentMoniker": "C:\\Users\\ADMIN\\Desktop\\New folder (5)\\Project_ShopVision50\\BE\\Project_ShopVision50\\ShopVision50.API\\Repositories\\ProductSizeRepo_FD\\IProductSizeRepository.cs",
               "RelativeDocumentMoniker": "ShopVision50.API\\Repositories\\ProductSizeRepo_FD\\IProductSizeRepository.cs",
@@ -1921,7 +2130,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 98,
+              "DocumentIndex": 112,
               "Title": "ProductSizeRepository.cs",
               "DocumentMoniker": "C:\\Users\\ADMIN\\Desktop\\New folder (5)\\Project_ShopVision50\\BE\\Project_ShopVision50\\ShopVision50.API\\Repositories\\ProductSizeRepo_FD\\ProductSizeRepository.cs",
               "RelativeDocumentMoniker": "ShopVision50.API\\Repositories\\ProductSizeRepo_FD\\ProductSizeRepository.cs",
@@ -1933,7 +2142,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 102,
+              "DocumentIndex": 116,
               "Title": "ProductColorRepository.cs",
               "DocumentMoniker": "C:\\Users\\ADMIN\\Desktop\\New folder (5)\\Project_ShopVision50\\BE\\Project_ShopVision50\\ShopVision50.API\\Repositories\\ProductColorRepo_FD\\ProductColorRepository.cs",
               "RelativeDocumentMoniker": "ShopVision50.API\\Repositories\\ProductColorRepo_FD\\ProductColorRepository.cs",
@@ -1945,7 +2154,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 101,
+              "DocumentIndex": 115,
               "Title": "IProductColorService.cs",
               "DocumentMoniker": "C:\\Users\\ADMIN\\Desktop\\New folder (5)\\Project_ShopVision50\\BE\\Project_ShopVision50\\ShopVision50.API\\Services\\ProductColorService_FD\\IProductColorService.cs",
               "RelativeDocumentMoniker": "ShopVision50.API\\Services\\ProductColorService_FD\\IProductColorService.cs",
@@ -1957,7 +2166,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 100,
+              "DocumentIndex": 114,
               "Title": "ProductColorService.cs",
               "DocumentMoniker": "C:\\Users\\ADMIN\\Desktop\\New folder (5)\\Project_ShopVision50\\BE\\Project_ShopVision50\\ShopVision50.API\\Services\\ProductColorService_FD\\ProductColorService.cs",
               "RelativeDocumentMoniker": "ShopVision50.API\\Services\\ProductColorService_FD\\ProductColorService.cs",
@@ -1969,7 +2178,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 103,
+              "DocumentIndex": 117,
               "Title": "IProductColorRepository.cs",
               "DocumentMoniker": "C:\\Users\\ADMIN\\Desktop\\New folder (5)\\Project_ShopVision50\\BE\\Project_ShopVision50\\ShopVision50.API\\Repositories\\ProductColorRepo_FD\\IProductColorRepository.cs",
               "RelativeDocumentMoniker": "ShopVision50.API\\Repositories\\ProductColorRepo_FD\\IProductColorRepository.cs",
@@ -1981,19 +2190,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 104,
-              "Title": "ProductColorController.cs",
-              "DocumentMoniker": "C:\\Users\\ADMIN\\Desktop\\New folder (5)\\Project_ShopVision50\\BE\\Project_ShopVision50\\ShopVision50.API\\Controllers\\ProductColorController.cs",
-              "RelativeDocumentMoniker": "ShopVision50.API\\Controllers\\ProductColorController.cs",
-              "ToolTip": "C:\\Users\\ADMIN\\Desktop\\New folder (5)\\Project_ShopVision50\\BE\\Project_ShopVision50\\ShopVision50.API\\Controllers\\ProductColorController.cs",
-              "RelativeToolTip": "ShopVision50.API\\Controllers\\ProductColorController.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAABIAAAAYAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-11-17T21:50:59.63Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 105,
+              "DocumentIndex": 118,
               "Title": "ProductImageRepository.cs",
               "DocumentMoniker": "C:\\Users\\ADMIN\\Desktop\\New folder (5)\\Project_ShopVision50\\BE\\Project_ShopVision50\\ShopVision50.API\\Repositories\\ProductImageRepo_FD\\ProductImageRepository.cs",
               "RelativeDocumentMoniker": "ShopVision50.API\\Repositories\\ProductImageRepo_FD\\ProductImageRepository.cs",
@@ -2005,7 +2202,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 107,
+              "DocumentIndex": 120,
               "Title": "IProductImageService.cs",
               "DocumentMoniker": "C:\\Users\\ADMIN\\Desktop\\New folder (5)\\Project_ShopVision50\\BE\\Project_ShopVision50\\ShopVision50.API\\Services\\ProductImageService_FD\\IProductImageService.cs",
               "RelativeDocumentMoniker": "ShopVision50.API\\Services\\ProductImageService_FD\\IProductImageService.cs",
@@ -2017,7 +2214,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 106,
+              "DocumentIndex": 119,
               "Title": "IProductImageRepository.cs",
               "DocumentMoniker": "C:\\Users\\ADMIN\\Desktop\\New folder (5)\\Project_ShopVision50\\BE\\Project_ShopVision50\\ShopVision50.API\\Repositories\\ProductImageRepo_FD\\IProductImageRepository.cs",
               "RelativeDocumentMoniker": "ShopVision50.API\\Repositories\\ProductImageRepo_FD\\IProductImageRepository.cs",
@@ -2029,7 +2226,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 109,
+              "DocumentIndex": 122,
               "Title": "ITopCustomersService.cs",
               "DocumentMoniker": "C:\\Users\\ADMIN\\Desktop\\New folder (5)\\Project_ShopVision50\\BE\\Project_ShopVision50\\ShopVision50.API\\Services\\TopCustomersService_FD\\ITopCustomersService.cs",
               "RelativeDocumentMoniker": "ShopVision50.API\\Services\\TopCustomersService_FD\\ITopCustomersService.cs",
@@ -2041,7 +2238,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 108,
+              "DocumentIndex": 121,
               "Title": "TopCustomersService.cs",
               "DocumentMoniker": "C:\\Users\\ADMIN\\Desktop\\New folder (5)\\Project_ShopVision50\\BE\\Project_ShopVision50\\ShopVision50.API\\Services\\TopCustomersService_FD\\TopCustomersService.cs",
               "RelativeDocumentMoniker": "ShopVision50.API\\Services\\TopCustomersService_FD\\TopCustomersService.cs",
@@ -2053,7 +2250,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 112,
+              "DocumentIndex": 125,
               "Title": "IProductVariantsRepo.cs",
               "DocumentMoniker": "C:\\Users\\ADMIN\\Desktop\\New folder (5)\\Project_ShopVision50\\BE\\Project_ShopVision50\\ShopVision50.API\\Repositories\\ProductVariantsRepo_FD\\IProductVariantsRepo.cs",
               "RelativeDocumentMoniker": "ShopVision50.API\\Repositories\\ProductVariantsRepo_FD\\IProductVariantsRepo.cs",
@@ -2065,7 +2262,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 111,
+              "DocumentIndex": 124,
               "Title": "IProductVariantService.cs",
               "DocumentMoniker": "C:\\Users\\ADMIN\\Desktop\\New folder (5)\\Project_ShopVision50\\BE\\Project_ShopVision50\\ShopVision50.API\\Services\\ProductVariantService_FD\\IProductVariantService.cs",
               "RelativeDocumentMoniker": "ShopVision50.API\\Services\\ProductVariantService_FD\\IProductVariantService.cs",
@@ -2077,7 +2274,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 110,
+              "DocumentIndex": 123,
               "Title": "ProductVariantService.cs",
               "DocumentMoniker": "C:\\Users\\ADMIN\\Desktop\\New folder (5)\\Project_ShopVision50\\BE\\Project_ShopVision50\\ShopVision50.API\\Services\\ProductVariantService_FD\\ProductVariantService.cs",
               "RelativeDocumentMoniker": "ShopVision50.API\\Services\\ProductVariantService_FD\\ProductVariantService.cs",
@@ -2089,7 +2286,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 113,
+              "DocumentIndex": 126,
               "Title": "ProductVariantsRepo.cs",
               "DocumentMoniker": "C:\\Users\\ADMIN\\Desktop\\New folder (5)\\Project_ShopVision50\\BE\\Project_ShopVision50\\ShopVision50.API\\Repositories\\ProductVariantsRepo_FD\\ProductVariantsRepo.cs",
               "RelativeDocumentMoniker": "ShopVision50.API\\Repositories\\ProductVariantsRepo_FD\\ProductVariantsRepo.cs",
@@ -2101,7 +2298,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 171,
+              "DocumentIndex": 179,
               "Title": "20251117165217_Loi.cs",
               "DocumentMoniker": "C:\\Users\\ADMIN\\Desktop\\New folder (5)\\Project_ShopVision50\\BE\\Project_ShopVision50\\ShopVision50.Infrastructure\\Migrations\\20251117165217_Loi.cs",
               "RelativeDocumentMoniker": "ShopVision50.Infrastructure\\Migrations\\20251117165217_Loi.cs",
@@ -2113,7 +2310,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 114,
+              "DocumentIndex": 127,
               "Title": "TopCustomersRepository.cs",
               "DocumentMoniker": "C:\\Users\\ADMIN\\Desktop\\New folder (5)\\Project_ShopVision50\\BE\\Project_ShopVision50\\ShopVision50.API\\Repositories\\TopCustomersRepo_FD\\TopCustomersRepository.cs",
               "RelativeDocumentMoniker": "ShopVision50.API\\Repositories\\TopCustomersRepo_FD\\TopCustomersRepository.cs",
@@ -2125,7 +2322,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 115,
+              "DocumentIndex": 128,
               "Title": "ITopCustomersRepository.cs",
               "DocumentMoniker": "C:\\Users\\ADMIN\\Desktop\\New folder (5)\\Project_ShopVision50\\BE\\Project_ShopVision50\\ShopVision50.API\\Repositories\\TopCustomersRepo_FD\\ITopCustomersRepository.cs",
               "RelativeDocumentMoniker": "ShopVision50.API\\Repositories\\TopCustomersRepo_FD\\ITopCustomersRepository.cs",
@@ -2137,7 +2334,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 119,
+              "DocumentIndex": 131,
               "Title": "OriginRepository.cs",
               "DocumentMoniker": "C:\\Users\\ADMIN\\Desktop\\New folder (5)\\Project_ShopVision50\\BE\\Project_ShopVision50\\ShopVision50.API\\Repositories\\OriginRepo_FD\\OriginRepository.cs",
               "RelativeDocumentMoniker": "ShopVision50.API\\Repositories\\OriginRepo_FD\\OriginRepository.cs",
@@ -2149,19 +2346,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 116,
-              "Title": "OriginController.cs",
-              "DocumentMoniker": "C:\\Users\\ADMIN\\Desktop\\New folder (5)\\Project_ShopVision50\\BE\\Project_ShopVision50\\ShopVision50.API\\Controllers\\OriginController.cs",
-              "RelativeDocumentMoniker": "ShopVision50.API\\Controllers\\OriginController.cs",
-              "ToolTip": "C:\\Users\\ADMIN\\Desktop\\New folder (5)\\Project_ShopVision50\\BE\\Project_ShopVision50\\ShopVision50.API\\Controllers\\OriginController.cs",
-              "RelativeToolTip": "ShopVision50.API\\Controllers\\OriginController.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA8AAAAfAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-11-17T06:23:21.93Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 120,
+              "DocumentIndex": 132,
               "Title": "IOriginRepository.cs",
               "DocumentMoniker": "C:\\Users\\ADMIN\\Desktop\\New folder (5)\\Project_ShopVision50\\BE\\Project_ShopVision50\\ShopVision50.API\\Repositories\\OriginRepo_FD\\IOriginRepository.cs",
               "RelativeDocumentMoniker": "ShopVision50.API\\Repositories\\OriginRepo_FD\\IOriginRepository.cs",
@@ -2173,7 +2358,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 117,
+              "DocumentIndex": 129,
               "Title": "IStyleRepo.cs",
               "DocumentMoniker": "C:\\Users\\ADMIN\\Desktop\\New folder (5)\\Project_ShopVision50\\BE\\Project_ShopVision50\\ShopVision50.API\\Repositories\\StyleRepo_FD\\IStyleRepo.cs",
               "RelativeDocumentMoniker": "ShopVision50.API\\Repositories\\StyleRepo_FD\\IStyleRepo.cs",
@@ -2185,7 +2370,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 118,
+              "DocumentIndex": 130,
               "Title": "StyleRepo.cs",
               "DocumentMoniker": "C:\\Users\\ADMIN\\Desktop\\New folder (5)\\Project_ShopVision50\\BE\\Project_ShopVision50\\ShopVision50.API\\Repositories\\StyleRepo_FD\\StyleRepo.cs",
               "RelativeDocumentMoniker": "ShopVision50.API\\Repositories\\StyleRepo_FD\\StyleRepo.cs",
@@ -2197,7 +2382,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 123,
+              "DocumentIndex": 133,
               "Title": "MaterialService.cs",
               "DocumentMoniker": "C:\\Users\\ADMIN\\Desktop\\New folder (5)\\Project_ShopVision50\\BE\\Project_ShopVision50\\ShopVision50.API\\Services\\MaterialService_FD\\MaterialService.cs",
               "RelativeDocumentMoniker": "ShopVision50.API\\Services\\MaterialService_FD\\MaterialService.cs",
@@ -2209,7 +2394,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 124,
+              "DocumentIndex": 134,
               "Title": "IMaterialService.cs",
               "DocumentMoniker": "C:\\Users\\ADMIN\\Desktop\\New folder (5)\\Project_ShopVision50\\BE\\Project_ShopVision50\\ShopVision50.API\\Services\\MaterialService_FD\\IMaterialService.cs",
               "RelativeDocumentMoniker": "ShopVision50.API\\Services\\MaterialService_FD\\IMaterialService.cs",
@@ -2221,7 +2406,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 125,
+              "DocumentIndex": 135,
               "Title": "MaterialRepository.cs",
               "DocumentMoniker": "C:\\Users\\ADMIN\\Desktop\\New folder (5)\\Project_ShopVision50\\BE\\Project_ShopVision50\\ShopVision50.API\\Repositories\\MaterialRepo_FD\\MaterialRepository.cs",
               "RelativeDocumentMoniker": "ShopVision50.API\\Repositories\\MaterialRepo_FD\\MaterialRepository.cs",
@@ -2233,31 +2418,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 121,
-              "Title": "MaterialController.cs",
-              "DocumentMoniker": "C:\\Users\\ADMIN\\Desktop\\New folder (5)\\Project_ShopVision50\\BE\\Project_ShopVision50\\ShopVision50.API\\Controllers\\MaterialController.cs",
-              "RelativeDocumentMoniker": "ShopVision50.API\\Controllers\\MaterialController.cs",
-              "ToolTip": "C:\\Users\\ADMIN\\Desktop\\New folder (5)\\Project_ShopVision50\\BE\\Project_ShopVision50\\ShopVision50.API\\Controllers\\MaterialController.cs",
-              "RelativeToolTip": "ShopVision50.API\\Controllers\\MaterialController.cs",
-              "ViewState": "AgIAABMAAAAAAAAAAAAQwCcAAAAhAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-11-16T18:30:36.197Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 122,
-              "Title": "GenderController.cs",
-              "DocumentMoniker": "C:\\Users\\ADMIN\\Desktop\\New folder (5)\\Project_ShopVision50\\BE\\Project_ShopVision50\\ShopVision50.API\\Controllers\\GenderController.cs",
-              "RelativeDocumentMoniker": "ShopVision50.API\\Controllers\\GenderController.cs",
-              "ToolTip": "C:\\Users\\ADMIN\\Desktop\\New folder (5)\\Project_ShopVision50\\BE\\Project_ShopVision50\\ShopVision50.API\\Controllers\\GenderController.cs",
-              "RelativeToolTip": "ShopVision50.API\\Controllers\\GenderController.cs",
-              "ViewState": "AgIAAAYAAAAAAAAAAAAAABwAAAAfAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-11-16T18:19:31.677Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 126,
+              "DocumentIndex": 136,
               "Title": "IMaterialRepository.cs",
               "DocumentMoniker": "C:\\Users\\ADMIN\\Desktop\\New folder (5)\\Project_ShopVision50\\BE\\Project_ShopVision50\\ShopVision50.API\\Repositories\\MaterialRepo_FD\\IMaterialRepository.cs",
               "RelativeDocumentMoniker": "ShopVision50.API\\Repositories\\MaterialRepo_FD\\IMaterialRepository.cs",
@@ -2269,31 +2430,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 127,
-              "Title": "ChatController.cs",
-              "DocumentMoniker": "C:\\Users\\ADMIN\\Desktop\\New folder (5)\\Project_ShopVision50\\BE\\Project_ShopVision50\\ShopVision50.API\\Controllers\\ChatController.cs",
-              "RelativeDocumentMoniker": "ShopVision50.API\\Controllers\\ChatController.cs",
-              "ToolTip": "C:\\Users\\ADMIN\\Desktop\\New folder (5)\\Project_ShopVision50\\BE\\Project_ShopVision50\\ShopVision50.API\\Controllers\\ChatController.cs",
-              "RelativeToolTip": "ShopVision50.API\\Controllers\\ChatController.cs",
-              "ViewState": "AgIAAAsAAAAAAAAAAAAAwAAAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-11-16T18:30:23.383Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 128,
-              "Title": "LoginController.cs",
-              "DocumentMoniker": "C:\\Users\\ADMIN\\Desktop\\New folder (5)\\Project_ShopVision50\\BE\\Project_ShopVision50\\ShopVision50.API\\Controllers\\LoginController.cs",
-              "RelativeDocumentMoniker": "ShopVision50.API\\Controllers\\LoginController.cs",
-              "ToolTip": "C:\\Users\\ADMIN\\Desktop\\New folder (5)\\Project_ShopVision50\\BE\\Project_ShopVision50\\ShopVision50.API\\Controllers\\LoginController.cs",
-              "RelativeToolTip": "ShopVision50.API\\Controllers\\LoginController.cs",
-              "ViewState": "AgIAABYAAAAAAAAAAAAQwAAAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-11-16T18:26:20.618Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 129,
+              "DocumentIndex": 137,
               "Title": "IGenderService.cs",
               "DocumentMoniker": "C:\\Users\\ADMIN\\Desktop\\New folder (5)\\Project_ShopVision50\\BE\\Project_ShopVision50\\ShopVision50.API\\Services\\GenderService_FD\\IGenderService.cs",
               "RelativeDocumentMoniker": "ShopVision50.API\\Services\\GenderService_FD\\IGenderService.cs",
@@ -2305,7 +2442,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 130,
+              "DocumentIndex": 138,
               "Title": "GenderService.cs",
               "DocumentMoniker": "C:\\Users\\ADMIN\\Desktop\\New folder (5)\\Project_ShopVision50\\BE\\Project_ShopVision50\\ShopVision50.API\\Services\\GenderService_FD\\GenderService.cs",
               "RelativeDocumentMoniker": "ShopVision50.API\\Services\\GenderService_FD\\GenderService.cs",
@@ -2317,7 +2454,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 132,
+              "DocumentIndex": 140,
               "Title": "IGenderRepository.cs",
               "DocumentMoniker": "C:\\Users\\ADMIN\\Desktop\\New folder (5)\\Project_ShopVision50\\BE\\Project_ShopVision50\\ShopVision50.API\\Repositories\\GenderRepository_FD\\IGenderRepository.cs",
               "RelativeDocumentMoniker": "ShopVision50.API\\Repositories\\GenderRepository_FD\\IGenderRepository.cs",
@@ -2329,7 +2466,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 131,
+              "DocumentIndex": 139,
               "Title": "GenderRepository.cs",
               "DocumentMoniker": "C:\\Users\\ADMIN\\Desktop\\New folder (5)\\Project_ShopVision50\\BE\\Project_ShopVision50\\ShopVision50.API\\Repositories\\GenderRepository_FD\\GenderRepository.cs",
               "RelativeDocumentMoniker": "ShopVision50.API\\Repositories\\GenderRepository_FD\\GenderRepository.cs",
@@ -2341,7 +2478,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 136,
+              "DocumentIndex": 144,
               "Title": "ProductsRepo.cs",
               "DocumentMoniker": "C:\\Users\\ADMIN\\Desktop\\New folder (5)\\Project_ShopVision50\\BE\\Project_ShopVision50\\ShopVision50.API\\Repositories\\ProductsRepo_FD\\ProductsRepo.cs",
               "RelativeDocumentMoniker": "ShopVision50.API\\Repositories\\ProductsRepo_FD\\ProductsRepo.cs",
@@ -2353,7 +2490,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 137,
+              "DocumentIndex": 145,
               "Title": "IProductsRepo.cs",
               "DocumentMoniker": "C:\\Users\\ADMIN\\Desktop\\New folder (5)\\Project_ShopVision50\\BE\\Project_ShopVision50\\ShopVision50.API\\Repositories\\ProductsRepo_FD\\IProductsRepo.cs",
               "RelativeDocumentMoniker": "ShopVision50.API\\Repositories\\ProductsRepo_FD\\IProductsRepo.cs",
@@ -2365,7 +2502,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 135,
+              "DocumentIndex": 143,
               "Title": "PromotionService.cs",
               "DocumentMoniker": "C:\\Users\\ADMIN\\Desktop\\New folder (5)\\Project_ShopVision50\\BE\\Project_ShopVision50\\ShopVision50.API\\Services\\PromotionService_FD\\PromotionService.cs",
               "RelativeDocumentMoniker": "ShopVision50.API\\Services\\PromotionService_FD\\PromotionService.cs",
@@ -2377,7 +2514,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 134,
+              "DocumentIndex": 142,
               "Title": "IPromotionService.cs",
               "DocumentMoniker": "C:\\Users\\ADMIN\\Desktop\\New folder (5)\\Project_ShopVision50\\BE\\Project_ShopVision50\\ShopVision50.API\\Services\\PromotionService_FD\\IPromotionService.cs",
               "RelativeDocumentMoniker": "ShopVision50.API\\Services\\PromotionService_FD\\IPromotionService.cs",
@@ -2389,7 +2526,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 133,
+              "DocumentIndex": 141,
               "Title": "ProductsService.cs",
               "DocumentMoniker": "C:\\Users\\ADMIN\\Desktop\\New folder (5)\\Project_ShopVision50\\BE\\Project_ShopVision50\\ShopVision50.API\\Services\\ProductsService_FD\\ProductsService.cs",
               "RelativeDocumentMoniker": "ShopVision50.API\\Services\\ProductsService_FD\\ProductsService.cs",
@@ -2401,7 +2538,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 138,
+              "DocumentIndex": 146,
               "Title": "IProductsService.cs",
               "DocumentMoniker": "C:\\Users\\ADMIN\\Desktop\\New folder (5)\\Project_ShopVision50\\BE\\Project_ShopVision50\\ShopVision50.API\\Services\\ProductsService_FD\\IProductsService.cs",
               "RelativeDocumentMoniker": "ShopVision50.API\\Services\\ProductsService_FD\\IProductsService.cs",
@@ -2413,7 +2550,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 139,
+              "DocumentIndex": 147,
               "Title": "ICategoriesReposirory.cs",
               "DocumentMoniker": "C:\\Users\\ADMIN\\Desktop\\New folder (5)\\Project_ShopVision50\\BE\\Project_ShopVision50\\ShopVision50.API\\Repositories\\CategoriesRepo_FD\\ICategoriesReposirory.cs",
               "RelativeDocumentMoniker": "ShopVision50.API\\Repositories\\CategoriesRepo_FD\\ICategoriesReposirory.cs",
@@ -2425,7 +2562,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 140,
+              "DocumentIndex": 148,
               "Title": "PromotionRepository.cs",
               "DocumentMoniker": "C:\\Users\\ADMIN\\Desktop\\New folder (5)\\Project_ShopVision50\\BE\\Project_ShopVision50\\ShopVision50.API\\Repositories\\PromotionRepo_FD\\PromotionRepository.cs",
               "RelativeDocumentMoniker": "ShopVision50.API\\Repositories\\PromotionRepo_FD\\PromotionRepository.cs",
@@ -2437,7 +2574,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 141,
+              "DocumentIndex": 149,
               "Title": "CategoriesReposirory.cs",
               "DocumentMoniker": "C:\\Users\\ADMIN\\Desktop\\New folder (5)\\Project_ShopVision50\\BE\\Project_ShopVision50\\ShopVision50.API\\Repositories\\CategoriesRepo_FD\\CategoriesReposirory.cs",
               "RelativeDocumentMoniker": "ShopVision50.API\\Repositories\\CategoriesRepo_FD\\CategoriesReposirory.cs",
@@ -2449,7 +2586,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 169,
+              "DocumentIndex": 177,
               "Title": "20251028163825_addtable.cs",
               "DocumentMoniker": "C:\\Users\\Saz\\OneDrive\\Desktop\\Api50\\Project_ShopVision50\\BE\\Project_ShopVision50\\ShopVision50.Infrastructure\\Migrations\\20251028163825_addtable.cs",
               "RelativeDocumentMoniker": "..\\..\\..\\..\\..\\..\\Saz\\OneDrive\\Desktop\\Api50\\Project_ShopVision50\\BE\\Project_ShopVision50\\ShopVision50.Infrastructure\\Migrations\\20251028163825_addtable.cs",
@@ -2461,7 +2598,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 142,
+              "DocumentIndex": 150,
               "Title": "IPromotionRepository.cs",
               "DocumentMoniker": "C:\\Users\\ADMIN\\Desktop\\New folder (5)\\Project_ShopVision50\\BE\\Project_ShopVision50\\ShopVision50.API\\Repositories\\PromotionRepo_FD\\IPromotionRepository.cs",
               "RelativeDocumentMoniker": "ShopVision50.API\\Repositories\\PromotionRepo_FD\\IPromotionRepository.cs",
@@ -2473,7 +2610,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 170,
+              "DocumentIndex": 178,
               "Title": "20251028120855_Loi.cs",
               "DocumentMoniker": "C:\\Users\\Saz\\OneDrive\\Desktop\\Api50\\Project_ShopVision50\\BE\\Project_ShopVision50\\ShopVision50.Infrastructure\\Migrations\\20251028120855_Loi.cs",
               "RelativeDocumentMoniker": "..\\..\\..\\..\\..\\..\\Saz\\OneDrive\\Desktop\\Api50\\Project_ShopVision50\\BE\\Project_ShopVision50\\ShopVision50.Infrastructure\\Migrations\\20251028120855_Loi.cs",
@@ -2485,7 +2622,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 143,
+              "DocumentIndex": 151,
               "Title": "ShopVision50.Infrastructure.csproj",
               "DocumentMoniker": "C:\\Users\\ADMIN\\Desktop\\New folder (5)\\Project_ShopVision50\\BE\\Project_ShopVision50\\ShopVision50.Infrastructure\\ShopVision50.Infrastructure.csproj",
               "RelativeDocumentMoniker": "ShopVision50.Infrastructure\\ShopVision50.Infrastructure.csproj",
@@ -2497,7 +2634,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 144,
+              "DocumentIndex": 152,
               "Title": "Microsoft.Common.CurrentVersion.targets",
               "DocumentMoniker": "C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\MSBuild\\Current\\Bin\\amd64\\Microsoft.Common.CurrentVersion.targets",
               "RelativeDocumentMoniker": "..\\..\\..\\..\\..\\..\\..\\Program Files\\Microsoft Visual Studio\\2022\\Community\\MSBuild\\Current\\Bin\\amd64\\Microsoft.Common.CurrentVersion.targets",
@@ -2509,7 +2646,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 145,
+              "DocumentIndex": 153,
               "Title": "ShopVision50.Domain.csproj",
               "DocumentMoniker": "C:\\Users\\ADMIN\\Desktop\\New folder (5)\\Project_ShopVision50\\BE\\Project_ShopVision50\\ShopVision50.Domain\\ShopVision50.Domain.csproj",
               "RelativeDocumentMoniker": "ShopVision50.Domain\\ShopVision50.Domain.csproj",
@@ -2521,7 +2658,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 146,
+              "DocumentIndex": 154,
               "Title": "ReturnItem.cs",
               "DocumentMoniker": "C:\\Users\\Saz\\Desktop\\Group50\\Project_ShopVision50\\Project_ShopVision50\\Shop_Db\\Models\\ReturnItem.cs",
               "RelativeDocumentMoniker": "..\\..\\..\\..\\..\\..\\Saz\\Desktop\\Group50\\Project_ShopVision50\\Project_ShopVision50\\Shop_Db\\Models\\ReturnItem.cs",
@@ -2532,7 +2669,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 147,
+              "DocumentIndex": 155,
               "Title": "ReturnNote.cs",
               "DocumentMoniker": "C:\\Users\\Saz\\Desktop\\Group50\\Project_ShopVision50\\Project_ShopVision50\\Shop_Db\\Models\\ReturnNote.cs",
               "RelativeDocumentMoniker": "..\\..\\..\\..\\..\\..\\Saz\\Desktop\\Group50\\Project_ShopVision50\\Project_ShopVision50\\Shop_Db\\Models\\ReturnNote.cs",
@@ -2543,7 +2680,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 148,
+              "DocumentIndex": 156,
               "Title": "Payment.cs",
               "DocumentMoniker": "C:\\Users\\Saz\\Desktop\\Group50\\Project_ShopVision50\\Project_ShopVision50\\Shop_Db\\Models\\Payment.cs",
               "RelativeDocumentMoniker": "..\\..\\..\\..\\..\\..\\Saz\\Desktop\\Group50\\Project_ShopVision50\\Project_ShopVision50\\Shop_Db\\Models\\Payment.cs",
@@ -2554,7 +2691,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 149,
+              "DocumentIndex": 157,
               "Title": "OrderPromotion.cs",
               "DocumentMoniker": "C:\\Users\\Saz\\Desktop\\Group50\\Project_ShopVision50\\Project_ShopVision50\\Shop_Db\\Models\\OrderPromotion.cs",
               "RelativeDocumentMoniker": "..\\..\\..\\..\\..\\..\\Saz\\Desktop\\Group50\\Project_ShopVision50\\Project_ShopVision50\\Shop_Db\\Models\\OrderPromotion.cs",
@@ -2565,7 +2702,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 150,
+              "DocumentIndex": 158,
               "Title": "ProductSize.cs",
               "DocumentMoniker": "C:\\Users\\Saz\\Desktop\\Group50\\Project_ShopVision50\\Project_ShopVision50\\Shop_Db\\Models\\ProductSize.cs",
               "RelativeDocumentMoniker": "..\\..\\..\\..\\..\\..\\Saz\\Desktop\\Group50\\Project_ShopVision50\\Project_ShopVision50\\Shop_Db\\Models\\ProductSize.cs",
@@ -2576,7 +2713,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 151,
+              "DocumentIndex": 159,
               "Title": "Style.cs",
               "DocumentMoniker": "C:\\Users\\Saz\\Desktop\\Group50\\Project_ShopVision50\\Project_ShopVision50\\Shop_Db\\Models\\Style.cs",
               "RelativeDocumentMoniker": "..\\..\\..\\..\\..\\..\\Saz\\Desktop\\Group50\\Project_ShopVision50\\Project_ShopVision50\\Shop_Db\\Models\\Style.cs",
@@ -2587,7 +2724,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 152,
+              "DocumentIndex": 160,
               "Title": "ProductColor.cs",
               "DocumentMoniker": "C:\\Users\\Saz\\Desktop\\Group50\\Project_ShopVision50\\Project_ShopVision50\\Shop_Db\\Models\\ProductColor.cs",
               "RelativeDocumentMoniker": "..\\..\\..\\..\\..\\..\\Saz\\Desktop\\Group50\\Project_ShopVision50\\Project_ShopVision50\\Shop_Db\\Models\\ProductColor.cs",
@@ -2598,7 +2735,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 153,
+              "DocumentIndex": 161,
               "Title": "Promotion.cs",
               "DocumentMoniker": "C:\\Users\\Saz\\Desktop\\Group50\\Project_ShopVision50\\Project_ShopVision50\\Shop_Db\\Models\\Promotion.cs",
               "RelativeDocumentMoniker": "..\\..\\..\\..\\..\\..\\Saz\\Desktop\\Group50\\Project_ShopVision50\\Project_ShopVision50\\Shop_Db\\Models\\Promotion.cs",
@@ -2609,7 +2746,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 154,
+              "DocumentIndex": 162,
               "Title": "OrderItem.cs",
               "DocumentMoniker": "C:\\Users\\Saz\\Desktop\\Group50\\Project_ShopVision50\\Project_ShopVision50\\Shop_Db\\Models\\OrderItem.cs",
               "RelativeDocumentMoniker": "..\\..\\..\\..\\..\\..\\Saz\\Desktop\\Group50\\Project_ShopVision50\\Project_ShopVision50\\Shop_Db\\Models\\OrderItem.cs",
@@ -2620,7 +2757,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 155,
+              "DocumentIndex": 163,
               "Title": "CartItem.cs",
               "DocumentMoniker": "C:\\Users\\Saz\\Desktop\\Group50\\Project_ShopVision50\\Project_ShopVision50\\Shop_Db\\Models\\CartItem.cs",
               "RelativeDocumentMoniker": "..\\..\\..\\..\\..\\..\\Saz\\Desktop\\Group50\\Project_ShopVision50\\Project_ShopVision50\\Shop_Db\\Models\\CartItem.cs",
@@ -2631,7 +2768,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 156,
+              "DocumentIndex": 164,
               "Title": "Origin.cs",
               "DocumentMoniker": "C:\\Users\\Saz\\Desktop\\Group50\\Project_ShopVision50\\Project_ShopVision50\\Shop_Db\\Models\\Origin.cs",
               "RelativeDocumentMoniker": "..\\..\\..\\..\\..\\..\\Saz\\Desktop\\Group50\\Project_ShopVision50\\Project_ShopVision50\\Shop_Db\\Models\\Origin.cs",
@@ -2642,7 +2779,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 157,
+              "DocumentIndex": 165,
               "Title": "Product.cs",
               "DocumentMoniker": "C:\\Users\\Saz\\Desktop\\Group50\\Project_ShopVision50\\Project_ShopVision50\\Shop_Db\\Models\\Product.cs",
               "RelativeDocumentMoniker": "..\\..\\..\\..\\..\\..\\Saz\\Desktop\\Group50\\Project_ShopVision50\\Project_ShopVision50\\Shop_Db\\Models\\Product.cs",
@@ -2653,7 +2790,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 158,
+              "DocumentIndex": 166,
               "Title": "ProductImage.cs",
               "DocumentMoniker": "C:\\Users\\Saz\\Desktop\\Group50\\Project_ShopVision50\\Project_ShopVision50\\Shop_Db\\Models\\ProductImage.cs",
               "RelativeDocumentMoniker": "..\\..\\..\\..\\..\\..\\Saz\\Desktop\\Group50\\Project_ShopVision50\\Project_ShopVision50\\Shop_Db\\Models\\ProductImage.cs",
@@ -2664,7 +2801,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 159,
+              "DocumentIndex": 167,
               "Title": "ProductVariant.cs",
               "DocumentMoniker": "C:\\Users\\Saz\\Desktop\\Group50\\Project_ShopVision50\\Project_ShopVision50\\Shop_Db\\Models\\ProductVariant.cs",
               "RelativeDocumentMoniker": "..\\..\\..\\..\\..\\..\\Saz\\Desktop\\Group50\\Project_ShopVision50\\Project_ShopVision50\\Shop_Db\\Models\\ProductVariant.cs",
@@ -2675,7 +2812,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 160,
+              "DocumentIndex": 168,
               "Title": "UserAddress.cs",
               "DocumentMoniker": "C:\\Users\\Saz\\Desktop\\Group50\\Project_ShopVision50\\Project_ShopVision50\\Shop_Db\\Models\\UserAddress.cs",
               "RelativeDocumentMoniker": "..\\..\\..\\..\\..\\..\\Saz\\Desktop\\Group50\\Project_ShopVision50\\Project_ShopVision50\\Shop_Db\\Models\\UserAddress.cs",
@@ -2686,7 +2823,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 161,
+              "DocumentIndex": 169,
               "Title": "Order.cs",
               "DocumentMoniker": "C:\\Users\\Saz\\Desktop\\Group50\\Project_ShopVision50\\Project_ShopVision50\\Shop_Db\\Models\\Order.cs",
               "RelativeDocumentMoniker": "..\\..\\..\\..\\..\\..\\Saz\\Desktop\\Group50\\Project_ShopVision50\\Project_ShopVision50\\Shop_Db\\Models\\Order.cs",
@@ -2697,7 +2834,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 162,
+              "DocumentIndex": 170,
               "Title": "Gender.cs",
               "DocumentMoniker": "C:\\Users\\Saz\\Desktop\\Group50\\Project_ShopVision50\\Project_ShopVision50\\Shop_Db\\Models\\Gender.cs",
               "RelativeDocumentMoniker": "..\\..\\..\\..\\..\\..\\Saz\\Desktop\\Group50\\Project_ShopVision50\\Project_ShopVision50\\Shop_Db\\Models\\Gender.cs",
@@ -2708,7 +2845,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 163,
+              "DocumentIndex": 171,
               "Title": "Cart.cs",
               "DocumentMoniker": "C:\\Users\\Saz\\Desktop\\Group50\\Project_ShopVision50\\Project_ShopVision50\\Shop_Db\\Models\\Cart.cs",
               "RelativeDocumentMoniker": "..\\..\\..\\..\\..\\..\\Saz\\Desktop\\Group50\\Project_ShopVision50\\Project_ShopVision50\\Shop_Db\\Models\\Cart.cs",
@@ -2719,7 +2856,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 164,
+              "DocumentIndex": 172,
               "Title": "Material.cs",
               "DocumentMoniker": "C:\\Users\\Saz\\Desktop\\Group50\\Project_ShopVision50\\Project_ShopVision50\\Shop_Db\\Models\\Material.cs",
               "RelativeDocumentMoniker": "..\\..\\..\\..\\..\\..\\Saz\\Desktop\\Group50\\Project_ShopVision50\\Project_ShopVision50\\Shop_Db\\Models\\Material.cs",
@@ -2730,7 +2867,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 165,
+              "DocumentIndex": 173,
               "Title": "Category.cs",
               "DocumentMoniker": "C:\\Users\\Saz\\Desktop\\Group50\\Project_ShopVision50\\Project_ShopVision50\\Shop_Db\\Models\\Category.cs",
               "RelativeDocumentMoniker": "..\\..\\..\\..\\..\\..\\Saz\\Desktop\\Group50\\Project_ShopVision50\\Project_ShopVision50\\Shop_Db\\Models\\Category.cs",
@@ -2741,7 +2878,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 166,
+              "DocumentIndex": 174,
               "Title": "UserRole.cs",
               "DocumentMoniker": "C:\\Users\\Saz\\Desktop\\Group50\\Project_ShopVision50\\Project_ShopVision50\\Shop_Db\\Models\\UserRole.cs",
               "RelativeDocumentMoniker": "..\\..\\..\\..\\..\\..\\Saz\\Desktop\\Group50\\Project_ShopVision50\\Project_ShopVision50\\Shop_Db\\Models\\UserRole.cs",
@@ -2752,7 +2889,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 167,
+              "DocumentIndex": 175,
               "Title": "Role.cs",
               "DocumentMoniker": "C:\\Users\\Saz\\Desktop\\Group50\\Project_ShopVision50\\Project_ShopVision50\\Shop_Db\\Models\\Role.cs",
               "RelativeDocumentMoniker": "..\\..\\..\\..\\..\\..\\Saz\\Desktop\\Group50\\Project_ShopVision50\\Project_ShopVision50\\Shop_Db\\Models\\Role.cs",
@@ -2763,7 +2900,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 168,
+              "DocumentIndex": 176,
               "Title": "User.cs",
               "DocumentMoniker": "C:\\Users\\Saz\\Desktop\\Group50\\Project_ShopVision50\\Project_ShopVision50\\Shop_Db\\Models\\User.cs",
               "RelativeDocumentMoniker": "..\\..\\..\\..\\..\\..\\Saz\\Desktop\\Group50\\Project_ShopVision50\\Project_ShopVision50\\Shop_Db\\Models\\User.cs",

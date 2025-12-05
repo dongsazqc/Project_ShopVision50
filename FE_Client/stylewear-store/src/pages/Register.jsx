@@ -9,8 +9,7 @@ const Register = () => {
   const [otpModalVisible, setOtpModalVisible] = useState(false);
   const [tempToken, setTempToken] = useState("");
   const [userEmail, setUserEmail] = useState("");
-
-  const [formData, setFormData] = useState(null); // lưu form tạm
+  const [formData, setFormData] = useState(null);
 
   const navigate = useNavigate();
 
@@ -27,18 +26,22 @@ const Register = () => {
         defaultAddress: values.address,
       };
 
-      const res = await api.post("/Users/send-register-otp", payload);
+      // Gọi API register-with-otp
+      const res = await api.post("/users/register-with-otp", payload);
 
-      if (res.data.success) {
+      if (res.data.success && res.data.tempToken) {
         setTempToken(res.data.tempToken);
         setUserEmail(values.email);
         setOtpModalVisible(true);
-        message.success("OTP đã được gửi tới email của bạn. Vui lòng xác thực để hoàn tất đăng ký.");
+        message.success(
+          "OTP đã được gửi tới email của bạn. Vui lòng xác thực để hoàn tất đăng ký."
+        );
       } else {
-        message.error(res.data.message || "Email đã tồn tại");
+        message.error(res.data.message || "Đăng ký thất bại");
       }
-    } catch {
-      message.error("Gửi OTP thất bại");
+    } catch (err) {
+      console.error(err);
+      message.error("Gửi OTP thất bại, thử lại sau");
     } finally {
       setLoading(false);
     }
@@ -49,7 +52,7 @@ const Register = () => {
     try {
       setOtpLoading(true);
       const payload = { otp: values.otp, tempToken };
-      const res = await api.post("/Users/verify-register-otp", payload);
+      const res = await api.post("/users/verify-register-otp", payload);
 
       if (res.data.success) {
         message.success("Đăng ký thành công! Vui lòng đăng nhập");
@@ -58,7 +61,8 @@ const Register = () => {
       } else {
         message.error(res.data.message || "OTP không đúng hoặc hết hạn");
       }
-    } catch {
+    } catch (err) {
+      console.error(err);
       message.error("Xác thực OTP thất bại");
     } finally {
       setOtpLoading(false);
@@ -85,6 +89,7 @@ const Register = () => {
         bodyStyle={{ padding: 0 }}
       >
         <Row>
+          {/* Bên trái hình nền */}
           <Col
             span={12}
             style={{
@@ -103,6 +108,7 @@ const Register = () => {
             </p>
           </Col>
 
+          {/* Bên phải form đăng ký */}
           <Col span={12} style={{ padding: 40 }}>
             <h2 style={{ marginBottom: 20 }}>Đăng ký</h2>
 
