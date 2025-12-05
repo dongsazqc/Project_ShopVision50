@@ -1,7 +1,7 @@
+import React, { useEffect, useState } from "react";
 import {
   Table,
   Button,
-  Space,
   Modal,
   Form,
   InputNumber,
@@ -21,21 +21,35 @@ import {
   DeleteOutlined,
   CreditCardOutlined,
 } from "@ant-design/icons";
-import { useState, useEffect } from "react";
 import api from "../utils/axios";
 
+/**
+ * POS.jsx
+ * - PaymentMethod values sent to BE: "Cash" | "BankTransfer"
+ * - orderType values sent to BE: "Offline" | "Online"
+ * - orderStatus (string) sent to BE: one of ["Pending","Confirmed","Shipping","Delivered","Completed","Cancelled"]
+ * - Auto rule for Offline orders: if shippingAddress is empty -> orderStatus = "Completed" (BE should also implement this rule)
+ *
+ * Giữ nguyên logic tính toán, in hóa đơn, tìm kiếm, v.v.
+ */
+
 export default function POS() {
-  //const token = localStorage.getItem("token");
+  // Lấy user từ localStorage (nếu có)
   const storedUser = localStorage.getItem("user");
   const user = storedUser ? JSON.parse(storedUser) : null;
-
   const staffName = user?.fullName || "Không xác định";
+
+  // State
   const [products, setProducts] = useState([]);
   const [cart, setCart] = useState([]);
   const [openPayment, setOpenPayment] = useState(false);
   const [loading, setLoading] = useState(false);
-  const [paymentMethod, setPaymentMethod] = useState("TienMat");
+  // paymentMethod must be one of: "Cash", "BankTransfer"
+  const [paymentMethod, setPaymentMethod] = useState("Cash");
+  // orderType must be one of: "Offline", "Online" — default POS là Offline
+  const [orderType, setOrderType] = useState("Offline");
   const [promotions, setPromotions] = useState([]);
+  // discount: { type: "Percent" | "Amount", value: number }
   const [discount, setDiscount] = useState({ type: null, value: 0 });
   const [discountCode, setDiscountCode] = useState(null);
   const [form] = Form.useForm();
@@ -43,7 +57,7 @@ export default function POS() {
 
   useEffect(() => {
     form.setFieldsValue({ staffName });
-  }, [staffName]);
+  }, [staffName, form]);
 
   const filteredProducts = products.filter(
     (p) =>
@@ -52,6 +66,7 @@ export default function POS() {
       p.tenKichCo?.toLowerCase().includes(searchText.toLowerCase())
   );
 
+  // --- Fetch products ---
   const fetchProducts = async () => {
     try {
       setLoading(true);
@@ -59,24 +74,15 @@ export default function POS() {
       const data = res.data?.$values || [];
 
       const formatted = data.map((p) => {
-        // Lấy product từ variant (theo JSON bạn gửi)
         const product = p.product || {};
-
-        // Chuẩn hóa mảng ảnh (có $values)
         const imgs = product.productImages?.$values || [];
-
-        // Tìm cover image: ưu tiên isMain = true, không có thì lấy ảnh đầu
         const cover =
           imgs.find((img) => img.isMain === true) || imgs[0] || null;
-
-        // Lấy url gốc
         const rawUrl = cover?.url || null;
-
-        // Nếu BE trả về path tương đối thì thêm domain BE vào
         const fullUrl = rawUrl
           ? rawUrl.startsWith("http")
             ? rawUrl
-            : `http://160.250.5.26:5000${rawUrl}` // sửa domain nếu BE khác
+            : `http://160.250.5.26:5000${rawUrl}`
           : "/default-image.png";
 
         return {
@@ -136,10 +142,11 @@ export default function POS() {
     (sum, item) => sum + item.soLuong * (item.giaBan || item.price || 0),
     0
   );
+
   const discountAmount =
     discount?.type === "Percent"
       ? Math.round((total * discount.value) / 100)
-      : discount?.type === "amount"
+      : discount?.type === "Amount"
       ? discount.value
       : 0;
 
@@ -147,29 +154,36 @@ export default function POS() {
     const selected = promotions.find((p) => p.code === code);
 
     if (!selected) {
-      setDiscount(null);
+      setDiscount({ type: null, value: 0 });
+      setDiscountCode(null);
       return message.error("Mã giảm giá không hợp lệ");
     }
 
-    setDiscount({ type: selected.discountType, value: selected.discountValue });
+    // Chuẩn hoá loại discount từ BE cho phù hợp
+    const type = selected.discountType === "Percent" ? "Percent" : "Amount";
+    const value = selected.discountValue || 0;
+
+    setDiscount({ type, value });
     setDiscountCode(code);
 
-    if (selected.discountType === "Percent") {
-      message.success(`Giảm ${selected.discountValue}%`);
+    if (type === "Percent") {
+      message.success(`Giảm ${value}%`);
     } else {
-      message.success(`Giảm ${selected.discountValue.toLocaleString()}₫`);
+      message.success(`Giảm ${value.toLocaleString()}₫`);
     }
   };
 
   const totalAfterDiscount =
     discount?.type === "Percent"
-      ? total - (total * discount.value) / 100
-      : discount?.type === "amount"
-      ? total - discount.value
+      ? Math.max(0, Math.round(total - (total * discount.value) / 100))
+      : discount?.type === "Amount"
+      ? Math.max(0, total - discount.value)
       : total;
+
+  // --- In hóa đơn (giữ nguyên logic nhưng đảm bảo structure) ---
   const printInvoice = (order) => {
     const printWindow = window.open("", "_blank", "width=600,height=800");
-    const orderCode = `HD${new Date().getTime()}`; // Ví dụ: HD1700000000000
+    const orderCode = `HD${new Date().getTime()}`;
 
     const html = `
     <html>
@@ -195,12 +209,16 @@ export default function POS() {
         <p><b>SĐT:</b> ${order.khachHang.soDienThoai}</p>
         <p><b>Ngày:</b> ${order.ngayThanhToan}</p>
         <p><b>Phương thức thanh toán:</b> ${order.phuongThucThanhToan}</p>
+        <p><b>Loại đơn:</b> ${order.loaiDon}</p>
+        <p><b>Trạng thái:</b> ${order.trangThai}</p>
       </div>
 
       <table>
         <tr>
           <th>STT</th>
           <th>Tên sản phẩm</th>
+          <th>Size</th>
+          <th>Màu</th>
           <th>Số lượng</th>
           <th>Đơn giá</th>
           <th>Thành tiền</th>
@@ -210,7 +228,9 @@ export default function POS() {
             (item, index) => `
             <tr>
               <td>${index + 1}</td>
-              <td>${item.tenSanPham}</td>
+              <td>${item.tenSanPham || item.sanPhamId || ""}</td>
+              <td>${item.tenKichCo || "-"}</td>
+              <td>${item.tenMau || "-"}</td>
               <td>${item.soLuong}</td>
               <td>${item.donGia.toLocaleString()} ₫</td>
               <td>${(item.soLuong * item.donGia).toLocaleString()} ₫</td>
@@ -246,40 +266,50 @@ export default function POS() {
     printWindow.document.close();
   };
 
+  // --- Build and submit order ---
   const handleSubmitOrder = async () => {
     try {
-      // Lấy dữ liệu từ form
       const customerName = form.getFieldValue("customerName");
       const customerPhone = form.getFieldValue("customerPhone");
       const shippingAddress = form.getFieldValue("shippingAddress") || "";
       const cashReceived = form.getFieldValue("cashReceived") || 0;
       const cashChange = form.getFieldValue("cashChange") || 0;
 
-      // Tạo payload gửi lên BE
+      // Determine orderStatus according to rules
+      // If Offline and no shippingAddress => Completed
+      // Otherwise default to Pending (Online orders typically start Pending)
+      let orderStatus = "Pending";
+      if (orderType === "Offline") {
+        if (!shippingAddress || shippingAddress.trim() === "") {
+          orderStatus = "Completed"; // immediate complete for in-store pickup / no shipping
+        } else {
+          orderStatus = "Pending"; // has shipping -> staff will confirm and ship
+        }
+      } else {
+        // Online orders default to Pending
+        orderStatus = "Pending";
+      }
+
       const orderData = {
         orderDate: new Date().toISOString(),
-        orderType: "Online", // nếu BE sau này hỗ trợ Offline thì đổi lại
-        status: true,
+        orderType: orderType, // "Offline" | "Online"
+        orderStatus: orderStatus, // send string status to BE
 
         recipientName: customerName,
         recipientPhone: customerPhone,
         shippingAddress: shippingAddress,
         totalAmount: totalAfterDiscount,
-        userId: user?.userId, // userId từ localStorage
+        userId: user?.userId,
 
-        // MẢNG THUẦN, KHÔNG DÙNG $values
         orderItems: cart.map((item) => ({
           productVariantId: item.productVariantId,
           quantity: item.soLuong,
           price: item.giaBan || item.price,
         })),
 
-        // Có thể bỏ hẳn orderPromotions nếu BE không yêu cầu
-        // orderPromotions: [],
-
         payments: [
           {
-            method: paymentMethod, // "TienMat" | "ChuyenKhoan"
+            method: paymentMethod, // "Cash" | "BankTransfer"
             amount: totalAfterDiscount,
             cashReceived: cashReceived,
             cashChange: cashChange,
@@ -294,19 +324,25 @@ export default function POS() {
 
       message.success("Tạo đơn hàng thành công!");
 
-      // In hóa đơn (nếu bạn muốn hiển thị tên nhân viên)
+      // In hóa đơn với các thông tin mô tả trạng thái/loại đơn
       printInvoice({
         ...orderData,
-        nhanVienBanHang: staffName, // lấy từ token/localStorage
+        nhanVienBanHang: staffName,
         khachHang: {
           ten: customerName,
           soDienThoai: customerPhone,
           diaChi: shippingAddress,
         },
         ngayThanhToan: new Date().toLocaleString(),
-        phuongThucThanhToan: paymentMethod,
+        phuongThucThanhToan:
+          paymentMethod === "Cash" ? "Tiền mặt" : "Chuyển khoản",
+        loaiDon: orderType === "Offline" ? "Bán tại quầy" : "Bán online",
+        trangThai: mapStatusToLabel(orderStatus),
         chiTietDonHang: orderData.orderItems.map((item) => ({
           sanPhamId: item.productVariantId,
+          tenSanPham:
+            products.find((p) => p.productVariantId === item.productVariantId)
+              ?.tenSanPham || "",
           soLuong: item.quantity,
           donGia: item.price,
         })),
@@ -315,10 +351,10 @@ export default function POS() {
         tienThoiLai: cashChange,
       });
 
-      // Reset lại UI
+      // Reset UI
       setCart([]);
       setOpenPayment(false);
-      setDiscount(null);
+      setDiscount({ type: null, value: 0 });
       setDiscountCode(null);
       form.resetFields([
         "customerName",
@@ -333,16 +369,33 @@ export default function POS() {
     }
   };
 
+  const mapStatusToLabel = (status) => {
+    switch (status) {
+      case "Pending":
+        return "Chờ xác nhận";
+      case "Confirmed":
+        return "Đã xác nhận";
+      case "Shipping":
+        return "Đang giao";
+      case "Delivered":
+        return "Đã giao";
+      case "Completed":
+        return "Hoàn tất";
+      case "Cancelled":
+        return "Đã hủy";
+      default:
+        return status;
+    }
+  };
+
   return (
     <div>
       <h2>Bán hàng tại quầy (POS)</h2>
       <Divider />
 
       <Row gutter={16}>
-        {/* PRODUCTS */}
         <Col span={16}>
           <Card title="Sản phẩm" bordered={false}>
-            {/* Input tìm kiếm */}
             <Input
               placeholder="Tìm kiếm sản phẩm theo tên, màu, size..."
               value={searchText}
@@ -361,7 +414,7 @@ export default function POS() {
                 {
                   title: "Giá bán",
                   dataIndex: "giaBan",
-                  render: (v) => `${v.toLocaleString()} ₫`,
+                  render: (v) => `${(v || 0).toLocaleString()} ₫`,
                 },
                 { title: "Màu", dataIndex: "tenMau" },
                 { title: "Size", dataIndex: "tenKichCo" },
@@ -382,7 +435,6 @@ export default function POS() {
           </Card>
         </Col>
 
-        {/* CART */}
         <Col span={8}>
           <Card
             title={
@@ -437,7 +489,6 @@ export default function POS() {
 
             <Divider />
 
-            {/* PROMOTION DROPDOWN */}
             <Select
               placeholder="Chọn mã khuyến mãi"
               style={{ width: "100%" }}
@@ -463,8 +514,8 @@ export default function POS() {
 
             <Tag color="green" style={{ marginTop: 8 }}>
               Giảm {discountAmount.toLocaleString()}₫
-              {discount.type === "percent" && ` (${discount.value}%)`}
-              {discount.type === "amount" &&
+              {discount?.type === "Percent" && ` (${discount.value}%)`}
+              {discount?.type === "Amount" &&
                 ` (${discount.value.toLocaleString()}₫)`}
             </Tag>
 
@@ -492,7 +543,17 @@ export default function POS() {
         cancelText="Hủy"
       >
         <Form form={form} layout="vertical">
-          {/* TÊN KHÁCH HÀNG */}
+          <Form.Item label="Loại đơn hàng" name="orderType">
+            <Select
+              value={orderType}
+              onChange={(v) => setOrderType(v)}
+              options={[
+                { value: "Offline", label: "Bán tại quầy" },
+                { value: "Online", label: "Bán online" },
+              ]}
+            />
+          </Form.Item>
+
           <Form.Item
             label="Tên khách hàng"
             name="customerName"
@@ -503,7 +564,6 @@ export default function POS() {
             <Input placeholder="Nhập tên khách hàng" />
           </Form.Item>
 
-          {/* SĐT KHÁCH HÀNG */}
           <Form.Item
             label="Số điện thoại"
             name="customerPhone"
@@ -518,7 +578,6 @@ export default function POS() {
             <Input placeholder="Nhập số điện thoại" />
           </Form.Item>
 
-          {/* NGÀY THANH TOÁN */}
           <Form.Item
             label="Ngày thanh toán"
             name="paymentDate"
@@ -527,10 +586,10 @@ export default function POS() {
             <Input readOnly />
           </Form.Item>
 
-          {/* NHÂN VIÊN BÁN HÀNG */}
           <Form.Item label="Nhân viên bán hàng" name="staffName">
             <Input readOnly />
           </Form.Item>
+
           <Form.Item
             label="Địa chỉ nhận hàng (tùy chọn)"
             name="shippingAddress"
@@ -538,19 +597,18 @@ export default function POS() {
             <Input placeholder="Nhập địa chỉ nhận hàng" />
           </Form.Item>
 
-          {/* PHƯƠNG THỨC THANH TOÁN */}
           <Form.Item label="Phương thức thanh toán">
             <Select
               value={paymentMethod}
               onChange={setPaymentMethod}
               options={[
-                { value: "TienMat", label: "Tiền mặt" },
-                { value: "ChuyenKhoan", label: "Chuyển khoản" },
+                { value: "Cash", label: "Tiền mặt" },
+                { value: "BankTransfer", label: "Chuyển khoản" },
               ]}
             />
           </Form.Item>
 
-          {paymentMethod === "ChuyenKhoan" && (
+          {paymentMethod === "BankTransfer" && (
             <div style={{ textAlign: "center", margin: "15px 0" }}>
               <p>Quét mã QR để thanh toán</p>
               <img
@@ -560,7 +618,7 @@ export default function POS() {
             </div>
           )}
 
-          {paymentMethod === "TienMat" && (
+          {paymentMethod === "Cash" && (
             <>
               <Form.Item
                 label="Tiền khách đưa"
@@ -568,11 +626,14 @@ export default function POS() {
                 rules={[{ required: true, message: "Nhập số tiền khách đưa" }]}
               >
                 <InputNumber
-                  min={totalAfterDiscount}
+                  min={0}
                   style={{ width: "100%" }}
                   placeholder="Nhập tiền khách đưa"
                   onChange={(value) =>
-                    form.setFieldValue("cashChange", value - totalAfterDiscount)
+                    form.setFieldValue(
+                      "cashChange",
+                      (value || 0) - totalAfterDiscount
+                    )
                   }
                 />
               </Form.Item>
@@ -582,7 +643,8 @@ export default function POS() {
                   readOnly
                   style={{ width: "100%" }}
                   value={
-                    form.getFieldValue("cashReceived") - totalAfterDiscount
+                    (form.getFieldValue("cashReceived") || 0) -
+                    totalAfterDiscount
                   }
                 />
               </Form.Item>

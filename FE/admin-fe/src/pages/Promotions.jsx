@@ -9,7 +9,7 @@ import {
   InputNumber,
   Tag,
   message,
-   Select, 
+  Select,
 } from "antd";
 import { PlusOutlined, GiftOutlined } from "@ant-design/icons";
 import dayjs from "dayjs";
@@ -25,6 +25,7 @@ export default function Promotions() {
   const [openModal, setOpenModal] = useState(false);
   const [selectedPromo, setSelectedPromo] = useState(null);
   const [statusFilter, setStatusFilter] = useState("all");
+
   // ================= Lấy danh sách khuyến mãi =================
   const fetchPromotions = async () => {
     try {
@@ -41,7 +42,7 @@ export default function Promotions() {
         }))
         .sort((a, b) => b.promotionId - a.promotionId);
 
-     setPromotions(filterByStatus(formatted, statusFilter));
+      setPromotions(filterByStatus(formatted, statusFilter));
     } catch (err) {
       console.error(err);
       message.error("Không thể tải danh sách khuyến mãi");
@@ -54,16 +55,15 @@ export default function Promotions() {
     fetchPromotions();
   }, []);
 
-
   const filterByStatus = (list, status) => {
-  if (status === "active") {
-    return list.filter((p) => dayjs().isBefore(dayjs(p.endDate)));
-  }
-  if (status === "expired") {
-    return list.filter((p) => dayjs().isAfter(dayjs(p.endDate)));
-  }
-  return list; // all
-};
+    if (status === "active") {
+      return list.filter((p) => dayjs().isBefore(dayjs(p.endDate)));
+    }
+    if (status === "expired") {
+      return list.filter((p) => dayjs().isAfter(dayjs(p.endDate)));
+    }
+    return list; // all
+  };
 
   // ================= Thêm / Cập nhật =================
   const handleSave = async (values) => {
@@ -87,20 +87,21 @@ export default function Promotions() {
         discountValue: values.discountValue,
         condition: values.condition,
         scope: values.scope,
-        // 🧩 fix timezone và định dạng ngày chuẩn ISO (không sai lệch)
         startDate: dayjs(start).format("YYYY-MM-DDTHH:mm:ss"),
         endDate: dayjs(end).format("YYYY-MM-DDTHH:mm:ss"),
         status: true,
       };
 
-      // 🧩 Check trùng mã trước khi gửi API
+      // Check trùng mã trước khi gửi API
       if (!selectedPromo) {
         const exists = promotions.some(
           (p) => p.code?.toLowerCase() === values.code.trim().toLowerCase()
         );
         if (exists) {
-          message.warning("⚠️ Mã khuyến mãi này đã tồn tại, vui lòng chọn mã khác!");
-          return; // dừng lại, không gửi request
+          message.warning(
+            "⚠️ Mã khuyến mãi này đã tồn tại, vui lòng chọn mã khác!"
+          );
+          return;
         }
       }
 
@@ -141,10 +142,7 @@ export default function Promotions() {
         discountValue: promo.discountValue,
         condition: promo.condition,
         scope: promo.scope,
-        dateRange: [
-          dayjs(promo.startDate),
-          dayjs(promo.endDate),
-        ],
+        dateRange: [dayjs(promo.startDate), dayjs(promo.endDate)],
       });
 
       setOpenModal(true);
@@ -186,12 +184,12 @@ export default function Promotions() {
     {
       title: "Ngày bắt đầu",
       dataIndex: "startDate",
-      render: (val) => (val ? dayjs(val).format("DD/MM/YYYY") : "—"),
+      render: (val) => (val ? dayjs(val).format("DD/MM/YYYY HH:mm") : "—"),
     },
     {
       title: "Ngày kết thúc",
       dataIndex: "endDate",
-      render: (val) => (val ? dayjs(val).format("DD/MM/YYYY") : "—"),
+      render: (val) => (val ? dayjs(val).format("DD/MM/YYYY HH:mm") : "—"),
     },
     {
       title: "Trạng thái",
@@ -206,64 +204,62 @@ export default function Promotions() {
 
   return (
     <div>
-<Space
-  style={{
-    marginBottom: 16,
-    display: "flex",
-    justifyContent: "space-between",
-  }}
->
-  <Space>
-    <Input.Search
-      placeholder="Tìm mã khuyến mãi..."
-      allowClear
-      onSearch={(value) => {
-        if (!value.trim()) {
-          fetchPromotions();
-        } else {
-          setPromotions((prev) =>
-            filterByStatus(
-              prev.filter((p) =>
-                p.code.toLowerCase().includes(value.toLowerCase())
-              ),
-              statusFilter
-            )
-          );
-        }
-      }}
-      style={{ width: 240 }}
-    />
+      <Space
+        style={{
+          marginBottom: 16,
+          display: "flex",
+          justifyContent: "space-between",
+        }}
+      >
+        <Space>
+          <Input.Search
+            placeholder="Tìm mã khuyến mãi..."
+            allowClear
+            onSearch={(value) => {
+              if (!value.trim()) {
+                fetchPromotions();
+              } else {
+                setPromotions((prev) =>
+                  filterByStatus(
+                    prev.filter((p) =>
+                      p.code.toLowerCase().includes(value.toLowerCase())
+                    ),
+                    statusFilter
+                  )
+                );
+              }
+            }}
+            style={{ width: 240 }}
+          />
 
-    {/* 🔥 Select trạng thái */}
-    <Select
-      value={statusFilter}
-      style={{ width: 160 }}
-      onChange={(value) => {
-        setStatusFilter(value);
-        setPromotions((prev) =>
-          filterByStatus(prev, value)
-        );
-      }}
-      options={[
-        { label: "Tất cả", value: "all" },
-        { label: "Đang áp dụng", value: "active" },
-        { label: "Hết hạn", value: "expired" },
-      ]}
-    />
-  </Space>
+          <Select
+            value={statusFilter}
+            style={{ width: 160 }}
+            onChange={(value) => {
+              setStatusFilter(value);
+              setPromotions((prev) => filterByStatus(prev, value));
+            }}
+            options={[
+              { label: "Tất cả", value: "all" },
+              { label: "Đang áp dụng", value: "active" },
+              { label: "Hết hạn", value: "expired" },
+            ]}
+          />
+        </Space>
 
-  <Button
-    type="primary"
-    icon={<PlusOutlined />}
-    onClick={() => {
-      form.resetFields();
-      setSelectedPromo(null);
-      setOpenModal(true);
-    }}
-  >
-    Thêm khuyến mãi
-  </Button>
-</Space>
+        <Button
+          type="primary"
+          icon={<PlusOutlined />}
+          onClick={() => {
+            form.resetFields();
+            setSelectedPromo(null);
+            setOpenModal(true);
+          }}
+        >
+          Thêm khuyến mãi
+        </Button>
+      </Space>
+
       <Table
         dataSource={promotions}
         columns={columns}
@@ -292,22 +288,30 @@ export default function Promotions() {
             name="code"
             rules={[
               { required: true, message: "Nhập mã khuyến mãi" },
-              { min: 5, max: 20, message: "Mã khuyến mãi phải có từ 5 đến 20 ký tự" },
-              { pattern: /^[A-Za-z0-9]+$/, message: "Mã khuyến mãi chỉ chấp nhận chữ và số" },
+              {
+                min: 5,
+                max: 20,
+                message: "Mã khuyến mãi phải có từ 5 đến 20 ký tự",
+              },
+              {
+                pattern: /^[A-Za-z0-9]+$/,
+                message: "Mã khuyến mãi chỉ chấp nhận chữ và số",
+              },
               async ({ getFieldValue }) => {
-                const code = getFieldValue('code').trim();
-                const exists = promotions.some((p) => p.code.toLowerCase() === code.toLowerCase());
+                const code = getFieldValue("code").trim();
+                const exists = promotions.some(
+                  (p) => p.code.toLowerCase() === code.toLowerCase()
+                );
                 if (exists) {
-                  return Promise.reject("⚠️ Mã khuyến mãi này đã tồn tại, vui lòng chọn mã khác!");
+                  return Promise.reject(
+                    "⚠️ Mã khuyến mãi này đã tồn tại, vui lòng chọn mã khác!"
+                  );
                 }
                 return Promise.resolve();
-              }
+              },
             ]}
           >
-            <Input
-              placeholder="VD: SALE50"
-              disabled={!!selectedPromo}
-            />
+            <Input placeholder="VD: SALE50" disabled={!!selectedPromo} />
           </Form.Item>
 
           <Form.Item
@@ -315,15 +319,15 @@ export default function Promotions() {
             name="discountValue"
             rules={[
               { required: true, message: "Nhập phần trăm giảm" },
-              { type: "number", min: 1, max: 100, message: "Giá trị giảm phải trong khoảng từ 1% đến 100%" }
+              {
+                type: "number",
+                min: 1,
+                max: 100,
+                message: "Giá trị giảm phải trong khoảng từ 1% đến 100%",
+              },
             ]}
           >
-            <InputNumber
-              min={1}
-              max={100}
-              addonAfter="%"
-              style={{ width: "100%" }}
-            />
+            <InputNumber min={1} max={100} addonAfter="%" style={{ width: "100%" }} />
           </Form.Item>
 
           <Form.Item label="Điều kiện" name="condition">
@@ -340,7 +344,8 @@ export default function Promotions() {
             rules={[{ required: true, message: "Chọn thời gian áp dụng" }]}
           >
             <RangePicker
-              format="DD/MM/YYYY"
+              showTime={{ format: "HH:mm" }}
+              format="DD/MM/YYYY HH:mm"
               style={{ width: "100%" }}
               disabledDate={(current) =>
                 current && current < dayjs().startOf("day")

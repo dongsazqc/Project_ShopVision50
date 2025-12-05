@@ -6,15 +6,11 @@ const AuthContext = createContext();
 export const useAuth = () => useContext(AuthContext);
 
 export const AuthProvider = ({ children }) => {
-  // Khởi tạo user từ localStorage, tránh lỗi parse undefined/null
   const [user, setUser] = useState(() => {
-    const savedUser = localStorage.getItem("user");
-    if (!savedUser || savedUser === "undefined") {
-      localStorage.removeItem("user");
-      return null;
-    }
     try {
-      return JSON.parse(savedUser);
+      const saved = localStorage.getItem("user");
+      if (!saved || saved === "undefined") return null;
+      return JSON.parse(saved);
     } catch {
       localStorage.removeItem("user");
       return null;
@@ -23,24 +19,21 @@ export const AuthProvider = ({ children }) => {
 
   const [loading, setLoading] = useState(false);
 
-  // Giữ trạng thái đăng nhập khi reload trang
+  // Tải lại user khi F5 nếu token còn
   useEffect(() => {
     const token = localStorage.getItem("token");
     if (token && !user) {
-      const savedUser = localStorage.getItem("user");
-      if (savedUser && savedUser !== "undefined") {
-        try {
-          setUser(JSON.parse(savedUser));
-        } catch {
-          setUser(null);
-          localStorage.removeItem("user");
-          localStorage.removeItem("token");
-        }
+      try {
+        const savedUser = JSON.parse(localStorage.getItem("user"));
+        setUser(savedUser || null);
+      } catch {
+        localStorage.removeItem("user");
+        localStorage.removeItem("token");
       }
     }
   }, [user]);
 
-  // Hàm login
+  // 🔥 LOGIN — phiên bản hoàn chỉnh
   const login = async (email, password) => {
     setLoading(true);
     try {
@@ -50,30 +43,31 @@ export const AuthProvider = ({ children }) => {
         body: JSON.stringify({ Email: email, Password: password }),
       });
 
+      // ❌ API báo lỗi → hiện popup lỗi
       if (!res.ok) {
-        message.error("Email hoặc mật khẩu không đúng!");
-        return false;
+        const errorText = await res.text();
+        message.error(errorText || "Đăng nhập thất bại!");
+        return { success: false };
       }
 
+      // ✔ Login thành công
       const data = await res.json();
 
-      // Lưu token + user vào localStorage
       localStorage.setItem("token", data.token);
       localStorage.setItem("user", JSON.stringify(data.user));
       setUser(data.user);
 
       message.success(`Xin chào ${data.user.fullName || data.user.email}!`);
-      return true;
-    } catch (error) {
-      console.error(error);
-      message.error("Đăng nhập lỗi!");
-      return false;
+      return { success: true };
+    } catch (err) {
+      message.error("Không thể kết nối đến máy chủ!");
+      return { success: false };
     } finally {
       setLoading(false);
     }
   };
 
-  // Hàm logout
+  // LOGOUT
   const logout = () => {
     localStorage.removeItem("token");
     localStorage.removeItem("user");
