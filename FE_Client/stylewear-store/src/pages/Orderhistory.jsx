@@ -17,7 +17,7 @@ const OrderHistory = () => {
     headers: { Authorization: `Bearer ${token}` },
   });
 
-  // Lấy tất cả đơn hàng
+  // Lấy tất cả đơn hàng của user hiện tại
   const fetchOrders = async () => {
     if (!token) {
       message.error("Bạn chưa đăng nhập");
@@ -27,7 +27,7 @@ const OrderHistory = () => {
     setLoading(true);
     try {
       const res = await axiosAuth.get(
-        "http://160.250.5.26:5000/api/Orders/GetAll"
+        "http://160.250.5.26:5000/api/orders/my-orders"
       );
       const data = res.data?.$values || [];
       setOrders(data);
@@ -43,7 +43,7 @@ const OrderHistory = () => {
     }
   };
 
-  // Lấy chi tiết đơn hàng
+  // Lấy chi tiết đơn hàng (dữ liệu hiện tại từ list, giữ nguyên logic)
   const fetchOrderDetail = async (orderId) => {
     if (!token) {
       message.error("Bạn chưa đăng nhập");
@@ -52,18 +52,17 @@ const OrderHistory = () => {
 
     setDetailLoading(true);
     try {
-      const res = await axiosAuth.get(
-        `http://160.250.5.26:5000/api/Orders/GetById/${orderId}`
-      );
-      setSelectedOrder(res.data);
-      setIsModalVisible(true);
+      // Nếu backend không có chi tiết riêng, dùng chính dữ liệu trong orders
+      const order = orders.find((o) => o.id === orderId);
+      if (order) {
+        setSelectedOrder(order);
+        setIsModalVisible(true);
+      } else {
+        message.error("Không tìm thấy đơn hàng");
+      }
     } catch (err) {
       console.error(err);
-      if (err.response?.status === 401) {
-        message.error("Phiên đăng nhập đã hết hạn, vui lòng đăng nhập lại");
-      } else {
-        message.error("Lấy chi tiết đơn hàng thất bại");
-      }
+      message.error("Lấy chi tiết đơn hàng thất bại");
     } finally {
       setDetailLoading(false);
     }
@@ -76,36 +75,36 @@ const OrderHistory = () => {
   const columns = [
     {
       title: "Mã đơn",
-      dataIndex: "orderId",
-      key: "orderId",
+      dataIndex: "id",
+      key: "id",
     },
     {
       title: "Tên khách hàng",
-      dataIndex: "recipientName",
-      key: "recipientName",
+      dataIndex: "receiverName",
+      key: "receiverName",
     },
     {
       title: "Số điện thoại",
-      dataIndex: "recipientPhone",
-      key: "recipientPhone",
+      dataIndex: "receiverPhone",
+      key: "receiverPhone",
     },
     {
       title: "Tổng tiền",
-      dataIndex: "totalAmount",
-      key: "totalAmount",
+      dataIndex: "amountTotal",
+      key: "amountTotal",
       render: (text) => Number(text)?.toLocaleString() + " đ",
     },
     {
       title: "Trạng thái",
-      dataIndex: "status",
-      key: "status",
-      render: (text) => (text ? "Hoàn thành" : "Chưa xử lý"),
+      dataIndex: "orderStatus",
+      key: "orderStatus",
+      render: (text) => (text === 1 ? "Hoàn thành" : "Chưa xử lý"),
     },
     {
       title: "Hành động",
       key: "action",
       render: (_, record) => (
-        <Button type="link" onClick={() => fetchOrderDetail(record.orderId)}>
+        <Button type="link" onClick={() => fetchOrderDetail(record.id)}>
           Xem chi tiết
         </Button>
       ),
@@ -119,7 +118,7 @@ const OrderHistory = () => {
         <Table
           columns={columns}
           dataSource={orders}
-          rowKey="orderId"
+          rowKey="id"
           pagination={{ pageSize: 5 }}
         />
       </Spin>
@@ -139,27 +138,28 @@ const OrderHistory = () => {
         ) : (
           <div>
             <p>
-              <strong>Mã đơn:</strong> {selectedOrder.orderId}
+              <strong>Mã đơn:</strong> {selectedOrder.id}
             </p>
             <p>
-              <strong>Tên khách hàng:</strong> {selectedOrder.recipientName}
+              <strong>Tên khách hàng:</strong> {selectedOrder.receiverName}
             </p>
             <p>
-              <strong>Số điện thoại:</strong> {selectedOrder.recipientPhone}
+              <strong>Số điện thoại:</strong> {selectedOrder.receiverPhone}
             </p>
             <p>
-              <strong>Địa chỉ:</strong> {selectedOrder.shippingAddress}
+              <strong>Địa chỉ:</strong> {selectedOrder.deliveryAddress}
             </p>
             <p>
               <strong>Tổng tiền:</strong>{" "}
-              {Number(selectedOrder.totalAmount)?.toLocaleString()} đ
+              {Number(selectedOrder.amountTotal)?.toLocaleString()} đ
             </p>
             <p>
               <strong>Trạng thái:</strong>{" "}
-              {selectedOrder.status ? "Hoàn thành" : "Chưa xử lý"}
+              {selectedOrder.orderStatus === 1 ? "Hoàn thành" : "Chưa xử lý"}
             </p>
 
             <h4>Sản phẩm</h4>
+            {/* Nếu API /my-orders không có orderItems thì bỏ hiển thị */}
             {selectedOrder.orderItems?.length > 0 ? (
               <ul>
                 {selectedOrder.orderItems.map((item) => (
