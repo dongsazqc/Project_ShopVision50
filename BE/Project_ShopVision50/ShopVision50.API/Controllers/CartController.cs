@@ -57,5 +57,30 @@ namespace ShopVision50.API.Controllers
         await _service.AddToCartAsync(userId, request);
         return Ok(new { message = "Thêm vào giỏ hàng thành công" });
     }
+
+    [HttpPut("increase-quantity/{cartItemId}")]
+[Authorize]
+public async Task<IActionResult> IncreaseQuantity(int cartItemId, [FromQuery] int quantity)
+{
+    if (quantity <= 0) return BadRequest("Quantity must be greater than zero");
+
+    var success = await _service.IncreaseQuantityAsync(cartItemId, quantity);
+    if (!success) return NotFound("Cart item not found");
+
+    return Ok(new { message = "Quantity increased successfully" });
+}
+
+[HttpPut("decrease-quantity/{cartItemId}")]
+[Authorize]
+public async Task<IActionResult> DecreaseQuantity(int cartItemId, [FromQuery] int quantity)
+{
+    if (quantity <= 0) return BadRequest("Quantity must be greater than zero");
+
+    var success = await _service.DecreaseQuantityAsync(cartItemId, quantity);
+    if (!success) return NotFound("Cart item not found");
+
+    return Ok(new { message = "Quantity decreased successfully" });
+}
+
     }
 }

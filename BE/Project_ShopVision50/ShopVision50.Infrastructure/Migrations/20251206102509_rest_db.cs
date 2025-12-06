@@ -7,7 +7,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace ShopVision50.Infrastructure.Migrations
 {
     /// <inheritdoc />
-    public partial class resstdatabase : Migration
+    public partial class rest_db : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -199,19 +199,17 @@ namespace ShopVision50.Infrastructure.Migrations
                 {
                     ProductId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
-                    Name = table.Column<string>(type: "varchar(200)", maxLength: 200, nullable: false)
+                    Name = table.Column<string>(type: "longtext", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    Description = table.Column<string>(type: "varchar(1000)", maxLength: 1000, nullable: true)
+                    Description = table.Column<string>(type: "longtext", nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     Price = table.Column<decimal>(type: "decimal(65,30)", nullable: false),
-                    Brand = table.Column<string>(type: "varchar(100)", maxLength: 100, nullable: true)
+                    Brand = table.Column<string>(type: "longtext", nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    Warranty = table.Column<string>(type: "varchar(100)", maxLength: 100, nullable: true)
+                    Warranty = table.Column<string>(type: "longtext", nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     CreatedDate = table.Column<DateTime>(type: "datetime(6)", nullable: false),
                     Status = table.Column<bool>(type: "tinyint(1)", nullable: false),
-                    ImageData = table.Column<string>(type: "longtext", nullable: false)
-                        .Annotation("MySql:CharSet", "utf8mb4"),
                     MaterialId = table.Column<int>(type: "int", nullable: true),
                     StyleId = table.Column<int>(type: "int", nullable: true),
                     GenderId = table.Column<int>(type: "int", nullable: true),
@@ -365,7 +363,6 @@ namespace ShopVision50.Infrastructure.Migrations
                     Url = table.Column<string>(type: "longtext", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     IsMain = table.Column<bool>(type: "tinyint(1)", nullable: false),
-                    Stock = table.Column<int>(type: "int", nullable: false),
                     ProductId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
