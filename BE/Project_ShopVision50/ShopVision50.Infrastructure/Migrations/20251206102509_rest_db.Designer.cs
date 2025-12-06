@@ -11,8 +11,8 @@ using ShopVision50.Infrastructure;
 namespace ShopVision50.Infrastructure.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20251104032732_resstdatabase")]
-    partial class resstdatabase
+    [Migration("20251206102509_rest_db")]
+    partial class rest_db
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -264,8 +264,7 @@ namespace ShopVision50.Infrastructure.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("Brand")
-                        .HasMaxLength(100)
-                        .HasColumnType("varchar(100)");
+                        .HasColumnType("longtext");
 
                     b.Property<int?>("CategoryId")
                         .HasColumnType("int");
@@ -274,23 +273,17 @@ namespace ShopVision50.Infrastructure.Migrations
                         .HasColumnType("datetime(6)");
 
                     b.Property<string>("Description")
-                        .HasMaxLength(1000)
-                        .HasColumnType("varchar(1000)");
+                        .HasColumnType("longtext");
 
                     b.Property<int?>("GenderId")
                         .HasColumnType("int");
-
-                    b.Property<string>("ImageData")
-                        .IsRequired()
-                        .HasColumnType("longtext");
 
                     b.Property<int?>("MaterialId")
                         .HasColumnType("int");
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasMaxLength(200)
-                        .HasColumnType("varchar(200)");
+                        .HasColumnType("longtext");
 
                     b.Property<int?>("OriginId")
                         .HasColumnType("int");
@@ -305,8 +298,7 @@ namespace ShopVision50.Infrastructure.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("Warranty")
-                        .HasMaxLength(100)
-                        .HasColumnType("varchar(100)");
+                        .HasColumnType("longtext");
 
                     b.HasKey("ProductId");
 
@@ -348,9 +340,6 @@ namespace ShopVision50.Infrastructure.Migrations
                         .HasColumnType("tinyint(1)");
 
                     b.Property<int>("ProductId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("Stock")
                         .HasColumnType("int");
 
                     b.Property<string>("Url")

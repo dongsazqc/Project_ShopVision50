@@ -107,6 +107,31 @@ namespace ShopVision50.API.Services.CartService_FD
         }
 
 
-        
+        public async Task<bool> IncreaseQuantityAsync(int cartItemId, int quantity)
+        {
+            var cartItem = await _repo.GetCartItemByIdAsync(cartItemId);
+            if (cartItem == null) return false;
+
+            cartItem.Quantity += quantity;
+            await _repo.SaveChangesAsync();
+            return true;
+        }
+
+        public async Task<bool> DecreaseQuantityAsync(int cartItemId, int quantity)
+        {
+            var cartItem = await _repo.GetCartItemByIdAsync(cartItemId);
+            if (cartItem == null) return false;
+
+            cartItem.Quantity -= quantity;
+
+            if (cartItem.Quantity <= 0)
+            {
+                await _repo.RemoveCartItemAsync(cartItem);
+            }
+
+            await _repo.SaveChangesAsync();
+            return true;
+        }
+
     }
 }

@@ -4,6 +4,7 @@ using Shop_Db.Models;
 using ShopVision50.API.Models.Login;
 using ShopVision50.API.Models.Users.DTOs;
 using ShopVision50.API.Repositories;
+using ShopVision50.API.Repositories.CartRepository_FD;
 using ShopVision50.Infrastructure;
 using System;
 using System.Collections.Generic;
@@ -17,13 +18,17 @@ namespace ShopVision50.API.Services.UserService_FD
         private readonly IUserRepository _repo;
         private readonly IEmailService _emailService;
         private readonly IMemoryCache _cache;
+        private readonly ICartRepository _cartRepo;
 
-        public UserService(IUserRepository repo, IEmailService emailService, IMemoryCache cache)
+
+      public UserService(IUserRepository repo, IEmailService emailService, IMemoryCache cache, ICartRepository cartRepo)
         {
             _repo = repo;
             _emailService = emailService;
             _cache = cache;
+            _cartRepo = cartRepo;
         }
+
 
         public async Task<ServiceResult<List<User>>> GetAllUsersAsyncSer()
         {
@@ -97,40 +102,54 @@ namespace ShopVision50.API.Services.UserService_FD
         }
     
         public async Task<ServiceResult<string>> RegisterUserWithOtpAsync(RegisterConfirmDto dto)
-        {
-            if (dto == null ||
-                string.IsNullOrWhiteSpace(dto.Email) ||
-                string.IsNullOrWhiteSpace(dto.Otp) ||
-                string.IsNullOrWhiteSpace(dto.Password))
-            {
-                return ServiceResult<string>.Fail("Thông tin đăng ký không hợp lệ");
-            }
+{
+    if (dto == null ||
+        string.IsNullOrWhiteSpace(dto.Email) ||
+        string.IsNullOrWhiteSpace(dto.Otp) ||
+        string.IsNullOrWhiteSpace(dto.Password))
+    {
+        return ServiceResult<string>.Fail("Thông tin đăng ký không hợp lệ");
+    }
 
-            if (!VerifyOtp(dto.Email, dto.Otp))
-                return ServiceResult<string>.Fail("OTP không hợp lệ hoặc đã hết hạn");
+    if (!VerifyOtp(dto.Email, dto.Otp))
+        return ServiceResult<string>.Fail("OTP không hợp lệ hoặc đã hết hạn");
 
-            var checkEmail = await _repo.GetByEmailAsync(dto.Email);
-            if (checkEmail != null)
-                return ServiceResult<string>.Fail("Email đã tồn tại");
+    var checkEmail = await _repo.GetByEmailAsync(dto.Email);
+    if (checkEmail != null)
+        return ServiceResult<string>.Fail("Email đã tồn tại");
 
-            var user = new User
-            {
-                Email = dto.Email,
-                FullName = dto.FullName,
-                Password = BCrypt.Net.BCrypt.HashPassword(dto.Password),
-                Phone = dto.Phone,
-                JoinDate = DateTime.Now,
-                Status = true,
-                RoleId = dto.RoleId,
-            };
+    var user = new User
+    {
+        Email = dto.Email,
+        FullName = dto.FullName,
+        Password = BCrypt.Net.BCrypt.HashPassword(dto.Password),
+        Phone = dto.Phone,
+        JoinDate = DateTime.Now,
+        Status = true,
+        RoleId = dto.RoleId,
+    };
 
-            await _repo.AddAsync(user);
+    // Thêm user mới vào DB
+    await _repo.AddAsync(user);
 
-            if (_cache != null)
-                _cache.Remove($"otp_{dto.Email}");
+    // Tạo giỏ hàng mới cho user
+    var cart = new Cart
+    {
+        UserId = user.UserId,
+        CreatedDate = DateTime.Now,
+        Status = true
+    };
 
-            return ServiceResult<string>.Ok("Đăng ký thành công");
-        }
+    // Thêm cart vào DB
+    _cartRepo.AddCart(cart);
+    await _cartRepo.SaveChangesAsync();
+
+    // Xóa OTP trong cache
+    if (_cache != null)
+        _cache.Remove($"otp_{dto.Email}");
+
+    return ServiceResult<string>.Ok("Đăng ký thành công");
+}
 
         // Gửi OTP đổi mật khẩu
         public async Task<ServiceResult<string>> SendOtpChangePasswordAsync(int userId)
