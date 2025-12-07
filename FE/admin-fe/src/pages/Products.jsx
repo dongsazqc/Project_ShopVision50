@@ -675,14 +675,14 @@ const fetchProducts = async () => {
             Lưu
           </Button> */}
           <Button onClick={() => openEditVariantModal(record)}>Sửa</Button>
-          <Button
+          {/* <Button
             danger
             onClick={() =>
               handleDeleteVariant(record.bienTheId, editingProduct?.productId)
             }
           >
             Xóa
-          </Button>
+          </Button> */}
         </Space>
       ),
     },
