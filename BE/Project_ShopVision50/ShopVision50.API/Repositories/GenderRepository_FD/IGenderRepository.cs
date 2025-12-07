@@ -8,7 +8,7 @@ namespace ShopVision50.API.Repositories.GenderRepository_FD
 {
     public interface IGenderRepository
     {
-              Task<IEnumerable<Gender>> GetAllAsync();
+        Task<IEnumerable<Gender>> GetAllAsync();
         Task<Gender?> GetByIdAsync(int id);
         Task AddAsync(Gender gender);
         Task UpdateAsync(Gender gender);

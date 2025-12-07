@@ -7,8 +7,9 @@ namespace ShopVision50.API.Repositories.OrderRepo_FD
     {
         Task<Order?> GetByIdAsync(int id);
         Task<IEnumerable<Order>> GetAllAsync();
-        Task AddAsync(Order order); 
-        Task UpdateAsync(Order order);
+ Task<Order> AddOrderAsync(Order order);
+         Task UpdateAsync(Order order);
         Task DeleteAsync(int id);
+        Task<List<Order>> GetOrdersByUserIdAsync(int userId);
     }
 }

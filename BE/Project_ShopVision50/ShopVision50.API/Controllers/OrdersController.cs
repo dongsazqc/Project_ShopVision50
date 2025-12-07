@@ -1,6 +1,8 @@
+using System.Security.Claims;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Shop_Db.Models;
+using ShopVision50.API.Models.Users.DTOs;
 using ShopVision50.API.Service.OrderService_FD;
 namespace ShopVision50.API.Controllers
 {
@@ -37,11 +39,11 @@ namespace ShopVision50.API.Controllers
 
         [HttpPost("Add")]
         [Authorize]
-        public async Task<IActionResult> Create(Order order)
-        {
-            await _service.AddAsync(order);
-            return CreatedAtAction(nameof(GetById), new { id = order.OrderId }, order);
-        }
+    public async Task<IActionResult> CreateOrder([FromBody] CreateOrderRequest request)
+    {
+        var order = await _service.CreateOrderAsync(request);
+        return CreatedAtAction(nameof(GetAll), new { id = order.OrderId }, order);
+    }
 
         [HttpPut("Update/{id}")]
         [Authorize]
@@ -69,6 +71,22 @@ namespace ShopVision50.API.Controllers
             await _service.DeleteAsync(id);
             return Ok(new { message = "Order deleted successfully." });
         }
+
+    [HttpGet("my-orders")]
+    [Authorize]
+    public async Task<IActionResult> GetMyOrders()
+    {
+        var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier);
+        if (userIdClaim == null)
+            return Unauthorized("User ID không có trong token");
+
+        if (!int.TryParse(userIdClaim.Value, out int userId))
+            return BadRequest("User ID không hợp lệ");
+
+        var orders = await _service.GetOrdersByUserIdAsync(userId);
+
+        return Ok(orders);
+    }
 
     }
 }

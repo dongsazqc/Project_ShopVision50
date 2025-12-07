@@ -100,6 +100,7 @@ public async Task<IActionResult> UpdateProduct([FromRoute] int productId, [FromB
 
 
                 [HttpGet("GetProductById/{id}")]
+        [Authorize]
         public async Task<IActionResult> GetProductById(int id)
         {
             var result = await _productsService.GetProductDetails(id);

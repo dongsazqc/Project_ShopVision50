@@ -8,6 +8,10 @@ namespace ShopVision50.API.Services.CategoriesService_FD
 {
     public interface IGenderService
     {
-        Task<IEnumerable<GenderDto>> GetAllAsync();
+        Task<IEnumerable<GenderDto>> GetAllAsync();   // có s?n
+        Task<GenderDto?> GetByIdAsync(int id);        // m?i
+        Task<ServiceResult<GenderDto>> CreateAsync(GenderDto dto);   // m?i
+        Task<ServiceResult<GenderDto>> UpdateAsync(int id, GenderDto dto); // m?i
+        Task<ServiceResult<bool>> DeleteAsync(int id); // m?i
     }
 }

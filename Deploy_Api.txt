@@ -165,3 +165,7 @@ Tạo user → chạy API, mở port firewall
 Option: tạo systemd service để chạy API nền
 
 FE: gọi API qua http://IP:port/api/...
+
+
+
+    scp -r bin/Release/net8.0/publish Saz_Api@160.250.5.26:/home/Saz_Api/ShopVision50.API

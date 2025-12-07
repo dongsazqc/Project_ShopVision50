@@ -12,5 +12,7 @@ namespace ShopVision50.API.Repositories
         Task<User> AddAsync(User user);
         Task<User> UpdateAsync(User user);
         Task<bool> DeleteAsync(User user);
-    }
+
+    Task<bool> CheckEmailExistsAsync(string email);
+        }
 }

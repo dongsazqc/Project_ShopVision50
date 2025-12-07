@@ -1,17 +1,13 @@
-using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using Shop_Db.Models;
+using ShopVision50.API.Models.Users.DTOs;
 
-namespace ShopVision50.API.Services.ProductVariantService_FD
+public interface IProductVariantService
 {
-    public interface IProductVariantService
-    {
-        Task<IEnumerable<ProductVariant>> GetAllAsync();
-        Task<ProductVariant?> GetByIdAsync(int id);
-        Task<bool> CreateAsync(ProductVariant variant);
-        Task<bool> UpdateAsync(ProductVariant variant);
-        Task<bool> DeleteAsync(int id);
-    }
+    Task<IEnumerable<BienTheResponseDto>> GetAllAsync();
+    Task<IEnumerable<BienTheResponseDto>> GetByProductIdAsync(int productId);
+    Task<ProductWithVariantsDto?> GetProductWithVariantsAsync(int productId);
+    Task<bool> CreateAsync(BienTheDto dto);
+    Task<IEnumerable<BienTheResponseDto>> GetVariantsByCategoryIdAsync(int categoryId);
 }

@@ -5,6 +5,7 @@ using Shop_Db.Models;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
+using ShopVision50.API.Models.Login;
 
 namespace ShopVision50.API.Controllers
 {
@@ -36,15 +37,15 @@ namespace ShopVision50.API.Controllers
         }
 
         // POST api/users/register
-        [HttpPost("register")]
-        [Authorize]
-        public async Task<IActionResult> Register([FromBody] User user)
-        {
-            if (user == null) return BadRequest("Body trống");
-            var result = await _svc.RegisterUserAsync(user);
-            if (!result.Success) return BadRequest(result.Message);
-            return Ok(result.Message);
-        }
+        // [HttpPost("register")]
+        // [Authorize]
+        // public async Task<IActionResult> Register([FromBody] User user)
+        // {
+        //     if (user == null) return BadRequest("Body trống");
+        //     var result = await _svc.RegisterUserAsync(user);
+        //     if (!result.Success) return BadRequest(result.Message);
+        //     return Ok(result.Message);
+        // }
 
         // PUT api/users/update
        [HttpPut("update/{id}")]
@@ -68,6 +69,83 @@ namespace ShopVision50.API.Controllers
             var result = await _svc.DeleteUserAsync(id);
             if (!result.Success) return BadRequest(result.Message);
             return Ok(result.Message);
+        }
+
+
+
+    [HttpPost("check-email")]
+            [Authorize]
+
+    public async Task<IActionResult> CheckEmail([FromBody] CheckEmail dto)
+    {
+        if (string.IsNullOrEmpty(dto.Email))
+            return BadRequest("Email không được để trống.");
+
+        var exists = await _svc.CheckEmailExistsAsync(dto.Email);
+
+        return Ok(new
+        {
+            email = dto.Email,
+            exists
+        });
+
+
+        
+    }
+
+    [HttpPost("send-otp")]
+
+    public async Task<IActionResult> SendOtp([FromBody] EmailDto dto)
+    {
+        if (string.IsNullOrEmpty(dto.Email)) return BadRequest("Email không được để trống");
+        var result = await _svc.SendOtpAsync(dto.Email);
+        if (!result.Success) return BadRequest(result.Message);
+        return Ok(result.Message);
+    }
+         
+            [HttpPost("register-with-otp")]
+        public async Task<IActionResult> RegisterWithOtp([FromBody] RegisterConfirmDto dto)
+    {
+        var result = await _svc.RegisterUserWithOtpAsync(dto);
+        if (!result.Success) return BadRequest(result.Message);
+        return Ok(result.Message);
+    }
+
+        // ================================
+        // GỬI OTP ĐỔI MẬT KHẨU
+        // ================================
+        [HttpPost("send-otp-change-password/{userId}")]
+        public async Task<IActionResult> SendOtpChangePassword(int userId)
+        {
+            var result = await _svc.SendOtpChangePasswordAsync(userId);
+            if (!result.Success) return BadRequest(result.Message);
+
+            return Ok(new { message = "OTP đổi mật khẩu đã được gửi đến email" });
+        }
+
+        // ================================
+        // ĐỔI MẬT KHẨU BẰNG OTP
+        // ================================
+        [HttpPost("change-password-with-otp")]
+        [Authorize]
+
+        public async Task<IActionResult> ChangePasswordWithOtp([FromBody] ChangePasswordOtpDto dto)
+        {
+            var result = await _svc.ChangePasswordWithOtpAsync(dto);
+            if (!result.Success) return BadRequest(result.Message);
+
+            return Ok(new { message = "Đổi mật khẩu thành công" });
+        }
+
+        // Quên mật khẩu
+
+        [HttpPost("forgot-password")]
+        public async Task<IActionResult> ForgotPassword([FromBody] ForgotPasswordDto dto)
+        {
+            var result = await _svc.ForgotPasswordAsync(dto);
+            if (!result.Success) return BadRequest(result.Message);
+
+            return Ok(new { message = "Mật khẩu mới đã được gửi đến email" });
         }
     }
 }

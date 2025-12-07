@@ -1,59 +1,83 @@
-using System;
+﻿using Microsoft.EntityFrameworkCore;
+using Shop_Db.Models;
+using ShopVision50.API.Repositories.ProductVariantsRepo_FD;
+using ShopVision50.Infrastructure;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.EntityFrameworkCore;
-using Shop_Db.Models;
-using ShopVision50.Infrastructure;
 
-namespace ShopVision50.API.Repositories.ProductVariantsRepo_FD
+public class ProductVariantRepository : IProductVariantsRepo
 {
-    public class ProductVariantsRepo : IProductVariantsRepo
+    private readonly AppDbContext _context;
+    public ProductVariantRepository(AppDbContext context)
     {
-        private readonly AppDbContext _context;
-        public ProductVariantsRepo(AppDbContext context)
-        {
-            _context = context;
-        }
-
-        public async Task AddAsync(ProductVariant variant)
-        {
-             await _context.ProductVariants.AddAsync(variant);
-            await _context.SaveChangesAsync();
-        }
-
-        public async Task DeleteAsync(int id)
-        {
-            var entity = await _context.ProductVariants.FindAsync(id);
-            if (entity != null)
-            {
-                _context.ProductVariants.Remove(entity);
-                await _context.SaveChangesAsync();
-            }
-        }
-
-        public async Task<IEnumerable<ProductVariant>> GetAllAsync()
-        {
-           return await _context.ProductVariants
-                .Include(p => p.Product)
-                .Include(p => p.Color)
-                .Include(p => p.Size)
-                .ToListAsync();
-        }
-
-        public async Task<ProductVariant?> GetByIdAsync(int id)
-        {
-             return await _context.ProductVariants
-                .Include(p => p.Product)
-                .Include(p => p.Color)
-                .Include(p => p.Size)
-                .FirstOrDefaultAsync(p => p.ProductVariantId == id);
-        }
-
-        public async Task UpdateAsync(ProductVariant variant)
-        {
-              _context.ProductVariants.Update(variant);
-            await _context.SaveChangesAsync();
-        }
+        _context = context;
     }
+
+    public async Task<IEnumerable<ProductVariant>> GetAllAsync()
+    {
+        return await _context.ProductVariants
+            .Include(pv => pv.Color)
+            .Include(pv => pv.Size)
+            .Include(pv => pv.Product)
+            .ToListAsync();
+    }
+
+    public async Task<IEnumerable<ProductVariant>> GetByProductIdAsync(int productId)
+    {
+        return await _context.ProductVariants
+            .Include(pv => pv.Color)
+            .Include(pv => pv.Size)
+            .Include(pv => pv.Product)
+            .Where(pv => pv.ProductId == productId)
+            .ToListAsync();
+    }
+
+    public async Task<ProductColor?> GetColorByNameAsync(string tenMau)
+    {
+        return await _context.Colors.FirstOrDefaultAsync(c => c.Name == tenMau);
+    }
+
+    public async Task<ProductSize?> GetSizeByNameAsync(string tenKichCo)
+    {
+        return await _context.Sizes.FirstOrDefaultAsync(s => s.Name == tenKichCo);
+    }
+
+    public async Task<Product?> GetProductByIdAsync(int productId)
+    {
+        return await _context.Products.FindAsync(productId);
+    }
+
+    public async Task AddAsync(ProductVariant variant)
+    {
+        await _context.ProductVariants.AddAsync(variant);
+    }
+
+    public async Task SaveChangesAsync()
+    {
+        await _context.SaveChangesAsync();
+    }
+    public async Task<Product?> GetProductWithVariantsAsync(int productId)
+    {
+        return await _context.Products
+            .Include(p => p.ProductVariants)
+                .ThenInclude(v => v.Color)
+            .Include(p => p.ProductVariants)
+                .ThenInclude(v => v.Size)
+            .FirstOrDefaultAsync(p => p.ProductId == productId);
+    }
+
+    // Implement trong ProductVariantRepository.cs
+public async Task<IEnumerable<ProductVariant>> GetVariantsByCategoryIdAsync(int categoryId)
+{
+    return await _context.ProductVariants
+        .Include(pv => pv.Color)
+        .Include(pv => pv.Size)
+        .Include(pv => pv.Product)
+        .Where(pv => pv.Product.CategoryId == categoryId)
+        .ToListAsync();
+}
+
+
+
 }
