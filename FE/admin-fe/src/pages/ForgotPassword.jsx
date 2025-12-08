@@ -1,50 +1,58 @@
-import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import React, { useState } from "react";
 import { Card, Form, Input, Button, Typography, message } from "antd";
-import { useAuth } from "../context/AuthContext";
-import { Modal } from "antd";
+import api from "../utils/axios";
+import { useNavigate } from "react-router-dom";
 
 const { Title, Text } = Typography;
 
-export default function Login() {
-    const [messageApi, contextHolder] = message.useMessage();
-    const [loading, setLoading] = useState(false);
-    const { login } = useAuth();
+const ForgotPassword = () => {
     const navigate = useNavigate();
+    const [loading, setLoading] = useState(false);
+    const [sendingEmail, setSendingEmail] = useState(false);
+    const [isEmailSent, setIsEmailSent] = useState(false);
+    const [messageApi, contextHolder] = message.useMessage();
+    const [form] = Form.useForm();
 
-    const handleLogin = async (values) => {
+    const handleSendEmail = async () => {
+        try {
+            const { email } = await form.validateFields(["email"]);
+            setSendingEmail(true);
+            await api.post("/Users/send-otp", {
+                email: email,
+            });
+            messageApi.success(`Đã gửi OTP tới ${email}.`);
+            setIsEmailSent(true);
+        } catch (err) {
+            if (err?.errorFields) return; // antd already shows validation errors
+            console.error("Send OTP error:", err);
+            messageApi.error("Không thể gửi OTP, vui lòng thử lại.");
+        } finally {
+            setSendingEmail(false);
+        }
+    };
+
+    const handleSubmit = async (values) => {
+        if (!isEmailSent) {
+            messageApi.warning("Vui lòng gửi OTP tới email trước.");
+            return;
+        }
+
+        const { otp } = values;
+        const email = form.getFieldValue("email");
+        const payload = { email, otp };
+
         setLoading(true);
         try {
-            const result = await login(values.email, values.password);
-
-            if (!result?.success) {
-                Modal.error({
-                    title: "Đăng nhập thất bại",
-                    content:
-                        result?.message || "Email hoặc mật khẩu không đúng!",
-                });
-                return;
-            }
-
-            const storedUser = JSON.parse(localStorage.getItem("user"));
-
-            if (storedUser?.roleId === 1) {
-                navigate("/admin/products");
-            } else if (storedUser?.roleId === 3) {
-                navigate("/admin/pos");
-            } else {
-                Modal.warning({
-                    title: "Không có quyền truy cập",
-                    content:
-                        "Tài khoản này không có quyền truy cập trang quản trị!",
-                });
-            }
+            await api.post("/Users/forgot-password", payload);
+            messageApi.success(
+                `Đổi mật khẩu thành công cho ${
+                    email || "tài khoản"
+                }, hãy đăng nhập lại.`
+            );
+            navigate("/login");
         } catch (err) {
-            console.error("Lỗi đăng nhập:", err);
-            Modal.error({
-                title: "Lỗi hệ thống",
-                content: "Có lỗi xảy ra, vui lòng thử lại sau!",
-            });
+            console.error("Change password error:", err);
+            messageApi.error("Có lỗi xảy ra, vui lòng thử lại.");
         } finally {
             setLoading(false);
         }
@@ -149,7 +157,7 @@ export default function Login() {
                                             fontWeight: 700,
                                         }}
                                     >
-                                        Quản lý cửa hàng thời trang thông minh
+                                        Đổi mật khẩu bằng OTP
                                     </Title>
                                     <Text
                                         style={{
@@ -158,8 +166,9 @@ export default function Login() {
                                             color: "#4b5563",
                                         }}
                                     >
-                                        Theo dõi sản phẩm, đơn hàng và điểm bán
-                                        trên cùng một nền tảng dễ sử dụng.
+                                        Nhập mã OTP đã gửi tới email và thiết
+                                        lập mật khẩu mới để tiếp tục sử dụng hệ
+                                        thống.
                                     </Text>
                                 </div>
 
@@ -181,7 +190,7 @@ export default function Login() {
                                             color: "#1d4ed8",
                                         }}
                                     >
-                                        ◦ Quản lý tồn kho
+                                        ◦ Bảo mật tài khoản
                                     </div>
                                     <div
                                         style={{
@@ -193,7 +202,7 @@ export default function Login() {
                                             color: "#047857",
                                         }}
                                     >
-                                        ◦ Theo dõi doanh thu
+                                        ◦ Xác thực OTP
                                     </div>
                                     <div
                                         style={{
@@ -205,7 +214,7 @@ export default function Login() {
                                             color: "#db2777",
                                         }}
                                     >
-                                        ◦ Đồng bộ POS
+                                        ◦ Đổi mật khẩu nhanh
                                     </div>
                                 </div>
                             </div>
@@ -221,7 +230,7 @@ export default function Login() {
                             </div>
                         </div>
 
-                        {/* Right section - Login Form */}
+                        {/* Right section - Change password form */}
                         <div
                             style={{
                                 flex: 1,
@@ -241,22 +250,23 @@ export default function Login() {
                                             fontWeight: 700,
                                         }}
                                     >
-                                        Đăng nhập quản trị
+                                        Đổi mật khẩu
                                     </Title>
                                     <Text
                                         type="secondary"
                                         style={{ fontSize: 13 }}
                                     >
-                                        Vui lòng dùng tài khoản đã được cấp
-                                        quyền.
+                                        Nhập mã OTP nhận được và tạo mật khẩu
+                                        mới cho tài khoản.
                                     </Text>
                                 </div>
 
                                 <Form
                                     layout="vertical"
-                                    onFinish={handleLogin}
+                                    onFinish={handleSubmit}
                                     size="large"
                                     requiredMark={false}
+                                    form={form}
                                 >
                                     <Form.Item
                                         label={
@@ -283,36 +293,7 @@ export default function Login() {
                                     >
                                         <Input
                                             placeholder="Nhập email"
-                                            style={{
-                                                borderRadius: 999,
-                                                height: 44,
-                                                paddingInline: 16,
-                                            }}
-                                        />
-                                    </Form.Item>
-
-                                    <Form.Item
-                                        label={
-                                            <span
-                                                style={{
-                                                    fontSize: 13,
-                                                    fontWeight: 500,
-                                                }}
-                                            >
-                                                Mật khẩu
-                                            </span>
-                                        }
-                                        name="password"
-                                        rules={[
-                                            {
-                                                required: true,
-                                                message:
-                                                    "Vui lòng nhập mật khẩu!",
-                                            },
-                                        ]}
-                                    >
-                                        <Input.Password
-                                            placeholder="Nhập mật khẩu"
+                                            type="email"
                                             style={{
                                                 borderRadius: 999,
                                                 height: 44,
@@ -325,38 +306,107 @@ export default function Login() {
                                         style={{
                                             display: "flex",
                                             justifyContent: "space-between",
-                                            marginBottom: 16,
+                                            gap: 12,
+                                            marginBottom: isEmailSent ? 0 : 12,
                                         }}
                                     >
-                                        <div
+                                        <Button
+                                            type="primary"
+                                            htmlType="button"
+                                            block
+                                            loading={sendingEmail}
+                                            onClick={handleSendEmail}
                                             style={{
-                                                fontSize: 12,
-                                                color: "#6b7280",
-                                            }}
-                                        >
-                                            Chỉ sử dụng trên thiết bị đáng tin
-                                            cậy.
-                                        </div>
-                                        <button
-                                            type="button"
-                                            onClick={() =>
-                                                // messageApi.info(
-                                                //     "Liên hệ quản trị viên để cấp lại mật khẩu."
-                                                // )
-                                                navigate("/forgot-password")
-                                            }
-                                            style={{
+                                                borderRadius: 999,
+                                                height: 44,
+                                                fontWeight: 600,
+                                                background:
+                                                    "linear-gradient(135deg,#22c55e,#3b82f6)",
                                                 border: "none",
-                                                background: "none",
-                                                padding: 0,
-                                                color: "#2563eb",
-                                                cursor: "pointer",
-                                                fontSize: 12,
                                             }}
                                         >
-                                            Quên mật khẩu?
-                                        </button>
+                                            Gửi OTP
+                                        </Button>
                                     </div>
+
+                                    {isEmailSent && (
+                                        <>
+                                            <Form.Item
+                                                label={
+                                                    <span
+                                                        style={{
+                                                            fontSize: 13,
+                                                            fontWeight: 500,
+                                                        }}
+                                                    >
+                                                        Mã OTP
+                                                    </span>
+                                                }
+                                                name="otp"
+                                                rules={[
+                                                    {
+                                                        required: true,
+                                                        message:
+                                                            "Vui lòng nhập mã OTP!",
+                                                    },
+                                                    {
+                                                        len: 6,
+                                                        message:
+                                                            "Mã OTP gồm 6 ký tự số.",
+                                                    },
+                                                ]}
+                                            >
+                                                <Input
+                                                    placeholder="Nhập mã OTP"
+                                                    maxLength={6}
+                                                    inputMode="numeric"
+                                                    style={{
+                                                        borderRadius: 999,
+                                                        height: 44,
+                                                        paddingInline: 16,
+                                                        letterSpacing: 2,
+                                                        textAlign: "center",
+                                                        fontWeight: 600,
+                                                    }}
+                                                />
+                                            </Form.Item>
+
+                                            {/* <Form.Item
+                                                label={
+                                                    <span
+                                                        style={{
+                                                            fontSize: 13,
+                                                            fontWeight: 500,
+                                                        }}
+                                                    >
+                                                        Mật khẩu mới
+                                                    </span>
+                                                }
+                                                name="newPassword"
+                                                rules={[
+                                                    {
+                                                        required: true,
+                                                        message:
+                                                            "Vui lòng nhập mật khẩu mới!",
+                                                    },
+                                                    {
+                                                        min: 6,
+                                                        message:
+                                                            "Mật khẩu tối thiểu 6 ký tự.",
+                                                    },
+                                                ]}
+                                            >
+                                                <Input.Password
+                                                    placeholder="Nhập mật khẩu mới"
+                                                    style={{
+                                                        borderRadius: 999,
+                                                        height: 44,
+                                                        paddingInline: 16,
+                                                    }}
+                                                />
+                                            </Form.Item> */}
+                                        </>
+                                    )}
 
                                     <Form.Item>
                                         <Button
@@ -364,6 +414,7 @@ export default function Login() {
                                             htmlType="submit"
                                             block
                                             loading={loading}
+                                            disabled={!isEmailSent}
                                             style={{
                                                 borderRadius: 999,
                                                 height: 44,
@@ -372,12 +423,33 @@ export default function Login() {
                                                 background:
                                                     "linear-gradient(135deg,#2563eb,#4f46e5,#ec4899)",
                                                 border: "none",
+                                                opacity: isEmailSent ? 1 : 0.6,
                                             }}
                                         >
-                                            Đăng nhập
+                                            Đổi mật khẩu
                                         </Button>
                                     </Form.Item>
                                 </Form>
+                                <div className="w-full flex justify-end">
+                                    <Button
+                                        type="link"
+                                        onClick={() => navigate("/login")}
+                                    >
+                                        Quay lại đăng nhập
+                                    </Button>
+                                </div>
+
+                                <div
+                                    style={{
+                                        marginTop: 12,
+                                        fontSize: 12,
+                                        color: "#6b7280",
+                                        lineHeight: 1.6,
+                                    }}
+                                >
+                                    Không nhận được mã? Kiểm tra hộp thư rác
+                                    hoặc liên hệ quản trị viên để được hỗ trợ.
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -385,4 +457,6 @@ export default function Login() {
             </div>
         </div>
     );
-}
+};
+
+export default ForgotPassword;
