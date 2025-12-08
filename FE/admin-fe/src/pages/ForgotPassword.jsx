@@ -49,6 +49,7 @@ const ForgotPassword = () => {
                     email || "tài khoản"
                 }, hãy đăng nhập lại.`
             );
+            await new Promise((resolve) => setTimeout(resolve, 1000));
             navigate("/login");
         } catch (err) {
             console.error("Change password error:", err);
