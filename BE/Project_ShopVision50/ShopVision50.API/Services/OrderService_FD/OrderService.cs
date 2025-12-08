@@ -1,10 +1,11 @@
 using Shop_Db.Models;
 using ShopVision50.API.Models.Users.DTOs;
 using ShopVision50.API.Repositories.OrderRepo_FD;
+using ShopVision50.API.Service.OrderService_FD;
 using ShopVision50.API.Services.OrderItemService_FD;
 using ShopVision50.Infrastructure;
 
-namespace ShopVision50.API.Service.OrderService_FD
+namespace ShopVision50.API.Services.OrderService_FD
 {
     public class OrderService : IOrderService
     {

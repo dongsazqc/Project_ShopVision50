@@ -12,15 +12,17 @@ namespace ShopVision50.API.Repositories.ProductsRepo_FD.OrderRepo
             _context = context;
         }
 
-        public async Task<Order?> GetByIdAsync(int id)
-        {
-            return await _context.Orders
-                .Include(o => o.OrderItems)
-                .Include(o => o.OrderPromotions)
-                .Include(o => o.Payments)
-                .Include(o => o.ReturnNotes)
-                .FirstOrDefaultAsync(o => o.OrderId == id);
-        }
+public async Task<Order?> GetByIdAsync(int id)
+{
+    return await _context.Orders
+        .Include(o => o.OrderItems)
+            .ThenInclude(oi => oi.ProductVariant)
+                .ThenInclude(pv => pv.Product)
+        .Include(o => o.OrderPromotions)
+        .Include(o => o.Payments)
+        .Include(o => o.ReturnNotes)
+        .FirstOrDefaultAsync(o => o.OrderId == id);
+}
 
         public async Task<IEnumerable<Order>> GetAllAsync()
         {

@@ -28,9 +28,7 @@ namespace ShopVision50.API.Repositories.CartRepository_FD
                     .ThenInclude(ci => ci.ProductVariant!)
                         .ThenInclude(pv => pv.Color)
                 .FirstOrDefaultAsync(c => c.UserId == userId);
-
-
-        }
+        }   
 
 
         public async Task<CartItem?> GetCartItemByIdAsync(int cartItemId)

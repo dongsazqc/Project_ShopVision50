@@ -37,18 +37,16 @@ namespace ShopVision50.API.Services.CartService_FD
                         Stock = ci.ProductVariant.Stock,
                         ProductId = ci.ProductVariant.ProductId,
 
-                        // Map thêm chi tiết Product, Size, Color
                         Product = ci.ProductVariant.Product == null ? null : new ProductDto
                         {
                             ProductId = ci.ProductVariant.Product.ProductId,
                             Name = ci.ProductVariant.Product.Name,
                             ProductImages = ci.ProductVariant.Product.ProductImages?.Select(nim => new ProductImageDto
                             {
-                                    ProductImageId = nim.ProductImageId,
-                                    Url = nim.Url,
-                                    IsMain = nim.IsMain
+                                ProductImageId = nim.ProductImageId,
+                                Url = nim.Url,
+                                IsMain = nim.IsMain
                             }).ToList()
-                       
                         },
                         Size = ci.ProductVariant.Size == null ? null : new ProductSizeDto
                         {
@@ -58,7 +56,6 @@ namespace ShopVision50.API.Services.CartService_FD
                         {
                             Name = ci.ProductVariant.Color.Name
                         },
-                        
                     }
                 }).ToList()
             };
@@ -72,6 +69,7 @@ namespace ShopVision50.API.Services.CartService_FD
             await _repo.RemoveCartItemAsync(item);
             return true;
         }
+
         public async Task AddToCartAsync(int userId, AddToCartRequest request)
         {
             var cart = await _repo.GetCartByUserIdAsync(userId);
@@ -97,7 +95,6 @@ namespace ShopVision50.API.Services.CartService_FD
             }
             else
             {
-                // Lấy giá thực của product variant
                 var productVariant = await _repo.GetProductVariantByIdAsync(request.ProductVariantId);
 
                 var newItem = new CartItem
@@ -105,7 +102,7 @@ namespace ShopVision50.API.Services.CartService_FD
                     ProductVariantId = request.ProductVariantId,
                     Quantity = request.Quantity,
                     CartId = cart.CartId,
-                    Price = productVariant?.SalePrice ?? 0 // Gán giá thực
+                    Price = productVariant?.SalePrice ?? 0
                 };
                 _repo.AddCartItem(newItem);
             }
@@ -113,14 +110,13 @@ namespace ShopVision50.API.Services.CartService_FD
             await _repo.SaveChangesAsync();
         }
 
-
         public async Task<bool> IncreaseQuantityAsync(int cartItemId, int quantity)
         {
             var cartItem = await _repo.GetCartItemByIdAsync(cartItemId);
             if (cartItem == null) return false;
 
             cartItem.Quantity += quantity;
-            await _repo.SaveChangesAsync();     
+            await _repo.SaveChangesAsync();
             return true;
         }
 
@@ -139,11 +135,10 @@ namespace ShopVision50.API.Services.CartService_FD
             await _repo.SaveChangesAsync();
             return true;
         }
+
         public async Task<CartItem?> GetCartItemByIdWithCartAsync(int cartItemId)
-{
-    return await _repo.GetCartItemByIdWithCartAsync(cartItemId);
-}
-
-
+        {
+            return await _repo.GetCartItemByIdWithCartAsync(cartItemId);
+        }
     }
 }

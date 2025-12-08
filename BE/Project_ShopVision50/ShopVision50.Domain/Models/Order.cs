@@ -14,6 +14,8 @@ namespace Shop_Db.Models
         public string RecipientPhone { get; set; } = string.Empty;
         public string ShippingAddress { get; set; } = string.Empty;
 
+        //cái này để biết xem đơn hàng đã thanh toán hay chưa
+
         public int UserId { get; set; }
         public User User { get; set; } = null!;
 
