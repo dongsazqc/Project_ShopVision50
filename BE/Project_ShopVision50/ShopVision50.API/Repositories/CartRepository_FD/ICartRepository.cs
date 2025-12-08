@@ -11,6 +11,7 @@ namespace ShopVision50.API.Repositories.CartRepository_FD
 
         Task RemoveCartItemAsync(CartItem item);
         Task<ProductVariant?> GetProductVariantByIdAsync(int productVariantId);
+        Task<CartItem?> GetCartItemByIdWithCartAsync(int cartItemId);
 
     void AddCart(Cart cart);
     void AddCartItem(CartItem cartItem);

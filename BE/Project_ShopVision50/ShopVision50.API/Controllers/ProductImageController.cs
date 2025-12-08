@@ -29,7 +29,6 @@ public class ProductImageController : ControllerBase
     }
 
     [HttpGet("checkimages")]  // GET api/products/{productId}/images/checkimages
-    [Authorize]
     public async Task<IActionResult> GetProductImages(int productId)
     {
         var images = await _service.GetImagesByProductIdAsync(productId);

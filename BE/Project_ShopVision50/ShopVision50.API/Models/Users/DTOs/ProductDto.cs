@@ -34,8 +34,10 @@ namespace ShopVision50.API.Models.Users.DTOs
         public int? CategoryId { get; set; }
         public Category? Category { get; set; }
 
-        public ICollection<ProductVariant>? ProductVariants { get; set; }
-        public ICollection<ProductImage>? ProductImages { get; set; }
+
+    public List<ProductVariantDto>? ProductVariants { get; set; }
+    public List<ProductImageDto>? ProductImages { get; set; }
     }
     
 }
+    

@@ -14,12 +14,14 @@ namespace Shop_Db.Models
         public string RecipientPhone { get; set; } = string.Empty;
         public string ShippingAddress { get; set; } = string.Empty;
 
+        //cái này để biết xem đơn hàng đã thanh toán hay chưa
+
         public int UserId { get; set; }
         public User User { get; set; } = null!;
 
-        public ICollection<OrderItem>? OrderItems { get; set; }
-        public ICollection<OrderPromotion>? OrderPromotions { get; set; }
-        public ICollection<Payment>? Payments { get; set; }
-        public ICollection<ReturnNote>? ReturnNotes { get; set; }
+public ICollection<OrderItem> OrderItems { get; set; } = new List<OrderItem>();
+public ICollection<OrderPromotion> OrderPromotions { get; set; } = new List<OrderPromotion>();
+public ICollection<Payment> Payments { get; set; } = new List<Payment>();
+public ICollection<ReturnNote> ReturnNotes { get; set; } = new List<ReturnNote>();
     }
 }
