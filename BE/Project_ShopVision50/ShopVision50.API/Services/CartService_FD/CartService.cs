@@ -42,6 +42,12 @@ namespace ShopVision50.API.Services.CartService_FD
                         {
                             ProductId = ci.ProductVariant.Product.ProductId,
                             Name = ci.ProductVariant.Product.Name,
+                            ProductImages = ci.ProductVariant.Product.ProductImages?.Select(nim => new ProductImageDto
+                            {
+                                    ProductImageId = nim.ProductImageId,
+                                    Url = nim.Url,
+                                    IsMain = nim.IsMain
+                            }).ToList()
                        
                         },
                         Size = ci.ProductVariant.Size == null ? null : new ProductSizeDto
@@ -51,7 +57,8 @@ namespace ShopVision50.API.Services.CartService_FD
                         Color = ci.ProductVariant.Color == null ? null : new ProductColorDto
                         {
                             Name = ci.ProductVariant.Color.Name
-                        }
+                        },
+                        
                     }
                 }).ToList()
             };
@@ -113,7 +120,7 @@ namespace ShopVision50.API.Services.CartService_FD
             if (cartItem == null) return false;
 
             cartItem.Quantity += quantity;
-            await _repo.SaveChangesAsync();
+            await _repo.SaveChangesAsync();     
             return true;
         }
 
@@ -132,6 +139,11 @@ namespace ShopVision50.API.Services.CartService_FD
             await _repo.SaveChangesAsync();
             return true;
         }
+        public async Task<CartItem?> GetCartItemByIdWithCartAsync(int cartItemId)
+{
+    return await _repo.GetCartItemByIdWithCartAsync(cartItemId);
+}
+
 
     }
 }

@@ -45,7 +45,6 @@ namespace ShopVision50.API.Controllers
                 return StatusCode(500, "Thêm sản phẩm thất bại.");
         }
         [HttpGet("getAllProducts")]
-        [Authorize]
         public async Task<IActionResult> GetAllProducts()
         {
             var products = await _productsService.GetAllProductsAsync();

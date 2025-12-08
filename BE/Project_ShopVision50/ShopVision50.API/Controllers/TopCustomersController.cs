@@ -17,7 +17,6 @@ namespace ShopVision50.API.Controllers
         }
 
         [HttpGet]
-        [Authorize]
         public async Task<IActionResult> GetTopCustomers([FromQuery] int limit = 10)
         {
             var data = await _service.GetTopCustomersAsync(limit);

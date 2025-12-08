@@ -14,7 +14,6 @@ public class ProductVariantController : ControllerBase
     }
 
     [HttpGet]
-    [Authorize]
     public async Task<IActionResult> GetAll()
     {
         var result = await _service.GetAllAsync();
@@ -47,7 +46,6 @@ public class ProductVariantController : ControllerBase
     }
 
       [HttpGet("{productId}/variants")]
-    [Authorize]
     public async Task<IActionResult> GetProductWithVariants(int productId)
 {
     var result = await _service.GetProductWithVariantsAsync(productId);

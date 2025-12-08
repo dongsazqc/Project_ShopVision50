@@ -20,6 +20,7 @@ namespace ShopVision50.API.Repositories.CartRepository_FD
                 .Include(c => c.CartItems!)
                     .ThenInclude(ci => ci.ProductVariant!)
                     .ThenInclude(pr => pr.Product)
+                    .ThenInclude(im => im.ProductImages)
                 .Include(c => c.CartItems)
                     .ThenInclude(ci => ci.ProductVariant)
                     .ThenInclude(si => si.Size)
@@ -63,6 +64,13 @@ namespace ShopVision50.API.Repositories.CartRepository_FD
     {
         return await _context.ProductVariants.FindAsync(productVariantId);
     }
+    public async Task<CartItem?> GetCartItemByIdWithCartAsync(int cartItemId)
+{
+    return await _context.CartItems
+        .Include(ci => ci.Cart) // để lấy luôn Cart và UserId
+        .FirstOrDefaultAsync(ci => ci.CartItemId == cartItemId);
+}
+
 
 
     }
