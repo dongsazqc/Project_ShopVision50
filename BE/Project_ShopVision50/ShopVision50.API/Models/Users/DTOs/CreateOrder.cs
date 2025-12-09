@@ -16,7 +16,7 @@ namespace ShopVision50.API.Models.Users.DTOs
     public string RecipientPhone { get; set; } = string.Empty;
     public string ShippingAddress { get; set; } = string.Empty;
 
-    public List<OrderItemRequest> Products { get; set; } = new();
+    public List<OrderItemRequest> OrderItems { get; set; } = new();
 
     public List<PaymentDetail> Payments { get; set; } = new();
     public int UserId { get; set; }

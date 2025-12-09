@@ -1,56 +1,40 @@
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Newtonsoft.Json;
-using RabbitMQ.Client;
-using System.Text;
+using ShopVision50.API.LlamaAiService;
 
-namespace ShopVision50.API.Controllers
-{
-    [ApiController]
+ [ApiController]
     [Route("api/[controller]")]
     public class ChatController : ControllerBase
     {
-        [HttpPost("send")]
-        [Authorize]
-        public IActionResult SendChat([FromBody] ChatMessage message)
+        private readonly LlamaAiService _llamaService;
+
+        public ChatController()
         {
+            _llamaService = new LlamaAiService(
+                "/home/dong/Desktop/Project_ShopVision50/BE/Project_ShopVision50/ShopVision50.AgentPy/llama.cpp/build/bin/llama-cli",
+                "/home/dong/Desktop/Project_ShopVision50/BE/Project_ShopVision50/ShopVision50.AgentPy/llama.cpp/models/ "
+            );
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Post([FromBody] ChatRequest req)
+        {
+            if (req == null || string.IsNullOrWhiteSpace(req.Message))
+                return BadRequest(new { error = "Message is required" });
+
             try
             {
-                var factory = new ConnectionFactory()
-                {
-                    HostName = "160.250.5.26",
-                    UserName = "agent_user",
-                    Password = "123456"
-                };
-
-                using var connection = factory.CreateConnection();
-                using var channel = connection.CreateModel();
-
-                channel.QueueDeclare(queue: "question_queue",
-                                    durable: true,
-                                    exclusive: false,
-                                    autoDelete: false,
-                                    arguments: null);
-
-                var body = Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(message));
-
-                channel.BasicPublish(exchange: "",
-                                    routingKey: "question_queue",
-                                    basicProperties: null,
-                                    body: body);
-
-                return Ok(new { success = true, message = "Đã gửi tin nhắn đến agent!" });
+                var reply = await _llamaService.QueryAsync(req.Message);
+                return Ok(new { reply });
             }
             catch (Exception ex)
             {
-                return StatusCode(500, new { success = false, error = ex.Message });
+                return StatusCode(500, new { error = ex.Message });
             }
         }
+
     }
 
-    public class ChatMessage
+    public class ChatRequest
     {
-        public string User { get; set; }
-        public string Question { get; set; }
+        public string Message { get; set; }
     }
-}

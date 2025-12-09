@@ -63,7 +63,7 @@ namespace ShopVision50.API.Services.OrderService_FD
             var createdOrder = await _repository.AddOrderAsync(order);
 
             // Tạo order items từ request, gán OrderId đã có
-            var orderItems = request.Products.Select(p => new OrderItem
+            var orderItems = request.OrderItems.Select(p => new OrderItem
             {
                 ProductVariantId = p.ProductVariantId,
                 Quantity = p.Quantity,
