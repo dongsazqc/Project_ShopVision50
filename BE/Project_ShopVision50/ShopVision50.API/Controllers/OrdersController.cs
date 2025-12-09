@@ -87,6 +87,25 @@ namespace ShopVision50.API.Controllers
 
         return Ok(orders);
     }
+        [HttpPut("ChangeStatus")]
+        [Authorize]
+        public async Task<IActionResult> ChangeStatus([FromBody] OrderStatusChangeDto dto)
+        {
+            var result = await _service.ChangeOrderStatusAsync(dto.OrderId, dto.NewStatus);
 
+            if (result.Contains("Không thể"))
+                return BadRequest(new { message = result });
+
+            return Ok(new { message = result });
+        }
+        [HttpGet("GetRealStatus/{id}")]
+        public async Task<IActionResult> GetRealStatus(int id)
+        {
+            var order = await _service.GetByIdAsync(id);
+            if (order == null) return NotFound();
+
+            var status = await _service.GetRealOrderStatusAsync(order);
+            return Ok(new { OrderId = id, Status = status });
+        }
     }
 }

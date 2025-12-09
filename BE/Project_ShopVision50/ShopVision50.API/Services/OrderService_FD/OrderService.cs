@@ -118,5 +118,94 @@ namespace ShopVision50.API.Services.OrderService_FD
                 DeliveryAddress = o.ShippingAddress
             }).ToList();
         }
+        public async Task<string> GetRealOrderStatusAsync(Order order)
+        {
+            if (order == null) return "Unknown";
+
+            // ===== 1. Check Returned =====
+            // Nếu có ReturnNotes và lý do có chữ "return" hoặc "trả"
+            if (order.ReturnNotes != null && order.ReturnNotes.Any())
+            {
+                foreach (var rn in order.ReturnNotes)
+                {
+                    if (!string.IsNullOrEmpty(rn.Reason))
+                    {
+                        var reason = rn.Reason.ToLower();
+
+                        if (reason.Contains("trả") || reason.Contains("return"))
+                            return "Returned";
+
+                        if (reason.Contains("hủy") || reason.Contains("huy") || reason.Contains("cancel"))
+                            return "Cancelled";
+                    }
+                }
+            }
+
+            // ===== 2. Completed =====
+            // Order.Status = true hiện tại là flag "đã thanh toán"
+            if (order.Status)
+                return "Completed";
+
+            // ===== 3. Processing =====
+            // Nếu có payment nào Status = true
+            if (order.Payments != null && order.Payments.Any(p => p.Status))
+                return "Processing";
+
+            // ===== 4. Pending =====
+            return "Pending";
+        }
+
+        public async Task<string> ChangeOrderStatusAsync(int orderId, string newStatus)
+        {
+            var order = await _repository.GetByIdAsync(orderId);
+            if (order == null) return "Order không tồn tại";
+
+            var currentStatus = await GetRealOrderStatusAsync(order);
+            string target = newStatus.Trim();
+
+            // Không đổi trạng thái nếu Completed hoặc Cancelled
+            if (currentStatus == "Completed" || currentStatus == "Cancelled")
+                return $"Không thể đổi trạng thái vì đơn hàng đã {currentStatus}";
+
+            // Pending -> Processing
+            if (currentStatus == "Pending")
+            {
+                if (target != "Processing")
+                    return "Pending chỉ được chuyển sang Processing";
+            }
+
+            // Processing -> Shipping
+            if (currentStatus == "Processing")
+            {
+                if (target != "Shipping")
+                    return "Processing chỉ được chuyển sang Shipping";
+            }
+
+            // Shipping -> Completed
+            if (currentStatus == "Shipping")
+            {
+                if (target != "Completed")
+                    return "Shipping chỉ được chuyển sang Completed";
+            }
+
+            // Nếu target = Cancelled → set Status = false
+            if (target == "Cancelled")
+            {
+                order.Status = false;
+                await _repository.UpdateAsync(order);
+                return "Đã hủy đơn hàng";
+            }
+
+            // Nếu Completed → set Status = true
+            if (target == "Completed")
+            {
+                order.Status = true;
+                await _repository.UpdateAsync(order);
+                return "Đơn hàng đã Completed";
+            }
+
+            // Không cần lưu trạng thái trung gian vào DB
+            return $"Trạng thái đã được cập nhật từ {currentStatus} sang {target}";
+        }
     }
 }

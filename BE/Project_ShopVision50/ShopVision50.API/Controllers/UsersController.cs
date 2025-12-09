@@ -127,7 +127,7 @@ namespace ShopVision50.API.Controllers
         // ĐỔI MẬT KHẨU BẰNG OTP
         // ================================
         [HttpPost("change-password-with-otp")]
-        [Authorize]
+        
 
         public async Task<IActionResult> ChangePasswordWithOtp([FromBody] ChangePasswordOtpDto dto)
         {

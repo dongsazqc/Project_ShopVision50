@@ -11,5 +11,7 @@ Task<Order> CreateOrderAsync(CreateOrderRequest request);
         Task UpdateAsync(Order order);
         Task DeleteAsync(int id);
 Task<List<UserOrderResponse>> GetOrdersByUserIdAsync(int userId);
-}
+        Task<string> ChangeOrderStatusAsync(int orderId, string newStatus);
+        Task<string> GetRealOrderStatusAsync(Order order);
+    }
 }
