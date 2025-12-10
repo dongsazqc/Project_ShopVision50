@@ -791,8 +791,7 @@
               "RelativeToolTip": "ShopVision50.API\\Controllers\\LocProductController.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAABoAAAAJAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-12-10T14:38:32.901Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-12-10T14:38:32.901Z"
             },
             {
               "$type": "Document",
@@ -804,8 +803,7 @@
               "RelativeToolTip": "ShopVision50.API\\Services\\LocProductService_FD\\LocProductService.cs",
               "ViewState": "AgIAACcAAAAAAAAAAAAYwEoAAAAFAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-12-10T14:37:55.805Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-12-10T14:37:55.805Z"
             },
             {
               "$type": "Document",
@@ -817,8 +815,7 @@
               "RelativeToolTip": "ShopVision50.API\\Services\\LocProductService_FD\\ILocProductService.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAcAAAAFAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-12-10T14:37:43.171Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-12-10T14:37:43.171Z"
             },
             {
               "$type": "Document",
@@ -830,8 +827,7 @@
               "RelativeToolTip": "ShopVision50.API\\Repositories\\LocProductRepo_FD\\LocProductRepository.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAABMAAAAuAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-12-10T14:36:47.505Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-12-10T14:36:47.505Z"
             },
             {
               "$type": "Document",
@@ -860,8 +856,7 @@
               "RelativeToolTip": "ShopVision50.API\\appsettings.json",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAABcAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001642|",
-              "WhenOpened": "2025-12-10T14:39:35.939Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-12-10T14:39:35.939Z"
             },
             {
               "$type": "Document",
@@ -873,8 +868,7 @@
               "RelativeToolTip": "ShopVision50.API\\Repositories\\LocProductRepo_FD\\ILocProductRepository.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAcAAAAFAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-12-10T14:36:21.853Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-12-10T14:36:21.853Z"
             },
             {
               "$type": "Document",
@@ -886,8 +880,7 @@
               "RelativeToolTip": "ShopVision50.API\\Services\\CustomerService_FD\\ICustomerService.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAcAAAAFAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-12-10T14:31:00.325Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-12-10T14:31:00.325Z"
             },
             {
               "$type": "Document",
@@ -899,8 +892,7 @@
               "RelativeToolTip": "ShopVision50.API\\Services\\CustomerService_FD\\CustomerService.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAABgAAAAjAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-12-10T14:31:14.037Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-12-10T14:31:14.037Z"
             },
             {
               "$type": "Document",
@@ -912,8 +904,7 @@
               "RelativeToolTip": "ShopVision50.API\\Repositories\\CustomerRepo_FD\\ICustomerRepository.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAcAAAAFAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-12-10T14:30:12.424Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-12-10T14:30:12.424Z"
             },
             {
               "$type": "Document",
@@ -925,8 +916,7 @@
               "RelativeToolTip": "ShopVision50.API\\Repositories\\CustomerRepo_FD\\CustomerRepository.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAkAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-12-10T14:30:33.096Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-12-10T14:30:33.096Z"
             },
             {
               "$type": "Document",
@@ -938,8 +928,7 @@
               "RelativeToolTip": "ShopVision50.API\\Controllers\\OrderItemController.cs",
               "ViewState": "AgIAABYAAAAAAAAAAAAQwDoAAAATAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-11-29T05:00:37.165Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-11-29T05:00:37.165Z"
             },
             {
               "$type": "Document",
@@ -951,8 +940,7 @@
               "RelativeToolTip": "ShopVision50.API\\Controllers\\MaterialController.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAEcAAAATAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-11-16T18:30:36.197Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-11-16T18:30:36.197Z"
             },
             {
               "$type": "Document",
@@ -964,8 +952,7 @@
               "RelativeToolTip": "ShopVision50.API\\Controllers\\LoginController.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-11-16T18:26:20.618Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-11-16T18:26:20.618Z"
             },
             {
               "$type": "Document",
@@ -977,8 +964,7 @@
               "RelativeToolTip": "ShopVision50.API\\Controllers\\KhuyenMaiController.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAB8AAAAiAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-10-28T11:59:14.694Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-10-28T11:59:14.694Z"
             },
             {
               "$type": "Document",
@@ -990,8 +976,7 @@
               "RelativeToolTip": "ShopVision50.API\\Controllers\\GenderController.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAEkAAAATAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-11-16T18:19:31.677Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-11-16T18:19:31.677Z"
             },
             {
               "$type": "Document",
@@ -1003,8 +988,7 @@
               "RelativeToolTip": "ShopVision50.API\\Controllers\\CustomerController.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAA4AAAAfAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-12-10T14:32:01.999Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-12-10T14:32:01.999Z"
             },
             {
               "$type": "Document",
@@ -1064,8 +1048,7 @@
               "RelativeToolTip": "ShopVision50.API\\Services\\UserService_FD\\UserService.cs",
               "ViewState": "AgIAAIwAAAAAAAAAAAAUwMwAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-10-28T00:58:37.233Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-10-28T00:58:37.233Z"
             },
             {
               "$type": "Document",
