@@ -1,443 +1,380 @@
 import {
-    Table,
-    Tag,
-    Button,
-    Modal,
-    Space,
-    message,
-    Form,
-    Input,
-    Select,
-    DatePicker,
+  Table,
+  Tag,
+  Button,
+  Space,
+  message,
+  Form,
+  Input,
+  Select,
+  DatePicker,
+  Modal,
 } from "antd";
 import { ReloadOutlined, SaveOutlined } from "@ant-design/icons";
-import { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
 import api from "../utils/axios";
 import dayjs from "dayjs";
 
 const { RangePicker } = DatePicker;
 
+// Map trạng thái boolean từ Backend
+const statusLabels = {
+  pending: "Chờ xử lý",
+  completed: "Hoàn tất",
+};
+
+const statusColors = {
+  pending: "orange",
+  completed: "green",
+};
+
+const paymentMethodMap = {
+  cash: "Tiền mặt",
+  bank: "Chuyển khoản",
+};
+
+const orderTypeMap = {
+  Offline: "Nhận tại cửa hàng",
+  delivery: "Giao hàng",
+};
+
 export default function Orders() {
-    const [messageApi, contextHolder] = message.useMessage();
-    const [orders, setOrders] = useState([]);
-    const [filteredOrders, setFilteredOrders] = useState([]);
-    const [loading, setLoading] = useState(false);
+  const [orders, setOrders] = useState([]);
+  const [filteredOrders, setFilteredOrders] = useState([]);
+  const [selectedOrder, setSelectedOrder] = useState(null);
+  const [detailModal, setDetailModal] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [form] = Form.useForm();
 
-    const [detailModal, setDetailModal] = useState(false);
-    const [selectedOrder, setSelectedOrder] = useState(null);
+  const [searchText, setSearchText] = useState("");
+  const [phoneFilter, setPhoneFilter] = useState("");
+  const [dateRange, setDateRange] = useState(null);
+  const [statusFilter, setStatusFilter] = useState("all");
 
-    const [form] = Form.useForm();
+const fetchOrders = async () => {
+  try {
+    setLoading(true);
 
-    // --- Filter States ---
-    const [searchText, setSearchText] = useState("");
-    const [phoneFilter, setPhoneFilter] = useState("");
-    const [dateRange, setDateRange] = useState(null);
-    const [statusFilter, setStatusFilter] = useState("all");
+    const res = await api.get("/Orders/GetAll");
 
-    // ===================== STATUS MAPPING =====================
-    const statusLabels = {
-        pending: "Chờ xác nhận",
-        confirmed: "Đã xác nhận",
-        shipping: "Đang giao hàng",
-        delivered: "Đã giao",
-        completed: "Hoàn tất",
-        cancelled: "Đã hủy",
-    };
+    // Normalize đúng kiểu dữ liệu từ backend .NET
+    const raw = res.data?.$values || res.data || [];
 
-    const statusColors = {
-        pending: "default",
-        confirmed: "processing",
-        shipping: "blue",
-        delivered: "cyan",
-        completed: "green",
-        cancelled: "red",
-    };
+    // Map dữ liệu + Sort mới nhất lên đầu
+    const list = raw
+      .map((o) => ({
+        ...o,
+        status: o.status ? "completed" : "pending",
+        paymentMethod: o.payments?.[0]?.method?.toLowerCase() ?? "cash",
+        orderItems:
+          o.orderItems?.map((item) => ({
+            orderItemId: item.orderItemId,
+            productName: item.productVariant?.productOrder?.name || "—",
+            productImage: "/no-img.png",
+            quantity: item.quantity,
+            price: item.productVariant?.salePrice || 0,
+            total: item.quantity * (item.productVariant?.salePrice || 0),
+            size: item.productVariant?.size?.name || "—",
+            color: item.productVariant?.color?.name || "—",
+          })) || [],
+      }))
+      .sort((a, b) => new Date(b.orderDate) - new Date(a.orderDate)); // 🔥 newest first
 
-    const paymentMethodMap = {
-        cash: "Tiền mặt",
-        bank: "Chuyển khoản",
-    };
+    setOrders(list);
+    setFilteredOrders(list);
+  } catch (err) {
+    console.error(err);
+    message.error("Không thể tải danh sách đơn hàng");
+  } finally {
+    setLoading(false);
+  }
+};
 
-    const orderTypeMap = {
-        delivery: "Giao hàng",
-        pickup: "Nhận tại cửa hàng",
-    };
+  useEffect(() => {
+    fetchOrders();
+  }, []);
 
-    // ===================== FETCH ORDERS =====================
-    const fetchOrders = async () => {
-        try {
-            setLoading(true);
-            let res = await api.get("/Orders/GetAll");
-            let list = res.data?.$values || res.data || [];
+  const applyFilters = () => {
+    let result = [...orders];
 
-            // Sort newest first
-            list = list.sort(
-                (a, b) => new Date(b.orderDate) - new Date(a.orderDate)
-            );
+    if (searchText.trim()) {
+      result = result.filter((o) =>
+        o.recipientName?.toLowerCase().includes(searchText.toLowerCase())
+      );
+    }
 
-            setOrders(list);
-            setFilteredOrders(list);
-        } catch (err) {
-            console.error(err);
-            messageApi.error("Không thể tải danh sách đơn hàng");
-        } finally {
-            setLoading(false);
-        }
-    };
+    if (phoneFilter.trim()) {
+      result = result.filter((o) => o.recipientPhone?.includes(phoneFilter));
+    }
 
-    useEffect(() => {
-        fetchOrders();
-    }, []);
+    if (dateRange && dateRange.length === 2) {
+      const [start, end] = dateRange;
+      result = result.filter((o) => {
+        const date = dayjs(o.orderDate);
+        return (
+          date.isAfter(start.startOf("day")) &&
+          date.isBefore(end.endOf("day"))
+        );
+      });
+    }
 
-    // ===================== FILTERING =====================
-    const applyFilters = () => {
-        let result = [...orders];
+    if (statusFilter !== "all") {
+      result = result.filter((o) => o.status === statusFilter);
+    }
 
-        if (searchText.trim()) {
-            result = result.filter((o) =>
-                o.recipientName
-                    ?.toLowerCase()
-                    .includes(searchText.toLowerCase())
-            );
-        }
+    setFilteredOrders(result);
+  };
 
-        if (phoneFilter.trim()) {
-            result = result.filter((o) =>
-                o.recipientPhone?.includes(phoneFilter)
-            );
-        }
+  useEffect(() => {
+    applyFilters();
+  }, [searchText, phoneFilter, dateRange, statusFilter, orders]);
 
-        if (dateRange && dateRange.length === 2) {
-            const [start, end] = dateRange;
-            result = result.filter((o) => {
-                const date = dayjs(o.orderDate);
-                return (
-                    date.isAfter(start.startOf("day")) &&
-                    date.isBefore(end.endOf("day"))
-                );
-            });
-        }
+  const handleView = async (record) => {
+    try {
+      const res = await api.get(`/Orders/GetById/${record.orderId}`);
+      const data = res.data;
 
-        if (statusFilter !== "all") {
-            result = result.filter((o) => o.status === statusFilter);
-        }
+      setSelectedOrder({
+        ...data,
+        status: data.status ? "completed" : "pending",
+        paymentMethod: data.payments?.[0]?.method?.toLowerCase() ?? "cash",
+        orderItems:
+          data.orderItems?.map((item) => ({
+            orderItemId: item.orderItemId,
+            productName: item.productVariant?.productOrder?.name || "—",
+            productImage: "/no-img.png",
+            quantity: item.quantity,
+            price: item.productVariant?.salePrice || 0,
+            total: item.quantity * (item.productVariant?.salePrice || 0),
+            size: item.productVariant?.size?.name || "—",
+            color: item.productVariant?.color?.name || "—",
+          })) || [],
+      });
 
-        setFilteredOrders(result);
-    };
+      form.setFieldsValue({
+        recipientName: data.recipientName,
+        recipientPhone: data.recipientPhone,
+        shippingAddress: data.shippingAddress,
+        orderType: data.orderType,
+        paymentMethod: data.payments?.[0]?.method?.toLowerCase(),
+        totalAmount: data.totalAmount,
+        status: data.status ? "completed" : "pending",
+      });
 
-    useEffect(() => {
-        applyFilters();
-    }, [searchText, phoneFilter, dateRange, statusFilter, orders]);
+      setDetailModal(true);
+    } catch (err) {
+      message.error("Không thể tải chi tiết đơn hàng");
+    }
+  };
 
-    // ===================== VIEW ORDER =====================
-    const handleView = async (record) => {
-        try {
-            const res = await api.get(`/Orders/GetById/${record.orderId}`);
-            setSelectedOrder(res.data);
+  const handleSaveUpdate = async () => {
+    try {
+      const values = await form.validateFields();
 
-            form.setFieldsValue({
-                recipientName: res.data.recipientName,
-                recipientPhone: res.data.recipientPhone,
-                shippingAddress: res.data.shippingAddress,
-                totalAmount: res.data.totalAmount,
-                status: res.data.status,
-                paymentMethod: res.data.paymentMethod,
-                orderType: res.data.orderType,
-            });
+      await api.put(`/Orders/Update/${selectedOrder.orderId}`, {
+        ...selectedOrder,
+        ...values,
+      });
 
-            setDetailModal(true);
-        } catch (err) {
-            console.error(err);
-            messageApi.error("Không thể tải chi tiết đơn hàng");
-        }
-    };
+      message.success("Cập nhật thành công");
+      setDetailModal(false);
+      fetchOrders();
+    } catch (err) {
+      message.error("Lỗi khi cập nhật đơn hàng");
+    }
+  };
 
-    // ===================== SAVE UPDATED ORDER =====================
-    const handleSaveUpdate = async () => {
-        try {
-            const values = await form.validateFields();
+  const columns = [
+    { title: "Mã đơn", dataIndex: "orderId", width: 80 },
+    {
+      title: "Người nhận",
+      dataIndex: "recipientName",
+      render: (text, record) => (
+        <span
+          style={{ color: "#1677ff", cursor: "pointer" }}
+          onClick={() => handleView(record)}
+        >
+          {text}
+        </span>
+      ),
+    },
+    { title: "Số điện thoại", dataIndex: "recipientPhone", width: 120 },
+    {
+      title: "Loại đơn",
+      dataIndex: "orderType",
+      render: (v) => orderTypeMap[v] || v,
+    },
+    {
+      title: "Thanh toán",
+      dataIndex: "paymentMethod",
+      render: (v) => paymentMethodMap[v] || "—",
+    },
+    {
+      title: "Tổng tiền",
+      dataIndex: "totalAmount",
+      render: (v) => `${v.toLocaleString()} ₫`,
+    },
+    {
+      title: "Trạng thái",
+      dataIndex: "status",
+      render: (v) => <Tag color={statusColors[v]}>{statusLabels[v]}</Tag>,
+    },
+    {
+      title: "Ngày tạo",
+      dataIndex: "orderDate",
+      render: (v) => dayjs(v).format("DD/MM/YYYY HH:mm"),
+    },
+  ];
 
-            await api.put(`/Orders/Update/${selectedOrder.orderId}`, {
-                ...selectedOrder,
-                ...values,
-            });
+  return (
+    <div>
+      <Space
+        style={{
+          marginBottom: 16,
+          width: "100%",
+          justifyContent: "space-between",
+        }}
+      >
+        <h2>Quản lý đơn hàng</h2>
+        <Button icon={<ReloadOutlined />} onClick={fetchOrders}>
+          Làm mới
+        </Button>
+      </Space>
 
-            messageApi.success("Cập nhật đơn hàng thành công!");
-            setDetailModal(false);
-            fetchOrders();
-        } catch (err) {
-            console.error(err);
-            messageApi.error("Không thể cập nhật đơn hàng");
-        }
-    };
+      {/* FILTERS */}
+      <Space wrap style={{ marginBottom: 16 }}>
+        <Input
+          placeholder="Tìm theo tên..."
+          style={{ width: 200 }}
+          allowClear
+          onChange={(e) => setSearchText(e.target.value)}
+        />
 
-    // ===================== COLUMNS =====================
-    const columns = [
-        {
-            title: "Mã đơn",
-            dataIndex: "orderId",
-            width: 90,
-        },
-        {
-            title: "Người nhận",
-            dataIndex: "recipientName",
-            render: (text, record) => (
-                <span
-                    style={{ color: "#1677ff", cursor: "pointer" }}
-                    onClick={() => handleView(record)}
-                >
-                    {text}
-                </span>
-            ),
-        },
-        { title: "Số điện thoại", dataIndex: "recipientPhone" },
-        {
-            title: "Loại đơn",
-            dataIndex: "orderType",
-            render: (v) => orderTypeMap[v] || "—",
-        },
-        {
-            title: "Thanh toán",
-            dataIndex: "paymentMethod",
-            render: (v) => paymentMethodMap[v] || "—",
-        },
-        {
-            title: "Tổng tiền",
-            dataIndex: "totalAmount",
-            render: (v) => `${v?.toLocaleString()} ₫`,
-        },
-        {
-            title: "Trạng thái",
-            dataIndex: "status",
-            render: (v) => <Tag color={statusColors[v]}>{statusLabels[v]}</Tag>,
-        },
-        {
-            title: "Ngày tạo",
-            dataIndex: "orderDate",
-            render: (v) => (v ? dayjs(v).format("DD/MM/YYYY HH:mm") : "—"),
-        },
-    ];
+        <Input
+          placeholder="Tìm theo SĐT..."
+          style={{ width: 150 }}
+          allowClear
+          onChange={(e) => setPhoneFilter(e.target.value)}
+        />
 
-    return (
-        <div>
-            {contextHolder}
-            {/* HEADER */}
-            <Space
-                style={{
-                    marginBottom: 16,
-                    display: "flex",
-                    justifyContent: "space-between",
-                    width: "100%",
-                }}
-            >
-                <h2>Quản lý đơn hàng</h2>
-                <Button icon={<ReloadOutlined />} onClick={fetchOrders}>
-                    Làm mới
-                </Button>
-            </Space>
+        <RangePicker onChange={setDateRange} />
 
-            {/* FILTER BAR */}
-            <Space style={{ marginBottom: 16 }} wrap>
-                <Input
-                    placeholder="Tìm theo tên người nhận..."
-                    style={{ width: 220 }}
-                    allowClear
-                    onChange={(e) => setSearchText(e.target.value)}
-                />
+        <Select
+          style={{ width: 180 }}
+          value={statusFilter}
+          onChange={setStatusFilter}
+          options={[
+            { value: "all", label: "Tất cả" },
+            ...Object.keys(statusLabels).map((key) => ({
+              value: key,
+              label: statusLabels[key],
+            })),
+          ]}
+        />
+      </Space>
 
-                <Input
-                    placeholder="Tìm theo số điện thoại..."
-                    style={{ width: 180 }}
-                    allowClear
-                    onChange={(e) => setPhoneFilter(e.target.value)}
-                />
+      <Table
+        columns={columns}
+        dataSource={filteredOrders}
+        rowKey="orderId"
+        loading={loading}
+        bordered
+      />
 
-                <RangePicker
-                    style={{ width: 260 }}
-                    onChange={(values) => setDateRange(values)}
-                />
+      {/* ORDER DETAILS */}
+      <Modal
+        title={`Chi tiết #${selectedOrder?.orderId}`}
+        open={detailModal}
+        onCancel={() => setDetailModal(false)}
+        width={700}
+        footer={[
+          <Button onClick={() => setDetailModal(false)}>Đóng</Button>,
+          <Button type="primary" icon={<SaveOutlined />} onClick={handleSaveUpdate}>
+            Lưu thay đổi
+          </Button>,
+        ]}
+      >
+        {selectedOrder && (
+          <>
+            <Form form={form} layout="vertical">
+              <Form.Item label="Tên người nhận" name="recipientName">
+                <Input />
+              </Form.Item>
 
-                <Select
-                    value={statusFilter}
-                    style={{ width: 200 }}
-                    onChange={(v) => setStatusFilter(v)}
-                    options={[
-                        { label: "Tất cả", value: "all" },
-                        ...Object.keys(statusLabels).map((key) => ({
-                            label: statusLabels[key],
-                            value: key,
-                        })),
-                    ]}
-                />
-            </Space>
+              <Form.Item label="Số điện thoại" name="recipientPhone">
+                <Input />
+              </Form.Item>
 
-            {/* TABLE */}
+              <Form.Item label="Địa chỉ" name="shippingAddress">
+                <Input />
+              </Form.Item>
+
+              <Form.Item label="Loại đơn" name="orderType">
+                <Input disabled />
+              </Form.Item>
+
+              <Form.Item label="Thanh toán" name="paymentMethod">
+                <Select>
+                  <Select.Option value="cash">Tiền mặt</Select.Option>
+                  <Select.Option value="bank">Chuyển khoản</Select.Option>
+                </Select>
+              </Form.Item>
+
+              <Form.Item label="Tổng tiền" name="totalAmount">
+                <Input disabled />
+              </Form.Item>
+
+              <Form.Item label="Trạng thái" name="status">
+                <Select>
+                  <Select.Option value="pending">Chờ xử lý</Select.Option>
+                  <Select.Option value="completed">Hoàn tất</Select.Option>
+                </Select>
+              </Form.Item>
+            </Form>
+
+            <h3 style={{ marginTop: 20 }}>Sản phẩm</h3>
+
             <Table
-                columns={columns}
-                dataSource={filteredOrders}
-                rowKey="orderId"
-                loading={loading}
-                bordered
+              dataSource={selectedOrder.orderItems}
+              rowKey="orderItemId"
+              size="small"
+              bordered
+              pagination={false}
+              columns={[
+                {
+                  title: "Sản phẩm",
+                  dataIndex: "productName",
+                },
+                {
+                  title: "Màu",
+                  dataIndex: "color",
+                  width: 100,
+                },
+                {
+                  title: "Size",
+                  dataIndex: "size",
+                  width: 70,
+                },
+                {
+                  title: "SL",
+                  dataIndex: "quantity",
+                  width: 60,
+                },
+                {
+                  title: "Giá",
+                  dataIndex: "price",
+                  render: (v) => `${v.toLocaleString()} ₫`,
+                },
+                {
+                  title: "Tổng",
+                  dataIndex: "total",
+                  render: (v) => `${v.toLocaleString()} ₫`,
+                },
+              ]}
             />
-
-            {/* MODAL */}
-            <Modal
-                title={`Chi tiết đơn hàng #${selectedOrder?.orderId}`}
-                open={detailModal}
-                onCancel={() => setDetailModal(false)}
-                width={700}
-                footer={[
-                    <Button onClick={() => setDetailModal(false)}>Đóng</Button>,
-                    <Button
-                        type="primary"
-                        icon={<SaveOutlined />}
-                        onClick={handleSaveUpdate}
-                    >
-                        Lưu thay đổi
-                    </Button>,
-                ]}
-            >
-                {selectedOrder && (
-                    <>
-                        <Form form={form} layout="vertical">
-                            <Form.Item
-                                label="Tên người nhận"
-                                name="recipientName"
-                            >
-                                <Input />
-                            </Form.Item>
-
-                            <Form.Item
-                                label="Số điện thoại"
-                                name="recipientPhone"
-                            >
-                                <Input />
-                            </Form.Item>
-
-                            <Form.Item
-                                label="Địa chỉ giao hàng"
-                                name="shippingAddress"
-                            >
-                                <Input />
-                            </Form.Item>
-
-                            <Form.Item label="Loại đơn" name="orderType">
-                                <Select>
-                                    <Select.Option value="delivery">
-                                        Giao hàng
-                                    </Select.Option>
-                                    <Select.Option value="pickup">
-                                        Nhận tại cửa hàng
-                                    </Select.Option>
-                                </Select>
-                            </Form.Item>
-
-                            <Form.Item label="Thanh toán" name="paymentMethod">
-                                <Select>
-                                    <Select.Option value="cash">
-                                        Tiền mặt
-                                    </Select.Option>
-                                    <Select.Option value="bank">
-                                        Chuyển khoản
-                                    </Select.Option>
-                                </Select>
-                            </Form.Item>
-
-                            <Form.Item label="Tổng tiền" name="totalAmount">
-                                <Input type="number" />
-                            </Form.Item>
-
-                            <Form.Item label="Trạng thái" name="status">
-                                <Select>
-                                    {Object.keys(statusLabels).map((key) => (
-                                        <Select.Option key={key} value={key}>
-                                            {statusLabels[key]}
-                                        </Select.Option>
-                                    ))}
-                                </Select>
-                            </Form.Item>
-                        </Form>
-
-                        <h3 style={{ marginTop: 24 }}>Danh sách sản phẩm</h3>
-
-                        <Table
-                            dataSource={
-                                selectedOrder?.orderItems?.$values ||
-                                selectedOrder?.orderItems ||
-                                []
-                            }
-                            columns={[
-                                {
-                                    title: "Sản phẩm",
-                                    dataIndex: "productName",
-                                    render: (_, record) => (
-                                        <div
-                                            style={{
-                                                display: "flex",
-                                                alignItems: "center",
-                                                gap: 8,
-                                            }}
-                                        >
-                                            <img
-                                                src={record.productImage}
-                                                alt=""
-                                                style={{
-                                                    width: 40,
-                                                    height: 40,
-                                                    objectFit: "cover",
-                                                    borderRadius: 4,
-                                                }}
-                                            />
-                                            <span>{record.productName}</span>
-                                        </div>
-                                    ),
-                                },
-                                {
-                                    title: "Màu",
-                                    dataIndex: ["variant", "color"],
-                                    render: (_, r) =>
-                                        r.color || r.variant?.color || "—",
-                                    width: 90,
-                                },
-                                {
-                                    title: "Size",
-                                    dataIndex: ["variant", "size"],
-                                    render: (_, r) =>
-                                        r.size || r.variant?.size || "—",
-                                    width: 70,
-                                },
-                                {
-                                    title: "Số lượng",
-                                    dataIndex: "quantity",
-                                    width: 80,
-                                },
-                                {
-                                    title: "Đơn giá",
-                                    dataIndex: "price",
-                                    render: (v) =>
-                                        `${(v || 0).toLocaleString()} ₫`,
-                                    width: 120,
-                                },
-                                {
-                                    title: "Thành tiền",
-                                    dataIndex: "total",
-                                    render: (_, row) =>
-                                        `${(
-                                            (row.total ??
-                                                row.quantity * row.price) ||
-                                            0
-                                        ).toLocaleString()} ₫`,
-                                    width: 140,
-                                },
-                            ]}
-                            pagination={false}
-                            rowKey="orderItemId"
-                            size="small"
-                            bordered
-                        />
-                    </>
-                )}
-            </Modal>
-        </div>
-    );
+          </>
+        )}
+      </Modal>
+    </div>
+  );
 }
