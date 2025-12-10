@@ -19,6 +19,8 @@ namespace ShopVision50.API.Models.Users.DTOs
 
         public int ProductId { get; set; }
         public ProductDto Product { get; set; } = null!;
+        public ProductOrderDto ProductOrder { get; set; } = null!;
+
 
 
     }

@@ -17,53 +17,6 @@ import api from "../utils/axios";
 const { Option } = Select;
 
 export default function Users() {
- haoBranch
-  const [users, setUsers] = useState([]);
-  const [filteredUsers, setFilteredUsers] = useState([]);
-  const [loading, setLoading] = useState(false);
-
-  const [modalOpen, setModalOpen] = useState(false);
-  const [modalAddOpen, setModalAddOpen] = useState(false);
-  const [selectedUser, setSelectedUser] = useState(null);
-
-  const [form] = Form.useForm();
-  const [formAdd] = Form.useForm();
-
-  const [search, setSearch] = useState("");
-  const [filterStatus, setFilterStatus] = useState(null);
-  const [filterRole, setFilterRole] = useState(null);
-
-  // ================== FETCH USERS ==================
-  const fetchUsers = async () => {
-    let mounted = true;
-    try {
-      setLoading(true);
-      const res = await api.get("/Users/getAll");
-      let list = res.data?.$values || [];
-
-      if (!mounted) return;
-
-      // 🧩 Sắp xếp userId giảm dần (mới nhất lên đầu)
-      list.sort((a, b) => b.userId - a.userId);
-
-      const formatted = list.map((u) => {
-        const roleId =
-          u.userRoles?.$values?.[0]?.role?.roleId ??
-          u.roleId ??
-          3;
-
-        let roleName = "Khách hàng";
-        if (roleId === 1) roleName = "Admin";
-        else if (roleId === 2) roleName = "Nhân viên";
-
-        return {
-          ...u,
-          role: roleName,
-          roleId,
-          joinDate: u.joinDate
-            ? new Date(u.joinDate).toLocaleDateString("vi-VN")
-            : "—",
-
     const [messageApi, contextHolder] = message.useMessage();
     const [users, setUsers] = useState([]);
     const [filteredUsers, setFilteredUsers] = useState([]);
@@ -124,7 +77,6 @@ export default function Users() {
         }
         return () => {
             mounted = false;
- main
         };
     };
 

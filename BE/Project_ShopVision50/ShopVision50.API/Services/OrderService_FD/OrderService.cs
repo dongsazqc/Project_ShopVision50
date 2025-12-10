@@ -23,9 +23,69 @@ namespace ShopVision50.API.Services.OrderService_FD
             _context = context;
         }
 
-        public async Task<Order?> GetByIdAsync(int id)
+        public async Task<OrderDto?> GetByIdAsync(int id)
         {
-            return await _repository.GetByIdAsync(id);
+               var order = await _repository.GetByIdAsync(id);
+
+                if (order == null)
+        return null;
+
+    return new OrderDto
+    {
+        OrderId = order.OrderId,
+        OrderDate = order.OrderDate,
+        OrderType = order.OrderType,
+        Status = order.Status,
+        TotalAmount = order.TotalAmount,
+        RecipientName = order.RecipientName,
+        RecipientPhone = order.RecipientPhone,
+        ShippingAddress = order.ShippingAddress,
+        OrderItems = order.OrderItems?.Select(oi => new OrderItemDto
+        {
+            OrderItemId = oi.OrderItemId,
+            Quantity = oi.Quantity,
+            DiscountAmount = oi.DiscountAmount,
+            ProductVariant = oi.ProductVariant == null ? null : new ProductVariantDto
+            {
+                ProductVariantId = oi.ProductVariant.ProductVariantId,
+                SalePrice = oi.ProductVariant.SalePrice,
+                Stock = oi.ProductVariant.Stock,
+                Size = oi.ProductVariant.Size == null ? null : new ProductSizeDto
+                {
+                    SizeId = oi.ProductVariant.Size.SizeId,
+                    Name = oi.ProductVariant.Size.Name
+                },
+                Color = oi.ProductVariant.Color == null ? null : new ProductColorDto
+                {
+                    ColorId = oi.ProductVariant.Color.ColorId,
+                    Name = oi.ProductVariant.Color.Name
+                },
+                ProductOrder = oi.ProductVariant.Product == null ? null : new ProductOrderDto
+                {
+                    ProductId = oi.ProductVariant.Product.ProductId,
+                    Name = oi.ProductVariant.Product.Name,
+                    Price = oi.ProductVariant.Product.Price,
+                    Brand = oi.ProductVariant.Product.Brand
+                }
+            },
+                OrderId = oi.OrderId,
+                Promotion = oi.Promotion== null ? null : new PromotionDto
+                {
+                    PromotionId = oi.Promotion.PromotionId,
+                    Code = oi.Promotion.Code,
+                }
+
+
+        }).ToList() ?? new List<OrderItemDto>(),
+        Payments = order.Payments?.Select(p => new PaymentDto
+        {
+            PaymentId = p.PaymentId,
+            Method = p.Method,
+            Amount = p.Amount,
+            Status = p.Status,
+            PaymentDate = p.PaymentDate
+        }).ToList() ?? new List<PaymentDto>()
+    };
         }
 
         public async Task<IEnumerable<Order>> GetAllAsync()
@@ -63,7 +123,7 @@ namespace ShopVision50.API.Services.OrderService_FD
             var createdOrder = await _repository.AddOrderAsync(order);
 
             // Tạo order items từ request, gán OrderId đã có
-            var orderItems = request.Products.Select(p => new OrderItem
+            var orderItems = request.OrderItems.Select(p => new OrderItem
             {
                 ProductVariantId = p.ProductVariantId,
                 Quantity = p.Quantity,

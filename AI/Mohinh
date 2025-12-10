@@ -1,0 +1,13 @@
+Client (frontend) 
+    ↓ gửi message 
+ChatController (C#) 
+    ↓ gọi
+MemoryHelper (C#) → gọi API FastAPI /search → memory_api.py → MemoryManager search → faiss index + memory_data.json
+    ← kết quả search (memory text)
+MemoryHelper (C#) 
+    ↓ build prompt đầy đủ (memory + câu hỏi)
+LlamaAiService (C#)
+    ↓ chạy Llama CLI với prompt
+    ← output text (trả lời)
+ChatController (C#) 
+    ↓ trả reply về client

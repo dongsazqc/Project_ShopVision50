@@ -18,9 +18,6 @@ namespace ShopVision50.API.Models.Users.DTOs
         public ProductVariantDto ProductVariant { get; set; } = null!;
 
         public int OrderId { get; set; }
-        public OrderDto Order { get; set; } = null!;
-
-        public int? PromotionId { get; set; }
         public PromotionDto? Promotion { get; set; }
     }
 }

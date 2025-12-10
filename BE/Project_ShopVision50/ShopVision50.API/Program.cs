@@ -45,6 +45,7 @@
     using ShopVision50.API.Services.CartItemService;
     using ShopVision50.API.Repositories.CartItemRepository;
 using ShopVision50.API.Services.OrderService_FD;
+using ShopVision50.API.LlamaAiService;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -155,8 +156,11 @@ var builder = WebApplication.CreateBuilder(args);
     builder.Services.AddScoped<ICartItemRepository, CartItemRepository>();
     builder.Services.AddScoped<ICartItemService, CartItemService>();
 
-    builder.Services.AddScoped<ICartItemRepository, CartItemRepository>();
-    builder.Services.AddScoped<ICartItemService, CartItemService>();
+    builder.Services.AddSingleton(new LlamaAiService(
+    "/home/dong/Desktop/Project_ShopVision50/BE/Project_ShopVision50/ShopVision50.AgentPy/llama.cpp/build/bin/llama-cli",
+    "/home/dong/Desktop/Project_ShopVision50/BE/Project_ShopVision50/ShopVision50.AgentPy/llama.cpp/models/mistral-7b-instruct-v0.2.Q4_K_M.gguf"
+));
+
 
 
 
@@ -174,11 +178,12 @@ var builder = WebApplication.CreateBuilder(args);
 
     // Đăng ký Controllers và JSON options
     builder.Services.AddControllers()
-        .AddJsonOptions(options =>
-        {
-            options.JsonSerializerOptions.ReferenceHandler = System.Text.Json.Serialization.ReferenceHandler.Preserve;
-            options.JsonSerializerOptions.MaxDepth = 64;
-        });
+    .AddJsonOptions(options =>
+    {
+        options.JsonSerializerOptions.ReferenceHandler = System.Text.Json.Serialization.ReferenceHandler.IgnoreCycles;
+        options.JsonSerializerOptions.WriteIndented = true;
+    });
+
 
     // Swagger
     builder.Services.AddEndpointsApiExplorer();

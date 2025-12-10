@@ -29,6 +29,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\ShopVision50.Infrastructure\ShopVision50.Infrastructure.csproj" />
+
   </ItemGroup>
 
 </Project>
