@@ -17,6 +17,7 @@ import {
     SaveOutlined,
     StarFilled,
     StarOutlined,
+    EyeOutlined,
 } from "@ant-design/icons";
 import { useEffect, useState } from "react";
 import api from "../utils/axios";
@@ -28,14 +29,21 @@ export default function Products() {
     const [messageApi, contextHolder] = message.useMessage();
     // main states
     const [products, setProducts] = useState([]);
+    const [productPreview, setProductPreview] = useState([]);
     const [loading, setLoading] = useState(false);
     const [openModal, setOpenModal] = useState(false);
     const [editingProduct, setEditingProduct] = useState(null);
+    const [imagesPreview, setImagesPreview] = useState([]);
 
     // variants & images
     const [variants, setVariants] = useState([]);
     const [images, setImages] = useState([]);
+    console.log(images);
     const [imageLoading, setImageLoading] = useState(false);
+    const [viewImages, setViewImages] = useState([]);
+    const [viewImagesLoading, setViewImagesLoading] = useState(false);
+    const [viewImagesModalOpen, setViewImagesModalOpen] = useState(false);
+    const [viewImagesProduct, setViewImagesProduct] = useState(null);
 
     const [colors, setColors] = useState([]);
     const [sizes, setSizes] = useState([]);
@@ -78,8 +86,12 @@ export default function Products() {
             filtered = filtered.filter((p) => p.categoryId === filterCategory);
         }
 
-        setProducts(filtered);
+        setProductPreview(filtered);
     };
+
+    useEffect(() => {
+        applyFilter();
+    }, [searchText]);
 
     const resetFilter = () => {
         setSearchText("");
@@ -94,7 +106,7 @@ export default function Products() {
             setLoading(true);
 
             const res = await api.get("Products/getAllProducts");
-            let list = res.data?.$values || [];
+            let list = res.data || [];
 
             // CHUYỂN ĐỔI DỮ LIỆU
             list = list.map((p) => ({
@@ -108,6 +120,7 @@ export default function Products() {
             );
 
             setProducts(list);
+            setProductPreview(list);
         } catch {
             messageApi.error("Không thể tải danh sách sản phẩm");
         } finally {
@@ -153,14 +166,10 @@ export default function Products() {
             ]);
 
             const uniqueColors = Array.from(
-                new Map(
-                    (colorRes.data?.$values || []).map((c) => [c.name, c])
-                ).values()
+                new Map((colorRes.data || []).map((c) => [c.name, c])).values()
             );
             const uniqueSizes = Array.from(
-                new Map(
-                    (sizeRes.data?.$values || []).map((s) => [s.name, s])
-                ).values()
+                new Map((sizeRes.data || []).map((s) => [s.name, s])).values()
             );
 
             setColors(uniqueColors);
@@ -178,7 +187,7 @@ export default function Products() {
         }
         try {
             const res = await api.get(`/ProductVariant/${productId}/variants`);
-            const data = res.data?.variants?.$values || [];
+            const data = res.data?.variants || [];
             setVariants(
                 data.map((v) => ({
                     bienTheId: v.productVariantId,
@@ -209,7 +218,11 @@ export default function Products() {
             // backend may return productImages array or root fields — support both
             const raw = res.data?.productImages ?? res.data ?? [];
             const imgs = (raw?.$values || raw || []).map((img) => ({
-                id: img.productImageId || img.hinhAnhId || img.id,
+                id:
+                    img.imageId ||
+                    img.productImageId ||
+                    img.hinhAnhId ||
+                    img.id,
                 url: img.url || img.path || img.imageUrl || "",
                 isMain: img.isMain || img.anhChinh || false,
             }));
@@ -220,6 +233,38 @@ export default function Products() {
         } finally {
             setImageLoading(false);
         }
+    };
+
+    // ==================== VIEW IMAGES MODAL ====================
+    const fetchViewImages = async (productId) => {
+        if (!productId) {
+            setViewImages([]);
+            return;
+        }
+        try {
+            setViewImagesLoading(true);
+            const res = await api.get(
+                `/products/${productId}/images/checkimages`
+            );
+            const raw = res.data?.productImages ?? res.data ?? [];
+            const imgs = (raw?.$values || raw || []).map((img) => ({
+                id: img.productImageId || img.hinhAnhId || img.id,
+                url: img.url || img.path || img.imageUrl || "",
+                isMain: img.isMain || img.anhChinh || false,
+            }));
+            setViewImages(imgs);
+        } catch (err) {
+            console.error(err);
+            messageApi.error("Không thể tải ảnh");
+        } finally {
+            setViewImagesLoading(false);
+        }
+    };
+
+    const openViewImagesModal = (record) => {
+        setViewImagesProduct(record);
+        setViewImagesModalOpen(true);
+        fetchViewImages(record?.productId);
     };
 
     // ==================== SAVE PRODUCT ====================
@@ -265,7 +310,7 @@ export default function Products() {
                     description: values.Description,
                     price: values.Price,
                     brand: FIXED_BRAND,
-                    //warranty: FIXED_WARRANTY,
+                    // warranty: FIXED_WARRANTY,
                     categoryId: values.CategoryId,
                     materialId: values.MaterialId,
                     styleId: values.StyleId,
@@ -280,6 +325,8 @@ export default function Products() {
                     ? created.$values[0]
                     : created;
 
+                const allProduct = await api.get("Products/getAllProducts");
+                const productNew = allProduct.data[allProduct.data.length - 1];
                 if (createdProduct) {
                     setEditingProduct(createdProduct);
                     form.setFieldsValue({
@@ -288,8 +335,33 @@ export default function Products() {
                     });
                     fetchVariants(createdProduct.productId);
                     fetchImages(createdProduct.productId);
+                    if (imagesPreview?.length > 0 && productNew) {
+                        const uploadImage = async (file) => {
+                            const formData = new FormData();
+                            formData.append("file", file);
+                            formData.append("ProductId", productNew.productId);
+                            try {
+                                setImageLoading(true);
+                                await api.post(
+                                    `/products/${productNew.productId}/images`,
+                                    formData,
+                                    {
+                                        headers: {
+                                            "Content-Type":
+                                                "multipart/form-data",
+                                        },
+                                    }
+                                );
+                            } catch (err) {
+                                console.error(err);
+                            }
+                        };
+                        imagesPreview.forEach((i) => {
+                            uploadImage(i.file);
+                        });
+                    }
                 }
-
+                setImagesPreview([]);
                 fetchProducts();
                 setOpenModal(false);
             }
@@ -386,6 +458,9 @@ export default function Products() {
     const handleUpdateVariant = async (record) => {
         try {
             await api.put(`/ProductVariant/${record.bienTheId}`, {
+                // ProductId: editingProduct.productId,
+                // tenMau: record.tenMau,
+                // tenKichCo: record.tenKichCo,
                 giaBan: record.giaBan,
                 soLuongTon: record.soLuongTon,
                 discountPercent: record.discountPercent ?? 0,
@@ -434,8 +509,20 @@ export default function Products() {
     // ==================== IMAGES ====================
     const handleUploadImage = async ({ file, onSuccess, onError }) => {
         if (!editingProduct?.productId) {
-            messageApi.warning("Chưa chọn sản phẩm để tải ảnh");
-            onError?.();
+            const rawFile = file?.originFileObj || file;
+            const previewUrl =
+                file?.thumbUrl ||
+                file?.preview ||
+                (rawFile ? URL.createObjectURL(rawFile) : "");
+            const uid =
+                file?.uid ||
+                rawFile?.name ||
+                `preview-${Date.now()}-${Math.random()}`;
+            setImagesPreview((prev) => [
+                ...prev,
+                { uid, file: file, url: previewUrl },
+            ]);
+            // onSuccess?.();
             return;
         }
         const formData = new FormData();
@@ -465,7 +552,9 @@ export default function Products() {
 
     const handleDeleteImage = async (imageId) => {
         try {
-            await api.delete(`/Images/Delete/${imageId}`);
+            await api.delete(
+                `/products/${editingProduct.productId}/images/deleteimage/${imageId}`
+            );
             messageApi.success("Xóa ảnh thành công!");
             if (editingProduct?.productId)
                 fetchImages(editingProduct.productId);
@@ -524,16 +613,16 @@ export default function Products() {
         }
     };
 
-    const handleDeleteProduct = async (id) => {
-        try {
-            await api.delete(`/Products/DeleteProducts/${id}`);
-            messageApi.success("Xóa sản phẩm thành công!");
-            fetchProducts();
-        } catch (err) {
-            console.error(err);
-            messageApi.error("Không thể xóa sản phẩm");
-        }
-    };
+    // const handleDeleteProduct = async (id) => {
+    //     try {
+    //         await api.delete(`/Products/DeleteProducts/${id}`);
+    //         messageApi.success("Xóa sản phẩm thành công!");
+    //         fetchProducts();
+    //     } catch (err) {
+    //         console.error(err);
+    //         messageApi.error("Không thể xóa sản phẩm");
+    //     }
+    // };
 
     // ==================== COLUMNS ====================
     const columns = [
@@ -634,14 +723,13 @@ export default function Products() {
         },
 
         {
-            title: "Thao tác",
+            title: "Ảnh",
             width: 100,
             render: (_, record) => (
                 <Space>
                     <Button
-                        danger
-                        icon={<DeleteOutlined />}
-                        onClick={() => handleDeleteProduct(record.productId)}
+                        icon={<EyeOutlined />}
+                        onClick={() => openViewImagesModal(record)}
                     />
                 </Space>
             ),
@@ -780,7 +868,7 @@ export default function Products() {
             </Space>
 
             <Table
-                dataSource={products}
+                dataSource={productPreview}
                 columns={columns}
                 loading={loading}
                 rowKey="productId"
@@ -1024,6 +1112,72 @@ export default function Products() {
                                         />
                                     </div>
                                 ))}
+                                {!editingProduct?.productId &&
+                                    imagesPreview.length > 0 && (
+                                        <>
+                                            <div
+                                                style={{
+                                                    display: "flex",
+                                                    gap: 8,
+                                                    marginTop: 8,
+                                                    flexWrap: "wrap",
+                                                }}
+                                            >
+                                                {imagesPreview.map((img) => (
+                                                    <div
+                                                        key={img.uid}
+                                                        style={{
+                                                            position:
+                                                                "relative",
+                                                        }}
+                                                    >
+                                                        <img
+                                                            src={img.url}
+                                                            alt=""
+                                                            style={{
+                                                                width: 100,
+                                                                height: 100,
+                                                                objectFit:
+                                                                    "cover",
+                                                                borderRadius: 6,
+                                                                border: "1px solid #ccc",
+                                                            }}
+                                                        />
+                                                        <Button
+                                                            size="small"
+                                                            type="text"
+                                                            icon={
+                                                                <DeleteOutlined />
+                                                            }
+                                                            danger
+                                                            style={{
+                                                                position:
+                                                                    "absolute",
+                                                                top: 2,
+                                                                right: 2,
+                                                                background:
+                                                                    "white",
+                                                                borderRadius:
+                                                                    "50%",
+                                                            }}
+                                                            onClick={() =>
+                                                                setImagesPreview(
+                                                                    (prev) =>
+                                                                        prev.filter(
+                                                                            (
+                                                                                p
+                                                                            ) =>
+                                                                                p.uid !==
+                                                                                img.uid
+                                                                        )
+                                                                )
+                                                            }
+                                                        />
+                                                    </div>
+                                                ))}
+                                            </div>
+                                        </>
+                                    )}
                             </div>
                         </Form.Item>
                         <Form.Item label="Biến thể sản phẩm">
@@ -1156,6 +1310,60 @@ export default function Products() {
                         />
                     </Form.Item>
                 </Form>
+            </Modal>
+
+            <Modal
+                title={
+                    viewImagesProduct
+                        ? `Ảnh sản phẩm: ${viewImagesProduct.name || ""}`
+                        : "Ảnh sản phẩm"
+                }
+                open={viewImagesModalOpen}
+                footer={null}
+                onCancel={() => {
+                    setViewImagesModalOpen(false);
+                    setViewImages([]);
+                    setViewImagesProduct(null);
+                }}
+                width={820}
+            >
+                <Spin spinning={viewImagesLoading}>
+                    {viewImages.length === 0 && !viewImagesLoading ? (
+                        <div style={{ textAlign: "center", padding: 24 }}>
+                            Không có ảnh cho sản phẩm này.
+                        </div>
+                    ) : (
+                        <div
+                            style={{
+                                display: "flex",
+                                flexWrap: "wrap",
+                                gap: 12,
+                            }}
+                        >
+                            {viewImages.map((img, idx) => (
+                                <div key={img.id || idx}>
+                                    <img
+                                        src={
+                                            img.url?.startsWith("http")
+                                                ? img.url
+                                                : `http://160.250.5.26:5000${img.url}`
+                                        }
+                                        alt=""
+                                        style={{
+                                            width: 150,
+                                            height: 150,
+                                            objectFit: "cover",
+                                            borderRadius: 8,
+                                            border: img.isMain
+                                                ? "2px solid #1677ff"
+                                                : "1px solid #ddd",
+                                        }}
+                                    />
+                                </div>
+                            ))}
+                        </div>
+                    )}
+                </Spin>
             </Modal>
         </div>
     );

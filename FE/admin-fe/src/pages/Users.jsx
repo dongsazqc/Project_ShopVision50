@@ -28,6 +28,8 @@ export default function Users() {
 
     const [form] = Form.useForm();
     const [formAdd] = Form.useForm();
+    const [sendingOtp, setSendingOtp] = useState(false);
+    const [isOtpSent, setIsOtpSent] = useState(false);
 
     const [search, setSearch] = useState("");
     const [filterStatus, setFilterStatus] = useState(null);
@@ -39,7 +41,7 @@ export default function Users() {
         try {
             setLoading(true);
             const res = await api.get("/Users/getAll");
-            let list = res.data?.$values || [];
+            let list = res.data || [];
 
             if (!mounted) return;
 
@@ -96,11 +98,11 @@ export default function Users() {
             );
         }
 
-        if (filterStatus !== null) {
+        if (filterStatus) {
             data = data.filter((u) => String(u.status) === filterStatus);
         }
 
-        if (filterRole !== null) {
+        if (filterRole) {
             data = data.filter((u) => String(u.roleId) === filterRole);
         }
 
@@ -211,29 +213,78 @@ export default function Users() {
         formAdd.resetFields();
         formAdd.setFieldsValue({
             joinDate: today,
+            status: true,
         });
+        setIsOtpSent(false);
         setModalAddOpen(true);
     };
 
     const closeAddModal = () => {
         setModalAddOpen(false);
         formAdd.resetFields();
+        setIsOtpSent(false);
+    };
+
+    const handleSendOtp = async () => {
+        try {
+            const { email } = await formAdd.validateFields(["email"]);
+            const newEmail = email?.trim().toLowerCase();
+            const existed = users.some(
+                (u) => u.email?.trim().toLowerCase() === newEmail
+            );
+            if (existed) {
+                messageApi.error("Email đã tồn tại, vui lòng chọn email khác.");
+                return;
+            }
+            setSendingOtp(true);
+            await api.post("/Users/send-otp", { email });
+            messageApi.success(`Đã gửi OTP tới ${email}.`);
+            setIsOtpSent(true);
+        } catch (error) {
+            if (error?.errorFields) return; // validation errors already shown
+            const msg =
+                error.response?.data?.message || "Gửi OTP thất bại, thử lại.";
+            messageApi.error(msg);
+        } finally {
+            setSendingOtp(false);
+        }
     };
 
     const submitAdd = async (values) => {
         try {
+            if (!isOtpSent) {
+                messageApi.warning("Vui lòng gửi OTP tới email trước.");
+                return;
+            }
+
+            // tránh trùng email trên UI trước khi gọi API
+            const newEmail = values.email?.trim().toLowerCase();
+            const existed = users.some(
+                (u) => u.email?.trim().toLowerCase() === newEmail
+            );
+            if (existed) {
+                messageApi.error("Email đã tồn tại, vui lòng chọn email khác.");
+                return;
+            }
+
+            if (!values.otp) {
+                messageApi.error("Vui lòng nhập OTP.");
+                return;
+            }
+
             const payload = {
                 FullName: values.fullName,
                 Email: values.email,
                 Phone: values.phone,
-                Password: "123456",
+                Password: values.password,
                 Status: values.status,
                 JoinDate: new Date(values.joinDate).toISOString(),
                 DefaultAddress: values.defaultAddress,
                 RoleId: values.roleId,
+                Otp: values.otp,
             };
 
-            const res = await api.post("/Users/register", payload);
+            const res = await api.post("/Users/register-with-otp", payload);
 
             console.log(" Response từ backend:", res.data); // kiểm tra cấu trúc backend trả về
 
@@ -444,16 +495,7 @@ export default function Users() {
                     <Form.Item
                         name="fullName"
                         label="Họ tên"
-                        rules={[
-                            {
-                                required: true,
-                                message: "Vui lòng nhập họ tên!",
-                            },
-                            {
-                                min: 3,
-                                message: "Họ tên phải có ít nhất 3 ký tự",
-                            },
-                        ]}
+                        style={{ display: "none" }}
                     >
                         <Input />
                     </Form.Item>
@@ -469,72 +511,151 @@ export default function Users() {
                         <Input />
                     </Form.Item>
 
-                    <Form.Item
-                        name="phone"
-                        label="Số điện thoại"
-                        rules={[
-                            {
-                                required: true,
-                                message: "Vui lòng nhập số điện thoại!",
-                            },
-                            {
-                                pattern: /^[0-9]{10}$/,
-                                message: "Số điện thoại phải có 10 số",
-                            },
-                        ]}
+                    <div
+                        style={{
+                            display: "flex",
+                            justifyContent: "flex-end",
+                            marginBottom: 12,
+                        }}
                     >
-                        <Input />
-                    </Form.Item>
+                        <Button
+                            type="primary"
+                            onClick={handleSendOtp}
+                            loading={sendingOtp}
+                        >
+                            Gửi OTP
+                        </Button>
+                    </div>
 
-                    <Form.Item
-                        name="defaultAddress"
-                        label="Địa chỉ mặc định"
-                        rules={[
-                            {
-                                min: 5,
-                                message: "Địa chỉ phải có ít nhất 5 ký tự",
-                            },
-                        ]}
-                    >
-                        <Input />
-                    </Form.Item>
+                    {isOtpSent && (
+                        <>
+                            <Form.Item
+                                name="otp"
+                                label="Mã OTP"
+                                rules={[
+                                    {
+                                        required: true,
+                                        message: "Vui lòng nhập OTP!",
+                                    },
+                                    {
+                                        len: 6,
+                                        message: "OTP gồm 6 ký tự.",
+                                    },
+                                ]}
+                            >
+                                <Input
+                                    maxLength={6}
+                                    inputMode="numeric"
+                                    placeholder="Nhập mã OTP"
+                                    style={{ letterSpacing: 2 }}
+                                />
+                            </Form.Item>
 
-                    <Form.Item name="joinDate" label="Ngày tham gia">
-                        <Input disabled />
-                    </Form.Item>
+                            <Form.Item
+                                name="fullName"
+                                label="Họ tên"
+                                rules={[
+                                    {
+                                        required: true,
+                                        message: "Vui lòng nhập họ tên!",
+                                    },
+                                    {
+                                        min: 3,
+                                        message:
+                                            "Họ tên phải có ít nhất 3 ký tự",
+                                    },
+                                ]}
+                            >
+                                <Input />
+                            </Form.Item>
 
-                    <Form.Item
-                        name="roleId"
-                        label="Vai trò"
-                        rules={[
-                            {
-                                required: true,
-                                message: "Vui lòng chọn vai trò!",
-                            },
-                        ]}
-                    >
-                        <Select>
-                            <Option value={1}>Admin</Option>
-                            <Option value={2}>Nhân viên</Option>
-                            <Option value={3}>Khách hàng</Option>
-                        </Select>
-                    </Form.Item>
+                            <Form.Item
+                                name="phone"
+                                label="Số điện thoại"
+                                rules={[
+                                    {
+                                        required: true,
+                                        message: "Vui lòng nhập số điện thoại!",
+                                    },
+                                    {
+                                        pattern: /^[0-9]{10}$/,
+                                        message: "Số điện thoại phải có 10 số",
+                                    },
+                                ]}
+                            >
+                                <Input />
+                            </Form.Item>
 
-                    <Form.Item
-                        name="status"
-                        label="Trạng thái"
-                        rules={[
-                            {
-                                required: true,
-                                message: "Vui lòng chọn trạng thái!",
-                            },
-                        ]}
-                    >
-                        <Select>
-                            <Option value={true}>Hoạt động</Option>
-                            <Option value={false}>Khóa</Option>
-                        </Select>
-                    </Form.Item>
+                            <Form.Item
+                                name="password"
+                                label="Mật khẩu"
+                                rules={[
+                                    {
+                                        required: true,
+                                        message: "Vui lòng nhập mật khẩu!",
+                                    },
+                                    {
+                                        min: 6,
+                                        message: "Mật khẩu tối thiểu 6 ký tự",
+                                    },
+                                ]}
+                            >
+                                <Input.Password />
+                            </Form.Item>
+
+                            <Form.Item
+                                name="defaultAddress"
+                                label="Địa chỉ mặc định"
+                                rules={[
+                                    {
+                                        min: 5,
+                                        message:
+                                            "Địa chỉ phải có ít nhất 5 ký tự",
+                                    },
+                                ]}
+                            >
+                                <Input />
+                            </Form.Item>
+
+                            <Form.Item name="joinDate" label="Ngày tham gia">
+                                <Input disabled />
+                            </Form.Item>
+
+                            <Form.Item
+                                name="roleId"
+                                label="Vai trò"
+                                rules={[
+                                    {
+                                        required: true,
+                                        message: "Vui lòng chọn vai trò!",
+                                    },
+                                ]}
+                            >
+                                <Select>
+                                    <Option value={1}>Admin</Option>
+                                    <Option value={2}>Nhân viên</Option>
+                                    <Option value={3}>Khách hàng</Option>
+                                </Select>
+                            </Form.Item>
+
+                            <Form.Item
+                                name="status"
+                                label="Trạng thái"
+                                initialValue={true}
+                                rules={[
+                                    {
+                                        required: true,
+                                        message: "Vui lòng chọn trạng thái!",
+                                    },
+                                ]}
+                            >
+                                <Select>
+                                    <Option value={true}>Hoạt động</Option>
+                                    <Option value={false}>Khóa</Option>
+                                </Select>
+                            </Form.Item>
+                        </>
+                    )}
                 </Form>
             </Modal>
         </div>
