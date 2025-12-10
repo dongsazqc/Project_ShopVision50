@@ -1,0 +1,286 @@
+📚 TÀI LIỆU FULL: XÂY DỰNG AI LOCAL TỪ A–Z
+1) NỀN TẢNG: HIỂU MÔ HÌNH NGÔN NGỮ (LLM)
+🔥 1.1 Transformer là nền móng
+
+Tài liệu đọc bắt buộc:
+
+The Illustrated Transformer (dễ hiểu, nhiều hình)
+
+Attention is All You Need (paper gốc)
+
+How GPT Works (cơ chế GPT)
+
+👉 Hiểu các khái niệm:
+
+Self-Attention
+
+Multi-head Attention
+
+Encoder/Decoder
+
+Tokenization
+
+Positional Embedding
+
+Inference vs Training
+
+Không cần học training, m chỉ cần inference.
+
+2) CÔNG CỤ ĐỂ CHẠY AI LOCAL
+🔧 2.1 llama.cpp
+
+Thư viện C++ cho chạy model LLaMA/Mistral offline hoàn toàn
+
+Ưu điểm:
+
+chạy CPU ok
+
+không cần GPU (nhưng có thì càng nhanh)
+
+hỗ trợ GGUF format
+
+Repo:
+✔️ https://github.com/ggerganov/llama.cpp
+
+📦 2.2 GGUF Format
+
+Định dạng mới
+
+Gọn hơn, tối ưu load
+
+Dùng để load bằng llama.cpp
+
+Read doc:
+✔️ https://github.com/ggerganov/llama.cpp/blob/master/gguf.md
+
+🐍 2.3 llama-cpp-python
+
+Wrapper Python để gọi model dễ hơn
+
+Repo:
+✔️ https://github.com/python-llama/llama-cpp-python
+
+Dùng kiểu:
+
+from llama_cpp import Llama
+llama = Llama(model_path="mistral.gguf")
+print(llama("hello"))
+
+3) TẢI & CONVERT MODEL
+📥 3.1 Tải model GGUF
+
+Tải từ HuggingFace:
+✔️ https://huggingface.co/TheBloke
+
+Ví dụ model:
+
+mistral-7b-instruct-v0.2.Q4_K_M.gguf
+
+🔁 3.2 Nếu model không phải GGUF → convert
+
+Tool có sẵn trong llama.cpp:
+
+./convert-llama-to-ggml ./model.bin ./model.gguf
+
+⚙️ 3.3 Quantization
+
+Ý nghĩa Q4/Q5/Q6:
+
+Q4_K_M → nhẹ, nhanh, chất lượng đủ dùng
+
+Q6_K → tốt hơn, nặng hơn
+
+4) BUILD & CHẠY MÔ HÌNH
+🏗️ 4.1 Build llama.cpp
+cd llama.cpp
+mkdir build && cd build
+cmake ..
+cmake --build . --config Release
+
+
+Sau khi build xong:
+
+./bin/llama-cli
+./bin/llama-run
+
+⚡ 4.2 Chạy thử CLI
+./llama-cli -m ./models/mistral.gguf -p "hello"
+
+
+Tuning:
+
+--threads $(nproc)
+--batch-size 512
+--ctx-size 4096
+
+5) PYTHON WRAPPER GỌI MODEL
+🧾 5.1 Ví dụ Python đơn giản
+from llama_cpp import Llama
+
+llama = Llama(
+    model_path="./models/mistral.gguf",
+    n_ctx=4096
+)
+
+resp = llama("xin chào, bạn là ai?")
+print(resp)
+
+🎯 5.2 Prompt Engineering
+
+Cần format history:
+
+SYSTEM: You are helpful.
+USER: abc
+ASSISTANT: ...
+USER: xyz
+
+🪝 5.3 Chế độ chat
+
+Mày phải tự feed lại history
+
+Model local không nhớ gì nếu m không đưa lại.
+
+6) KIẾN TRÚC HỆ THỐNG HOÀN CHỈNH
+
+Cấu trúc thư mục:
+
+ShopVision50.AgentPy/
+├── agent_service.py
+├── llama.cpp/
+│   ├── build/
+│   ├── bin/
+│   └── models/
+├── llama_runner.py
+├── rabbit_connector.py
+├── requirements.txt
+└── __pycache__/
+
+🧠 6.1 Từng file làm gì
+
+llama.cpp/ → thư viện chạy model
+
+models/ → file GGUF
+
+agent_service.py → service chính, đọc message
+
+llama_runner.py → chạy model, trả output
+
+rabbit_connector.py → giao tiếp RabbitMQ
+
+requirements.txt → pika, numpy, etc.
+
+7) FLOW HỆ THỐNG
+Client
+ ↓
+API (.NET)
+ ↓
+RabbitMQ (queue: question_queue)
+ ↓
+agent_service.py (consume)
+ ↓
+llama_runner (call model)
+ ↓
+RabbitMQ (queue: answer_queue)
+ ↓
+API → FE
+ ↓
+Client thấy message
+
+8) RABBITMQ SETUP
+🛠️ Install
+sudo apt install rabbitmq-server
+sudo systemctl enable rabbitmq-server
+sudo systemctl start rabbitmq-server
+
+🧵 Python connect
+import pika
+
+conn = pika.BlockingConnection(
+    pika.ConnectionParameters("localhost")
+)
+channel = conn.channel()
+channel.queue_declare(queue="question_queue")
+
+9) PYTHON AGENT SERVICE
+
+Pseudo-code:
+
+while True:
+    msg = rabbit.consume("question_queue")
+    answer = llama_runner.run(msg)
+    rabbit.publish("answer_queue", answer)
+
+10) .NET API SIDE
+
+Khi user gửi chat:
+
+POST /api/chat/send
+{
+  "User": "saz",
+  "Question": "hello"
+}
+
+
+API sẽ:
+
+publish vào RabbitMQ
+
+Sau đó:
+
+poll queue answer_queue
+
+trả về kết quả
+
+11) TỐI ƯU HIỆU NĂNG
+🧨 Cực quan trọng:
+
+Context Length: 4096–8192
+
+Threads: số core CPU
+
+Batch-size: 512
+
+Stop tokens:
+
+'</s>', 'User:', 'Assistant:'
+
+
+nếu không → model không chịu dừng.
+
+12) NÂNG CAO
+🧩 Fine-tune
+
+dùng LoRA / QLoRA
+
+model nhỏ
+
+dữ liệu riêng của mày
+
+Repo:
+✔️ https://github.com/chrisdonahue/lora
+
+📚 RAG
+
+Build knowledge base
+
+Search → feed model → tạo câu trả lời chính xác hơn
+
+13) TRIỂN KHAI
+💿 Local server API
+
+Flask / FastAPI
+
+Ví dụ:
+
+uvicorn server:app --reload
+
+14) TỔNG KẾT CỰC NGẮN
+
+Nếu m cần AI local chạy:
+
+✔️ llama.cpp
+✔️ model GGUF (mistral/llama)
+✔️ wrapper Python
+✔️ RabbitMQ làm message broker
+✔️ .NET API gửi/nhận chat
+✔️ quản lý history

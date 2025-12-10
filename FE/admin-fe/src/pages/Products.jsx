@@ -701,116 +701,6 @@ export default function Products() {
           >
             Lưu
           </Button> */}
- haoBranch
-          <Button onClick={() => openEditVariantModal(record)}>Sửa</Button>
-          {/* <Button
-            danger
-            onClick={() =>
-              handleDeleteVariant(record.bienTheId, editingProduct?.productId)
-            }
-          >
-            Xóa
-          </Button> */}
-        </Space>
-      ),
-    },
-  ];
-
-  return (
-    <div>
-      <Space
-        style={{
-          display: "flex",
-          justifyContent: "space-between",
-          marginBottom: 16,
-        }}
-      >
-        <h2>Quản lý sản phẩm</h2>
-        <Button
-          type="primary"
-          icon={<PlusOutlined />}
-          onClick={() => openEditModal(null)}
-        >
-          Thêm sản phẩm
-        </Button>
-      </Space>
-
-      <Space
-        style={{ display: "flex", marginBottom: 16, gap: 8, flexWrap: "wrap" }}
-      >
-        <Input
-          placeholder="Tìm theo tên sản phẩm"
-          value={searchText}
-          onChange={(e) => setSearchText(e.target.value)}
-          allowClear
-          style={{ width: 200 }}
-        />
-        <Input
-          placeholder="Tìm theo Mã SP"
-          value={searchId}
-          onChange={(e) => setSearchId(e.target.value)}
-          allowClear
-          style={{ width: 120 }}
-        />
-        <Select
-          placeholder="Lọc theo danh mục"
-          value={filterCategory}
-          onChange={(val) => setFilterCategory(val)}
-          allowClear
-          style={{ width: 180 }}
-        >
-          {metaData.categories?.map((c) => (
-            <Select.Option key={c.categoryId} value={c.categoryId}>
-              {c.name}
-            </Select.Option>
-          ))}
-        </Select>
-        <Button onClick={applyFilter}>Áp dụng</Button>
-        <Button onClick={resetFilter}>Reset</Button>
-      </Space>
-
-      <Table
-        dataSource={products}
-        columns={columns}
-        loading={loading}
-        rowKey="productId"
-        bordered
-      />
-
-      <Modal
-        title={editingProduct ? "Chi tiết sản phẩm" : "Thêm sản phẩm"}
-        open={openModal}
-        onCancel={() => {
-          setOpenModal(false);
-          setEditingProduct(null);
-          form.resetFields();
-          setVariants([]);
-          setImages([]);
-        }}
-        onOk={() => form.submit()}
-        okText="Lưu"
-        cancelText="Hủy"
-        width={1000}
-        destroyOnClose={false}
-      >
-        <Spin spinning={imageLoading}>
-          <Form layout="vertical" form={form} onFinish={handleSave}>
-            <Form.Item
-              label="Tên sản phẩm"
-              name="Name"
-              rules={[
-                { required: true, message: "Tên sản phẩm không được để trống" },
-                { min: 3, message: "Tên sản phẩm phải từ 3 ký tự" },
-              ]}
-            >
-              <Input />
-            </Form.Item>
-
-            <Form.Item
-              label="Mô tả"
-              name="Description"
-              rules={[{ max: 1000, message: "Mô tả tối đa 1000 ký tự" }]}
-
                     <Button onClick={() => openEditVariantModal(record)}>
                         Sửa
                     </Button>
@@ -839,7 +729,6 @@ export default function Products() {
                     justifyContent: "space-between",
                     marginBottom: 16,
                 }}
- main
             >
                 <h2>Quản lý sản phẩm</h2>
                 <Button

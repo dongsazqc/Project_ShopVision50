@@ -1,0 +1,92 @@
+Báo cáo tổng quan hệ thống Chat AI ShopVision50
+1. build_memory.py
+
+Chức năng: Khởi tạo và thêm dữ liệu (memory) vào hệ thống lưu trữ vector embedding.
+
+Cụ thể: Tạo instance MemoryManager, thêm câu "Xin chào, tôi là ChatSaz AI" vào bộ nhớ, sau đó build index faiss và lưu lại file faiss_index.bin + memory_data.json.
+
+Vai trò: Tạo dữ liệu gốc cho bộ nhớ vector, dùng để truy vấn sau này.
+
+2. memory_api.py
+
+Chức năng: Backend API bằng FastAPI để cung cấp dịch vụ tìm kiếm trong memory.
+
+Cụ thể:
+
+Khởi tạo MemoryManager để load dữ liệu vector và text.
+
+Nhận POST /search với câu truy vấn.
+
+Tìm 5 kết quả gần nhất trong vector index, trả về cho client.
+
+Vai trò: Cổng giao tiếp để client (ví dụ C# app) gọi lên, lấy kết quả search memory vector.
+
+3. memory_data.json
+
+Chức năng: File lưu trữ dữ liệu văn bản (text) đã được encode thành vector trong faiss.
+
+Cụ thể:
+
+Dạng JSON list chứa các câu mà ta đã thêm vào memory.
+
+Ví dụ: "Xin chào, tôi là ChatSaz AI".
+
+Vai trò: Dữ liệu gốc dùng để tham chiếu kết quả tìm kiếm khi truy vấn vector.
+
+4. memory_manager.py
+
+Chức năng: Quản lý memory vector embedding và search.
+
+Cụ thể:
+
+Khởi tạo, load và lưu faiss index, memory data.
+
+Phương thức add(text) để thêm câu mới vào vector index và data.
+
+Phương thức search(query, top_k) để tìm kiếm các câu tương đồng với query trong vector index.
+
+Vai trò: Core logic quản lý bộ nhớ vector, xử lý embedding, lưu trữ và tìm kiếm.
+
+5. LlamaAiService.cs
+
+Chức năng: Giao tiếp với Llama CLI (công cụ chạy model AI) từ C#.
+
+Cụ thể:
+
+Tạo queue xử lý bất đồng bộ các câu hỏi (prompt).
+
+Chạy process llama-cli với tham số prompt, nhận output, trả về kết quả.
+
+Quản lý process chạy model và đọc output chuẩn, lỗi.
+
+Vai trò: Kết nối giữa app backend C# với mô hình AI (Llama), gửi prompt và nhận câu trả lời.
+
+6. MemoryHelper.cs
+
+Chức năng: Gọi API /search của memory_api.py từ C#, lấy memory vector về và build prompt đầy đủ.
+
+Cụ thể:
+
+Gửi câu hỏi user lên /search.
+
+Nhận list kết quả gần nhất từ memory.
+
+Build prompt string gồm đoạn trích memory + câu hỏi hiện tại.
+
+Vai trò: Xây dựng prompt có bối cảnh memory để gửi cho Llama trả lời.
+
+7. ChatController.cs
+
+Chức năng: Controller API chính nhận câu hỏi từ client frontend, xử lý và trả về câu trả lời.
+
+Cụ thể:
+
+Nhận POST request chứa message.
+
+Gọi MemoryHelper để build prompt có memory.
+
+Gửi prompt cho LlamaAiService lấy câu trả lời.
+
+Trả về response chứa reply.
+
+Vai trò: Điểm entry chính cho chatbot, điều phối luồng từ request đến response có memory + AI.
