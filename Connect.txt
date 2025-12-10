@@ -1,0 +1,29 @@
+Info Server Data
+ConnectionName: Group50Api
+HostName:160.250.5.26
+Port:3306
+UserName:Group50
+Pass: Group50@MySql
+Default Schema: Api50Group	
+-------------------------------------------------------------
+Info Server Vps
+IP: 160.250.5.26
+UserName: root
+Pass: Group50@
+
+--------------------------------------------------------------
+RabbitMq
+URL: http://160.250.5.26:15672
+UserName: admin
+Pass: admin123
+
+
+
+-------------------------------------------------------------
+
+      "DefaultConnection": "Server=160.250.5.26;Port=3306;Database=Api50Group;User=Group50;Password=Group50@MySql;"
+
+------------------------------------------------------------
+
+      "DefaultConnection": "server=localhost;database=Group50;user=root;password=123456"
+

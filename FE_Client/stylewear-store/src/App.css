@@ -1,0 +1,98 @@
+/* Toàn bộ trang */
+.homepage {
+  font-family: Arial, sans-serif;
+}
+
+/* Banner */
+.banner {
+  background-color: #4CAF50;
+  color: white;
+  text-align: center;
+  padding: 50px 0;
+}
+
+.banner-title {
+  font-size: 36px;
+  font-weight: bold;
+}
+
+.banner-text {
+  font-size: 18px;
+  margin-top: 10px;
+}
+
+.banner-button {
+  margin-top: 20px;
+  background-color: #fff;
+  border: none;
+  color: #4CAF50;
+}
+
+/* Section Giới thiệu thương hiệu */
+.brand-intro {
+  text-align: center;
+  margin-bottom: 40px;
+}
+
+.brand-intro h2 {
+  font-size: 32px;
+  font-weight: 600;
+}
+
+.brand-intro p {
+  font-size: 18px;
+  color: #555;
+}
+
+/* Bộ sưu tập */
+.carousel-container {
+  text-align: center;
+  margin-bottom: 40px;
+}
+
+.carousel-container h2 {
+  font-size: 28px;
+  font-weight: 600;
+  margin-bottom: 20px;
+}
+
+/* Danh mục sản phẩm */
+.category-list {
+  text-align: center;
+  margin-bottom: 40px;
+}
+
+.category-list h2 {
+  font-size: 28px;
+  font-weight: 600;
+  margin-bottom: 20px;
+}
+
+/* Footer */
+.footer {
+  background-color: #1a1a1a;
+  color: white;
+  text-align: center;
+  padding: 20px;
+}
+
+.footer-button {
+  background-color: #FF5733;
+  border-color: #FF5733;
+  color: white;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .category-list .ant-col {
+    span: 12; /* Điều chỉnh card thành 2 cột trên màn hình nhỏ */
+  }
+
+  .banner {
+    padding: 30px 0;
+  }
+
+  .carousel-container img {
+    width: 100%;
+  }
+}

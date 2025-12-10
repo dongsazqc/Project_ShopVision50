@@ -1,0 +1,65 @@
+ShopVision50.sln           // Solution file, quản lý toàn bộ project trong solution
+
+ShopVision50.Infrastructure   // Project chứa DB, EF Core, migrations
+│
+└── AppDbContext.cs        // DbContext quản lý kết nối DB, mapping entity <-> table
+└── Migrations/            // Chứa file migration EF Core để tạo/cập nhật schema DB
+...
+
+
+ShopVision50.Agent
+|
+|___( chưa có gì vừa mới tạo )
+...
+
+
+Shop_Db.Models             // Project chứa các model/entity thuần
+│
+└── User.cs                // Entity User, map tới bảng User trong DB
+└── Product.cs             // Entity Product, map tới bảng Product trong DB
+└── Order.cs               // Entity Order, map tới bảng Order trong DB
+…
+
+ShopVision50.API           // Project Web API, nơi FE gửi request tới
+│
+├── Program.cs             // Entry point, cấu hình service, middleware, routing
+├── Controllers/           // Nhận request từ FE, gọi Service xử lý
+│   └── AuthController.cs  // Controller xử lý đăng ký/đăng nhập
+├── Services/              // Chứa business logic
+│   ├── IUserService.cs    // Interface định nghĩa các hàm liên quan User
+│   └── UserService.cs     // Thực hiện business logic, gọi Repository
+├── Repositories/          // Chứa logic truy vấn DB
+│   ├── IUserRepository.cs // Interface định nghĩa thao tác DB với User
+│   └── UserRepository.cs  // Thực hiện truy vấn DB qua AppDbContext
+└── DTOs/                  // Chứa các object dùng để trao đổi dữ liệu với FE
+    └── RegisterDto.cs     // DTO định nghĩa dữ liệu nhận từ FE khi register
+...
+
+
+FE (Client)                  // Frontend gửi request
+    ↓
+AuthController               // Controller nhận request, validate cơ bản
+    ↓
+UserService                  // Business logic: validate nâng cao, hash password, etc.
+    ↓
+UserRepository               // Thao tác trực tiếp với DB
+    ↓
+AppDbContext / EF Core       // Thực thi query, commit vào DB
+
+
+
+Ví dụ để thêm 1 chức năng mới và chuyển thành api thì đầu tiên chúng ta xác định chức năng cần làm ví dụ UserList , thì chúng ta sẽ khởi tạo 1 DTO đây là nơi chứa những gì có thực ở model
+có thể ghép nhiều model và là nơi cần gửi những dữ liệu  gì cho bên Fe thì DTO sẽ là nơi quết định
+
+Sau đó chúng ta sẽ vào trong IService hoặc IRepository và đăng kí hợp đồng 1 cái tên gì đó phù hơp với chức năng tùy vào chức năng ( get thì thường là kí với IRepository còn post thì kí với IService trước)
+Tiếp tục vào hoặc S Repositories/ để thực hiện hợp đồng theo chức năng chúng ta cần làm
+
+Bước cuối đó là ở Controller thì chuyển thành api ra cho Fe gọi thôi
+
+
+
+
+
+
+
+
