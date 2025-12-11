@@ -2,23 +2,25 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import PrivateRoute from "./routes/PrivateRoute";
 import AdminRoutes from "./routes/AdminRoutes";
 import Login from "./pages/Login";
+import ForgotPassword from "./pages/ForgotPassword";
 
 export default function App() {
-  return (
-    <BrowserRouter>
-      <Routes>
-        <Route path="/login" element={<Login />} />
+    return (
+        <BrowserRouter>
+            <Routes>
+                <Route path="/login" element={<Login />} />
+                <Route path="/forgot-password" element={<ForgotPassword />} />
 
-        {/* Dùng PrivateRoute bảo vệ tất cả các route admin */}
-        <Route
-          path="/*"
-          element={
-            <PrivateRoute>
-              <AdminRoutes />
-            </PrivateRoute>
-          }
-        />
-      </Routes>
-    </BrowserRouter>
-  );
+                {/* Dùng PrivateRoute bảo vệ tất cả các route admin */}
+                <Route
+                    path="/*"
+                    element={
+                        <PrivateRoute>
+                            <AdminRoutes />
+                        </PrivateRoute>
+                    }
+                />
+            </Routes>
+        </BrowserRouter>
+    );
 }
