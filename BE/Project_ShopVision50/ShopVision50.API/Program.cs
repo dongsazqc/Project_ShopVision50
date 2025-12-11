@@ -46,6 +46,10 @@
     using ShopVision50.API.Repositories.CartItemRepository;
 using ShopVision50.API.Services.OrderService_FD;
 using ShopVision50.API.LlamaAiService;
+using ShopVision50.API.Repositories.CustomerRepo_FD;
+using ShopVision50.API.Services.CustomerService_FD;
+using ShopVision50.API.Repositories.LocProductRepo_FD;
+using ShopVision50.API.Services.LocProductService_FD;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -156,7 +160,15 @@ var builder = WebApplication.CreateBuilder(args);
     builder.Services.AddScoped<ICartItemRepository, CartItemRepository>();
     builder.Services.AddScoped<ICartItemService, CartItemService>();
 
-    builder.Services.AddSingleton(new LlamaAiService(
+    builder.Services.AddScoped<ICustomerRepository, CustomerRepository>();
+    builder.Services.AddScoped<ICustomerService, CustomerService>();
+
+    builder.Services.AddScoped<ILocProductRepository, LocProductRepository>();
+    builder.Services.AddScoped<ILocProductService, LocProductService>();
+
+
+
+builder.Services.AddSingleton(new LlamaAiService(
     "/home/dong/Desktop/Project_ShopVision50/BE/Project_ShopVision50/ShopVision50.AgentPy/llama.cpp/build/bin/llama-cli",
     "/home/dong/Desktop/Project_ShopVision50/BE/Project_ShopVision50/ShopVision50.AgentPy/llama.cpp/models/mistral-7b-instruct-v0.2.Q4_K_M.gguf"
 ));
