@@ -48,7 +48,7 @@ export default function Reports() {
     const [topCustomers, setTopCustomers] = useState([]);
 
     // ======================================================
-    // GET DOANH THU - API THẬT
+    // GET DOANH THU.
     // ======================================================
     const fetchRevenue = async () => {
         try {
@@ -61,14 +61,12 @@ export default function Reports() {
 
             const data = res.data;
 
-            // Tổng quan
             setSummary({
                 totalRevenue: data.totalRevenue || 0,
                 totalOrders: data.totalOrders || 0,
                 totalCustomers: data.totalCustomers || 0,
             });
 
-            // Biểu đồ doanh thu theo tháng
             const chart =
                 data?.monthlyRevenue?.$values?.map((item) => ({
                     label: `${item.month}/${item.year}`,
@@ -83,17 +81,18 @@ export default function Reports() {
     };
 
     // ======================================================
-    // GET TOP SẢN PHẨM BÁN CHẠY
+    // GET TOP SẢN PHẨM
     // ======================================================
     const fetchTopProducts = async () => {
         try {
             const res = await api.get("/TopSanPham");
 
-            const list =
-                res.data?.$values?.map((item) => ({
-                    tenSanPham: item.productName,
-                    soLuongBan: item.totalSold,
-                })) || [];
+           const list =
+    (res.data?.$values || res.data)?.map((item) => ({
+        tenSanPham: item.tenSanPham,          // ✔ ĐÚNG
+        soLuongBan: item.tongSoLuongBan,      // ✔ ĐÚNG
+    })) || [];
+
 
             setTopProducts(list);
         } catch (err) {
@@ -109,13 +108,18 @@ export default function Reports() {
         try {
             const res = await api.get("/TopCustomers");
 
+            // ⚠ API của bạn trả về ARRAY thường → KHÔNG có $values
+            const raw = Array.isArray(res.data) ? res.data : res.data?.$values;
+
             const list =
-                res.data?.$values?.map((item) => ({
+                raw?.map((item) => ({
                     nguoiDungId: item.userId,
                     hoTen: item.fullName,
                     tongChiTieu: item.totalSpent,
                     soDonHang: item.orderCount,
                 })) || [];
+
+            console.log("TopCustomers FE nhận được:", list);
 
             setTopCustomers(list);
         } catch (err) {
@@ -125,7 +129,7 @@ export default function Reports() {
     };
 
     // ======================================================
-    // LOAD TẤT CẢ API KHI ĐỔI NGÀY
+    // LOAD API
     // ======================================================
     useEffect(() => {
         fetchRevenue();
@@ -183,49 +187,54 @@ export default function Reports() {
             </Row>
 
             {/* Biểu đồ doanh thu */}
-            <Card
-                title="Biểu đồ doanh thu"
-                style={{ marginTop: 24 }}
-                bodyStyle={{ height: 320 }}
-            >
-                <ResponsiveContainer width="100%" height="100%">
+            <Card title="Biểu đồ doanh thu" style={{ marginTop: 24 }}>
+                <ResponsiveContainer width="100%" height={320}>
                     <LineChart data={revenueData}>
                         <CartesianGrid strokeDasharray="3 3" />
                         <XAxis dataKey="label" />
                         <YAxis />
                         <Tooltip />
                         <Legend />
-                        <Line
-                            type="monotone"
-                            dataKey="doanhThu"
-                            stroke="#1890ff"
-                        />
+                        <Line type="monotone" dataKey="doanhThu" stroke="#1890ff" />
                     </LineChart>
                 </ResponsiveContainer>
             </Card>
 
             {/* Top sản phẩm & khách hàng */}
             <Row gutter={24} style={{ marginTop: 24 }}>
-                <Col span={12}>
-                    <Card title="Sản phẩm bán chạy nhất">
-                        <BarChart
-                            width={500}
-                            height={300}
-                            data={topProducts}
-                            layout="vertical"
-                        >
-                            <CartesianGrid strokeDasharray="3 3" />
-                            <XAxis type="number" />
-                            <YAxis
-                                type="category"
-                                dataKey="tenSanPham"
-                                width={150}
-                            />
-                            <Tooltip />
-                            <Bar dataKey="soLuongBan" fill="#82ca9d" />
-                        </BarChart>
-                    </Card>
-                </Col>
+               <Col span={12}>
+    <Card
+        title="Sản phẩm bán chạy nhất"
+        styles={{ body: { height: 330, padding: 0 } }}
+    >
+        <ResponsiveContainer width="100%" height="100%">
+            <BarChart
+                data={topProducts}
+                layout="vertical"
+                margin={{ top: 20, right: 30, left: 50, bottom: 20 }}
+            >
+                <CartesianGrid strokeDasharray="3 3" opacity={0.3} />
+                <XAxis type="number" tick={{ fontSize: 12 }} />
+                <YAxis
+                    type="category"
+                    dataKey="tenSanPham"
+                    width={140}
+                    tick={{ fontSize: 12 }}
+                />
+                <Tooltip
+                    formatter={(value) => [`${value} sản phẩm`, "Số lượng bán"]}
+                />
+                <Bar
+                    dataKey="soLuongBan"
+                    fill="#4a90e2"
+                    radius={[6, 6, 6, 6]}
+                    barSize={30}
+                />
+            </BarChart>
+        </ResponsiveContainer>
+    </Card>
+</Col>
+ 
 
                 <Col span={12}>
                     <Card title="Khách hàng thân thiết">
