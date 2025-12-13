@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Form, Input, Button, Card, Row, Col, message, Modal } from "antd";
+import { Form, Input, Button, Card, Row, Col, message } from "antd";
 import { Link, useNavigate } from "react-router-dom";
 import api from "../utils/axios";
 
@@ -7,11 +7,8 @@ const Register = () => {
     const [messageApi, contextHolder] = message.useMessage();
 
     const [loading, setLoading] = useState(false);
-    const [otpLoading, setOtpLoading] = useState(false);
-    const [otpModalVisible, setOtpModalVisible] = useState(false);
-    const [tempToken, setTempToken] = useState("");
     const [userEmail, setUserEmail] = useState("");
-    const [isOtpVerified, setIsOtpVerified] = useState(false);
+    const [isOtpSent, setIsOtpSent] = useState(false);
     const [emailForm] = Form.useForm();
     const [registerForm] = Form.useForm();
 
@@ -23,19 +20,13 @@ const Register = () => {
             setLoading(true);
             const payload = { email: values.email };
 
-            // Gọi API để gửi OTP (có thể dùng API hiện tại hoặc API mới chỉ nhận email)
             await api.post("/Users/send-otp", payload);
 
             setUserEmail(values.email);
-            setOtpModalVisible(true);
+            setIsOtpSent(true);
             messageApi.success(
-                "OTP đã được gửi tới email của bạn. Vui lòng xác thực để tiếp tục."
+                "OTP đã được gửi tới email của bạn. Vui lòng điền thông tin để hoàn tất đăng ký."
             );
-            // if (res.data.success && res.data.tempToken) {
-            //     setTempToken(res.data.tempToken);
-            // } else {
-            //     messageApi.error(res.data.message || "Gửi OTP thất bại");
-            // }
         } catch (err) {
             console.error(err);
             const errorMsg =
@@ -43,32 +34,6 @@ const Register = () => {
             messageApi.error(errorMsg);
         } finally {
             setLoading(false);
-        }
-    };
-
-    // ===== Xác thực OTP =====
-    const handleVerifyOtp = async (values) => {
-        try {
-            setOtpLoading(true);
-            const payload = { otp: values.otp, tempToken };
-            await api.post("/users/verify-register-otp", payload);
-
-            messageApi.success("Xác thực OTP thành công!");
-            setOtpModalVisible(false);
-            setIsOtpVerified(true);
-            // if (res.data.success) {
-            // } else {
-            //     messageApi.error(
-            //         res.data.message || "OTP không đúng hoặc hết hạn"
-            //     );
-            // }
-        } catch (err) {
-            console.error(err);
-            const errorMsg =
-                err.response?.data?.message || "Xác thực OTP thất bại";
-            messageApi.error(errorMsg);
-        } finally {
-            setOtpLoading(false);
         }
     };
 
@@ -82,7 +47,7 @@ const Register = () => {
                 password: values.password,
                 phone: values.phone,
                 defaultAddress: values.address,
-                tempToken: tempToken, // Gửi kèm tempToken để xác nhận đã verify OTP
+                otp: values.otp, // Gửi kèm OTP
             };
 
             await api.post("/Users/register-with-otp", payload);
@@ -146,7 +111,7 @@ const Register = () => {
                     <Col span={12} style={{ padding: 40 }}>
                         <h2 style={{ marginBottom: 20 }}>Đăng ký</h2>
 
-                        {!isOtpVerified ? (
+                        {!isOtpSent ? (
                             // Form nhập email để gửi OTP
                             <Form
                                 form={emailForm}
@@ -195,7 +160,7 @@ const Register = () => {
                                 </div>
                             </Form>
                         ) : (
-                            // Form đăng ký sau khi verify OTP
+                            // Form đăng ký sau khi gửi OTP thành công
                             <>
                                 <div
                                     style={{
@@ -207,7 +172,7 @@ const Register = () => {
                                         color: "#0369a1",
                                     }}
                                 >
-                                    ✓ Email {userEmail} đã được xác thực
+                                    ✓ OTP đã được gửi tới {userEmail}
                                 </div>
                                 <Form
                                     form={registerForm}
@@ -215,14 +180,16 @@ const Register = () => {
                                     onFinish={handleCompleteRegister}
                                 >
                                     <Form.Item
-                                        label="Email"
-                                        name="email"
-                                        initialValue={userEmail}
+                                        label="Mã OTP"
+                                        name="otp"
+                                        rules={[
+                                            {
+                                                required: true,
+                                                message: "Nhập mã OTP",
+                                            },
+                                        ]}
                                     >
-                                        <Input
-                                            disabled
-                                            placeholder={userEmail}
-                                        />
+                                        <Input placeholder="123456" />
                                     </Form.Item>
 
                                     <Form.Item
@@ -338,34 +305,6 @@ const Register = () => {
                     </Col>
                 </Row>
             </Card>
-
-            {/* Modal OTP */}
-            <Modal
-                open={otpModalVisible}
-                footer={null}
-                onCancel={() => setOtpModalVisible(false)}
-                title="Xác thực OTP"
-                centered
-            >
-                <Form layout="vertical" onFinish={handleVerifyOtp}>
-                    <Form.Item
-                        label={`Nhập mã OTP gửi đến ${userEmail}`}
-                        name="otp"
-                        rules={[{ required: true, message: "Nhập OTP" }]}
-                    >
-                        <Input placeholder="123456" />
-                    </Form.Item>
-                    <Button
-                        type="primary"
-                        htmlType="submit"
-                        block
-                        loading={otpLoading}
-                        style={{ borderRadius: 8 }}
-                    >
-                        Xác thực
-                    </Button>
-                </Form>
-            </Modal>
         </div>
     );
 };
