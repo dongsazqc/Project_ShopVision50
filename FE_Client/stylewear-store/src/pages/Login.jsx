@@ -53,7 +53,7 @@ const Login = () => {
             }
         } catch (err) {
             console.error(err);
-            messageApi.error("Đăng nhập thất bại");
+            messageApi.error(err?.response?.data || "Đăng nhập thất bại");
         } finally {
             setLoading(false);
         }
@@ -65,8 +65,9 @@ const Login = () => {
             setForgotLoading(true);
             setUserEmail(values.email);
 
-            // ❗ API CẦN BACKEND CUNG CẤP
-            // await api.post("/Auth/send-otp", { email: values.email });
+            await api.post("/Users/send-otp", {
+                email: values.email,
+            });
 
             messageApi.success("OTP đã được gửi về email của bạn");
             setStep(2);
@@ -82,12 +83,10 @@ const Login = () => {
         try {
             setForgotLoading(true);
 
-            // ❗ API CẦN BACKEND CUNG CẤP
-            // await api.post("/Auth/reset-password", {
-            //   email: userEmail,
-            //   otp: values.otp,
-            //   newPassword: values.newPassword,
-            // });
+            await api.post("/Users/forgot-password", {
+                email: userEmail,
+                otp: values.otp,
+            });
 
             messageApi.success("Đổi mật khẩu thành công");
             setStep(3);
@@ -283,7 +282,7 @@ const Login = () => {
                             <Input size="large" placeholder="Nhập mã OTP" />
                         </Form.Item>
 
-                        <Form.Item
+                        {/* <Form.Item
                             label="Mật khẩu mới"
                             name="newPassword"
                             rules={[
@@ -301,7 +300,7 @@ const Login = () => {
                                 size="large"
                                 placeholder="Nhập mật khẩu mới"
                             />
-                        </Form.Item>
+                        </Form.Item> */}
 
                         <Button
                             type="primary"
