@@ -24,18 +24,18 @@ const Register = () => {
             const payload = { email: values.email };
 
             // Gọi API để gửi OTP (có thể dùng API hiện tại hoặc API mới chỉ nhận email)
-            const res = await api.post("/Users/send-otp", payload);
+            await api.post("/Users/send-otp", payload);
 
-            if (res.data.success && res.data.tempToken) {
-                setTempToken(res.data.tempToken);
-                setUserEmail(values.email);
-                setOtpModalVisible(true);
-                messageApi.success(
-                    "OTP đã được gửi tới email của bạn. Vui lòng xác thực để tiếp tục."
-                );
-            } else {
-                messageApi.error(res.data.message || "Gửi OTP thất bại");
-            }
+            setUserEmail(values.email);
+            setOtpModalVisible(true);
+            messageApi.success(
+                "OTP đã được gửi tới email của bạn. Vui lòng xác thực để tiếp tục."
+            );
+            // if (res.data.success && res.data.tempToken) {
+            //     setTempToken(res.data.tempToken);
+            // } else {
+            //     messageApi.error(res.data.message || "Gửi OTP thất bại");
+            // }
         } catch (err) {
             console.error(err);
             const errorMsg =
@@ -51,17 +51,17 @@ const Register = () => {
         try {
             setOtpLoading(true);
             const payload = { otp: values.otp, tempToken };
-            const res = await api.post("/users/verify-register-otp", payload);
+            await api.post("/users/verify-register-otp", payload);
 
-            if (res.data.success) {
-                messageApi.success("Xác thực OTP thành công!");
-                setOtpModalVisible(false);
-                setIsOtpVerified(true);
-            } else {
-                messageApi.error(
-                    res.data.message || "OTP không đúng hoặc hết hạn"
-                );
-            }
+            messageApi.success("Xác thực OTP thành công!");
+            setOtpModalVisible(false);
+            setIsOtpVerified(true);
+            // if (res.data.success) {
+            // } else {
+            //     messageApi.error(
+            //         res.data.message || "OTP không đúng hoặc hết hạn"
+            //     );
+            // }
         } catch (err) {
             console.error(err);
             const errorMsg =
