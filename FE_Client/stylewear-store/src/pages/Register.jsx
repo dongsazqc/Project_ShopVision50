@@ -41,13 +41,24 @@ const Register = () => {
     const handleCompleteRegister = async (values) => {
         try {
             setLoading(true);
+            // const payload = {
+            //     email: userEmail,
+            //     fullName: values.fullName,
+            //     password: values.password,
+            //     phone: values.phone,
+            //     defaultAddress: values.address,
+            //     otp: values.otp, // Gửi kèm OTP
+            // };
             const payload = {
-                email: userEmail,
-                fullName: values.fullName,
-                password: values.password,
-                phone: values.phone,
-                defaultAddress: values.address,
-                otp: values.otp, // Gửi kèm OTP
+                FullName: values.fullName,
+                Email: userEmail,
+                Phone: values.phone,
+                Password: values.password,
+                Status: values.status,
+                JoinDate: new Date().toISOString(),
+                DefaultAddress: values.defaultAddress,
+                RoleId: 2,
+                Otp: values.otp,
             };
 
             await api.post("/Users/register-with-otp", payload);
