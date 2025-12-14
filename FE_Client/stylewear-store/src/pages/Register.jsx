@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Form, Input, Button, Card, Row, Col, message, Modal } from "antd";
+import { Form, Input, Button, Card, Row, Col, message } from "antd";
 import { Link, useNavigate } from "react-router-dom";
 import api from "../utils/axios";
 
@@ -7,69 +7,71 @@ const Register = () => {
     const [messageApi, contextHolder] = message.useMessage();
 
     const [loading, setLoading] = useState(false);
-    const [otpLoading, setOtpLoading] = useState(false);
-    const [otpModalVisible, setOtpModalVisible] = useState(false);
-    const [tempToken, setTempToken] = useState("");
     const [userEmail, setUserEmail] = useState("");
-    const [formData, setFormData] = useState(null);
+    const [isOtpSent, setIsOtpSent] = useState(false);
+    const [emailForm] = Form.useForm();
+    const [registerForm] = Form.useForm();
 
     const navigate = useNavigate();
 
-    // ===== Gửi OTP để đăng ký =====
-    const onFinish = async (values) => {
+    // ===== Gửi OTP với email =====
+    const handleSendOtp = async (values) => {
         try {
             setLoading(true);
-            setFormData(values);
-            const payload = {
-                fullName: values.fullName,
-                email: values.email,
-                password: values.password,
-                phone: values.phone,
-                defaultAddress: values.address,
-            };
+            const payload = { email: values.email };
 
-            // Gọi API register-with-otp
-            const res = await api.post("/users/register-with-otp", payload);
+            await api.post("/Users/send-otp", payload);
 
-            if (res.data.success && res.data.tempToken) {
-                setTempToken(res.data.tempToken);
-                setUserEmail(values.email);
-                setOtpModalVisible(true);
-                messageApi.success(
-                    "OTP đã được gửi tới email của bạn. Vui lòng xác thực để hoàn tất đăng ký."
-                );
-            } else {
-                messageApi.error(res.data.message || "Đăng ký thất bại");
-            }
+            setUserEmail(values.email);
+            setIsOtpSent(true);
+            messageApi.success(
+                "OTP đã được gửi tới email của bạn. Vui lòng điền thông tin để hoàn tất đăng ký."
+            );
         } catch (err) {
             console.error(err);
-            messageApi.error("Gửi OTP thất bại, thử lại sau");
+            const errorMsg =
+                err.response?.data?.message || "Gửi OTP thất bại, thử lại sau";
+            messageApi.error(errorMsg);
         } finally {
             setLoading(false);
         }
     };
 
-    // ===== Xác thực OTP =====
-    const handleVerifyOtp = async (values) => {
+    // ===== Hoàn tất đăng ký =====
+    const handleCompleteRegister = async (values) => {
         try {
-            setOtpLoading(true);
-            const payload = { otp: values.otp, tempToken };
-            const res = await api.post("/users/verify-register-otp", payload);
+            setLoading(true);
+            // const payload = {
+            //     email: userEmail,
+            //     fullName: values.fullName,
+            //     password: values.password,
+            //     phone: values.phone,
+            //     defaultAddress: values.address,
+            //     otp: values.otp, // Gửi kèm OTP
+            // };
+            const payload = {
+                FullName: values.fullName,
+                Email: userEmail,
+                Phone: values.phone,
+                Password: values.password,
+                Status: values.status,
+                JoinDate: new Date().toISOString(),
+                DefaultAddress: values.defaultAddress,
+                RoleId: 2,
+                Otp: values.otp,
+            };
 
-            if (res.data.success) {
-                messageApi.success("Đăng ký thành công! Vui lòng đăng nhập");
-                setOtpModalVisible(false);
-                navigate("/login");
-            } else {
-                messageApi.error(
-                    res.data.message || "OTP không đúng hoặc hết hạn"
-                );
-            }
+            await api.post("/Users/register-with-otp", payload);
+
+            messageApi.success("Đăng ký thành công! Vui lòng đăng nhập");
+            navigate("/login");
         } catch (err) {
             console.error(err);
-            messageApi.error("Xác thực OTP thất bại");
+            const errorMsg =
+                err.response?.data || "Đăng ký thất bại, thử lại sau";
+            messageApi.error(errorMsg);
         } finally {
-            setOtpLoading(false);
+            setLoading(false);
         }
     };
 
@@ -120,147 +122,200 @@ const Register = () => {
                     <Col span={12} style={{ padding: 40 }}>
                         <h2 style={{ marginBottom: 20 }}>Đăng ký</h2>
 
-                        <Form layout="vertical" onFinish={onFinish}>
-                            <Form.Item
-                                label="Họ và tên"
-                                name="fullName"
-                                rules={[
-                                    { required: true, message: "Nhập họ tên" },
-                                ]}
+                        {!isOtpSent ? (
+                            // Form nhập email để gửi OTP
+                            <Form
+                                form={emailForm}
+                                layout="vertical"
+                                onFinish={handleSendOtp}
                             >
-                                <Input placeholder="Nguyễn Văn A" />
-                            </Form.Item>
-
-                            <Form.Item
-                                label="Email"
-                                name="email"
-                                rules={[
-                                    { required: true, message: "Nhập email" },
-                                    {
-                                        type: "email",
-                                        message: "Email không hợp lệ",
-                                    },
-                                ]}
-                            >
-                                <Input placeholder="abc@gmail.com" />
-                            </Form.Item>
-
-                            <Form.Item
-                                label="Số điện thoại"
-                                name="phone"
-                                rules={[
-                                    {
-                                        required: true,
-                                        message: "Nhập số điện thoại",
-                                    },
-                                ]}
-                            >
-                                <Input placeholder="0123456789" />
-                            </Form.Item>
-
-                            <Form.Item
-                                label="Địa chỉ"
-                                name="address"
-                                rules={[
-                                    { required: true, message: "Nhập địa chỉ" },
-                                ]}
-                            >
-                                <Input placeholder="123 Lê Lợi, Quận 1" />
-                            </Form.Item>
-
-                            <Form.Item
-                                label="Mật khẩu"
-                                name="password"
-                                rules={[
-                                    {
-                                        required: true,
-                                        message: "Nhập mật khẩu",
-                                    },
-                                ]}
-                                hasFeedback
-                            >
-                                <Input.Password />
-                            </Form.Item>
-
-                            <Form.Item
-                                label="Xác nhận mật khẩu"
-                                name="confirmPassword"
-                                dependencies={["password"]}
-                                hasFeedback
-                                rules={[
-                                    {
-                                        required: true,
-                                        message: "Xác nhận lại mật khẩu",
-                                    },
-                                    ({ getFieldValue }) => ({
-                                        validator(_, value) {
-                                            if (
-                                                !value ||
-                                                getFieldValue("password") ===
-                                                    value
-                                            ) {
-                                                return Promise.resolve();
-                                            }
-                                            return Promise.reject(
-                                                "Mật khẩu không khớp"
-                                            );
+                                <Form.Item
+                                    label="Email"
+                                    name="email"
+                                    rules={[
+                                        {
+                                            required: true,
+                                            message: "Nhập email",
                                         },
-                                    }),
-                                ]}
-                            >
-                                <Input.Password />
-                            </Form.Item>
+                                        {
+                                            type: "email",
+                                            message: "Email không hợp lệ",
+                                        },
+                                    ]}
+                                >
+                                    <Input placeholder="abc@gmail.com" />
+                                </Form.Item>
 
-                            <Button
-                                type="primary"
-                                htmlType="submit"
-                                loading={loading}
-                                block
-                                style={{
-                                    height: 42,
-                                    borderRadius: 8,
-                                    fontWeight: 600,
-                                }}
-                            >
-                                Tạo tài khoản
-                            </Button>
+                                <Button
+                                    type="primary"
+                                    htmlType="submit"
+                                    loading={loading}
+                                    block
+                                    style={{
+                                        height: 42,
+                                        borderRadius: 8,
+                                        fontWeight: 600,
+                                    }}
+                                >
+                                    Gửi mã OTP
+                                </Button>
 
-                            <div style={{ marginTop: 16, textAlign: "center" }}>
-                                Đã có tài khoản?{" "}
-                                <Link to="/login">Đăng nhập</Link>
-                            </div>
-                        </Form>
+                                <div
+                                    style={{
+                                        marginTop: 16,
+                                        textAlign: "center",
+                                    }}
+                                >
+                                    Đã có tài khoản?{" "}
+                                    <Link to="/login">Đăng nhập</Link>
+                                </div>
+                            </Form>
+                        ) : (
+                            // Form đăng ký sau khi gửi OTP thành công
+                            <>
+                                <div
+                                    style={{
+                                        marginBottom: 16,
+                                        padding: 12,
+                                        background: "#f0f9ff",
+                                        borderRadius: 8,
+                                        border: "1px solid #bae6fd",
+                                        color: "#0369a1",
+                                    }}
+                                >
+                                    ✓ OTP đã được gửi tới {userEmail}
+                                </div>
+                                <Form
+                                    form={registerForm}
+                                    layout="vertical"
+                                    onFinish={handleCompleteRegister}
+                                >
+                                    <Form.Item
+                                        label="Mã OTP"
+                                        name="otp"
+                                        rules={[
+                                            {
+                                                required: true,
+                                                message: "Nhập mã OTP",
+                                            },
+                                        ]}
+                                    >
+                                        <Input placeholder="123456" />
+                                    </Form.Item>
+
+                                    <Form.Item
+                                        label="Họ và tên"
+                                        name="fullName"
+                                        rules={[
+                                            {
+                                                required: true,
+                                                message: "Nhập họ tên",
+                                            },
+                                        ]}
+                                    >
+                                        <Input placeholder="Nguyễn Văn A" />
+                                    </Form.Item>
+
+                                    <Form.Item
+                                        label="Số điện thoại"
+                                        name="phone"
+                                        rules={[
+                                            {
+                                                required: true,
+                                                message: "Nhập số điện thoại",
+                                            },
+                                        ]}
+                                    >
+                                        <Input placeholder="0123456789" />
+                                    </Form.Item>
+
+                                    <Form.Item
+                                        label="Địa chỉ"
+                                        name="address"
+                                        rules={[
+                                            {
+                                                required: true,
+                                                message: "Nhập địa chỉ",
+                                            },
+                                        ]}
+                                    >
+                                        <Input placeholder="123 Lê Lợi, Quận 1" />
+                                    </Form.Item>
+
+                                    <Form.Item
+                                        label="Mật khẩu"
+                                        name="password"
+                                        rules={[
+                                            {
+                                                required: true,
+                                                message: "Nhập mật khẩu",
+                                            },
+                                        ]}
+                                        hasFeedback
+                                    >
+                                        <Input.Password />
+                                    </Form.Item>
+
+                                    <Form.Item
+                                        label="Xác nhận mật khẩu"
+                                        name="confirmPassword"
+                                        dependencies={["password"]}
+                                        hasFeedback
+                                        rules={[
+                                            {
+                                                required: true,
+                                                message:
+                                                    "Xác nhận lại mật khẩu",
+                                            },
+                                            ({ getFieldValue }) => ({
+                                                validator(_, value) {
+                                                    if (
+                                                        !value ||
+                                                        getFieldValue(
+                                                            "password"
+                                                        ) === value
+                                                    ) {
+                                                        return Promise.resolve();
+                                                    }
+                                                    return Promise.reject(
+                                                        "Mật khẩu không khớp"
+                                                    );
+                                                },
+                                            }),
+                                        ]}
+                                    >
+                                        <Input.Password />
+                                    </Form.Item>
+
+                                    <Button
+                                        type="primary"
+                                        htmlType="submit"
+                                        loading={loading}
+                                        block
+                                        style={{
+                                            height: 42,
+                                            borderRadius: 8,
+                                            fontWeight: 600,
+                                        }}
+                                    >
+                                        Tạo tài khoản
+                                    </Button>
+
+                                    <div
+                                        style={{
+                                            marginTop: 16,
+                                            textAlign: "center",
+                                        }}
+                                    >
+                                        Đã có tài khoản?{" "}
+                                        <Link to="/login">Đăng nhập</Link>
+                                    </div>
+                                </Form>
+                            </>
+                        )}
                     </Col>
                 </Row>
             </Card>
-
-            {/* Modal OTP */}
-            <Modal
-                open={otpModalVisible}
-                footer={null}
-                onCancel={() => setOtpModalVisible(false)}
-                title="Xác thực OTP"
-                centered
-            >
-                <Form layout="vertical" onFinish={handleVerifyOtp}>
-                    <Form.Item
-                        label={`Nhập mã OTP gửi đến ${userEmail}`}
-                        name="otp"
-                        rules={[{ required: true, message: "Nhập OTP" }]}
-                    >
-                        <Input placeholder="123456" />
-                    </Form.Item>
-                    <Button
-                        type="primary"
-                        htmlType="submit"
-                        block
-                        loading={otpLoading}
-                        style={{ borderRadius: 8 }}
-                    >
-                        Xác thực
-                    </Button>
-                </Form>
-            </Modal>
         </div>
     );
 };
