@@ -11,6 +11,8 @@ const UserProfile = () => {
     const [user, setUser] = useState(null);
     const [formInfo] = Form.useForm();
     const [formPassword] = Form.useForm();
+    const [otpSent, setOtpSent] = useState(false);
+    const [sendingOtp, setSendingOtp] = useState(false);
 
     const userId = localStorage.getItem("userId"); // lưu userId sau khi login
 
@@ -45,6 +47,7 @@ const UserProfile = () => {
         try {
             setLoading(true);
             await api.put(`/Users/update/${userId}`, {
+                userId: userId,
                 fullName: values.fullName,
                 phone: values.phone,
                 defaultAddress: values.address, // gửi đúng key BE
@@ -59,14 +62,33 @@ const UserProfile = () => {
         }
     };
 
-    // ================= CHANGE PASSWORD =================
+    // ================= SEND OTP FOR CHANGE PASSWORD =================
+    const onSendOtp = async () => {
+        try {
+            setSendingOtp(true);
+            await api.post(`/Users/send-otp-change-password/${userId}`);
+            messageApi.success("OTP đã được gửi thành công");
+            setOtpSent(true);
+        } catch (err) {
+            console.error(err);
+            messageApi.error("Gửi OTP thất bại");
+        } finally {
+            setSendingOtp(false);
+        }
+    };
+
+    // ================= CHANGE PASSWORD WITH OTP =================
     const onChangePassword = async (values) => {
         try {
             setLoading(true);
-            // Placeholder, BE cung cấp API /Users/changePassword/{id} là dùng
-            // await api.put(`/Users/changePassword/${userId}`, values);
-            messageApi.success("Đổi mật khẩu thành công (chưa gọi BE)");
+            await api.post("/Users/change-password-with-otp", {
+                userId: parseInt(userId),
+                otp: values.otp,
+                newPassword: values.newPassword,
+            });
+            messageApi.success("Đổi mật khẩu thành công");
             formPassword.resetFields();
+            setOtpSent(false);
         } catch (err) {
             console.error(err);
             messageApi.error("Đổi mật khẩu thất bại");
@@ -150,75 +172,62 @@ const UserProfile = () => {
 
                         {/* ================= TAB ĐỔI MẬT KHẨU ================= */}
                         <TabPane tab="Đổi mật khẩu" key="2">
-                            <Form
-                                form={formPassword}
-                                layout="vertical"
-                                onFinish={onChangePassword}
-                            >
-                                <Form.Item
-                                    label="Mật khẩu hiện tại"
-                                    name="currentPassword"
-                                    rules={[
-                                        {
-                                            required: true,
-                                            message: "Nhập mật khẩu cũ",
-                                        },
-                                    ]}
+                            {!otpSent ? (
+                                <div>
+                                    <p style={{ marginBottom: 16 }}>
+                                        Nhấn nút bên dưới để nhận mã OTP qua
+                                        email
+                                    </p>
+                                    <Button
+                                        type="primary"
+                                        onClick={onSendOtp}
+                                        loading={sendingOtp}
+                                    >
+                                        Gửi OTP
+                                    </Button>
+                                </div>
+                            ) : (
+                                <Form
+                                    form={formPassword}
+                                    layout="vertical"
+                                    onFinish={onChangePassword}
                                 >
-                                    <Input.Password />
-                                </Form.Item>
-
-                                <Form.Item
-                                    label="Mật khẩu mới"
-                                    name="newPassword"
-                                    rules={[
-                                        {
-                                            required: true,
-                                            min: 6,
-                                            message: "Ít nhất 6 ký tự",
-                                        },
-                                    ]}
-                                >
-                                    <Input.Password />
-                                </Form.Item>
-
-                                <Form.Item
-                                    label="Xác nhận mật khẩu mới"
-                                    name="confirmPassword"
-                                    dependencies={["newPassword"]}
-                                    rules={[
-                                        {
-                                            required: true,
-                                            message: "Xác nhận mật khẩu",
-                                        },
-                                        ({ getFieldValue }) => ({
-                                            validator(_, value) {
-                                                if (
-                                                    !value ||
-                                                    getFieldValue(
-                                                        "newPassword"
-                                                    ) === value
-                                                ) {
-                                                    return Promise.resolve();
-                                                }
-                                                return Promise.reject(
-                                                    "Mật khẩu xác nhận không khớp"
-                                                );
+                                    <Form.Item
+                                        label="Mã OTP"
+                                        name="otp"
+                                        rules={[
+                                            {
+                                                required: true,
+                                                message: "Vui lòng nhập mã OTP",
                                             },
-                                        }),
-                                    ]}
-                                >
-                                    <Input.Password />
-                                </Form.Item>
+                                        ]}
+                                    >
+                                        <Input placeholder="Nhập mã OTP" />
+                                    </Form.Item>
 
-                                <Button
-                                    type="primary"
-                                    htmlType="submit"
-                                    loading={loading}
-                                >
-                                    Đổi mật khẩu
-                                </Button>
-                            </Form>
+                                    <Form.Item
+                                        label="Mật khẩu mới"
+                                        name="newPassword"
+                                        rules={[
+                                            {
+                                                required: true,
+                                                min: 6,
+                                                message: "Ít nhất 6 ký tự",
+                                            },
+                                        ]}
+                                    >
+                                        <Input.Password placeholder="Nhập mật khẩu mới" />
+                                    </Form.Item>
+
+                                    <Button
+                                        type="primary"
+                                        htmlType="submit"
+                                        loading={loading}
+                                    >
+                                        Đổi mật khẩu
+                                    </Button>
+                                </Form>
+                            )}
                         </TabPane>
                     </Tabs>
                 </Card>

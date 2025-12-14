@@ -64,7 +64,9 @@ const Register = () => {
             await api.post("/Users/register-with-otp", payload);
 
             messageApi.success("Đăng ký thành công! Vui lòng đăng nhập");
-            navigate("/login");
+            setTimeout(() => {
+                navigate("/login");
+            }, 1000);
         } catch (err) {
             console.error(err);
             const errorMsg =
