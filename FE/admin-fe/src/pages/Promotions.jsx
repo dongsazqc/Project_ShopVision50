@@ -324,7 +324,7 @@ export default function Promotions() {
                                 );
                                 if (exists) {
                                     return Promise.reject(
-                                        "⚠️ Mã khuyến mãi này đã tồn tại, vui lòng chọn mã khác!"
+                                        "⚠️ Mã khuyến mãi này đã tồn tại, xin vui lòng chọn mã khác!"
                                     );
                                 }
                                 return Promise.resolve();
