@@ -21,7 +21,6 @@ const ProductDetail = () => {
   const navigate = useNavigate();
   const baseURL = "http://160.250.5.26:5000";
 
-  // === State ===
   const [product, setProduct] = useState(null);
   const [variants, setVariants] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -32,25 +31,25 @@ const ProductDetail = () => {
   const [activeImage, setActiveImage] = useState(null);
   const [addedModalVisible, setAddedModalVisible] = useState(false);
 
-  // === Fetch product + variants + images ===
   useEffect(() => {
     const fetchProduct = async () => {
       try {
         setLoading(true);
         const resProduct = await api.get(`/ProductVariant/${id}/variants`);
         const data = resProduct.data;
-        const rawVariants = data.variants?.$values || [];
+
+        const rawVariants = data.variants?.$values || data.variants || [];
 
         const resImages = await api.get(`/products/${id}/images/checkimages`);
         const images =
-          resImages.data?.$values
-            ?.map(img => img.url)
+          resImages.data
+            ?.map((img) => img.url)
             .filter(Boolean)
-            .map(url => baseURL + url) || [];
+            .map((url) => baseURL + url) || [];
 
         setProduct({
           productId: data.productId,
-          name: data.tenSanPham,
+          name: data.tenSanPham || data.name,
           description: data.description || "",
           images,
         });
@@ -66,31 +65,34 @@ const ProductDetail = () => {
     fetchProduct();
   }, [id]);
 
-  // === Cập nhật activeVariant khi chọn color + size ===
   useEffect(() => {
     if (selectedColor && selectedSize) {
       setActiveVariant(
         variants.find(
-          v => v.tenMau === selectedColor && v.tenKichCo === selectedSize
+          (v) => v.tenMau === selectedColor && v.tenKichCo === selectedSize
         ) || null
       );
-      setQuantity(1); // reset quantity khi đổi variant
+      setQuantity(1);
     } else {
       setActiveVariant(null);
     }
   }, [selectedColor, selectedSize, variants]);
 
-  // === Handle add to cart ===
-  const handleAddToCart = async () => {
-    if (!activeVariant) return;
+  const colors = [...new Set(variants.map((v) => v.tenMau).filter(Boolean))];
+  const sizes = [...new Set(variants.map((v) => v.tenKichCo).filter(Boolean))];
+  const minPrice = variants.length
+    ? Math.min(...variants.map((v) => Number(v.giaBan)))
+    : 0;
+  const isVariantSelected = !!activeVariant;
 
+  const handleAddToCart = () => {
+    if (!activeVariant) return;
     const token = localStorage.getItem("token");
 
     if (!token) {
-      // Lưu localStorage nếu chưa login
       const cart = JSON.parse(localStorage.getItem("cart") || "[]");
       const existing = cart.find(
-        item => item.variantId === activeVariant.productVariantId
+        (item) => item.variantId === activeVariant.productVariantId
       );
       if (existing) existing.quantity += quantity;
       else
@@ -110,7 +112,7 @@ const ProductDetail = () => {
     }
 
     try {
-      await api.post("/Cart/AddToCart", {
+      api.post("/Cart/AddToCart", {
         productVariantId: activeVariant.productVariantId,
         quantity,
       });
@@ -121,7 +123,6 @@ const ProductDetail = () => {
     }
   };
 
-  // === Handle Buy Now ===
   const handleBuyNow = () => {
     if (!activeVariant) return;
     const buyNowData = {
@@ -138,76 +139,25 @@ const ProductDetail = () => {
     navigate("/checkout");
   };
 
-  if (loading)
-    return <Spin style={{ marginTop: 100 }} size="large" />;
+  if (loading) return <Spin style={{ marginTop: 100 }} size="large" />;
   if (!product)
-    return <Empty description="Sản phẩm không tồn tại" style={{ marginTop: 100 }} />;
-
-  // === Price, colors, sizes ===
-  const minPrice = variants.length
-    ? Math.min(...variants.map(v => Number(v.giaBan)))
-    : 0;
-  const colors = [...new Set(variants.map(v => v.tenMau).filter(Boolean))];
-  const sizes = [...new Set(variants.map(v => v.tenKichCo).filter(Boolean))];
-
-  // === Styles ===
-  const styles = {
-    cardRadius: { borderRadius: 16 },
-    thumbnailWrapper: { display: "flex", gap: 8, marginTop: 12 },
-    thumbnail: isActive => ({
-      cursor: "pointer",
-      borderRadius: 8,
-      border: isActive ? "2px solid #ee4d2d" : "1px solid #eee",
-    }),
-    priceBox: { background: "#fff5f5", padding: 16, borderRadius: 12, marginBottom: 16 },
-    priceText: { fontSize: 14 },
-    priceNumber: { fontSize: 28, color: "#ee4d2d", fontWeight: 600 },
-    productDesc: { color: "#666", whiteSpace: "pre-line" },
-    variantWrapper: { marginTop: 12 },
-    variantButtons: { display: "flex", gap: 10, marginTop: 8, flexWrap: "wrap" },
-    quantityWrapper: { marginTop: 20, display: "flex", alignItems: "center", gap: 16 },
-    stockText: { color: "#888" },
-    actionButtons: { display: "flex", gap: 16, marginTop: 28 },
-    btnBase: {
-      flex: 1,
-      borderRadius: 8,
-      padding: "8px 0",
-      fontWeight: 500,
-      transition: "all 0.2s",
-      cursor: "pointer",
-    },
-    btnAdd: disabled => ({
-      ...styles.btnBase,
-      background: disabled ? "#ffe6e6" : "#fff5f5",
-      border: `1px solid ${disabled ? "#ff9999" : "#ee4d2d"}`,
-      color: disabled ? "#ff9999" : "#ee4d2d",
-      pointerEvents: disabled ? "none" : "auto",
-    }),
-    btnBuy: disabled => ({
-      ...styles.btnBase,
-      background: disabled ? "#ff9999" : "#ee4d2d",
-      border: `1px solid ${disabled ? "#ff9999" : "#ee4d2d"}`,
-      color: "#fff",
-      pointerEvents: disabled ? "none" : "auto",
-    }),
-    sizeGuide: { marginTop: 8, fontSize: 12, color: "#888" },
-  };
-
-  const isVariantSelected = !!activeVariant;
+    return (
+      <Empty description="Sản phẩm không tồn tại" style={{ marginTop: 100 }} />
+    );
 
   return (
     <div style={{ padding: 24 }}>
       <Row gutter={[24, 24]}>
         {/* Hình ảnh */}
         <Col xs={24} md={10}>
-          <Card style={styles.cardRadius}>
+          <Card style={{ borderRadius: 16, overflow: "hidden" }}>
             <Image
               src={activeImage || "https://via.placeholder.com/400"}
               width="100%"
-              style={styles.cardRadius}
+              style={{ borderRadius: 16 }}
             />
             {product.images.length > 0 && (
-              <div style={styles.thumbnailWrapper}>
+              <div style={{ display: "flex", gap: 8, marginTop: 12, flexWrap: "wrap" }}>
                 {product.images.map((img, index) => (
                   <Image
                     key={index}
@@ -215,7 +165,11 @@ const ProductDetail = () => {
                     width={60}
                     height={60}
                     preview={false}
-                    style={styles.thumbnail(activeImage === img)}
+                    style={{
+                      cursor: "pointer",
+                      borderRadius: 8,
+                      border: activeImage === img ? "2px solid #ee4d2d" : "1px solid #eee",
+                    }}
                     onClick={() => setActiveImage(img)}
                   />
                 ))}
@@ -226,40 +180,33 @@ const ProductDetail = () => {
 
         {/* Thông tin */}
         <Col xs={24} md={14}>
-          <Card style={styles.cardRadius}>
+          <Card style={{ borderRadius: 16, padding: 24 }}>
             <h2 style={{ marginBottom: 8 }}>{product.name}</h2>
-            <div style={{ marginBottom: 12 }}>
+            <div style={{ marginBottom: 16 }}>
               <Tag color="red">HOT</Tag>
               <Tag color="green">Freeship</Tag>
             </div>
 
-            <div style={styles.priceBox}>
-              <span style={styles.priceText}>Giá từ </span>
-              <span style={styles.priceNumber}>
+            <div
+              style={{
+                background: "#fff5f5",
+                padding: 16,
+                borderRadius: 12,
+                marginBottom: 16,
+              }}
+            >
+              <span style={{ fontSize: 14 }}>Giá từ </span>
+              <span style={{ fontSize: 28, color: "#ee4d2d", fontWeight: 600 }}>
                 {minPrice.toLocaleString("vi-VN")} ₫
               </span>
             </div>
 
-            {/* Số lượng */}
-            <div style={styles.quantityWrapper}>
-              <strong>Số lượng:</strong>
-              <InputNumber
-                min={1}
-                max={activeVariant?.soLuongTon || 99}
-                value={quantity}
-                onChange={v => setQuantity(Math.min(v, activeVariant?.soLuongTon || 99))}
-              />
-              {activeVariant && (
-                <span style={styles.stockText}>Còn {activeVariant.soLuongTon} sản phẩm</span>
-              )}
-            </div>
-
             {/* Chọn màu */}
             {colors.length > 0 && (
-              <div style={styles.variantWrapper}>
+              <div style={{ marginBottom: 12 }}>
                 <strong>Màu sắc:</strong>
-                <div style={styles.variantButtons}>
-                  {colors.map(c => (
+                <div style={{ display: "flex", gap: 8, flexWrap: "wrap", marginTop: 8 }}>
+                  {colors.map((c) => (
                     <Button
                       key={c}
                       type={selectedColor === c ? "primary" : "default"}
@@ -274,10 +221,10 @@ const ProductDetail = () => {
 
             {/* Chọn size */}
             {sizes.length > 0 && (
-              <div style={styles.variantWrapper}>
+              <div style={{ marginBottom: 12 }}>
                 <strong>Kích cỡ:</strong>
-                <div style={styles.variantButtons}>
-                  {sizes.map(s => (
+                <div style={{ display: "flex", gap: 8, flexWrap: "wrap", marginTop: 8 }}>
+                  {sizes.map((s) => (
                     <Button
                       key={s}
                       type={selectedSize === s ? "primary" : "default"}
@@ -287,16 +234,35 @@ const ProductDetail = () => {
                     </Button>
                   ))}
                 </div>
-                <div style={styles.sizeGuide}>
-                  Hướng dẫn chọn size: Tham khảo bảng size bên dưới.
-                </div>
               </div>
             )}
 
+            {/* Số lượng */}
+            <div style={{ marginTop: 12, display: "flex", alignItems: "center", gap: 16 }}>
+              <strong>Số lượng:</strong>
+              <InputNumber
+                min={1}
+                max={activeVariant?.soLuongTon || 99}
+                value={quantity}
+                onChange={(v) => setQuantity(Math.min(v, activeVariant?.soLuongTon || 99))}
+              />
+              {activeVariant && (
+                <span style={{ color: "#888" }}>Còn {activeVariant.soLuongTon}</span>
+              )}
+            </div>
+
             {/* Nút hành động */}
-            <div style={styles.actionButtons}>
+            <div style={{ display: "flex", gap: 16, marginTop: 24 }}>
               <Button
-                style={styles.btnAdd(!isVariantSelected)}
+                style={{
+                  flex: 1,
+                  borderRadius: 8,
+                  background: isVariantSelected ? "#fff5f5" : "#ffe6e6",
+                  border: `1px solid ${isVariantSelected ? "#ee4d2d" : "#ff9999"}`,
+                  color: isVariantSelected ? "#ee4d2d" : "#ff9999",
+                  fontWeight: 600,
+                  height: 44,
+                }}
                 onClick={handleAddToCart}
                 disabled={!isVariantSelected}
               >
@@ -304,7 +270,15 @@ const ProductDetail = () => {
               </Button>
 
               <Button
-                style={styles.btnBuy(!isVariantSelected)}
+                style={{
+                  flex: 1,
+                  borderRadius: 8,
+                  background: isVariantSelected ? "#ee4d2d" : "#ff9999",
+                  border: `1px solid ${isVariantSelected ? "#ee4d2d" : "#ff9999"}`,
+                  color: "#fff",
+                  fontWeight: 600,
+                  height: 44,
+                }}
                 onClick={handleBuyNow}
                 disabled={!isVariantSelected}
               >
@@ -317,12 +291,12 @@ const ProductDetail = () => {
 
       {/* Mô tả sản phẩm */}
       <Divider />
-      <Card style={styles.cardRadius}>
+      <Card style={{ borderRadius: 16, padding: 16 }}>
         <h3>Mô tả sản phẩm</h3>
-        <p style={styles.productDesc}>{product.description}</p>
+        <p style={{ color: "#666", whiteSpace: "pre-line" }}>{product.description}</p>
       </Card>
 
-      {/* MODAL THÊM VÀO GIỎ HÀNG */}
+      {/* Modal */}
       <Modal
         title="Thêm vào giỏ hàng"
         open={addedModalVisible}
@@ -337,10 +311,7 @@ const ProductDetail = () => {
           >
             Xem giỏ hàng
           </Button>,
-          <Button
-            key="continue"
-            onClick={() => setAddedModalVisible(false)}
-          >
+          <Button key="continue" onClick={() => setAddedModalVisible(false)}>
             Tiếp tục mua sắm
           </Button>,
         ]}
