@@ -102,6 +102,7 @@ export default function Categories() {
             const res = await api.get(`/Category/${record.categoryId}`);
             const cat = res.data;
             setSelectedCategory(cat);
+            console.log("check", cat);
             formEdit.setFieldsValue({
                 name: cat.name,
                 description: cat.description,
@@ -112,6 +113,7 @@ export default function Categories() {
             messageApi.error("Không thể tải chi tiết danh mục");
         }
     };
+    console.log(formEdit.getFieldsValue());
 
     // ================= CẬP NHẬT DANH MỤC =================
     const handleUpdate = async (values) => {
@@ -339,7 +341,7 @@ export default function Categories() {
                     layout="vertical"
                     form={formEdit}
                     onFinish={handleUpdate}
-                    preserve={false}
+                    // preserve={false}
                 >
                     <Form.Item
                         label="Tên danh mục"
