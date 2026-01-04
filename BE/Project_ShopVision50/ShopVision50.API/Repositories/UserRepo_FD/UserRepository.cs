@@ -15,7 +15,7 @@ namespace ShopVision50.API.Repositories
         public Task<List<User>> GetAllAsync() =>
             _db.Users.AsNoTracking().ToListAsync();
 
-      
+
 
         public Task<User?> GetByIdAsync(int id) =>
             _db.Users
@@ -28,6 +28,9 @@ namespace ShopVision50.API.Repositories
 
         public Task<User?> GetByEmailAsync(string email) =>
             _db.Users.AsNoTracking().FirstOrDefaultAsync(u => u.Email == email);
+
+        public Task<User?> GetByPhoneAsync(string phone) =>
+            _db.Users.AsNoTracking().FirstOrDefaultAsync(u => u.Phone == phone);
 
         public async Task<User> AddAsync(User user)
         {
@@ -51,6 +54,7 @@ namespace ShopVision50.API.Repositories
 
         public async Task<bool> CheckEmailExistsAsync(string email)
         {
-            return await _db.Users.AnyAsync(u => u.Email == email);        }
+            return await _db.Users.AnyAsync(u => u.Email == email);
+        }
     }
 }

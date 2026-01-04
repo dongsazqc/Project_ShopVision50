@@ -94,7 +94,8 @@ export default function Users() {
             data = data.filter(
                 (u) =>
                     u.fullName?.toLowerCase().includes(search.toLowerCase()) ||
-                    u.email?.toLowerCase().includes(search.toLowerCase())
+                    u.email?.toLowerCase().includes(search.toLowerCase()) ||
+                    u.phone?.toLowerCase().includes(search.toLowerCase())
             );
         }
 

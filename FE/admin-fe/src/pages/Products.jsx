@@ -399,7 +399,7 @@ export default function Products() {
         variantForm.setFieldsValue({
             tenMau: variant.tenMau,
             tenKichCo: variant.tenKichCo,
-            giaBan: variant.giaBan,
+            giaBan: editingProduct.price * (variant.discountPercent / 100),
             soLuongTon: variant.soLuongTon,
             discountPercent: variant.discountPercent
                 ? variant.discountPercent
@@ -1330,7 +1330,12 @@ export default function Products() {
                     <Form.Item
                         label="Số lượng tồn"
                         name="soLuongTon"
-                        rules={[{ required: true }]}
+                        rules={[
+                            {
+                                required: true,
+                                message: "Vui lòng nhập số lượng tồn",
+                            },
+                        ]}
                     >
                         <InputNumber min={0} style={{ width: "100%" }} />
                     </Form.Item>
@@ -1338,7 +1343,12 @@ export default function Products() {
                     <Form.Item
                         label="Khuyến mãi (%)"
                         name="discountPercent"
-                        rules={[{ required: true }]}
+                        rules={[
+                            {
+                                required: true,
+                                message: "Vui lòng nhập % khuyến mãi",
+                            },
+                        ]}
                     >
                         <InputNumber
                             min={0}
