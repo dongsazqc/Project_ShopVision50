@@ -21,6 +21,7 @@ const { RangePicker } = DatePicker;
 export default function Promotions() {
     const [messageApi, contextHolder] = message.useMessage();
     const [promotions, setPromotions] = useState([]);
+    const [filteredPromotions, setFilteredPromotions] = useState([]);
     const [loading, setLoading] = useState(false);
     const [form] = Form.useForm();
     const [openModal, setOpenModal] = useState(false);
@@ -43,7 +44,9 @@ export default function Promotions() {
                 }))
                 .sort((a, b) => b.promotionId - a.promotionId);
 
-            setPromotions(filterByStatus(formatted, statusFilter));
+            // setPromotions(filterByStatus(formatted, statusFilter));
+            setPromotions(formatted);
+            setFilteredPromotions(filterByStatus(formatted, statusFilter));
         } catch (err) {
             console.error(err);
             messageApi.error("Không thể tải danh sách khuyến mãi");
@@ -229,9 +232,9 @@ export default function Promotions() {
                             if (!value.trim()) {
                                 fetchPromotions();
                             } else {
-                                setPromotions((prev) =>
+                                setFilteredPromotions(
                                     filterByStatus(
-                                        prev.filter((p) =>
+                                        promotions.filter((p) =>
                                             p.code
                                                 .toLowerCase()
                                                 .includes(value.toLowerCase())
@@ -249,8 +252,8 @@ export default function Promotions() {
                         style={{ width: 160 }}
                         onChange={(value) => {
                             setStatusFilter(value);
-                            setPromotions((prev) =>
-                                filterByStatus(prev, value)
+                            setFilteredPromotions(
+                                filterByStatus(promotions, value)
                             );
                         }}
                         options={[
@@ -274,7 +277,7 @@ export default function Promotions() {
                 </Button>
             </Space>
             <Table
-                dataSource={promotions}
+                dataSource={filteredPromotions}
                 columns={columns}
                 rowKey="promotionId"
                 loading={loading}

@@ -376,7 +376,7 @@ export default function Users() {
             <Row gutter={12} style={{ marginBottom: 16 }}>
                 <Col span={8}>
                     <Input
-                        placeholder="Tìm theo tên / email..."
+                        placeholder="Tìm theo tên / email / SĐT ..."
                         value={search}
                         onChange={(e) => setSearch(e.target.value)}
                     />
