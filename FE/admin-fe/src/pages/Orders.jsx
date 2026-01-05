@@ -172,15 +172,21 @@ export default function Orders() {
     try {
       const values = await form.validateFields();
 
-      await api.put(`/Orders/Update/${selectedOrder.orderId}`, {
-        ...selectedOrder,
-        ...values,
-      });
+      const payload = {
+        orderId: selectedOrder.orderId,
+        status: values.status,
+        recipientName: values.recipientName,
+        recipientPhone: values.recipientPhone,
+        shippingAddress: values.shippingAddress,
+      };
+
+      await api.put(`/Orders/Update/${selectedOrder.orderId}`, payload);
 
       message.success("Cập nhật thành công");
       setDetailModal(false);
       fetchOrders();
     } catch (err) {
+      console.error(err);
       message.error("Lỗi khi cập nhật đơn hàng");
     }
   };

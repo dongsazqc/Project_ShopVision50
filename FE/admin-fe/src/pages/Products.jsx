@@ -10,6 +10,7 @@ import {
     Select,
     Upload,
     Spin,
+    Popconfirm,
 } from "antd";
 import {
     PlusOutlined,
@@ -19,7 +20,7 @@ import {
     StarOutlined,
     EyeOutlined,
 } from "@ant-design/icons";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import api from "../utils/axios";
 
 const FIXED_BRAND = "StyleWear";
@@ -38,7 +39,7 @@ export default function Products() {
     // variants & images
     const [variants, setVariants] = useState([]);
     const [images, setImages] = useState([]);
-    console.log(images);
+    // console.log(images);
     const [imageLoading, setImageLoading] = useState(false);
     const [viewImages, setViewImages] = useState([]);
     const [viewImagesLoading, setViewImagesLoading] = useState(false);
@@ -50,6 +51,9 @@ export default function Products() {
 
     // meta data
     const [metaData, setMetaData] = useState({});
+
+    //
+    const priceRef = useRef(0);
 
     // product form
     const [form] = Form.useForm();
@@ -195,7 +199,7 @@ export default function Products() {
                     tenKichCo: v.tenKichCo,
                     giaBan: v.giaBan,
                     soLuongTon: v.soLuongTon,
-                    discountPercent: v.discountPercent ?? 0,
+                    discountPercent: (v.giaBan / (priceRef.current || 1)) * 100,
                 }))
             );
         } catch (err) {
@@ -301,6 +305,12 @@ export default function Products() {
 
                 messageApi.success("Cập nhật sản phẩm thành công!");
                 fetchProducts();
+                variants.forEach((v) => {
+                    handleUpdateVariant({
+                        ...v,
+                        giaBan: (v.discountPercent / 100) * values.Price,
+                    });
+                });
                 fetchVariants(editingProduct.productId);
                 fetchImages(editingProduct.productId);
                 setOpenModal(false);
@@ -389,9 +399,15 @@ export default function Products() {
         variantForm.setFieldsValue({
             tenMau: variant.tenMau,
             tenKichCo: variant.tenKichCo,
-            giaBan: variant.giaBan,
+            giaBan: editingProduct.price * (variant.discountPercent / 100),
             soLuongTon: variant.soLuongTon,
-            discountPercent: variant.discountPercent ?? 0,
+            discountPercent: variant.discountPercent
+                ? variant.discountPercent
+                : Math.floor(
+                      ((editingProduct.price - variant.giaBan) /
+                          editingProduct.price) *
+                          100
+                  ) ?? 0,
         });
         setVariantModalOpen(true);
     };
@@ -458,9 +474,9 @@ export default function Products() {
     const handleUpdateVariant = async (record) => {
         try {
             await api.put(`/ProductVariant/${record.bienTheId}`, {
-                // ProductId: editingProduct.productId,
-                // tenMau: record.tenMau,
-                // tenKichCo: record.tenKichCo,
+                ProductId: editingProduct.productId,
+                tenMau: record.tenMau,
+                tenKichCo: record.tenKichCo,
                 giaBan: record.giaBan,
                 soLuongTon: record.soLuongTon,
                 discountPercent: record.discountPercent ?? 0,
@@ -470,23 +486,24 @@ export default function Products() {
                 await fetchVariants(editingProduct.productId);
                 await checkProductStatus(editingProduct.productId);
             }
+            setVariantModalOpen(false);
         } catch (err) {
             console.error(err);
             messageApi.error("Không thể cập nhật biến thể");
         }
     };
 
-    const handleDeleteVariant = async (bienTheId, productId) => {
-        try {
-            await api.delete(`/ProductVariant/${bienTheId}`);
-            messageApi.success("Xóa biến thể thành công!");
-            await fetchVariants(productId);
-            await checkProductStatus(productId);
-        } catch (err) {
-            console.error(err);
-            messageApi.error("Không thể xóa biến thể");
-        }
-    };
+    // const handleDeleteVariant = async (bienTheId, productId) => {
+    //     try {
+    //         await api.delete(`/ProductVariant/${bienTheId}`);
+    //         messageApi.success("Xóa biến thể thành công!");
+    //         await fetchVariants(productId);
+    //         await checkProductStatus(productId);
+    //     } catch (err) {
+    //         console.error(err);
+    //         messageApi.error("Không thể xóa biến thể");
+    //     }
+    // };
 
     // ==================== CHECK PRODUCT STATUS ====================
     const checkProductStatus = async (productId) => {
@@ -588,6 +605,8 @@ export default function Products() {
         }
 
         setEditingProduct(record || null);
+        const priceValue = record?.price || 0;
+        priceRef.current = priceValue;
 
         form.setFieldsValue({
             Name: record?.name || "",
@@ -745,7 +764,7 @@ export default function Products() {
             dataIndex: "giaBan",
             render: (v, r) => (
                 <InputNumber
-                    value={r.giaBan}
+                    value={(r.discountPercent / 100) * editingProduct.price}
                     min={0}
                     onChange={(val) =>
                         setVariants((prev) =>
@@ -792,17 +811,19 @@ export default function Products() {
                     <Button onClick={() => openEditVariantModal(record)}>
                         Sửa
                     </Button>
-                    <Button
-                        danger
-                        onClick={() =>
+                    {/* <Popconfirm
+                        title={`Xóa Biến thể ?`}
+                        onConfirm={() =>
                             handleDeleteVariant(
                                 record.bienTheId,
                                 editingProduct?.productId
                             )
                         }
+                        okText="Xóa"
+                        cancelText="Hủy"
                     >
-                        Xóa
-                    </Button>
+                        <Button danger>Xóa</Button>
+                    </Popconfirm> */}
                 </Space>
             ),
         },
@@ -892,7 +913,23 @@ export default function Products() {
                 destroyOnClose={false}
             >
                 <Spin spinning={imageLoading}>
-                    <Form layout="vertical" form={form} onFinish={handleSave}>
+                    <Form
+                        layout="vertical"
+                        form={form}
+                        onFinish={handleSave}
+                        onValuesChange={(changedValues) => {
+                            if (
+                                changedValues.Price !== undefined &&
+                                editingProduct
+                            ) {
+                                // Cập nhật giá trong editingProduct khi giá form thay đổi
+                                setEditingProduct({
+                                    ...editingProduct,
+                                    price: changedValues.Price,
+                                });
+                            }
+                        }}
+                    >
                         <Form.Item
                             label="Tên sản phẩm"
                             name="Name"
@@ -1293,7 +1330,12 @@ export default function Products() {
                     <Form.Item
                         label="Số lượng tồn"
                         name="soLuongTon"
-                        rules={[{ required: true }]}
+                        rules={[
+                            {
+                                required: true,
+                                message: "Vui lòng nhập số lượng tồn",
+                            },
+                        ]}
                     >
                         <InputNumber min={0} style={{ width: "100%" }} />
                     </Form.Item>
@@ -1301,7 +1343,12 @@ export default function Products() {
                     <Form.Item
                         label="Khuyến mãi (%)"
                         name="discountPercent"
-                        rules={[{ required: true }]}
+                        rules={[
+                            {
+                                required: true,
+                                message: "Vui lòng nhập % khuyến mãi",
+                            },
+                        ]}
                     >
                         <InputNumber
                             min={0}
