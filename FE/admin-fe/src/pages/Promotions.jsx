@@ -28,6 +28,10 @@ export default function Promotions() {
     const [selectedPromo, setSelectedPromo] = useState(null);
     const [statusFilter, setStatusFilter] = useState("all");
 
+    // Dữ liệu phụ trợ
+    const [categories, setCategories] = useState([]);
+    const [products, setProducts] = useState([]);
+
     // ================= Lấy danh sách khuyến mãi =================
     const fetchPromotions = async () => {
         try {
@@ -40,7 +44,7 @@ export default function Promotions() {
                     ...p,
                     startDate: p.startDate ? dayjs(p.startDate) : null,
                     endDate: p.endDate ? dayjs(p.endDate) : null,
-                    trangThai: dayjs().isBefore(dayjs(p.endDate)),
+                    parsedCondition: parseCondition(p.condition),
                 }))
                 .sort((a, b) => b.promotionId - a.promotionId);
 
@@ -55,8 +59,24 @@ export default function Promotions() {
         }
     };
 
+    // ================= Lấy danh mục & sản phẩm =================
+    const fetchCategoriesAndProducts = async () => {
+        try {
+            const [catRes, prodRes] = await Promise.all([
+                api.get("/Category/GetAll"),
+                api.get("/Products/GetAllProducts"),
+            ]);
+            setCategories(catRes.data || []);
+            setProducts(prodRes.data || []);
+        } catch (err) {
+            console.error(err);
+            messageApi.error("Không thể tải danh mục / sản phẩm");
+        }
+    };
+
     useEffect(() => {
         fetchPromotions();
+        fetchCategoriesAndProducts();
     }, []);
 
     const filterByStatus = (list, status) => {
@@ -67,6 +87,23 @@ export default function Promotions() {
             return list.filter((p) => dayjs().isAfter(dayjs(p.endDate)));
         }
         return list; // all
+    };
+
+    // ================= Parse condition =================
+    const parseCondition = (condition) => {
+        if (!condition) return { minOrderAmount: 0, items: [] };
+        const result = { minOrderAmount: 0, items: [] };
+        const parts = condition.split(";");
+        parts.forEach((p) => {
+            if (p.startsWith("min:"))
+                result.minOrderAmount = parseInt(p.replace("min:", ""), 10);
+            if (p.startsWith("items:")) {
+                try {
+                    result.items = JSON.parse(p.replace("items:", ""));
+                } catch {}
+            }
+        });
+        return result;
     };
 
     // ================= Thêm / Cập nhật =================
@@ -88,12 +125,19 @@ export default function Promotions() {
                 return;
             }
 
+            // Serialize condition thành string để gửi backend
+            const condition = `min:${values.minOrderAmount || 0}${
+                values.items?.length
+                    ? `;items:${JSON.stringify(values.items)}`
+                    : ""
+            }`;
+
             const payload = {
                 promotionId: selectedPromo?.promotionId || 0,
                 code: values.code.trim(),
                 discountType: "Percent",
                 discountValue: values.discountValue,
-                condition: values.condition,
+                condition: condition,
                 scope: values.scope,
                 startDate: dayjs(start).format("YYYY-MM-DDTHH:mm:ss"),
                 endDate: dayjs(end).format("YYYY-MM-DDTHH:mm:ss"),
@@ -145,13 +189,16 @@ export default function Promotions() {
                 `/KhuyenMai/GetPromotionById/${record.promotionId}`
             );
             const promo = res.data;
+            const parsed = parseCondition(promo.condition);
+
             setSelectedPromo(promo);
 
             form.setFieldsValue({
                 code: promo.code,
                 discountValue: promo.discountValue,
-                condition: promo.condition,
+                minOrderAmount: parsed.minOrderAmount,
                 scope: promo.scope,
+                items: parsed.items,
                 dateRange: [dayjs(promo.startDate), dayjs(promo.endDate)],
             });
 
@@ -190,7 +237,14 @@ export default function Promotions() {
             dataIndex: "discountValue",
             render: (val) => `${val}%`,
         },
-        { title: "Điều kiện", dataIndex: "condition", render: (v) => v || "—" },
+        {
+            title: "Điều kiện (tối thiểu tổng đơn)",
+            dataIndex: "parsedCondition",
+            render: (val) =>
+                val?.minOrderAmount
+                    ? val.minOrderAmount.toLocaleString("vi-VN") + " VND"
+                    : "Không yêu cầu",
+        },
         {
             title: "Ngày bắt đầu",
             dataIndex: "startDate",
@@ -310,27 +364,11 @@ export default function Promotions() {
                             {
                                 min: 5,
                                 max: 20,
-                                message:
-                                    "Mã khuyến mãi phải có từ 5 đến 20 ký tự",
+                                message: "Mã khuyến mãi phải có từ 5-20 ký tự",
                             },
                             {
                                 pattern: /^[A-Za-z0-9]+$/,
-                                message:
-                                    "Mã khuyến mãi chỉ chấp nhận chữ và số",
-                            },
-                            async ({ getFieldValue }) => {
-                                const code = getFieldValue("code").trim();
-                                const exists = promotions.some(
-                                    (p) =>
-                                        p.code.toLowerCase() ===
-                                        code.toLowerCase()
-                                );
-                                if (exists) {
-                                    return Promise.reject(
-                                        "⚠️ Mã khuyến mãi này đã tồn tại, vui lòng chọn mã khác!"
-                                    );
-                                }
-                                return Promise.resolve();
+                                message: "Chỉ chấp nhận chữ và số",
                             },
                         ]}
                     >
@@ -349,8 +387,7 @@ export default function Promotions() {
                                 type: "number",
                                 min: 1,
                                 max: 100,
-                                message:
-                                    "Giá trị giảm phải trong khoảng từ 1% đến 100%",
+                                message: "1-100%",
                             },
                         ]}
                     >
@@ -362,13 +399,71 @@ export default function Promotions() {
                         />
                     </Form.Item>
 
-                    <Form.Item label="Điều kiện" name="condition">
-                        <Input placeholder="VD: Đơn hàng từ 500000 VND" />
+                    <Form.Item
+                        label="Tối thiểu tổng đơn hàng (VND)"
+                        name="minOrderAmount"
+                    >
+                        <InputNumber
+                            min={0}
+                            style={{ width: "100%" }}
+                            formatter={(value) =>
+                                value
+                                    ? `${value}`.replace(
+                                          /\B(?=(\d{3})+(?!\d))/g,
+                                          ","
+                                      )
+                                    : ""
+                            }
+                            parser={(value) => value.replace(/\D/g, "")}
+                        />
                     </Form.Item>
 
-                    <Form.Item label="Phạm vi áp dụng" name="scope">
-                        <Input placeholder="VD: Tất cả sản phẩm" />
+                    <Form.Item
+                        label="Phạm vi áp dụng"
+                        name="scope"
+                        rules={[
+                            { required: true, message: "Chọn phạm vi áp dụng" },
+                        ]}
+                    >
+                        <Select
+                            options={[
+                                { label: "Tất cả sản phẩm", value: "all" },
+                                { label: "Nhóm sản phẩm", value: "category" },
+                                {
+                                    label: "Sản phẩm riêng lẻ",
+                                    value: "product",
+                                },
+                            ]}
+                        />
                     </Form.Item>
+
+                    {["category", "product"].includes(
+                        form.getFieldValue("scope")
+                    ) && (
+                        <Form.Item
+                            label={
+                                form.getFieldValue("scope") === "category"
+                                    ? "Chọn nhóm sản phẩm"
+                                    : "Chọn sản phẩm"
+                            }
+                            name="items"
+                        >
+                            <Select
+                                mode="multiple"
+                                options={
+                                    form.getFieldValue("scope") === "category"
+                                        ? categories.map((c) => ({
+                                              label: c.name,
+                                              value: c.id,
+                                          }))
+                                        : products.map((p) => ({
+                                              label: p.name,
+                                              value: p.id,
+                                          }))
+                                }
+                            />
+                        </Form.Item>
+                    )}
 
                     <Form.Item
                         label="Thời gian áp dụng"
