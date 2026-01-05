@@ -301,7 +301,7 @@ export default function StylePage() {
                     layout="vertical"
                     form={formEdit}
                     onFinish={handleUpdate}
-                    preserve={false}
+                    // preserve={false}
                 >
                     <Form.Item
                         label="Tên phong cách"
