@@ -17,15 +17,13 @@ import dayjs from "dayjs";
 
 const { RangePicker } = DatePicker;
 
-// Map trạng thái boolean từ Backend
-const statusLabels = {
-  pending: "Chờ xử lý",
-  completed: "Hoàn tất",
-};
-
-const statusColors = {
-  pending: "orange",
-  completed: "green",
+// STATUS: BE number → FE label
+const STATUS = {
+  0: { label: "Chờ xử lý", color: "orange" }, // Pending
+  1: { label: "Đang xử lý", color: "blue" }, // Processing
+  2: { label: "Đang giao", color: "cyan" }, // Shipping
+  3: { label: "Hoàn tất", color: "green" }, // Completed
+  4: { label: "Đã huỷ", color: "red" }, // Cancelled
 };
 
 const paymentMethodMap = {
@@ -34,8 +32,8 @@ const paymentMethodMap = {
 };
 
 const orderTypeMap = {
-  Offline: "Nhận tại cửa hàng",
-  delivery: "Giao hàng",
+  Offline: "Bán hàng tại quầy",
+  Online: "Online",
 };
 
 export default function Orders() {
@@ -50,45 +48,49 @@ export default function Orders() {
   const [phoneFilter, setPhoneFilter] = useState("");
   const [dateRange, setDateRange] = useState(null);
   const [statusFilter, setStatusFilter] = useState("all");
+  const canEditAll = (status) => status === 0; // Pending
+  const canOnlyEditStatus = (status) =>
+    status === 1 || status === 2 || status === 4;
+  const isCompleted = (status) => status === 3;
 
-const fetchOrders = async () => {
-  try {
-    setLoading(true);
+  const fetchOrders = async () => {
+    try {
+      setLoading(true);
 
-    const res = await api.get("/Orders/GetAll");
+      const res = await api.get("/Orders/GetAll");
 
-    // Normalize đúng kiểu dữ liệu từ backend .NET
-    const raw = res.data?.$values || res.data || [];
+      // Normalize đúng kiểu dữ liệu từ backend .NET
+      const raw = res.data?.$values || res.data || [];
 
-    // Map dữ liệu + Sort mới nhất lên đầu
-    const list = raw
-      .map((o) => ({
-        ...o,
-        status: o.status ? "completed" : "pending",
-        paymentMethod: o.payments?.[0]?.method?.toLowerCase() ?? "cash",
-        orderItems:
-          o.orderItems?.map((item) => ({
-            orderItemId: item.orderItemId,
-            productName: item.productVariant?.productOrder?.name || "—",
-            productImage: "/no-img.png",
-            quantity: item.quantity,
-            price: item.productVariant?.salePrice || 0,
-            total: item.quantity * (item.productVariant?.salePrice || 0),
-            size: item.productVariant?.size?.name || "—",
-            color: item.productVariant?.color?.name || "—",
-          })) || [],
-      }))
-      .sort((a, b) => new Date(b.orderDate) - new Date(a.orderDate)); // 🔥 newest first
+      // Map dữ liệu + Sort mới nhất lên đầu
+      const list = raw
+        .map((o) => ({
+          ...o,
+          status: o.status,
+          paymentMethod: o.payments?.[0]?.method?.toLowerCase() ?? "cash",
+          orderItems:
+            o.orderItems?.map((item) => ({
+              orderItemId: item.orderItemId,
+              productName: item.productVariant?.productOrder?.name || "—",
+              productImage: "/no-img.png",
+              quantity: item.quantity,
+              price: item.productVariant?.salePrice || 0,
+              total: item.quantity * (item.productVariant?.salePrice || 0),
+              size: item.productVariant?.size?.name || "—",
+              color: item.productVariant?.color?.name || "—",
+            })) || [],
+        }))
+        .sort((a, b) => new Date(b.orderDate) - new Date(a.orderDate)); // 🔥 newest first
 
-    setOrders(list);
-    setFilteredOrders(list);
-  } catch (err) {
-    console.error(err);
-    message.error("Không thể tải danh sách đơn hàng");
-  } finally {
-    setLoading(false);
-  }
-};
+      setOrders(list);
+      setFilteredOrders(list);
+    } catch (err) {
+      console.error(err);
+      message.error("Không thể tải danh sách đơn hàng");
+    } finally {
+      setLoading(false);
+    }
+  };
 
   useEffect(() => {
     fetchOrders();
@@ -112,14 +114,13 @@ const fetchOrders = async () => {
       result = result.filter((o) => {
         const date = dayjs(o.orderDate);
         return (
-          date.isAfter(start.startOf("day")) &&
-          date.isBefore(end.endOf("day"))
+          date.isAfter(start.startOf("day")) && date.isBefore(end.endOf("day"))
         );
       });
     }
 
     if (statusFilter !== "all") {
-      result = result.filter((o) => o.status === statusFilter);
+      result = result.filter((o) => o.status === Number(statusFilter));
     }
 
     setFilteredOrders(result);
@@ -136,7 +137,7 @@ const fetchOrders = async () => {
 
       setSelectedOrder({
         ...data,
-        status: data.status ? "completed" : "pending",
+        status: data.status,
         paymentMethod: data.payments?.[0]?.method?.toLowerCase() ?? "cash",
         orderItems:
           data.orderItems?.map((item) => ({
@@ -158,7 +159,7 @@ const fetchOrders = async () => {
         orderType: data.orderType,
         paymentMethod: data.payments?.[0]?.method?.toLowerCase(),
         totalAmount: data.totalAmount,
-        status: data.status ? "completed" : "pending",
+        status: data.status,
       });
 
       setDetailModal(true);
@@ -171,15 +172,21 @@ const fetchOrders = async () => {
     try {
       const values = await form.validateFields();
 
-      await api.put(`/Orders/Update/${selectedOrder.orderId}`, {
-        ...selectedOrder,
-        ...values,
-      });
+      const payload = {
+        orderId: selectedOrder.orderId,
+        status: values.status,
+        recipientName: values.recipientName,
+        recipientPhone: values.recipientPhone,
+        shippingAddress: values.shippingAddress,
+      };
+
+      await api.put(`/Orders/Update/${selectedOrder.orderId}`, payload);
 
       message.success("Cập nhật thành công");
       setDetailModal(false);
       fetchOrders();
     } catch (err) {
+      console.error(err);
       message.error("Lỗi khi cập nhật đơn hàng");
     }
   };
@@ -217,7 +224,7 @@ const fetchOrders = async () => {
     {
       title: "Trạng thái",
       dataIndex: "status",
-      render: (v) => <Tag color={statusColors[v]}>{statusLabels[v]}</Tag>,
+      render: (v) => <Tag color={STATUS[v]?.color}>{STATUS[v]?.label}</Tag>,
     },
     {
       title: "Ngày tạo",
@@ -265,9 +272,9 @@ const fetchOrders = async () => {
           onChange={setStatusFilter}
           options={[
             { value: "all", label: "Tất cả" },
-            ...Object.keys(statusLabels).map((key) => ({
+            ...Object.entries(STATUS).map(([key, v]) => ({
               value: key,
-              label: statusLabels[key],
+              label: v.label,
             })),
           ]}
         />
@@ -289,7 +296,11 @@ const fetchOrders = async () => {
         width={700}
         footer={[
           <Button onClick={() => setDetailModal(false)}>Đóng</Button>,
-          <Button type="primary" icon={<SaveOutlined />} onClick={handleSaveUpdate}>
+          <Button
+            type="primary"
+            icon={<SaveOutlined />}
+            onClick={handleSaveUpdate}
+          >
             Lưu thay đổi
           </Button>,
         ]}
@@ -298,15 +309,15 @@ const fetchOrders = async () => {
           <>
             <Form form={form} layout="vertical">
               <Form.Item label="Tên người nhận" name="recipientName">
-                <Input />
+                <Input disabled={!canEditAll(selectedOrder.status)} />
               </Form.Item>
 
               <Form.Item label="Số điện thoại" name="recipientPhone">
-                <Input />
+                <Input disabled={!canEditAll(selectedOrder.status)} />
               </Form.Item>
 
               <Form.Item label="Địa chỉ" name="shippingAddress">
-                <Input />
+                <Input disabled={!canEditAll(selectedOrder.status)} />
               </Form.Item>
 
               <Form.Item label="Loại đơn" name="orderType">
@@ -314,7 +325,7 @@ const fetchOrders = async () => {
               </Form.Item>
 
               <Form.Item label="Thanh toán" name="paymentMethod">
-                <Select>
+                <Select disabled={!canEditAll(selectedOrder.status)}>
                   <Select.Option value="cash">Tiền mặt</Select.Option>
                   <Select.Option value="bank">Chuyển khoản</Select.Option>
                 </Select>
@@ -325,9 +336,12 @@ const fetchOrders = async () => {
               </Form.Item>
 
               <Form.Item label="Trạng thái" name="status">
-                <Select>
-                  <Select.Option value="pending">Chờ xử lý</Select.Option>
-                  <Select.Option value="completed">Hoàn tất</Select.Option>
+                <Select disabled={isCompleted(selectedOrder.status)}>
+                  <Select.Option value={0}>Chờ xử lý</Select.Option>
+                  <Select.Option value={1}>Đang xử lý</Select.Option>
+                  <Select.Option value={2}>Đang giao</Select.Option>
+                  <Select.Option value={3}>Hoàn tất</Select.Option>
+                  <Select.Option value={4}>Đã huỷ</Select.Option>
                 </Select>
               </Form.Item>
             </Form>

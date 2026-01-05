@@ -27,26 +27,22 @@ const Checkout = () => {
 
     const [checkoutItems, setCheckoutItems] = useState([]); // danh sách sản phẩm để thanh toán
 
-    // =======================================================
-    // 🔥 1) LẤY DỮ LIỆU BUY NOW HOẶC CART
-    // =======================================================
+    // =========================================
+    // 1) LẤY DỮ LIỆU BUY NOW HOẶC CART
+    // =========================================
     useEffect(() => {
-        // Nếu từ Buy Now
         const buyNow = JSON.parse(sessionStorage.getItem("buyNow"));
         if (buyNow) {
             setCheckoutItems([buyNow]);
             return;
         }
 
-        // Nếu từ Cart localStorage
-        let cart = JSON.parse(localStorage.getItem("cart")) || [];
-
+        const cart = JSON.parse(localStorage.getItem("cart")) || [];
         if (cart.length > 0) {
             setCheckoutItems(cart);
             return;
         }
 
-        // Nếu cart local trống → lấy cart server
         if (token) {
             fetchCartFromServer();
         } else {
@@ -55,14 +51,13 @@ const Checkout = () => {
         }
     }, []);
 
-    // =======================================================
-    // 🔥 2) FETCH CART TỪ SERVER CHO USER LOGIN
-    // =======================================================
+    // =========================================
+    // 2) FETCH CART SERVER
+    // =========================================
     const fetchCartFromServer = async () => {
         try {
             setLoading(true);
             const res = await api.get("/Cart/GetMyCart");
-
             const serverCart = res.data?.$values || [];
 
             if (serverCart.length === 0) {
@@ -89,9 +84,9 @@ const Checkout = () => {
         }
     };
 
-    // =======================================================
-    // 🔥 3) FETCH USER PROFILE → AUTOFILL
-    // =======================================================
+    // =========================================
+    // 3) FETCH USER PROFILE → AUTOFILL
+    // =========================================
     useEffect(() => {
         const fetchUserProfile = async () => {
             if (!userId) return;
@@ -99,7 +94,6 @@ const Checkout = () => {
             try {
                 setUserLoading(true);
                 const res = await api.get(`/Users/getById/${userId}`);
-
                 form.setFieldsValue({
                     recipientName: res.data.fullName || "",
                     recipientPhone: res.data.phone || "",
@@ -111,24 +105,23 @@ const Checkout = () => {
                 setUserLoading(false);
             }
         };
-
         fetchUserProfile();
     }, []);
 
     if (checkoutItems.length === 0)
         return <Spin style={{ marginTop: 100 }} size="large" />;
 
-    // =======================================================
-    // 🔥 4) TÍNH TỔNG TIỀN
-    // =======================================================
+    // =========================================
+    // 4) TÍNH TỔNG TIỀN
+    // =========================================
     const totalAmount = checkoutItems.reduce(
         (sum, item) => sum + item.giaBan * item.quantity,
         0
     );
 
-    // =======================================================
-    // 🔥 5) SUBMIT ĐẶT HÀNG
-    // =======================================================
+    // =========================================
+    // 5) SUBMIT ĐẶT HÀNG
+    // =========================================
     const handleSubmit = async (values) => {
         try {
             setLoading(true);
@@ -143,7 +136,7 @@ const Checkout = () => {
             const orderPayload = {
                 orderDate: new Date().toISOString(),
                 orderType: "Online",
-                status: "Pending",
+                status: 0, // Pending
                 totalAmount: totalAmount,
                 recipientName: values.recipientName,
                 recipientPhone: values.recipientPhone,
@@ -156,34 +149,27 @@ const Checkout = () => {
             const orderRes = await api.post("/Orders/Add", orderPayload);
             const orderId = orderRes.data.orderId;
 
-            // ========== COD ==========
-            if (values.paymentMethod === "COD") {
-                await api.put(`/Orders/UpdateStatus/${orderId}`, {
-                    status: "Success",
-                    paymentStatus: "PAID",
-                    paymentMethod: "COD",
-                });
-
-                messageApi.success("Đặt hàng thành công!");
-                sessionStorage.removeItem("buyNow");
-                localStorage.removeItem("cart");
-                navigate("/ordersuccess");
-                return;
-            }
-
-            // ========== VNPAY ==========
-            if (values.paymentMethod === "VNPAY") {
-                const vnpayRes = await api.post("/Payment/CreateVnpayUrl", {
+            // =========================
+            // BANK_TRANSFER
+            // =========================
+            if (values.paymentMethod === "BANK_TRANSFER") {
+                const bankRes = await api.post("/Payment/CreateBankTransferOrder", {
                     orderId,
                     amount: totalAmount,
                 });
 
-                if (vnpayRes.data.paymentUrl) {
+                if (bankRes.data.paymentInfo) {
                     localStorage.removeItem("cart");
-                    window.location.href = vnpayRes.data.paymentUrl;
+                    navigate(`/bank-transfer/${orderId}`);
                 } else {
-                    messageApi.error("Không tạo được URL thanh toán VNPAY");
+                    messageApi.error("Không tạo được đơn chuyển khoản");
                 }
+            } else {
+                // COD vẫn giữ trạng thái Pending
+                messageApi.success("Đơn hàng đã được tạo, chờ xử lý");
+                sessionStorage.removeItem("buyNow");
+                localStorage.removeItem("cart");
+                navigate("/ordersuccess");
             }
         } catch (error) {
             console.error(error);
@@ -218,10 +204,7 @@ const Checkout = () => {
                                         label="Họ và tên"
                                         name="recipientName"
                                         rules={[
-                                            {
-                                                required: true,
-                                                message: "Vui lòng nhập họ tên",
-                                            },
+                                            { required: true, message: "Vui lòng nhập họ tên" },
                                         ]}
                                     >
                                         <Input placeholder="Nguyễn Văn A" />
@@ -231,15 +214,10 @@ const Checkout = () => {
                                         label="Số điện thoại"
                                         name="recipientPhone"
                                         rules={[
-                                            {
-                                                required: true,
-                                                message:
-                                                    "Vui lòng nhập số điện thoại",
-                                            },
+                                            { required: true, message: "Vui lòng nhập số điện thoại" },
                                             {
                                                 pattern: /^0\d{9,10}$/,
-                                                message:
-                                                    "Số điện thoại không hợp lệ",
+                                                message: "Số điện thoại không hợp lệ",
                                             },
                                         ]}
                                     >
@@ -250,11 +228,7 @@ const Checkout = () => {
                                         label="Địa chỉ giao hàng"
                                         name="shippingAddress"
                                         rules={[
-                                            {
-                                                required: true,
-                                                message:
-                                                    "Vui lòng nhập địa chỉ",
-                                            },
+                                            { required: true, message: "Vui lòng nhập địa chỉ" },
                                         ]}
                                     >
                                         <Input.TextArea rows={3} />
@@ -266,10 +240,8 @@ const Checkout = () => {
                                         rules={[{ required: true }]}
                                     >
                                         <Radio.Group>
-                                            <Radio value="COD">COD</Radio>
-                                            <Radio value="VNPAY">
-                                                Thanh toán VNPAY
-                                            </Radio>
+                                            <Radio value="COD">Ship COD</Radio>
+                                            <Radio value="BANK_TRANSFER">Chuyển khoản</Radio>
                                         </Radio.Group>
                                     </Form.Item>
 
@@ -277,10 +249,7 @@ const Checkout = () => {
                                         type="primary"
                                         htmlType="submit"
                                         loading={loading}
-                                        style={{
-                                            background: "#ee4d2d",
-                                            borderColor: "#ee4d2d",
-                                        }}
+                                        style={{ background: "#ee4d2d", borderColor: "#ee4d2d" }}
                                         block
                                         size="large"
                                     >
@@ -297,24 +266,16 @@ const Checkout = () => {
                                     <div key={idx} style={{ marginBottom: 15 }}>
                                         <strong>{item.name}</strong>
                                         <div style={{ color: "#666" }}>
-                                            Màu: {item.color} | Size:{" "}
-                                            {item.size}
+                                            Màu: {item.color} | Size: {item.size}
                                         </div>
                                         <div>Số lượng: {item.quantity}</div>
-                                        <div>
-                                            Đơn giá:{" "}
-                                            {item.giaBan.toLocaleString()} ₫
-                                        </div>
+                                        <div>Đơn giá: {item.giaBan.toLocaleString()} ₫</div>
                                         <Divider />
                                     </div>
                                 ))}
 
                                 <div
-                                    style={{
-                                        display: "flex",
-                                        justifyContent: "space-between",
-                                        fontSize: 18,
-                                    }}
+                                    style={{ display: "flex", justifyContent: "space-between", fontSize: 18 }}
                                 >
                                     <strong>Tổng tiền</strong>
                                     <strong style={{ color: "#ee4d2d" }}>

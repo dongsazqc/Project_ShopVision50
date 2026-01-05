@@ -1,4 +1,4 @@
-// ===== POS.jsx (Optimized Version) =====
+// ===== POS.jsx (Optimized + Shipping Option) =====
 
 import React, { useEffect, useState, useMemo } from "react";
 import {
@@ -17,6 +17,7 @@ import {
   Tag,
   Statistic,
   Space,
+  Checkbox,
 } from "antd";
 import {
   ShoppingCartOutlined,
@@ -25,6 +26,7 @@ import {
   CreditCardOutlined,
 } from "@ant-design/icons";
 import api from "../utils/axios";
+import dayjs from "dayjs";
 
 // ===== LOCAL STORAGE HELPERS =====
 const LS_KEY = (id) => `pendingOrders_${id}`;
@@ -38,6 +40,14 @@ const LS = {
     list.splice(index, 1);
     LS.save(id, list);
   },
+};
+// ===== ORDER STATUS (MATCH BACKEND ENUM) =====
+const ORDER_STATUS = {
+  Pending: 0,
+  Processing: 1,
+  Shipping: 2,
+  Completed: 3,
+  Cancelled: 4,
 };
 
 export default function POS() {
@@ -55,6 +65,7 @@ export default function POS() {
 
   const [paymentMethod, setPaymentMethod] = useState("Cash");
   const [orderType, setOrderType] = useState("Offline");
+  const [shipping, setShipping] = useState(false); // ✅ shipping option
   const [searchText, setSearchText] = useState("");
   const [discount, setDiscount] = useState({ type: null, value: 0 });
   const [discountCode, setDiscountCode] = useState(null);
@@ -69,57 +80,48 @@ export default function POS() {
   }, []);
 
   // ===== FETCH API =====
-const loadProducts = async () => {
-  try {
-    setLoading(true);
+  const loadProducts = async () => {
+    try {
+      setLoading(true);
+      const res = await api.get("/ProductVariant");
+      const values = Array.isArray(res.data) ? res.data : [];
 
-    const res = await api.get("/ProductVariant");
+      const list = values.map((p) => {
+        const product = p.product || {};
+        const img =
+          (product.productImages?.$values || []).find((i) => i.isMain) || null;
+        const url = img?.url?.startsWith("http")
+          ? img.url
+          : img?.url
+          ? `http://160.250.5.26:5000${img.url}`
+          : "/default-image.png";
 
-    // API trả về MẢNG THUẦN → dùng trực tiếp
-    const values = Array.isArray(res.data) ? res.data : [];
+        return {
+          ...p,
+          tenSanPham: p.tenSanPham,
+          price: p.giaBan || 0,
+          imageUrl: url,
+        };
+      });
 
-    const list = values.map((p) => {
-      const product = p.product || {};
+      setProducts(list);
+    } catch (e) {
+      console.log("ERR:", e);
+      message.error("Không thể tải sản phẩm");
+    } finally {
+      setLoading(false);
+    }
+  };
 
-      // giữ nguyên logic lấy ảnh cũ
-      const img =
-        (product.productImages?.$values || []).find((i) => i.isMain) || null;
-
-      const url = img?.url?.startsWith("http")
-        ? img.url
-        : img?.url
-        ? `http://160.250.5.26:5000${img.url}`
-        : "/default-image.png";
-
-      return {
-        ...p,
-        tenSanPham: p.tenSanPham, // API có field này
-        price: p.giaBan || 0,      // API giá là giaBan
-        imageUrl: url,
-      };
-    });
-
-    setProducts(list);
-  } catch (e) {
-    console.log("ERR:", e);
-    message.error("Không thể tải sản phẩm");
-  } finally {
-    setLoading(false);
-  }
-};
-
-const loadPromotions = async () => {
-  try {
-    const { data } = await api.get("/KhuyenMai/GetAllPromotions");
-
-    // Vì BE trả về 1 array chuẩn → dùng luôn
-    setPromotions(Array.isArray(data) ? data : []);
-
-  } catch (error) {
-    console.error("Load promotions error:", error);
-    message.error("Không thể tải mã giảm giá");
-  }
-};
+  const loadPromotions = async () => {
+    try {
+      const { data } = await api.get("/KhuyenMai/GetAllPromotions");
+      setPromotions(Array.isArray(data) ? data : []);
+    } catch (error) {
+      console.error("Load promotions error:", error);
+      message.error("Không thể tải mã giảm giá");
+    }
+  };
 
   // ===== FILTER PRODUCTS =====
   const filteredProducts = useMemo(() => {
@@ -171,9 +173,39 @@ const loadPromotions = async () => {
 
   const totalAfter = Math.max(0, total - discountValue);
 
+  // ===== FILTER APPLICABLE PROMOTIONS =====
+  const applicablePromotions = useMemo(() => {
+    return promotions.filter((p) => {
+      const validDate = p.endDate ? dayjs().isBefore(dayjs(p.endDate)) : true;
+
+      let minOrderAmount = 0;
+      if (p.condition) {
+        const parts = p.condition.split(";");
+        parts.forEach((part) => {
+          if (part.startsWith("min:")) {
+            minOrderAmount = parseInt(part.replace("min:", ""), 10) || 0;
+          }
+        });
+      }
+
+      const meetsAmount = total >= minOrderAmount;
+      return validDate && meetsAmount;
+    });
+  }, [promotions, total]);
+
+  useEffect(() => {
+    if (
+      discountCode &&
+      !applicablePromotions.some((p) => p.code === discountCode)
+    ) {
+      setDiscount({ type: null, value: 0 });
+      setDiscountCode(null);
+    }
+  }, [total, applicablePromotions, discountCode]);
+
   // ===== DISCOUNT =====
   const applyDiscount = (code) => {
-    const p = promotions.find((x) => x.code === code);
+    const p = applicablePromotions.find((x) => x.code === code);
     if (!p) {
       setDiscount({ type: null, value: 0 });
       setDiscountCode(null);
@@ -206,93 +238,100 @@ const loadPromotions = async () => {
     setPending(LS.get(user.id));
   };
 
-  // ===== PRINT =====
+  const STATUS_LABEL = {
+    0: "Chờ xử lý",
+    1: "Đang xử lý",
+    2: "Đang giao hàng",
+    3: "Hoàn tất",
+    4: "Đã hủy",
+  };
+
+  // ===== PRINT INVOICE =====
   const printInvoice = (order, discountAmount = 0) => {
     const win = window.open("", "_blank");
     const code = `HD${Date.now()}`;
 
     win.document.write(`
-    <html>
-    <head>
-      <title>Hóa đơn bán hàng</title>
-      <style>
-        body { font-family: Arial; padding: 20px; }
-        h2 { text-align: center; margin-bottom: 10px; }
-        table { width: 100%; border-collapse: collapse; margin-top: 20px; }
-        table, th, td { border: 1px solid #333; }
-        th, td { padding: 8px; text-align: left; }
-        .info p { margin: 4px 0; }
-        .summary { margin-top: 15px; font-size: 15px; }
-      </style>
-    </head>
+  <html>
+  <head>
+    <title>Hóa đơn bán hàng</title>
+    <style>
+      body { font-family: Arial; padding: 20px; }
+      h2 { text-align: center; margin-bottom: 10px; }
+      table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+      table, th, td { border: 1px solid #333; }
+      th, td { padding: 8px; text-align: left; }
+      .info p { margin: 4px 0; }
+      .summary { margin-top: 15px; font-size: 15px; }
+    </style>
+  </head>
+  <body>
+    <h2>HÓA ĐƠN BÁN HÀNG</h2>
 
-    <body>
-      <h2>HÓA ĐƠN BÁN HÀNG</h2>
+    <div class="info">
+      <p><b>Mã hóa đơn:</b> ${code}</p>
+      <p><b>Nhân viên bán hàng:</b> ${order.staff || "N/A"}</p>
+      <p><b>Khách hàng:</b> ${order.customer?.ten || ""}</p>
+      <p><b>SĐT:</b> ${order.customer?.sdt || ""}</p>
+      <p><b>Ngày:</b> ${order.date || new Date().toLocaleString()}</p>
+      <p><b>Phương thức thanh toán:</b> ${order.paymentMethod || ""}</p>
+      <p><b>Loại đơn:</b> ${order.orderType || "Bán hàng tại quầy"}</p>
+<p><b>Trạng thái:</b> ${STATUS_LABEL[order.status] || "Hoàn tất"}</p>
+    </div>
 
-      <div class="info">
-        <p><b>Mã hóa đơn:</b> ${code}</p>
-        <p><b>Nhân viên bán hàng:</b> ${order.staff || "N/A"}</p>
-        <p><b>Khách hàng:</b> ${order.customer?.ten || ""}</p>
-        <p><b>SĐT:</b> ${order.customer?.sdt || ""}</p>
-        <p><b>Ngày:</b> ${order.date || new Date().toLocaleString()}</p>
-        <p><b>Phương thức thanh toán:</b> ${order.paymentMethod || ""}</p>
-        <p><b>Loại đơn:</b> ${order.orderType || "Bán hàng tại quầy"}</p>
-        <p><b>Trạng thái:</b> ${order.status || "Hoàn thành"}</p>
-      </div>
-
-      <table>
+    <table>
+      <tr>
+        <th>STT</th>
+        <th>Tên sản phẩm</th>
+        <th>Size</th>
+        <th>Màu</th>
+        <th>SL</th>
+        <th>Đơn giá</th>
+        <th>Thành tiền</th>
+      </tr>
+      ${order.items
+        .map(
+          (item, index) => `
         <tr>
-          <th>STT</th>
-          <th>Tên sản phẩm</th>
-          <th>Size</th>
-          <th>Màu</th>
-          <th>SL</th>
-          <th>Đơn giá</th>
-          <th>Thành tiền</th>
+          <td>${index + 1}</td>
+          <td>${item.name || item.tenSanPham}</td>
+          <td>${item.size || item.tenKichCo || "-"}</td>
+          <td>${item.color || item.tenMau || "-"}</td>
+          <td>${item.qty || item.soLuong}</td>
+          <td>${(item.price || item.giaBan).toLocaleString()} ₫</td>
+          <td>${(
+            (item.qty || item.soLuong) * (item.price || item.giaBan)
+          ).toLocaleString()} ₫</td>
         </tr>
+      `
+        )
+        .join("")}
+    </table>
 
-        ${order.items
-          .map(
-            (item, index) => `
-          <tr>
-            <td>${index + 1}</td>
-            <td>${item.name}</td>
-            <td>${item.size || "-"}</td>
-            <td>${item.color || "-"}</td>
-            <td>${item.qty}</td>
-            <td>${item.price.toLocaleString()} ₫</td>
-            <td>${(item.qty * item.price).toLocaleString()} ₫</td>
-          </tr>
-        `
-          )
-          .join("")}
-      </table>
+    <div class="summary">
+      <p><b>Tổng tiền trước giảm:</b> ${
+        order.totalBeforeDiscount?.toLocaleString() ||
+        (order.total + discountAmount).toLocaleString()
+      } ₫</p>
+      <p><b>Tổng tiền sau giảm:</b> ${order.total.toLocaleString()} ₫</p>
 
-      <div class="summary">
-        <p><b>Tổng tiền trước giảm:</b> ${(
-          order.total + discountAmount
-        ).toLocaleString()} ₫</p>
-        <p><b>Tiền giảm:</b> ${discountAmount.toLocaleString()} ₫</p>
-        <p><b>Tổng tiền sau giảm:</b> ${order.total.toLocaleString()} ₫</p>
+      ${
+        order.customerPay
+          ? `<p><b>Tiền khách đưa:</b> ${order.customerPay.toLocaleString()} ₫</p>`
+          : ""
+      }
+      ${
+        order.changeReturn
+          ? `<p><b>Tiền thối lại:</b> ${order.changeReturn.toLocaleString()} ₫</p>`
+          : ""
+      }
+    </div>
 
-        ${
-          order.customerPay
-            ? `<p><b>Tiền khách đưa:</b> ${order.customerPay.toLocaleString()} ₫</p>`
-            : ""
-        }
-
-        ${
-          order.changeReturn
-            ? `<p><b>Tiền thối lại:</b> ${order.changeReturn.toLocaleString()} ₫</p>`
-            : ""
-        }
-      </div>
-
-      <script>
-        window.onload = () => window.print();
-      </script>
-    </body>
-    </html>
+    <script>
+      window.onload = () => window.print();
+    </script>
+  </body>
+  </html>
   `);
 
     win.document.close();
@@ -303,17 +342,20 @@ const loadPromotions = async () => {
     try {
       const customerName = form.getFieldValue("customerName");
       const customerPhone = form.getFieldValue("customerPhone");
-      const shippingAddress = form.getFieldValue("shippingAddress") || "";
+      const shippingAddress = shipping
+        ? form.getFieldValue("shippingAddress") || ""
+        : "";
       const cashReceived = form.getFieldValue("cashReceived") || 0;
       const cashChange = form.getFieldValue("cashChange") || 0;
 
-      const status =
-        orderType === "Offline" && !shippingAddress ? "Completed" : "Pending";
+      const status = shipping
+        ? ORDER_STATUS.Pending // Có giao hàng → Pending (0)
+        : ORDER_STATUS.Completed; // Không giao hàng → Hoàn tất (3)
 
       const payload = {
         orderDate: new Date().toISOString(),
         orderType,
-        orderStatus: status,
+        status: status,
         recipientName: customerName,
         recipientPhone: customerPhone,
         shippingAddress,
@@ -343,27 +385,32 @@ const loadPromotions = async () => {
         customer: { ten: customerName, sdt: customerPhone },
         items: cart.map((i) => ({
           name: i.tenSanPham,
+          size: i.tenKichCo,
+          color: i.tenMau,
           qty: i.soLuong,
           price: i.price,
         })),
-        total: totalAfter,
+        total: totalAfter, // Tổng tiền sau giảm
+        totalBeforeDiscount: total, // Tổng tiền trước giảm
+        customerPay: cashReceived,
+        changeReturn: cashChange,
+        paymentMethod,
+        orderType,
+        date: new Date().toLocaleString(),
       });
 
-      // reset
       setCart([]);
       setOpenPayment(false);
       setDiscount({ type: null, value: 0 });
       setDiscountCode(null);
+      setShipping(false);
       form.resetFields();
     } catch {
       message.error("Tạo đơn hàng thất bại!");
     }
   };
 
-  // ============================================================
-  // ===== RENDER UI ============================================
-  // ============================================================
-
+  // ===== RENDER UI =====
   return (
     <div>
       <h2>Bán hàng tại quầy (POS)</h2>
@@ -380,7 +427,6 @@ const loadPromotions = async () => {
               onChange={(e) => setSearchText(e.target.value)}
               style={{ marginBottom: 10 }}
             />
-
             <Table
               dataSource={filteredProducts}
               loading={loading}
@@ -472,7 +518,7 @@ const loadPromotions = async () => {
               value={discountCode}
               onChange={applyDiscount}
               style={{ width: "100%" }}
-              options={promotions.map((p) => ({
+              options={applicablePromotions.map((p) => ({
                 value: p.code,
                 label:
                   p.code +
@@ -520,6 +566,25 @@ const loadPromotions = async () => {
             <Input value="Bán tại quầy" readOnly disabled />
           </Form.Item>
 
+          <Form.Item>
+            <Checkbox
+              checked={shipping}
+              onChange={(e) => setShipping(e.target.checked)}
+            >
+              Giao hàng
+            </Checkbox>
+          </Form.Item>
+
+          {shipping && (
+            <Form.Item
+              label="Địa chỉ"
+              name="shippingAddress"
+              rules={[{ required: true }]}
+            >
+              <Input />
+            </Form.Item>
+          )}
+
           <Form.Item
             label="Tên khách hàng"
             name="customerName"
@@ -533,10 +598,6 @@ const loadPromotions = async () => {
             name="customerPhone"
             rules={[{ required: true }]}
           >
-            <Input />
-          </Form.Item>
-
-          <Form.Item label="Địa chỉ" name="shippingAddress">
             <Input />
           </Form.Item>
 
@@ -620,4 +681,4 @@ const loadPromotions = async () => {
       </Modal>
     </div>
   );
-} 
+}
