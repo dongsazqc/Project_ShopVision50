@@ -3,6 +3,7 @@ import PrivateRoute from "./routes/PrivateRoute";
 import AdminRoutes from "./routes/AdminRoutes";
 import Login from "./pages/Login";
 import ForgotPassword from "./pages/ForgotPassword";
+import AiChatWidget from "./components/AiChatWidget"; 
 
 export default function App() {
     return (
@@ -21,6 +22,9 @@ export default function App() {
                     }
                 />
             </Routes>
+
+            {/* Thả widget AI chat ở đây nha */}
+            <AiChatWidget />
         </BrowserRouter>
     );
 }
