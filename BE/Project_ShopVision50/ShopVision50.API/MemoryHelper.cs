@@ -29,9 +29,7 @@ namespace ShopVision50.API
                     memoryResults = new MemorySearchResponse { Results = new List<string>() };
                 }
 
-                int a = 1;
                 var promptBuilder = new StringBuilder();
-                promptBuilder.AppendLine("Dưới đây là thông tin nhớ của chatbot:");
                     foreach(var memText in memoryResults.Results)
                     {
                         promptBuilder.AppendLine(memText);

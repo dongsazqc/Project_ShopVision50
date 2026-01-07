@@ -9,7 +9,8 @@ namespace ShopVision50.API.Models.Users.DTOs
 {
     public DateTime OrderDate { get; set; }
     public string OrderType { get; set; } = string.Empty;
-    public bool Status { get; set; }
+    public bool IsPaid { get; set; }
+    public OrderStatus Status {get ; set;}
     public string Salesperson { get; set; } = string.Empty;
 
     public string RecipientName { get; set; } = string.Empty;

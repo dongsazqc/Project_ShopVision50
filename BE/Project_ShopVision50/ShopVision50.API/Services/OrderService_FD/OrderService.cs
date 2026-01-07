@@ -35,7 +35,7 @@ namespace ShopVision50.API.Services.OrderService_FD
         OrderId = order.OrderId,
         OrderDate = order.OrderDate,
         OrderType = order.OrderType,
-        Status = order.Status,
+        Status = order.IsPaid,
         TotalAmount = order.TotalAmount,
         RecipientName = order.RecipientName,
         RecipientPhone = order.RecipientPhone,
@@ -111,12 +111,14 @@ namespace ShopVision50.API.Services.OrderService_FD
             {
                 OrderDate = request.OrderDate,
                 OrderType = request.OrderType,
-                Status = request.Status,
+                IsPaid = request.IsPaid,
                 RecipientName = request.RecipientName,
                 RecipientPhone = request.RecipientPhone,
                 ShippingAddress = request.ShippingAddress,
                 TotalAmount = request.TotalAmount,
-                UserId = request.UserId
+                UserId = request.UserId,
+                Status = request.Status
+                
             };
 
             // Lưu order trước, EF sẽ gán OrderId tự động
@@ -128,7 +130,8 @@ namespace ShopVision50.API.Services.OrderService_FD
                 ProductVariantId = p.ProductVariantId,
                 Quantity = p.Quantity,
                 DiscountAmount = p.DiscountAmount,
-                OrderId = createdOrder.OrderId
+                OrderId = createdOrder.OrderId,
+                
             }).ToList();
 
             // Thêm từng order item qua service (để tách logic, nếu không thì có thể thêm trực tiếp vào DbContext)
@@ -172,11 +175,23 @@ namespace ShopVision50.API.Services.OrderService_FD
                 Id = o.OrderId,
                 DateOrdered = o.OrderDate,
                 AmountTotal = o.TotalAmount,
-                OrderStatus = o.Status ? 1 : 0,
+                OrderStatus = o.IsPaid ? 1 : 0,
                 ReceiverName = o.RecipientName,
                 ReceiverPhone = o.RecipientPhone,
                 DeliveryAddress = o.ShippingAddress
             }).ToList();
         }
+        public async Task UpdateStatusAsync(int orderId, OrderStatus status)
+{
+    var order = await _repository.GetByIdAsync(orderId);
+
+    if (order == null)
+        throw new Exception("Order not found");
+
+    order.Status = status;
+
+    await _repository.UpdateAsync(order);
+}
+
     }
 }
