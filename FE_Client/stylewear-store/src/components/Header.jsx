@@ -219,7 +219,10 @@ const AppHeader = () => {
                     }}
                 >
                     <Badge count={cartCount} size="small" offset={[-4, 4]}>
-                        <ShoppingFilled color="#fff" />
+                        <ShoppingFilled
+                            color="#fff"
+                            style={{ color: "#fff", fontSize: 20 }}
+                        />
                     </Badge>
                 </Link>
 
