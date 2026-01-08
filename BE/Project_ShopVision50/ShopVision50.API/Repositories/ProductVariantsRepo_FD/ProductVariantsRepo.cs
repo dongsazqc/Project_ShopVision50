@@ -33,6 +33,17 @@ public class ProductVariantRepository : IProductVariantsRepo
             .ToListAsync();
     }
 
+public async Task<ProductVariant?> GetVariantByIdAsyncTostock(int productVariantId)
+{
+    return await _context.ProductVariants
+        .Include(pv => pv.Color)
+        .Include(pv => pv.Size)
+        .Include(pv => pv.Product)
+        .FirstOrDefaultAsync(pv => pv.ProductVariantId == productVariantId);
+}
+
+
+
     public async Task<ProductColor?> GetColorByNameAsync(string tenMau)
     {
         return await _context.Colors.FirstOrDefaultAsync(c => c.Name == tenMau);
@@ -77,7 +88,11 @@ public async Task<IEnumerable<ProductVariant>> GetVariantsByCategoryIdAsync(int 
         .Where(pv => pv.Product.CategoryId == categoryId)
         .ToListAsync();
 }
-
+    public async Task UpdateAsync(ProductVariant variant)
+    {
+        _context.ProductVariants.Update(variant);
+        await Task.CompletedTask;
+    }
 
 
 }

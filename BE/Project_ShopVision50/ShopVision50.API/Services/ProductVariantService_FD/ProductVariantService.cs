@@ -51,6 +51,30 @@ public class ProductVariantService : IProductVariantService
         });
     }
 
+    
+        public async Task<bool> Updatestock(int id, int soluongCanTru)
+        {
+            var variant = await _repository.GetVariantByIdAsyncTostock(id);
+            if (variant == null)
+                return false;
+
+            if (variant.Stock < soluongCanTru)
+                return false;
+
+            variant.Stock -= soluongCanTru;
+
+            await _repository.UpdateAsync(variant);
+
+            await _repository.SaveChangesAsync();
+
+            return true;
+        }
+
+
+    
+
+    
+
     public async Task<bool> CreateAsync(BienTheDto dto)
     {
         var color = await _repository.GetColorByNameAsync(dto.tenMau);

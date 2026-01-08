@@ -168,28 +168,48 @@ export default function Orders() {
     }
   };
 
-  const handleSaveUpdate = async () => {
-    try {
-      const values = await form.validateFields();
+const handleSaveUpdate = async () => {
+  try {
+    const values = await form.validateFields();
 
-      const payload = {
-        orderId: selectedOrder.orderId,
-        status: values.status,
-        recipientName: values.recipientName,
-        recipientPhone: values.recipientPhone,
-        shippingAddress: values.shippingAddress,
-      };
+    // Chỉ gọi API update trạng thái, bỏ payload thừa
+    await api.put(`/orders/${selectedOrder.orderId}/status`, {
+      status: values.status,
+    });
 
-      await api.put(`/Orders/Update/${selectedOrder.orderId}`, payload);
+    message.success("Cập nhật trạng thái thành công");
+    setDetailModal(false);
+    fetchOrders();
+  } catch (err) {
+    console.error(err);
+    message.error("Lỗi khi cập nhật trạng thái đơn hàng");
+  }
+};
 
-      message.success("Cập nhật thành công");
-      setDetailModal(false);
-      fetchOrders();
-    } catch (err) {
-      console.error(err);
-      message.error("Lỗi khi cập nhật đơn hàng");
-    }
-  };
+
+// //  const handleSaveUpdate = async () => {
+//     try {
+      // const values = await form.validateFields();
+
+      // const payload = {
+      //   orderId: selectedOrder.orderId,
+      //   status: values.status,
+      //   recipientName: values.recipientName,
+      //   recipientPhone: values.recipientPhone,
+      //   shippingAddress: values.shippingAddress,
+      // };
+
+//       await api.put(`/Orders/Update/${selectedOrder.orderId}`, payload);
+
+//       message.success("Cập nhật thành công");
+//       setDetailModal(false);
+//       fetchOrders();
+//     } catch (err) {
+//       console.error(err);
+//       message.error("Lỗi khi cập nhật đơn hàng");
+//     }
+//   };
+
 
   const columns = [
     { title: "Mã đơn", dataIndex: "orderId", width: 80 },
