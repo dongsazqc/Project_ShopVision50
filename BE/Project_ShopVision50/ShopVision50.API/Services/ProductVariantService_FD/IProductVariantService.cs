@@ -10,5 +10,6 @@ public interface IProductVariantService
     Task<ProductWithVariantsDto?> GetProductWithVariantsAsync(int productId);
     Task<bool> Updatestock(int id, int soluongCanTru);
     Task<bool> CreateAsync(BienTheDto dto);
+    Task<bool> UpdateAsync(int id, BienTheDto dto);
     Task<IEnumerable<BienTheResponseDto>> GetVariantsByCategoryIdAsync(int categoryId);
 }

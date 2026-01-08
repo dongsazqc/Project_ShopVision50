@@ -45,28 +45,42 @@ public class ProductVariantController : ControllerBase
         return Ok(new { message = "Tạo biến thể thành công" });
     }
 
-      [HttpGet("{productId}/variants")]
+    [HttpPut("{id}")]
+    [Authorize]
+    public async Task<IActionResult> Update(int id, [FromBody] BienTheDto dto)
+    {
+        if (!ModelState.IsValid)
+            return BadRequest(ModelState);
+
+        var success = await _service.UpdateAsync(id, dto);
+        if (!success)
+            return NotFound(new { message = "Không tìm thấy biến thể hoặc dữ liệu không hợp lệ" });
+
+        return Ok(new { message = "Cập nhật biến thể thành công" });
+    }
+
+    [HttpGet("{productId}/variants")]
     public async Task<IActionResult> GetProductWithVariants(int productId)
-{
-    var result = await _service.GetProductWithVariantsAsync(productId);
+    {
+        var result = await _service.GetProductWithVariantsAsync(productId);
 
-    if (result == null)
-        return NotFound("Không tìm thấy sản phẩm hoặc biến thể");
+        if (result == null)
+            return NotFound("Không tìm thấy sản phẩm hoặc biến thể");
 
-    return Ok(result);
-}
+        return Ok(result);
+    }
 
-[HttpGet("filter-by-category/{categoryId}")]
-[Authorize]
-public async Task<IActionResult> GetVariantsByCategory(int categoryId)
-{
-    var variants = await _service.GetVariantsByCategoryIdAsync(categoryId);
+    [HttpGet("filter-by-category/{categoryId}")]
+    [Authorize]
+    public async Task<IActionResult> GetVariantsByCategory(int categoryId)
+    {
+        var variants = await _service.GetVariantsByCategoryIdAsync(categoryId);
 
-    if (!variants.Any())
-        return NotFound(new { message = "Không tìm thấy biến thể thuộc danh mục này" });
+        if (!variants.Any())
+            return NotFound(new { message = "Không tìm thấy biến thể thuộc danh mục này" });
 
-    return Ok(variants);
-}
+        return Ok(variants);
+    }
 
 
 }

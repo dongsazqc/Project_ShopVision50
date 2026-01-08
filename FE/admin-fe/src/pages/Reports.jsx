@@ -70,7 +70,7 @@ export default function Reports() {
 
             // Biểu đồ doanh thu theo tháng
             const chart =
-                data?.monthlyRevenue?.$values?.map((item) => ({
+                data?.monthlyRevenue?.map((item) => ({
                     label: `${item.month}/${item.year}`,
                     doanhThu: item.revenue,
                 })) || [];
@@ -90,9 +90,9 @@ export default function Reports() {
             const res = await api.get("/TopSanPham");
 
             const list =
-                res.data?.$values?.map((item) => ({
-                    tenSanPham: item.productName,
-                    soLuongBan: item.totalSold,
+                res.data?.map((item) => ({
+                    tenSanPham: item.tenSanPham,
+                    soLuongBan: item.tongSoLuongBan,
                 })) || [];
 
             setTopProducts(list);
@@ -110,7 +110,7 @@ export default function Reports() {
             const res = await api.get("/TopCustomers");
 
             const list =
-                res.data?.$values?.map((item) => ({
+                res.data?.map((item) => ({
                     nguoiDungId: item.userId,
                     hoTen: item.fullName,
                     tongChiTieu: item.totalSpent,
