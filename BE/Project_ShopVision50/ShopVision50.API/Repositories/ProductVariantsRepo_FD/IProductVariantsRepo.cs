@@ -15,6 +15,8 @@ namespace ShopVision50.API.Repositories.ProductVariantsRepo_FD
     Task<ProductSize?> GetSizeByNameAsync(string tenKichCo);
     Task<Product?> GetProductByIdAsync(int productId);
     Task<Product?> GetProductWithVariantsAsync(int productId);
+Task<ProductVariant?> GetVariantByIdAsyncTostock(int productVariantId);
+    Task UpdateAsync(ProductVariant variant);
     Task AddAsync(ProductVariant variant);
         Task SaveChangesAsync();
 

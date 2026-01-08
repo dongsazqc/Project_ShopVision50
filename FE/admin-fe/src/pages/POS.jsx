@@ -441,6 +441,7 @@ export default function POS() {
                 },
                 { title: "Màu", dataIndex: "tenMau" },
                 { title: "Size", dataIndex: "tenKichCo" },
+                { title: "Số lượng tồn", dataIndex: "soLuongTon" },
                 {
                   title: "Thêm",
                   render: (_, r) => (

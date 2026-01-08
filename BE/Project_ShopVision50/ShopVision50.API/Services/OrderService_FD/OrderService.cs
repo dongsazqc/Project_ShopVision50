@@ -11,16 +11,20 @@ namespace ShopVision50.API.Services.OrderService_FD
     {
         private readonly IOrderRepository _repository;
         private readonly IOrderItemService _orderItemService;
+        private readonly IProductVariantService _variantService;
         private readonly AppDbContext _context;
+
 
         public OrderService(
             IOrderRepository repository,
             IOrderItemService orderItemService,
+            IProductVariantService variantService,
             AppDbContext context)
         {
             _repository = repository;
             _orderItemService = orderItemService;
             _context = context;
+            _variantService = variantService;
         }
 
         public async Task<OrderDto?> GetByIdAsync(int id)
@@ -103,68 +107,72 @@ namespace ShopVision50.API.Services.OrderService_FD
         {
             await _repository.DeleteAsync(id);
         }
+                        public async Task<Order> CreateOrderAsync(CreateOrderRequest request)
+{
+    if (request == null) throw new ArgumentNullException(nameof(request));
+    if (request.OrderItems == null || !request.OrderItems.Any())
+        throw new ArgumentException("OrderItems không được để trống", nameof(request.OrderItems));
+    if (request.Payments == null || !request.Payments.Any())
+        throw new ArgumentException("Payments không được để trống", nameof(request.Payments));
 
-        public async Task<Order> CreateOrderAsync(CreateOrderRequest request)
-        {
-            // Tạo đối tượng order (chưa có items/payments)
-            var order = new Order
-            {
-                OrderDate = request.OrderDate,
-                OrderType = request.OrderType,
-                IsPaid = request.IsPaid,
-                RecipientName = request.RecipientName,
-                RecipientPhone = request.RecipientPhone,
-                ShippingAddress = request.ShippingAddress,
-                TotalAmount = request.TotalAmount,
-                UserId = request.UserId,
-                Status = request.Status
-                
-            };
+    // Tạo order mới (chưa có items/payments)
+    var order = new Order
+    {
+        OrderDate = request.OrderDate,
+        OrderType = request.OrderType,
+        Status = request.Status,
+        RecipientName = request.RecipientName,
+        RecipientPhone = request.RecipientPhone,
+        ShippingAddress = request.ShippingAddress,
+        TotalAmount = request.TotalAmount,
+        UserId = request.UserId
+    };
 
-            // Lưu order trước, EF sẽ gán OrderId tự động
-            var createdOrder = await _repository.AddOrderAsync(order);
+    var createdOrder = await _repository.AddOrderAsync(order);
+    if (createdOrder == null) throw new Exception("Tạo order thất bại");
 
-            // Tạo order items từ request, gán OrderId đã có
-            var orderItems = request.OrderItems.Select(p => new OrderItem
-            {
-                ProductVariantId = p.ProductVariantId,
-                Quantity = p.Quantity,
-                DiscountAmount = p.DiscountAmount,
-                OrderId = createdOrder.OrderId,
-                
-            }).ToList();
+    // Tạo order items và gán OrderId
+    var orderItems = request.OrderItems.Select(p => new OrderItem
+    {
+        ProductVariantId = p.ProductVariantId,
+        Quantity = p.Quantity,
+        DiscountAmount = p.DiscountAmount,
+        OrderId = createdOrder.OrderId
+    }).ToList();
 
-            // Thêm từng order item qua service (để tách logic, nếu không thì có thể thêm trực tiếp vào DbContext)
-            foreach (var item in orderItems)
-            {
-                await _orderItemService.CreateAsync(item);
-            }
+    // Cập nhật stock theo từng item (chạy async parallel cho nhanh)
+    var updateStockTasks = orderItems.Select(item => _variantService.Updatestock(item.ProductVariantId, item.Quantity));
+    await Task.WhenAll(updateStockTasks);
 
-            // Tạo payments từ request, gán OrderId đã có
-            var payments = request.Payments.Select(p => new Payment
-            {
-                Method = p.Method,
-                Amount = p.Amount,
-                PaymentDate = DateTime.UtcNow,
-                Status = true,
-                OrderId = createdOrder.OrderId
-            }).ToList();
+    // Tạo order items (chạy async parallel)
+    var createOrderItemTasks = orderItems.Select(item => _orderItemService.CreateAsync(item));
+    await Task.WhenAll(createOrderItemTasks);
 
-            // Thêm payments trực tiếp vào DbContext (nếu có repo/payment service thì dùng)
-            foreach (var payment in payments)
-            {
-                _context.Payments.Add(payment);
-            }
-            await _context.SaveChangesAsync();
+    // Tạo payments
+    var payments = request.Payments.Select(p => new Payment
+    {
+        Method = p.Method,
+        Amount = p.Amount,
+        PaymentDate = DateTime.UtcNow,
+        Status = true,
+        OrderId = createdOrder.OrderId
+    }).ToList();
 
-            // Load lại order đầy đủ thông tin để trả về
-            var fullOrder = await _repository.GetByIdAsync(createdOrder.OrderId);
+    // Thêm payments vào DbContext
+    _context.Payments.AddRange(payments);
 
-            if (fullOrder == null)
-                throw new Exception("Order vừa tạo không thể lấy được dữ liệu");
+    // Lưu thay đổi
+    await _context.SaveChangesAsync();
 
-            return fullOrder;
-        }
+    // Lấy lại order đầy đủ
+    var fullOrder = await _repository.GetByIdAsync(createdOrder.OrderId);
+    if (fullOrder == null)
+        throw new Exception("Không lấy được dữ liệu order vừa tạo");
+
+    return fullOrder;
+}
+
+       
 
         public async Task<List<UserOrderResponse>> GetOrdersByUserIdAsync(int userId)
         {
@@ -192,6 +200,8 @@ namespace ShopVision50.API.Services.OrderService_FD
 
     await _repository.UpdateAsync(order);
 }
+
+
 
     }
 }
