@@ -241,6 +241,7 @@ export default function Users() {
             await api.post("/Users/send-otp", { email });
             messageApi.success(`Đã gửi OTP tới ${email}.`);
             setIsOtpSent(true);
+            // formAdd.setFieldsValue({ email: email });
         } catch (error) {
             if (error?.errorFields) return; // validation errors already shown
             const msg =
@@ -330,8 +331,7 @@ export default function Users() {
                 "Error adding user:",
                 error.response?.data || error.message
             );
-            const msg =
-                error.response?.data?.message || "Thêm người dùng thất bại!";
+            const msg = error.response?.data || "Thêm người dùng thất bại!";
             messageApi.error(msg);
         }
     };

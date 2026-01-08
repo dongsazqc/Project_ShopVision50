@@ -33,14 +33,14 @@ public class ProductVariantRepository : IProductVariantsRepo
             .ToListAsync();
     }
 
-public async Task<ProductVariant?> GetVariantByIdAsyncTostock(int productVariantId)
-{
-    return await _context.ProductVariants
-        .Include(pv => pv.Color)
-        .Include(pv => pv.Size)
-        .Include(pv => pv.Product)
-        .FirstOrDefaultAsync(pv => pv.ProductVariantId == productVariantId);
-}
+    public async Task<ProductVariant?> GetVariantByIdAsyncTostock(int productVariantId)
+    {
+        return await _context.ProductVariants
+            .Include(pv => pv.Color)
+            .Include(pv => pv.Size)
+            .Include(pv => pv.Product)
+            .FirstOrDefaultAsync(pv => pv.ProductVariantId == productVariantId);
+    }
 
 
 
@@ -79,15 +79,24 @@ public async Task<ProductVariant?> GetVariantByIdAsyncTostock(int productVariant
     }
 
     // Implement trong ProductVariantRepository.cs
-public async Task<IEnumerable<ProductVariant>> GetVariantsByCategoryIdAsync(int categoryId)
-{
-    return await _context.ProductVariants
-        .Include(pv => pv.Color)
-        .Include(pv => pv.Size)
-        .Include(pv => pv.Product)
-        .Where(pv => pv.Product.CategoryId == categoryId)
-        .ToListAsync();
-}
+    public async Task<IEnumerable<ProductVariant>> GetVariantsByCategoryIdAsync(int categoryId)
+    {
+        return await _context.ProductVariants
+            .Include(pv => pv.Color)
+            .Include(pv => pv.Size)
+            .Include(pv => pv.Product)
+            .Where(pv => pv.Product.CategoryId == categoryId)
+            .ToListAsync();
+    }
+
+    public async Task<ProductVariant?> GetByIdAsync(int id)
+    {
+        return await _context.ProductVariants
+            .Include(pv => pv.Color)
+            .Include(pv => pv.Size)
+            .Include(pv => pv.Product)
+            .FirstOrDefaultAsync(pv => pv.ProductVariantId == id);
+    }
     public async Task UpdateAsync(ProductVariant variant)
     {
         _context.ProductVariants.Update(variant);
