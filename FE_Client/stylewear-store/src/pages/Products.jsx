@@ -262,118 +262,80 @@ const Products = () => {
                                 lg={6}
                                 key={product.productId}
                             >
-                                <Card
-                                    hoverable
-                                    onClick={() =>
-                                        navigate(
-                                            `/products/${product.productId}`
-                                        )
-                                    }
-                                    style={{
-                                        borderRadius: 14,
-                                        overflow: "hidden",
-                                        boxShadow:
-                                            "0 6px 18px rgba(0,0,0,0.08)",
-                                        transition:
-                                            "transform 0.3s, box-shadow 0.3s",
-                                        cursor: "pointer",
-                                    }}
-                                    bodyStyle={{ padding: 12 }}
-                                    cover={
-                                        <div
-                                            style={{
-                                                width: "100%",
-                                                height: 250,
-                                                overflow: "hidden",
-                                                borderRadius: 12,
-                                                background: "#f5f5f5",
-                                                display: "flex",
-                                                alignItems: "center",
-                                                justifyContent: "center",
-                                                position: "relative",
-                                            }}
-                                        >
-                                            <img
-                                                src={getMainImage(product)}
-                                                alt={
-                                                    product.tenSanPham ||
-                                                    product.name
-                                                }
-                                                style={{
-                                                    width: "100%",
-                                                    height: "100%",
-                                                    objectFit: "cover",
-                                                    transition:
-                                                        "transform 0.3s",
-                                                }}
-                                            />
-                                            {product.giamGia && (
-                                                <div
-                                                    style={{
-                                                        position: "absolute",
-                                                        top: 8,
-                                                        right: 8,
-                                                        background: "#f5222d",
-                                                        color: "#fff",
-                                                        padding: "2px 6px",
-                                                        fontSize: 12,
-                                                        fontWeight: 600,
-                                                        borderRadius: 4,
-                                                    }}
-                                                >
-                                                    -{product.giamGia}%
-                                                </div>
-                                            )}
-                                        </div>
-                                    }
-                                >
-                                    <div
-                                        style={{
-                                            fontSize: 16,
-                                            fontWeight: 600,
-                                            lineHeight: "20px",
-                                            height: 40,
-                                            overflow: "hidden",
-                                            marginBottom: 6,
-                                        }}
-                                    >
-                                        {product.tenSanPham || product.name}
-                                    </div>
-
-                                    <div style={{ marginBottom: 12 }}>
-                                        <span
-                                            style={{
-                                                color: "#d0011b",
-                                                fontSize: 18,
-                                                fontWeight: 700,
-                                            }}
-                                        >
-                                            {product.price?.toLocaleString() ||
-                                                0}
-                                            ₫
-                                        </span>
-                                    </div>
-
-                                    <Button
-                                        type="primary"
-                                        block
-                                        size="middle"
-                                        style={{
-                                            background: "#ee4d2d",
-                                            borderColor: "#ee4d2d",
-                                            fontWeight: 600,
-                                            borderRadius: 6,
-                                        }}
-                                        onClick={(e) => {
-                                            e.stopPropagation();
-                                            navigate(
-                                                `/products/${product.productId}`
-                                            );
-                                        }}
-                                    >
-                                        Mua ngay
-                                    </Button>
-                                </Card>
+<Card
+    hoverable
+    onClick={() => navigate(`/products/${product.productId}`)}
+    style={{
+        borderRadius: 14,
+        overflow: "hidden",
+        boxShadow: "0 6px 18px rgba(0,0,0,0.08)",
+        transition: "transform 0.3s, box-shadow 0.3s",
+        cursor: "pointer",
+        height: "100%",
+    }}
+    bodyStyle={{ padding: 16 }}
+    cover={
+        <div
+            style={{
+                width: "100%",
+                height: 250, // giống Home
+                overflow: "hidden",
+                borderRadius: 12,
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                position: "relative",
+            }}
+        >
+            <img
+                src={getMainImage(product)}
+                alt={product.tenSanPham || product.name}
+                style={{
+                    width: "100%",
+                    height: "100%",
+                    objectFit: "cover",
+                    transition: "transform 0.3s",
+                }}
+            />
+            {/* Nếu muốn overlay hover như Home: */}
+            <div
+                style={{
+                    position: "absolute",
+                    top: 0,
+                    left: 0,
+                    width: "100%",
+                    height: "100%",
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    gap: 12,
+                    background: "rgba(0,0,0,0.2)",
+                    opacity: 0,
+                    transition: "opacity 0.3s",
+                }}
+                className="product-overlay"
+            >
+                <Button
+                    type="primary"
+                    size="middle"
+                    onClick={(e) => {
+                        e.stopPropagation();
+                        navigate(`/products/${product.productId}`);
+                    }}
+                >
+                    Mua ngay
+                </Button>
+            </div>
+        </div>
+    }
+>
+    <h4 style={{ fontSize: 16, fontWeight: 600, marginBottom: 6 }}>
+        {product.tenSanPham || product.name}
+    </h4>
+    <div style={{ color: "#d0011b", fontSize: 18, fontWeight: 700 }}>
+        {product.price?.toLocaleString() || 0}₫
+    </div>
+</Card>
                             </Col>
                         ))}
                     </Row>

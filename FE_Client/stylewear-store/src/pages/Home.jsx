@@ -638,51 +638,6 @@ const Home = () => {
             </Content>
 
             {/* ================= FOOTER ================= */}
-            <div style={styles.footer}>
-                <Row gutter={[32, 32]}>
-                    <Col xs={24} md={8}>
-                        <h3 style={styles.footerTitle}>StyleWear</h3>
-                        <p style={styles.footerText}>
-                            Thời trang dành cho giới trẻ - Phong cách hiện đại,
-                            chất lượng cao cấp.
-                        </p>
-                    </Col>
-                    <Col xs={24} md={8}>
-                        <h4 style={styles.footerHeading}>Liên Kết</h4>
-                        <div style={styles.footerLinks}>
-                            <a href="/products" style={styles.footerLink}>
-                                Sản Phẩm
-                            </a>
-                            <a href="/cart" style={styles.footerLink}>
-                                Giỏ Hàng
-                            </a>
-                            <a href="#" style={styles.footerLink}>
-                                Về Chúng Tôi
-                            </a>
-                            <a href="#" style={styles.footerLink}>
-                                Liên Hệ
-                            </a>
-                        </div>
-                    </Col>
-                    <Col xs={24} md={8}>
-                        <h4 style={styles.footerHeading}>Theo Dõi Chúng Tôi</h4>
-                        <p style={styles.footerText}>
-                            Facebook | Instagram | TikTok
-                        </p>
-                        <Button
-                            icon={<ShoppingCartOutlined />}
-                            size="large"
-                            style={styles.footerButton}
-                            onClick={() => navigate("/cart")}
-                        >
-                            Xem Giỏ Hàng
-                        </Button>
-                    </Col>
-                </Row>
-                <div style={styles.footerBottom}>
-                    <p>© 2025 StyleWear. All rights reserved.</p>
-                </div>
-            </div>
         </Layout>
     );
 };
@@ -750,7 +705,7 @@ const styles = {
         background: "#ffffff",
     },
     heroSection: {
-        height: "700px",
+        height: "520px",
         position: "relative",
         backgroundImage: `url('https://content.pancake.vn/1/s2360x2950/0c/08/c4/fe/0d4cab0e2f469f44164457126b73c5afd037891e0587ea74c31fca07-w:3000-h:3750-l:951876-t:image/jpeg.jpeg')`,
         backgroundSize: "cover",
@@ -791,7 +746,7 @@ const styles = {
         letterSpacing: "1px",
     },
     heroTitle: {
-        fontSize: "64px",
+        fontSize: "48px",
         color: "white",
         fontWeight: 900,
         lineHeight: 1.2,
@@ -803,7 +758,7 @@ const styles = {
         display: "block",
     },
     heroSubtitle: {
-        fontSize: "20px",
+        fontSize: "16px",
         color: "rgba(255,255,255,0.95)",
         marginBottom: 40,
         lineHeight: 1.6,
@@ -817,7 +772,7 @@ const styles = {
     heroPrimaryButton: {
         backgroundColor: "#FF4D4F",
         borderColor: "#FF4D4F",
-        height: 56,
+        height: 48,
         padding: "0 40px",
         fontSize: "16px",
         fontWeight: 600,
@@ -826,7 +781,7 @@ const styles = {
         transition: "all 0.3s",
     },
     heroSecondaryButton: {
-        height: 56,
+        height:48,
         padding: "0 40px",
         fontSize: "16px",
         fontWeight: 600,
@@ -838,14 +793,14 @@ const styles = {
     },
     featuresBanner: {
         background: "linear-gradient(135deg, #667eea 0%, #764ba2 100%)",
-        padding: "50px 60px",
+        padding: "32px 40px",
     },
     featureItem: {
         textAlign: "center",
         color: "white",
     },
     featureIcon: {
-        fontSize: "48px",
+        fontSize: "36px",
         marginBottom: 16,
     },
     featureTitle: {
@@ -860,7 +815,7 @@ const styles = {
         margin: 0,
     },
     content: {
-        padding: "80px 60px",
+        padding: "56px 40px",
         background: "#F9FAFB",
     },
     sectionHeader: {
@@ -872,7 +827,7 @@ const styles = {
         flexWrap: "wrap",
     },
     sectionTitle: {
-        fontSize: "40px",
+        fontSize: "32px",
         fontWeight: 800,
         marginBottom: 8,
         color: "#1a1a1a",
@@ -898,7 +853,7 @@ const styles = {
     },
     carouselImage: {
         width: "100%",
-        height: "600px",
+        height: "420px",
         objectFit: "cover",
         display: "block",
     },
@@ -907,7 +862,7 @@ const styles = {
         bottom: 0,
         left: 0,
         right: 0,
-        padding: "40px",
+        padding: "24px",
         background:
             "linear-gradient(to top, rgba(0,0,0,0.8) 0%, transparent 100%)",
         display: "flex",
@@ -920,8 +875,8 @@ const styles = {
         backgroundColor: "white",
         color: "#1a1a1a",
         borderColor: "white",
-        height: 48,
-        padding: "0 32px",
+        height: 40,
+        padding: "0 24px",
         fontSize: "16px",
         fontWeight: 600,
         borderRadius: "24px",
@@ -943,7 +898,7 @@ const styles = {
     },
     productImage: {
         width: "100%",
-        height: "320px",
+        height: "260px",
         objectFit: "cover",
         transition: "transform 0.5s ease",
     },
@@ -970,7 +925,7 @@ const styles = {
         whiteSpace: "nowrap",
     },
     productPrice: {
-        fontSize: "20px",
+        fontSize: "18px",
         fontWeight: 700,
         color: "#FF4D4F",
         marginBottom: 4,
@@ -993,7 +948,7 @@ const styles = {
     },
     categoryImageWrapper: {
         position: "relative",
-        height: "320px",
+        height: "240px",
         overflow: "hidden",
     },
     categoryImage: {

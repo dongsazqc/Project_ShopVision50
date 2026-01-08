@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import {
     Card,
     Button,
@@ -38,7 +38,6 @@ const Cart = () => {
     const baseURL = "http://160.250.5.26:5000";
 
     // ================= LOAD CART =================
-
     const handleGetCartItems = async () => {
         if (!userId) {
             setCartItems([]);
@@ -76,6 +75,7 @@ const Cart = () => {
             setLoading(false);
         }
     };
+
     useEffect(() => {
         handleGetCartItems();
     }, [userId]);
@@ -145,16 +145,13 @@ const Cart = () => {
         } catch (error) {
             console.log(error);
         }
-        // setCartItems((prev) =>
-        //     prev.filter((item) => item.variantId !== variantId)
-        // );
-        // setSelectedItems((prev) => prev.filter((id) => id !== variantId));
     };
 
-    // ================= PAYMENT CALC =================
+    // ================= SELECTED ITEMS =================
     const selectedCartItems = cartItems.filter((item) =>
         selectedItems.includes(item.variantId)
     );
+
     const subtotal = selectedCartItems.reduce(
         (sum, item) => sum + item.giaBan * item.quantity,
         0
@@ -181,6 +178,18 @@ const Cart = () => {
             style: "currency",
             currency: "VND",
         }).format(price);
+
+    // ================= ELIGIBLE PROMOTIONS =================
+    const eligiblePromotions = useMemo(() => {
+        return promotions.filter((p) => {
+            const minAmountMatch = p.condition?.match(/[\d.,]+/);
+            const minAmount = minAmountMatch
+                ? parseFloat(minAmountMatch[0].replace(/[.,]/g, ""))
+                : 0;
+
+            return subtotal >= minAmount;
+        });
+    }, [promotions, subtotal]);
 
     if (loading)
         return (
@@ -242,18 +251,14 @@ const Cart = () => {
                     <Row gutter={24}>
                         {/* LEFT LIST */}
                         <Col xs={24} lg={16}>
-                            <Space
-                                direction="vertical"
-                                style={{ width: "100%" }}
-                            >
+                            <Space direction="vertical" style={{ width: "100%" }}>
                                 {cartItems.map((item) => (
                                     <Card
                                         key={item.variantId}
                                         hoverable
                                         style={{
                                             borderRadius: 8,
-                                            background:
-                                                "rgba(255,255,255,0.95)",
+                                            background: "rgba(255,255,255,0.95)",
                                             border: "1px solid #ccc",
                                         }}
                                     >
@@ -299,24 +304,14 @@ const Cart = () => {
                                                 <Row justify="space-between">
                                                     <Col>
                                                         <h3>{item.name}</h3>
-                                                        <p
-                                                            style={{
-                                                                color: "#888",
-                                                            }}
-                                                        >
+                                                        <p style={{ color: "#888" }}>
                                                             {item.color &&
                                                                 `Màu: ${item.color}`}{" "}
                                                             {item.size &&
                                                                 ` | Size: ${item.size}`}
                                                         </p>
-                                                        <strong
-                                                            style={{
-                                                                color: "#667eea",
-                                                            }}
-                                                        >
-                                                            {formatPrice(
-                                                                item.giaBan
-                                                            )}
+                                                        <strong style={{ color: "#667eea" }}>
+                                                            {formatPrice(item.giaBan)}
                                                         </strong>
                                                     </Col>
 
@@ -324,46 +319,29 @@ const Cart = () => {
                                                         <Button
                                                             danger
                                                             type="text"
-                                                            icon={
-                                                                <DeleteOutlined />
-                                                            }
+                                                            icon={<DeleteOutlined />}
                                                             onClick={() =>
-                                                                removeItemFE(
-                                                                    item.cartItemId
-                                                                )
+                                                                removeItemFE(item.cartItemId)
                                                             }
                                                         />
                                                     </Col>
                                                 </Row>
 
-                                                <Row
-                                                    justify="space-between"
-                                                    style={{ marginTop: 16 }}
-                                                >
+                                                <Row justify="space-between" style={{ marginTop: 16 }}>
                                                     <Col>
                                                         <Space>
                                                             Số lượng:
                                                             <Button
                                                                 onClick={() =>
-                                                                    updateQuantity(
-                                                                        item,
-                                                                        item.quantity -
-                                                                            1
-                                                                    )
+                                                                    updateQuantity(item, item.quantity - 1)
                                                                 }
                                                             >
                                                                 -
                                                             </Button>
-                                                            <span>
-                                                                {item.quantity}
-                                                            </span>
+                                                            <span>{item.quantity}</span>
                                                             <Button
                                                                 onClick={() =>
-                                                                    updateQuantity(
-                                                                        item,
-                                                                        item.quantity +
-                                                                            1
-                                                                    )
+                                                                    updateQuantity(item, item.quantity + 1)
                                                                 }
                                                             >
                                                                 +
@@ -372,12 +350,7 @@ const Cart = () => {
                                                     </Col>
 
                                                     <Col>
-                                                        <strong>
-                                                            {formatPrice(
-                                                                item.giaBan *
-                                                                    item.quantity
-                                                            )}
-                                                        </strong>
+                                                        <strong>{formatPrice(item.giaBan * item.quantity)}</strong>
                                                     </Col>
                                                 </Row>
                                             </Col>
@@ -392,9 +365,7 @@ const Cart = () => {
                             <Card
                                 title={
                                     <Space>
-                                        <GiftOutlined
-                                            style={{ color: "#667eea" }}
-                                        />
+                                        <GiftOutlined style={{ color: "#667eea" }} />
                                         <span>Tổng đơn hàng</span>
                                     </Space>
                                 }
@@ -402,24 +373,17 @@ const Cart = () => {
                                 <Select
                                     style={{ width: "100%" }}
                                     placeholder="Chọn khuyến mãi"
-                                    value={
-                                        selectedPromo?.promotionId || undefined
-                                    }
+                                    value={selectedPromo?.promotionId || undefined}
                                     onChange={(val) => {
-                                        const promo = promotions.find(
+                                        const promo = eligiblePromotions.find(
                                             (p) => p.promotionId === val
                                         );
                                         setSelectedPromo(promo || null);
                                     }}
                                 >
-                                    {promotions.map((promo) => (
-                                        <Option
-                                            key={promo.promotionId}
-                                            value={promo.promotionId}
-                                        >
-                                            {promo.code} -{" "}
-                                            {promo.discountDisplay} (
-                                            {promo.condition})
+                                    {eligiblePromotions.map((promo) => (
+                                        <Option key={promo.promotionId} value={promo.promotionId}>
+                                            {promo.code} - {promo.discountDisplay} ({promo.condition})
                                         </Option>
                                     ))}
                                 </Select>
@@ -432,35 +396,25 @@ const Cart = () => {
                                 </Row>
 
                                 {selectedPromo &&
-                                    selectedPromo.scope?.toLowerCase() ===
-                                        "toàn sản phẩm" && (
+                                    selectedPromo.scope?.toLowerCase() === "toàn sản phẩm" && (
                                         <Row justify="space-between">
                                             <Col>
-                                                Giảm (
-                                                {selectedPromo.discountDisplay})
+                                                Giảm ({selectedPromo.discountDisplay})
                                             </Col>
-                                            <Col>
-                                                -{formatPrice(discountAmount)}
-                                            </Col>
+                                            <Col>-{formatPrice(discountAmount)}</Col>
                                         </Row>
                                     )}
 
                                 <Row justify="space-between">
                                     <Col>Vận chuyển</Col>
-                                    <Col>
-                                        {shipping === 0
-                                            ? "Miễn phí"
-                                            : formatPrice(shipping)}
-                                    </Col>
+                                    <Col>{shipping === 0 ? "Miễn phí" : formatPrice(shipping)}</Col>
                                 </Row>
 
                                 <Divider />
 
                                 <Row justify="space-between">
                                     <strong>Tổng cộng</strong>
-                                    <strong style={{ color: "#667eea" }}>
-                                        {formatPrice(total)}
-                                    </strong>
+                                    <strong style={{ color: "#667eea" }}>{formatPrice(total)}</strong>
                                 </Row>
 
                                 <Button
@@ -470,21 +424,13 @@ const Cart = () => {
                                     style={{ marginTop: 20 }}
                                     onClick={() => {
                                         if (selectedItems.length === 0) {
-                                            messageApi.warning(
-                                                "Vui lòng chọn sản phẩm để thanh toán"
-                                            );
+                                            messageApi.warning("Vui lòng chọn sản phẩm để thanh toán");
                                             return;
                                         }
-                                        const checkoutItems = cartItems.filter(
-                                            (item) =>
-                                                selectedItems.includes(
-                                                    item.variantId
-                                                )
+                                        const checkoutItems = cartItems.filter((item) =>
+                                            selectedItems.includes(item.variantId)
                                         );
-                                        sessionStorage.setItem(
-                                            "checkoutItems",
-                                            JSON.stringify(checkoutItems)
-                                        );
+                                        sessionStorage.setItem("checkoutItems", JSON.stringify(checkoutItems));
                                         navigate("/checkout");
                                     }}
                                 >
