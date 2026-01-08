@@ -88,5 +88,14 @@ namespace ShopVision50.API.Controllers
         return Ok(orders);
     }
 
+    [HttpPut("{id}/status")]
+[Authorize]
+public async Task<IActionResult> UpdateStatus(int id, [FromBody] UpdateStatusRequest request)
+{
+    await _service.UpdateStatusAsync(id, request.Status);   
+    return Ok(new { message = "Order status updated successfully."});
+}
+
+
     }
 }

@@ -10,5 +10,6 @@ class Query(BaseModel):
 
 @app.post("/search")
 async def search_memory(query: Query):
-    results = mem.search(query.text, top_k=5)  # Lấy 5 kết quả gần nhất
+    results = mem.search(query.text, top_k=1)  # Lấy 1 kết quả gần nhất
     return {"results": results}
+    

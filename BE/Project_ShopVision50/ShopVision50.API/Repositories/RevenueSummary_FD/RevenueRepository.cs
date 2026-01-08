@@ -21,7 +21,7 @@ namespace ShopVision50.API.Repositories.RevenueSummary_FD
 
     // Lấy Orders
     var orders = _context.Orders
-        .Where(o => o.OrderDate >= from && o.OrderDate <= to && o.Status == true)
+        .Where(o => o.OrderDate >= from && o.OrderDate <= to && o.IsPaid == true)
         .ToList();
 
     var totalRevenue = orders.Sum(x => x.TotalAmount);

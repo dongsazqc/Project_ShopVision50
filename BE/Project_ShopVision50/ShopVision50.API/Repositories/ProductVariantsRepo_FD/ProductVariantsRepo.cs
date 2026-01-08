@@ -57,26 +57,6 @@ public class ProductVariantRepository : IProductVariantsRepo
     {
         await _context.SaveChangesAsync();
     }
-    public async Task<ProductVariant?> GetByIdAsync(int id)
-    {
-        return await _context.ProductVariants
-            .Include(pv => pv.Color)
-            .Include(pv => pv.Size)
-            .Include(pv => pv.Product)
-            .FirstOrDefaultAsync(pv => pv.ProductVariantId == id);
-    }
-
-    public async Task UpdateAsync(ProductVariant variant)
-    {
-        _context.ProductVariants.Update(variant);
-        await Task.CompletedTask;
-    }
-
-    public async Task DeleteAsync(ProductVariant variant)
-    {
-        _context.ProductVariants.Remove(variant);
-        await Task.CompletedTask;
-    }
     public async Task<Product?> GetProductWithVariantsAsync(int productId)
     {
         return await _context.Products
@@ -88,15 +68,15 @@ public class ProductVariantRepository : IProductVariantsRepo
     }
 
     // Implement trong ProductVariantRepository.cs
-    public async Task<IEnumerable<ProductVariant>> GetVariantsByCategoryIdAsync(int categoryId)
-    {
-        return await _context.ProductVariants
-            .Include(pv => pv.Color)
-            .Include(pv => pv.Size)
-            .Include(pv => pv.Product)
-            .Where(pv => pv.Product.CategoryId == categoryId)
-            .ToListAsync();
-    }
+public async Task<IEnumerable<ProductVariant>> GetVariantsByCategoryIdAsync(int categoryId)
+{
+    return await _context.ProductVariants
+        .Include(pv => pv.Color)
+        .Include(pv => pv.Size)
+        .Include(pv => pv.Product)
+        .Where(pv => pv.Product.CategoryId == categoryId)
+        .ToListAsync();
+}
 
 
 

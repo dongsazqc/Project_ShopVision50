@@ -19,7 +19,7 @@ namespace ShopVision50.API.Repositories.TopProductsRepo_FD
                 join o in _context.Orders on oi.OrderId equals o.OrderId
                 join pv in _context.ProductVariants on oi.ProductVariantId equals pv.ProductVariantId
                 join p in _context.Products on pv.ProductId equals p.ProductId
-                where o.Status == true   // trạng thái hoàn tất
+                where o.IsPaid == true   // trạng thái hoàn tất
                 group oi by new { p.ProductId, p.Name } into g
                 orderby g.Sum(x => x.Quantity) descending
                 select new

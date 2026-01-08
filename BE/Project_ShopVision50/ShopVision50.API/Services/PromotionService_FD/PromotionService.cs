@@ -95,7 +95,7 @@ namespace ShopVision50.API.Services.PromotionService_FD
                         OrderDate = op.Order.OrderDate,
                         OrderType = op.Order.OrderType,
                         TotalAmount = op.Order.TotalAmount,
-                        Status = op.Order.Status,
+                        Status = op.Order.IsPaid,
                         RecipientName = op.Order.RecipientName,
                         RecipientPhone = op.Order.RecipientPhone,
                         ShippingAddress = op.Order.ShippingAddress
