@@ -30,7 +30,7 @@ export default function Login() {
 
             if (storedUser?.roleId === 1) {
                 navigate("/admin/products");
-            } else if (storedUser?.roleId === 3) {
+            } else if (storedUser?.roleId === 2) {
                 navigate("/admin/pos");
             } else {
                 Modal.warning({
