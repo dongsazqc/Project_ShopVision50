@@ -107,7 +107,7 @@ namespace ShopVision50.API.Services.OrderService_FD
         {
             await _repository.DeleteAsync(id);
         }
-                        public async Task<Order> CreateOrderAsync(CreateOrderRequest request)
+    public async Task<Order> CreateOrderAsync(CreateOrderRequest request)
 {
     if (request == null) throw new ArgumentNullException(nameof(request));
     if (request.OrderItems == null || !request.OrderItems.Any())
@@ -141,13 +141,16 @@ namespace ShopVision50.API.Services.OrderService_FD
     }).ToList();
 
     // Cập nhật stock theo từng item (chạy async parallel cho nhanh)
-    var updateStockTasks = orderItems.Select(item => _variantService.Updatestock(item.ProductVariantId, item.Quantity));
-    await Task.WhenAll(updateStockTasks);
-
+foreach (var item in orderItems)
+{
+    await _variantService.Updatestock(item.ProductVariantId, item.Quantity);
+}
     // Tạo order items (chạy async parallel)
-    var createOrderItemTasks = orderItems.Select(item => _orderItemService.CreateAsync(item));
-    await Task.WhenAll(createOrderItemTasks);
-
+// 2. Tạo order items cũng tuần tự
+foreach (var item in orderItems)
+{
+    await _orderItemService.CreateAsync(item);
+}
     // Tạo payments
     var payments = request.Payments.Select(p => new Payment
     {
@@ -183,7 +186,7 @@ namespace ShopVision50.API.Services.OrderService_FD
                 Id = o.OrderId,
                 DateOrdered = o.OrderDate,
                 AmountTotal = o.TotalAmount,
-                OrderStatus = o.IsPaid ? 1 : 0,
+                OrderStatus = (int)o.Status,
                 ReceiverName = o.RecipientName,
                 ReceiverPhone = o.RecipientPhone,
                 DeliveryAddress = o.ShippingAddress
