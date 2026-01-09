@@ -1348,6 +1348,16 @@ export default function Products() {
                                 required: true,
                                 message: "Vui lòng nhập % khuyến mãi",
                             },
+                            {
+                                validator: (_, value) => {
+                                    if (value < 0 || value > 100) {
+                                        return Promise.reject(
+                                            "Khuyến mãi phải nằm trong khoảng 0 – 100"
+                                        );
+                                    }
+                                    return Promise.resolve();
+                                },
+                            },
                         ]}
                     >
                         <InputNumber
