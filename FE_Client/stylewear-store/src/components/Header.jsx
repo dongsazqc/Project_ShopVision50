@@ -204,6 +204,15 @@ const AppHeader = () => {
                     <Menu.Item key="/products" style={{ fontWeight: "normal" }}>
                         <Link to="/products">Sản phẩm</Link>
                     </Menu.Item>
+                    <Menu.Item key="/voucher" style={{ fontWeight: "normal" }}>
+                        <Link to="/voucher">Săn Voucher</Link>
+                    </Menu.Item>
+                    <Menu.Item key="/myorder" style={{ fontWeight: "normal" }}>
+                        <Link to="/myorder">Đơn hàng của tôi</Link>
+                    </Menu.Item>
+
+
+
                 </Menu>
 
                 {/* CART ICON */}

@@ -45,7 +45,7 @@ const Checkout = () => {
 
     if (token) {
       fetchCartFromServer();
-    } else {
+    } else {  
       messageApi.warning("Không có sản phẩm để thanh toán");
       navigate("/");
     }
@@ -54,35 +54,48 @@ const Checkout = () => {
   // =========================================
   // 2) FETCH CART SERVER
   // =========================================
-  const fetchCartFromServer = async () => {
-    try {
-      setLoading(true);
-      const res = await api.get("/Cart/GetMyCart");
-      const serverCart = res.data?.$values || [];
+const fetchCartFromServer = async () => {
+  if (!userId) {
+    messageApi.warning("Bạn chưa đăng nhập");
+    navigate("/");
+    return;
+  }
 
-      if (serverCart.length === 0) {
-        messageApi.warning("Giỏ hàng của bạn đang trống");
-        return navigate("/");
-      }
+  try {
+    setLoading(true);
+    const res = await api.get(`/Cart/GetCartByUser/${userId}`);
+    const data = res.data;
 
-      const normalized = serverCart.map((item) => ({
-        variantId: item.productVariantId,
-        productId: item.productId,
-        name: item.productName,
-        quantity: item.quantity,
-        giaBan: item.price,
-        color: item.color,
-        size: item.size,
-        image: item.image,
-      }));
+    const serverCart = data.cartItems || [];
 
-      setCheckoutItems(normalized);
-    } catch (err) {
-      console.error(err);
-    } finally {
-      setLoading(false);
+    if (serverCart.length === 0) {
+      messageApi.warning("Giỏ hàng của bạn đang trống");
+      return navigate("/");
     }
-  };
+
+    const normalized = serverCart.map((item) => ({
+      variantId: item.productVariantId,
+      cartItemId: item.cartItemId,
+      quantity: item.quantity,
+      giaBan: item.productVariant?.salePrice || item.price || 0,
+      name: item.productVariant?.product?.name || `Sản phẩm #${item.productVariantId}`,
+      color: item.productVariant?.color?.name || null,
+      size: item.productVariant?.size?.name || null,
+      image: item.productVariant?.product?.productImages?.[0]?.url
+        ? "http://160.250.5.26:5000" + item.productVariant.product.productImages[0].url
+        : "https://via.placeholder.com/150",
+      stock: item.productVariant?.stock || 9999,
+    }));
+
+    setCheckoutItems(normalized);
+  } catch (err) {
+    console.error(err);
+    messageApi.error("Không thể tải giỏ hàng từ server");
+  } finally {
+    setLoading(false);
+  }
+};
+
 
   // =========================================
   // 3) FETCH USER PROFILE → AUTOFILL
@@ -122,43 +135,53 @@ const Checkout = () => {
   // =========================================
   // 5) SUBMIT ĐẶT HÀNG
   // =========================================
-  const handleSubmit = async (values) => {
-    try {
-      setLoading(true);
+const handleSubmit = async (values) => {
+  try {
+    setLoading(true);
 
-      const orderItems = checkoutItems.map((item) => ({
-        productVariantId: item.variantId,
-        quantity: item.quantity,
-        discountAmount: 0,
-        promotionId: null,
-      }));
+    // Mảng orderItems theo chuẩn JSON 2 có price
+    const orderItems = checkoutItems.map((item) => ({
+      productVariantId: item.variantId,
+      quantity: item.quantity,
+      price: item.giaBan,
+    }));
 
-      const orderPayload = {
-        orderDate: new Date().toISOString(),
-        orderType: "Online",
-        status: 0, // Pending
-        totalAmount: totalAmount,
-        recipientName: values.recipientName,
-        recipientPhone: values.recipientPhone,
-        shippingAddress: values.shippingAddress,
-        paymentMethod: "COD",
-        userId: Number(userId),
-        orderItems: orderItems,
-      };
+    // Thanh toán kiểu COD theo chuẩn JSON 2
+    const payments = [
+      {
+        method: "Cash",
+        amount: totalAmount,
+        cashReceived: totalAmount, // hoặc mày có input nhập tiền khách đưa thì set lại
+        cashChange: 0, // tiền thối = cashReceived - amount, tạm để 0
+      },
+    ];
 
-      await api.post("/Orders/Add", orderPayload);
+    const orderPayload = {
+      orderDate: new Date().toISOString(),
+      orderType: "Online",
+      status: 0, // Pending
+      totalAmount: totalAmount,
+      recipientName: values.recipientName,
+      recipientPhone: values.recipientPhone,
+      shippingAddress: values.shippingAddress,
+      userId: Number(userId),
+      orderItems: orderItems,
+      payments: payments,
+    };
 
-      messageApi.success("Đơn hàng đã được tạo, chờ xử lý");
-      sessionStorage.removeItem("buyNow");
-      localStorage.removeItem("cart");
-      navigate("/ordersuccess");
-    } catch (error) {
-      console.error(error);
-      messageApi.error("Đặt hàng thất bại");
-    } finally {
-      setLoading(false);
-    }
-  };
+    await api.post("/Orders/Add", orderPayload);
+
+    messageApi.success("Đơn hàng đã được tạo, chờ xử lý");
+    sessionStorage.removeItem("buyNow");
+    localStorage.removeItem("cart");
+    navigate("/ordersuccess");
+  } catch (error) {
+    console.error(error);
+    messageApi.error("Đặt hàng thất bại");
+  } finally {
+    setLoading(false);
+  }
+};
 
   return (
     <div style={{ padding: 24, maxWidth: 900, margin: "0 auto" }}>

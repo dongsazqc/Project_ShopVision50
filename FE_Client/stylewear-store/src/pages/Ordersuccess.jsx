@@ -42,12 +42,10 @@ const OrderSuccess = () => {
           >
             Về trang chủ
           </Button>
-          <Button
-            size="large"
-            onClick={() => navigate("/account/orders")}
-          >
-            Xem đơn hàng
-          </Button>
+        <Button size="large" onClick={() => navigate("/myorder")}>
+          Xem đơn hàng
+        </Button>
+
         </div>
       </div>
     </div>
