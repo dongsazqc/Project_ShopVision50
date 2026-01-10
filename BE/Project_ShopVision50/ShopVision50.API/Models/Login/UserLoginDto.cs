@@ -13,5 +13,8 @@ namespace ShopVision50.API.Models.Login
 
     [Required]
     public string Password { get; set; } = string.Empty;
+    
+    // If true, login attempt is from client-side and should enforce client role rules
+    public bool IsClientLogin { get; set; } = false;
 }
 }

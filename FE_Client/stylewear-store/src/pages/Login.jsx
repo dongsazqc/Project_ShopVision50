@@ -29,6 +29,7 @@ const Login = () => {
             const res = await api.post("/Login/login", {
                 Email: values.email,
                 Password: values.password,
+                isClientLogin: true
             });
 
             console.log("Login response:", res.data); // debug

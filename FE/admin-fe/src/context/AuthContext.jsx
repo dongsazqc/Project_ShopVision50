@@ -39,14 +39,14 @@ export const AuthProvider = ({ children }) => {
         setLoading(true);
         try {
             const res = await fetch(
-                "http://160.250.5.26:5000/api/Login/login",
+                // "http://160.250.5.26:5000/api/Login/login",
+                "http://localhost:5000/api/Login/login",
                 {
                     method: "POST",
                     headers: { "Content-Type": "application/json" },
                     body: JSON.stringify({ Email: email, Password: password }),
                 }
             );
-
             // ❌ API báo lỗi → hiện popup lỗi
             if (!res.ok) {
                 const errorText = await res.text();
@@ -66,7 +66,7 @@ export const AuthProvider = ({ children }) => {
             );
             return { success: true };
         } catch (err) {
-            messageApi.error("Không thể kết nối đến máy chủ!");
+            messageApi.error(err?.response?.data);
             return { success: false };
         } finally {
             setLoading(false);
