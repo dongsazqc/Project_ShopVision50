@@ -6,7 +6,7 @@ export default function PrivateRoute({ children }) {
 
   if (!isAuthenticated) return <Navigate to="/login" replace />;
 
-  if (user.roleId === 2) return <Navigate to="/login" replace />; // chặn ông nào = 2 thì ko được vào
+  if (user.roleId === 3) return <Navigate to="/login" replace />; // chặn ông nào = 2 thì ko được vào
 
   return children;
 }

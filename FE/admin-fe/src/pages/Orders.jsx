@@ -135,9 +135,10 @@ export default function Orders() {
       const res = await api.get(`/Orders/GetById/${record.orderId}`);
       const data = res.data;
 
+      // 1. Set selectedOrder trước
       setSelectedOrder({
         ...data,
-        status: data.status,
+        status: data.status, // số
         paymentMethod: data.payments?.[0]?.method?.toLowerCase() ?? "cash",
         orderItems:
           data.orderItems?.map((item) => ({
@@ -152,6 +153,7 @@ export default function Orders() {
           })) || [],
       });
 
+      // 2. Chỉ set form với dữ liệu từ data trực tiếp, tránh dùng selectedOrder đang rỗng
       form.setFieldsValue({
         recipientName: data.recipientName,
         recipientPhone: data.recipientPhone,
@@ -159,57 +161,57 @@ export default function Orders() {
         orderType: data.orderType,
         paymentMethod: data.payments?.[0]?.method?.toLowerCase(),
         totalAmount: data.totalAmount,
-        status: data.status,
+        status: Number(data.status), // BE trả số, ép kiểu number
       });
 
+      // 3. Mở modal sau khi form đã set giá trị
       setDetailModal(true);
     } catch (err) {
+      console.error(err);
       message.error("Không thể tải chi tiết đơn hàng");
     }
   };
 
-const handleSaveUpdate = async () => {
-  try {
-    const values = await form.validateFields();
+  const handleSaveUpdate = async () => {
+    try {
+      const values = await form.validateFields();
 
-    // Chỉ gọi API update trạng thái, bỏ payload thừa
-    await api.put(`/orders/${selectedOrder.orderId}/status`, {
-      status: values.status,
-    });
+      // Chỉ gọi API update trạng thái, bỏ payload thừa
+      await api.put(`/orders/${selectedOrder.orderId}/status`, {
+        status: values.status,
+      });
 
-    message.success("Cập nhật trạng thái thành công");
-    setDetailModal(false);
-    fetchOrders();
-  } catch (err) {
-    console.error(err);
-    message.error("Lỗi khi cập nhật trạng thái đơn hàng");
-  }
-};
+      message.success("Cập nhật trạng thái thành công");
+      setDetailModal(false);
+      fetchOrders();
+    } catch (err) {
+      console.error(err);
+      message.error("Lỗi khi cập nhật trạng thái đơn hàng");
+    }
+  };
 
+  // //  const handleSaveUpdate = async () => {
+  //     try {
+  // const values = await form.validateFields();
 
-// //  const handleSaveUpdate = async () => {
-//     try {
-      // const values = await form.validateFields();
+  // const payload = {
+  //   orderId: selectedOrder.orderId,
+  //   status: values.status,
+  //   recipientName: values.recipientName,
+  //   recipientPhone: values.recipientPhone,
+  //   shippingAddress: values.shippingAddress,
+  // };
 
-      // const payload = {
-      //   orderId: selectedOrder.orderId,
-      //   status: values.status,
-      //   recipientName: values.recipientName,
-      //   recipientPhone: values.recipientPhone,
-      //   shippingAddress: values.shippingAddress,
-      // };
+  //       await api.put(`/Orders/Update/${selectedOrder.orderId}`, payload);
 
-//       await api.put(`/Orders/Update/${selectedOrder.orderId}`, payload);
-
-//       message.success("Cập nhật thành công");
-//       setDetailModal(false);
-//       fetchOrders();
-//     } catch (err) {
-//       console.error(err);
-//       message.error("Lỗi khi cập nhật đơn hàng");
-//     }
-//   };
-
+  //       message.success("Cập nhật thành công");
+  //       setDetailModal(false);
+  //       fetchOrders();
+  //     } catch (err) {
+  //       console.error(err);
+  //       message.error("Lỗi khi cập nhật đơn hàng");
+  //     }
+  //   };
 
   const columns = [
     { title: "Mã đơn", dataIndex: "orderId", width: 80 },
@@ -328,15 +330,55 @@ const handleSaveUpdate = async () => {
         {selectedOrder && (
           <>
             <Form form={form} layout="vertical">
-              <Form.Item label="Tên người nhận" name="recipientName">
+              {/* Chỉ required khi trạng thái Pending */}
+              <Form.Item
+                label="Tên người nhận"
+                name="recipientName"
+                rules={
+                  selectedOrder.status === 0
+                    ? [
+                        {
+                          required: true,
+                          message: "Vui lòng nhập tên người nhận!",
+                        },
+                      ]
+                    : []
+                }
+              >
                 <Input disabled={!canEditAll(selectedOrder.status)} />
               </Form.Item>
 
-              <Form.Item label="Số điện thoại" name="recipientPhone">
+              <Form.Item
+                label="Số điện thoại"
+                name="recipientPhone"
+                rules={
+                  selectedOrder.status === 0
+                    ? [
+                        {
+                          required: true,
+                          message: "Vui lòng nhập số điện thoại!",
+                        },
+                      ]
+                    : []
+                }
+              >
                 <Input disabled={!canEditAll(selectedOrder.status)} />
               </Form.Item>
 
-              <Form.Item label="Địa chỉ" name="shippingAddress">
+              <Form.Item
+                label="Địa chỉ"
+                name="shippingAddress"
+                rules={
+                  selectedOrder.status === 0
+                    ? [
+                        {
+                          required: true,
+                          message: "Vui lòng nhập địa chỉ giao hàng!",
+                        },
+                      ]
+                    : []
+                }
+              >
                 <Input disabled={!canEditAll(selectedOrder.status)} />
               </Form.Item>
 
@@ -357,11 +399,11 @@ const handleSaveUpdate = async () => {
 
               <Form.Item label="Trạng thái" name="status">
                 <Select disabled={isCompleted(selectedOrder.status)}>
-                  <Select.Option value={0}>Chờ xử lý</Select.Option>
-                  <Select.Option value={1}>Đang xử lý</Select.Option>
-                  <Select.Option value={2}>Đang giao</Select.Option>
-                  <Select.Option value={3}>Hoàn tất</Select.Option>
-                  <Select.Option value={4}>Đã huỷ</Select.Option>
+                  {Object.entries(STATUS).map(([key, value]) => (
+                    <Select.Option key={key} value={Number(key)}>
+                      {value.label}
+                    </Select.Option>
+                  ))}
                 </Select>
               </Form.Item>
             </Form>
