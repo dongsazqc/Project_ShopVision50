@@ -39,8 +39,8 @@ export const AuthProvider = ({ children }) => {
         setLoading(true);
         try {
             const res = await fetch(
-                // "http://160.250.5.26:5000/api/Login/login",
-                "http://localhost:5000/api/Login/login",
+                "http://160.250.5.26:5000/api/Login/login",
+                // "http://localhost:5000/api/Login/login",
                 {
                     method: "POST",
                     headers: { "Content-Type": "application/json" },

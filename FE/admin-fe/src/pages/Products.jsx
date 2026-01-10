@@ -124,7 +124,7 @@ export default function Products() {
             );
 
             setProducts(list);
-            setProductPreview(list);
+            // setProductPreview(list);
         } catch {
             messageApi.error("Không thể tải danh sách sản phẩm");
         } finally {
@@ -497,7 +497,7 @@ export default function Products() {
                         }
                         return v
                     })
-                    return {...p, productVariants: newVariants};
+                    return {...p,...editingProduct, productVariants: newVariants};
                 }
 
                 return p
@@ -956,16 +956,29 @@ export default function Products() {
                         form={form}
                         onFinish={handleSave}
                         onValuesChange={(changedValues) => {
-                            if (
-                                changedValues.Price !== undefined &&
-                                editingProduct
-                            ) {
-                                // Cập nhật giá trong editingProduct khi giá form thay đổi
-                                setEditingProduct({
-                                    ...editingProduct,
-                                    price: changedValues.Price,
-                                });
-                            }
+                            if (!editingProduct) return;
+                            const mapKey = {
+                                Name: "name",
+                                Description: "description",
+                                Price: "price",
+                                Brand: "brand",
+                                CategoryId: "categoryId",
+                                MaterialId: "materialId",
+                                StyleId: "styleId",
+                                GenderId: "genderId",
+                                OriginId: "originId",
+                            };
+
+                            const updates = Object.entries(changedValues).reduce(
+                                (acc, [k, v]) => {
+                                    const mapped = mapKey[k] || k;
+                                    acc[mapped] = v;
+                                    return acc;
+                                },
+                                {}
+                            );
+
+                            setEditingProduct((prev) => (prev ? { ...prev, ...updates } : prev));
                         }}
                     >
                         <Form.Item
