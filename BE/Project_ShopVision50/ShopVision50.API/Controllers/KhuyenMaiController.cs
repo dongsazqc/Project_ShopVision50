@@ -52,6 +52,21 @@ namespace ShopVision50.API.Controllers
             return Ok(result);
         }
 
+            [HttpPost("users/{userId}/promotions")]
+            public async Task<IActionResult> CreatePromotionToUser(
+                int userId,
+                [FromBody] PromotionDto dto)
+            {
+                var result = await _promotionService.CreatePromotionForUser(userId, dto);
+
+                if (!result.Success)
+                    return BadRequest(result);
+
+                return Ok(result);
+            }
+
+            
+
         // 🔹 [PUT] /api/khuyenmai/{id}
         // ➜ Cập nhật thông tin khuyến mãi
         [HttpPut("UpdatePromotion/{id}")]
@@ -63,5 +78,20 @@ namespace ShopVision50.API.Controllers
                 return NotFound(result);
             return Ok(result);
         }
+
+        // 🔹 [GET] /api/KhuyenMai/users/{userId}/promotions
+// ➜ Lấy toàn bộ khuyến mãi của 1 user
+    [HttpGet("users/{userId}/promotions")]
+    [Authorize]
+    public async Task<IActionResult> GetPromotionsByUser(int userId)
+    {
+        var result = await _promotionService.GetPromotionsByUser(userId);
+
+        if (!result.Success)
+            return BadRequest(result);
+
+        return Ok(result);
+    }
+
     }
 }

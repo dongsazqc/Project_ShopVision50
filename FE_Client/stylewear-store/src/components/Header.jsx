@@ -96,10 +96,10 @@ const AppHeader = () => {
                         Quản lý thông tin cá nhân
                     </Menu.Item>
                     <Menu.Item
-                        key="orders"
-                        onClick={() => navigate("/orderhistory")}
+                        key="myvoucher"
+                        onClick={() => navigate("/myvoucher")}
                     >
-                        Lịch sử đơn hàng
+                        Voucher của tôi
                     </Menu.Item>
                     <Menu.Item
                         key="logout"
@@ -210,6 +210,10 @@ const AppHeader = () => {
                     <Menu.Item key="/myorder" style={{ fontWeight: "normal" }}>
                         <Link to="/myorder">Đơn hàng của tôi</Link>
                     </Menu.Item>
+                    <Menu.Item key="/sale" style={{ fontWeight: "normal" }}>
+                        <Link to="/sale">Đang giảm giá</Link>
+                    </Menu.Item>
+
 
 
 

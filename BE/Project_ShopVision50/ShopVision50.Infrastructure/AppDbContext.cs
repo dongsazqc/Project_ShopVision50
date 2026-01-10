@@ -4,6 +4,7 @@ using System.Data;
 using System.Drawing;
 using System.Reflection;
 using Shop_Db.Models;
+using ShopVision50.Domain.Models;
 
 namespace ShopVision50.Infrastructure
 {
@@ -34,5 +35,7 @@ namespace ShopVision50.Infrastructure
         public DbSet<Payment> Payments { get; set; } = null!;
         public DbSet<ReturnNote> ReturnNotes { get; set; } = null!;
         public DbSet<ReturnItem> ReturnItems { get; set; } = null!;
+        public DbSet<UserPromotion> UserPromotions { get; set; }
+
     }
 }
