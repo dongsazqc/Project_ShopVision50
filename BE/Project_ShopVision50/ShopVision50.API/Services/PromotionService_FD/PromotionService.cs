@@ -146,5 +146,57 @@ namespace ShopVision50.API.Services.PromotionService_FD
             await _repo.UpdateAsync(existing);
             return ServiceResult<PromotionDto>.Ok(dto, "Cập nhật thành công");
         }
+
+        public async Task<ServiceResult<PromotionDto>> CreatePromotionForUser(
+    int userId,
+    PromotionDto dto)
+{
+    var promotion = new Promotion
+    {
+        Code = dto.Code,
+        DiscountType = dto.DiscountType,
+        DiscountValue = dto.DiscountValue,
+        Condition = dto.Condition,
+        Scope = "USER",
+        StartDate = dto.StartDate,
+        EndDate = dto.EndDate,
+        Status = dto.Status
+    };
+
+    await _repo.AddAsync(promotion);
+
+    await _repo.AssignPromotionToUserAsync(
+        userId, promotion.PromotionId);
+
+            return ServiceResult<PromotionDto>.Ok(dto, "THêm voucher riêng cho user thành công");
+}
+
+public async Task<ServiceResult<List<PromotionDto>>> GetPromotionsByUser(int userId)
+{
+    var promotions = await _repo.GetPromotionsByUserIdAsync(userId);
+
+    if (promotions == null || promotions.Count == 0)
+        return ServiceResult<List<PromotionDto>>.Fail("User chưa có khuyến mãi");
+
+    var data = promotions.Select(p => new PromotionDto
+    {
+        Code = p.Code,
+        DiscountType = p.DiscountType,
+        DiscountValue = p.DiscountValue,
+        Condition = p.Condition,
+        StartDate = p.StartDate,
+        EndDate = p.EndDate,
+        Status = p.Status
+    }).ToList();
+
+        return new ServiceResult<List<PromotionDto>>
+        {
+            Success = true,
+            Data = data
+        };
+}
+
+
+
     }
 }

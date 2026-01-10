@@ -1,5 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Shop_Db.Models;
+using ShopVision50.API.Models.Users.DTOs;
+using ShopVision50.Domain.Models;
 using ShopVision50.Infrastructure;
 
 namespace ShopVision50.API.Repositories.PromotionRepo_FD
@@ -53,5 +55,26 @@ namespace ShopVision50.API.Repositories.PromotionRepo_FD
             _context.Promotions.Update(promotion);
             await _context.SaveChangesAsync();
         }
+
+        public async Task AssignPromotionToUserAsync(int userId, int promotionId)
+        {
+            var entity = new UserPromotion
+            {
+                UserId = userId,
+                PromotionId = promotionId
+            };
+
+            _context.UserPromotions.Add(entity);
+            await _context.SaveChangesAsync();
+        }
+        public async Task<List<Promotion>> GetPromotionsByUserIdAsync(int userId)
+        {
+            return await _context.UserPromotions
+                .Where(up => up.UserId == userId)
+                .Select(up => up.Promotion)
+                .ToListAsync();
+        }
+
+
     }
 }

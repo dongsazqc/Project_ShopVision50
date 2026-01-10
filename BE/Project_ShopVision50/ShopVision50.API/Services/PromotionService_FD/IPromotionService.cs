@@ -21,6 +21,10 @@ namespace ShopVision50.API.Services.PromotionService_FD
         /// </summary>
         Task<PromotionDto?> GetByIdAsync(int id);
 
+        Task<ServiceResult<PromotionDto>> CreatePromotionForUser(
+    int userId,
+    PromotionDto dto);
+
         /// <summary>
         /// Tạo mới khuyến mãi từ PromotionDto.
         /// Trả về ServiceResult chứa DTO mới (có PromotionId) hoặc lỗi.
@@ -32,5 +36,7 @@ namespace ShopVision50.API.Services.PromotionService_FD
         /// Trả về ServiceResult biểu thị thành công/không thành công.
         /// </summary>
         Task<ServiceResult<PromotionDto>> UpdateAsync(int id, PromotionDto dto);
+        Task<ServiceResult<List<PromotionDto>>> GetPromotionsByUser(int userId);
+
     }
 }

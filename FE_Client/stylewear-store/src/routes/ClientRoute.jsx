@@ -14,6 +14,10 @@ import OrderHistory from "../pages/Orderhistory";
 import Userprofile from "../pages/Userprofile";
 import Voucher from "../pages/Voucher";
 import MyOrder from "../pages/MyOrder";
+import Sale from "../pages/Sale";
+import Myvoucher from "../pages/Myvoucher";
+
+
 const clientRoutes = createBrowserRouter([
   // 🔹 Login/Register không dùng layout
   { path: "/login", element: <Login /> },
@@ -33,7 +37,13 @@ const clientRoutes = createBrowserRouter([
       { path: "orderhistory", element: <OrderHistory /> },  
       { path : "userprofile", element : <Userprofile />},
       { path: "voucher", element: <Voucher /> },     
-      { path: "myorder", element: <MyOrder /> },     ],
+      { path: "myorder", element: <MyOrder /> },   
+      { path: "sale", element: <Sale /> },   
+      { path: "myvoucher", element: <Myvoucher /> },   
+
+
+    
+    ],
 
   },
 ]);
