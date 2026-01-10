@@ -8,7 +8,9 @@ namespace ShopVision50.API.Models.Users.DTOs
         public int OrderId { get; set; }
         public DateTime OrderDate { get; set; }
         public string OrderType { get; set; } = string.Empty;
-        public bool Status { get; set; }
+        public bool IsPaid { get; set; }
+        public OrderStatus Status { get; set; } = OrderStatus.Pending;
+
         public decimal TotalAmount { get; set; }
         public string RecipientName { get; set; } = string.Empty;
         public string RecipientPhone { get; set; } = string.Empty;
