@@ -140,20 +140,45 @@ export default function POS() {
       const exist = prev.find(
         (i) => i.productVariantId === product.productVariantId
       );
-      return exist
-        ? prev.map((i) =>
-            i.productVariantId === product.productVariantId
-              ? { ...i, soLuong: i.soLuong + 1 }
-              : i
-          )
-        : [...prev, { ...product, soLuong: 1 }];
+
+      // Nếu đã có trong giỏ
+      if (exist) {
+        if (exist.soLuong >= product.soLuongTon) {
+          message.warning("Số lượng vượt quá tồn kho!");
+          return prev;
+        }
+
+        return prev.map((i) =>
+          i.productVariantId === product.productVariantId
+            ? { ...i, soLuong: i.soLuong + 1 }
+            : i
+        );
+      }
+
+      // Nếu chưa có
+      if (product.soLuongTon <= 0) {
+        message.warning("Sản phẩm đã hết hàng!");
+        return prev;
+      }
+
+      return [...prev, { ...product, soLuong: 1 }];
     });
   };
 
-  const updateQty = (id, qty) =>
+  const updateQty = (id, qty) => {
     setCart((prev) =>
-      prev.map((i) => (i.productVariantId === id ? { ...i, soLuong: qty } : i))
+      prev.map((i) => {
+        if (i.productVariantId !== id) return i;
+
+        if (qty > i.soLuongTon) {
+          message.warning("Số lượng vượt quá tồn kho!");
+          return { ...i, soLuong: i.soLuongTon };
+        }
+
+        return { ...i, soLuong: qty };
+      })
     );
+  };
 
   const removeItem = (id) =>
     setCart((prev) => prev.filter((i) => i.productVariantId !== id));
@@ -342,23 +367,24 @@ export default function POS() {
     try {
       const customerName = form.getFieldValue("customerName");
       const customerPhone = form.getFieldValue("customerPhone");
-      const shippingAddress = shipping
-        ? form.getFieldValue("shippingAddress") || ""
-        : "";
+
+      const rawShippingAddress = form.getFieldValue("shippingAddress") || "";
+      const shippingAddress = rawShippingAddress.trim();
+
       const cashReceived = form.getFieldValue("cashReceived") || 0;
       const cashChange = form.getFieldValue("cashChange") || 0;
 
-      const status = shipping
-        ? ORDER_STATUS.Pending // Có giao hàng → Pending (0)
-        : ORDER_STATUS.Completed; // Không giao hàng → Hoàn tất (3)
+      const status = shippingAddress
+        ? ORDER_STATUS.Processing // (1) Có địa chỉ → ship
+        : ORDER_STATUS.Completed; // (3) Không địa chỉ → tại quầy
 
       const payload = {
         orderDate: new Date().toISOString(),
         orderType,
-        status: status,
+        status,
         recipientName: customerName,
         recipientPhone: customerPhone,
-        shippingAddress,
+        shippingAddress, // "" nếu tại quầy
         totalAmount: totalAfter,
         userId: user?.userId,
         orderItems: cart.map((i) => ({
@@ -390,22 +416,25 @@ export default function POS() {
           qty: i.soLuong,
           price: i.price,
         })),
-        total: totalAfter, // Tổng tiền sau giảm
-        totalBeforeDiscount: total, // Tổng tiền trước giảm
+        total: totalAfter,
+        totalBeforeDiscount: total,
         customerPay: cashReceived,
         changeReturn: cashChange,
         paymentMethod,
         orderType,
         date: new Date().toLocaleString(),
+        status, // in đúng trạng thái
       });
 
+      // RESET
       setCart([]);
       setOpenPayment(false);
       setDiscount({ type: null, value: 0 });
       setDiscountCode(null);
       setShipping(false);
       form.resetFields();
-    } catch {
+    } catch (error) {
+      console.error(error);
       message.error("Tạo đơn hàng thất bại!");
     }
   };
@@ -489,6 +518,7 @@ export default function POS() {
                   render: (_, r) => (
                     <InputNumber
                       min={1}
+                      max={r.soLuongTon}
                       value={r.soLuong}
                       onChange={(v) => updateQty(r.productVariantId, v)}
                     />
@@ -560,7 +590,14 @@ export default function POS() {
         title="Xác nhận thanh toán"
         open={openPayment}
         onCancel={() => setOpenPayment(false)}
-        onOk={submitOrder}
+        onOk={() => {
+          form
+            .validateFields()
+            .then(() => submitOrder())
+            .catch(() => {
+              message.error("Vui lòng điền đầy đủ thông tin bắt buộc!");
+            });
+        }}
       >
         <Form form={form} layout="vertical">
           <Form.Item label="Loại đơn hàng">
@@ -580,16 +617,19 @@ export default function POS() {
             <Form.Item
               label="Địa chỉ"
               name="shippingAddress"
-              rules={[{ required: true }]}
+              rules={[
+                { required: true, message: "Vui lòng nhập địa chỉ giao hàng!" },
+              ]}
             >
               <Input />
             </Form.Item>
           )}
-
           <Form.Item
             label="Tên khách hàng"
             name="customerName"
-            rules={[{ required: true }]}
+            rules={[
+              { required: true, message: "Vui lòng nhập tên khách hàng!" },
+            ]}
           >
             <Input />
           </Form.Item>
@@ -597,11 +637,12 @@ export default function POS() {
           <Form.Item
             label="Số điện thoại"
             name="customerPhone"
-            rules={[{ required: true }]}
+            rules={[
+              { required: true, message: "Vui lòng nhập số điện thoại!" },
+            ]}
           >
             <Input />
           </Form.Item>
-
           <Form.Item label="Phương thức thanh toán">
             <Select
               value={paymentMethod}
