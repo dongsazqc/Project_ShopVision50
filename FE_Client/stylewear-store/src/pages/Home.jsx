@@ -87,7 +87,7 @@ const Home = () => {
             setLoading(true);
             const res = await api.get("/ProductVariant");
             const variants = res.data || [];
-            const list = groupVariantsToProducts(variants);
+            const list = groupVariantsToProducts(variants.filter((v) => v.soLuongTon));
             setProducts(list);
             list.forEach((p) => fetchImages(p.productId));
         } catch (err) {
@@ -708,11 +708,12 @@ const styles = {
         height: "520px",
         position: "relative",
         backgroundImage: `url('https://content.pancake.vn/1/s2360x2950/0c/08/c4/fe/0d4cab0e2f469f44164457126b73c5afd037891e0587ea74c31fca07-w:3000-h:3750-l:951876-t:image/jpeg.jpeg')`,
-        backgroundSize: "cover",
+        backgroundSize: "contain",
         backgroundPosition: "center",
         display: "flex",
         alignItems: "center",
         justifyContent: "flex-start",
+        // backgroundRepeat: "no-repeat",
     },
     heroOverlay: {
         position: "absolute",
@@ -854,7 +855,7 @@ const styles = {
     carouselImage: {
         width: "100%",
         height: "420px",
-        objectFit: "cover",
+        objectFit: "contain",
         display: "block",
     },
     carouselOverlay: {

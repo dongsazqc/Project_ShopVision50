@@ -4,6 +4,8 @@ import axios from "axios";
 // ✅ Tạo instance axios mặc định cho toàn bộ web client
 const api = axios.create({
     baseURL: "http://160.250.5.26:5000/api", // Địa chỉ API backend của bạn
+    // baseURL: "http://localhost:5000/api", // Địa chỉ API backend của bạn
+
     timeout: 10000, // 10 giây timeout
     headers: {
         "Content-Type": "application/json",

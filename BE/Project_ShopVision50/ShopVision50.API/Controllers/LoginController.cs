@@ -33,7 +33,7 @@ namespace ShopVision50.API.Controllers
                 return BadRequest("Dữ liệu không hợp lệ!");
 
             // ✅ Gọi service kiểm tra user
-            var result = await _userService.AuthenticateUserAsync(dto.Email, dto.Password);
+            var result = await _userService.AuthenticateUserAsync(dto.Email, dto.Password, dto.IsClientLogin);
             if (!result.Success)
                 return Unauthorized(result.Message);
 

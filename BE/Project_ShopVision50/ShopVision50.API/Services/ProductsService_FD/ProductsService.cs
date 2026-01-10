@@ -1,8 +1,9 @@
-﻿    using Shop_Db.Models;
-    using ShopVision50.API.Models.Users.DTOs;
-    using ShopVision50.API.Repositories;
-    using ShopVision50.API.Repositories.ProductsRepo_FD;
-    using System.Xml.Linq;
+﻿using Shop_Db.Models;
+using ShopVision50.API.Models.Users.DTOs;
+using ShopVision50.API.Repositories;
+using ShopVision50.API.Repositories.ProductsRepo_FD;
+using System.Xml.Linq;
+using System.Linq;
 
     namespace ShopVision50.API.Services.ProductsService_FD
     {
@@ -30,47 +31,71 @@
                     return false;
                 }
             }
-            public async Task<List<ProductDto>> GetAllProductsAsync()
+        public async Task<List<ProductDto>> GetAllProductsAsync()
+        {
+            try
             {
-                try
-                {
-                    var products = await _productsRepo.GetAllProductsAsync();
-                    if (products == null || products.Count == 0)
-                    {
+                var products = await _productsRepo.GetAllProductsAsync();
+                if (products == null || products.Count == 0)
+                    return null;
 
-                        return null;
-                    }
-                    else
+                var productDtoList = new List<ProductDto>();
+                foreach (var p in products)
+                {
+                    var productDto = new ProductDto()
                     {
-                        var productDtoList = new List<ProductDto>(); // khởi tạo productDtoList là 1 list rỗng kiểu ProductDto để chứa dữ liệu trả về
-                        foreach (var p in products) // chổ này là khởi tạo 1 biến p để duyệt từng thằng product trong biến products
+                        ProductId = p.ProductId,
+                        Name = p.Name,
+                        Price = p.Price,
+                        Description = p.Description,
+                        Brand = p.Brand,
+                        CategoryId = p.CategoryId,
+                        MaterialId = p.MaterialId,
+                        StyleId = p.StyleId,
+                        GenderId = p.GenderId,
+                        OriginId = p.OriginId,
+                        CreatedDate = p.CreatedDate,
+                        Warranty = p.Warranty,
+                        Status = p.Status
+                    };
+
+                    if (p.ProductVariants != null && p.ProductVariants.Any())
+                    {
+                        productDto.ProductVariants = p.ProductVariants.Select(v => new ProductVariantDto
                         {
-                           var productDto = new ProductDto()
-                            {
-                                ProductId = p.ProductId,
-                                Name = p.Name,
-                                Price = p.Price,
-                                Description = p.Description,
-                                Brand = p.Brand,
-                                // Chưa map categoryId, materialId...
-                                CategoryId = p.CategoryId,
-                                MaterialId = p.MaterialId,
-                                StyleId = p.StyleId,
-                                GenderId = p.GenderId,
-                                OriginId = p.OriginId,
-                            };
-
-                            productDtoList.Add(productDto); // thêm từng thằng productDto vào trong productDtoList
-                        }
-                        return productDtoList;  // trả về cái thằng productDtoList mà trong hợp đồng có
+                            ProductVariantId = v.ProductVariantId,
+                            SalePrice = v.SalePrice,
+                            Stock = v.Stock,
+                            SizeId = v.SizeId,
+                            Size = v.Size == null ? null : new ProductSizeDto { SizeId = v.Size.SizeId, Name = v.Size.Name },
+                            ColorId = v.ColorId,
+                            Color = v.Color == null ? null : new ProductColorDto { ColorId = v.Color.ColorId, Name = v.Color.Name },
+                            ProductId = v.ProductId
+                        }).ToList();
                     }
-                }
-                catch (Exception ex)
-                {
-                    return null; // Tránh null reference
+
+                    if (p.ProductImages != null && p.ProductImages.Any())
+                    {
+                        productDto.ProductImages = p.ProductImages.Select(img => new ProductImageDto
+                        {
+                            ProductImageId = img.ProductImageId,
+                            Url = img.Url,
+                            IsMain = img.IsMain,
+                            // Stock = img.Stock,
+                            ProductId = img.ProductId
+                        }).ToList();
+                    }
+
+                    productDtoList.Add(productDto);
                 }
 
+                return productDtoList;
             }
+            catch (Exception ex)
+            {
+                return null;
+            }
+        }
 
             public async Task<ServiceResult<Product>> GetProductDetails(int productsDetailsId)
             {

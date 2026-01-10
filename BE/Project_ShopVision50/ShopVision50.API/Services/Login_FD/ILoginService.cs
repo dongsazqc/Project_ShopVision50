@@ -9,6 +9,6 @@ namespace ShopVision50.API.Services.Login_FD
 {
     public interface ILoginService
     {
-        Task<ServiceResult<User>> AuthenticateUserAsync(string email, string password);
+        Task<ServiceResult<User>> AuthenticateUserAsync(string email, string password, bool isClientLogin = false);
     }
 }

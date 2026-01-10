@@ -95,7 +95,7 @@ export default function Products() {
 
     useEffect(() => {
         applyFilter();
-    }, [searchText]);
+    }, [searchText, products]);
 
     const resetFilter = () => {
         setSearchText("");
@@ -309,7 +309,7 @@ export default function Products() {
                     handleUpdateVariant({
                         ...v,
                         giaBan: (v.discountPercent / 100) * values.Price,
-                    });
+                    }, false);
                 });
                 fetchVariants(editingProduct.productId);
                 fetchImages(editingProduct.productId);
@@ -464,14 +464,14 @@ export default function Products() {
             variantForm.resetFields();
 
             await fetchVariants(editingProduct.productId);
-            await checkProductStatus(editingProduct.productId);
+            // await checkProductStatus(editingProduct.productId);
         } catch (err) {
             console.error(err);
             messageApi.error("Thao tác biến thể thất bại");
         }
     };
 
-    const handleUpdateVariant = async (record) => {
+    const handleUpdateVariant = async (record, isUpdateSigle) => {
         try {
             await api.put(`/ProductVariant/${record.bienTheId}`, {
                 ProductId: editingProduct.productId,
@@ -481,17 +481,40 @@ export default function Products() {
                 soLuongTon: record.soLuongTon,
                 discountPercent: record.discountPercent ?? 0,
             });
-            messageApi.success("Cập nhật biến thể thành công!");
+            if(isUpdateSigle){
+
+                messageApi.success("Cập nhật biến thể thành công!");
+            }
             if (editingProduct?.productId) {
                 await fetchVariants(editingProduct.productId);
-                await checkProductStatus(editingProduct.productId);
+                // await checkProductStatus(editingProduct.productId);
             }
+            const newProduct = products.map(p=>{
+                if(p.productId===editingProduct.productId){
+                    const newVariants = (p?.productVariants || []).map(v=>{
+                        if(v.productVariantId===record.bienTheId){
+                            return {...v,...record, stock: record.soLuongTon};
+                        }
+                        return v
+                    })
+                    return {...p, productVariants: newVariants};
+                }
+
+                return p
+            })  
+            // setVariants((prev) => prev.map(v => v.bienTheId === record.bienTheId ? { ...v, ...record } : v));
+            setProducts(newProduct);
             setVariantModalOpen(false);
         } catch (err) {
-            console.error(err);
-            messageApi.error("Không thể cập nhật biến thể");
+            if(isUpdateSigle){
+                console.error(err);
+                messageApi.error("Không thể cập nhật biến thể");
+            }
         }
     };
+
+    // console.log("products" , products)
+    // console.log("pro" , productPreview)
 
     // const handleDeleteVariant = async (bienTheId, productId) => {
     //     try {
@@ -506,22 +529,22 @@ export default function Products() {
     // };
 
     // ==================== CHECK PRODUCT STATUS ====================
-    const checkProductStatus = async (productId) => {
-        try {
-            const res = await api.get(`/ProductVariant/${productId}/variants`);
-            const data = res.data?.variants?.$values || [];
-            const allZero =
-                data.length === 0
-                    ? true
-                    : data.every((v) => Number(v.soLuongTon) === 0);
-            await api.put(`/Products/UpdateStatus/${productId}`, {
-                status: !allZero,
-            });
-            fetchProducts();
-        } catch (err) {
-            console.error("Lỗi khi kiểm tra trạng thái sản phẩm:", err);
-        }
-    };
+    // const checkProductStatus = async (productId) => {
+    //     try {
+    //         const res = await api.get(`/ProductVariant/${productId}/variants`);
+    //         const data = res.data?.variants?.$values || [];
+    //         const allZero =
+    //             data.length === 0
+    //                 ? true
+    //                 : data.every((v) => Number(v.soLuongTon) === 0);
+    //         await api.put(`/Products/UpdateStatus/${productId}`, {
+    //             status: !allZero,
+    //         });
+    //         fetchProducts();
+    //     } catch (err) {
+    //         console.error("Lỗi khi kiểm tra trạng thái sản phẩm:", err);
+    //     }
+    // };
 
     // ==================== IMAGES ====================
     const handleUploadImage = async ({ file, onSuccess, onError }) => {
@@ -740,7 +763,20 @@ export default function Products() {
                 return found ? found.country : "—";
             },
         },
-
+        {
+            title: "Trang thái",
+            width: 200,
+            dataIndex: "status",
+            render: (_, record) => {
+                // console.log("record", record)
+                const totolStock = (record?.productVariants ||[])?.reduce((acc, variant) => acc + (variant?.stock || 0), 0) || 0;
+                return <p style={{
+                    color:totolStock ? "green" : "red"
+                }}>
+                    {totolStock ? "Đang kinh doanh" : "Ngừng kinh doanh"}
+                </p>;
+            },
+        },
         {
             title: "Ảnh",
             width: 100,
@@ -766,6 +802,7 @@ export default function Products() {
                 <InputNumber
                     value={(r.discountPercent / 100) * editingProduct.price}
                     min={0}
+                    readOnly
                     onChange={(val) =>
                         setVariants((prev) =>
                             prev.map((x) =>
@@ -783,6 +820,7 @@ export default function Products() {
             dataIndex: "soLuongTon",
             render: (v, r) => (
                 <InputNumber
+                readOnly
                     value={r.soLuongTon}
                     min={0}
                     onChange={(val) =>
@@ -1252,7 +1290,7 @@ export default function Products() {
                         handleUpdateVariant({
                             ...editingVariant,
                             ...variantForm.getFieldsValue(),
-                        });
+                        }, true);
                     } else {
                         // ✨ Gọi thêm mới
                         variantForm.submit();

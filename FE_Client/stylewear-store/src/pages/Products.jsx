@@ -98,7 +98,7 @@ const Products = () => {
                 })
             );
 
-            setProducts(productsWithImages);
+            setProducts(productsWithImages.filter((p) => p.productVariants.some((v) => v.stock)));
         } catch (err) {
             console.error("Lỗi load products:", err);
             setProducts([]);
