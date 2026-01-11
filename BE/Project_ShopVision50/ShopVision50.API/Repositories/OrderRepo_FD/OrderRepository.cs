@@ -60,6 +60,7 @@ public async Task<Order?> GetByIdAsync(int id)
     // Cập nhật các field đơn giản
     existingOrder.OrderDate = order.OrderDate;
     existingOrder.OrderType = order.OrderType;
+    existingOrder.IsPaid = true;
     existingOrder.Status = order.Status;
     existingOrder.TotalAmount = order.TotalAmount;
     existingOrder.RecipientName = order.RecipientName;

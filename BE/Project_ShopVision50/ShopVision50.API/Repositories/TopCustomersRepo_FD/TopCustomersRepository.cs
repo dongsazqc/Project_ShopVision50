@@ -1,5 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using ShopVision50.Infrastructure;
+using System.Collections.Generic;
+using System.Threading.Tasks;
+using System.Linq;
 
 namespace ShopVision50.API.Repositories.TopCustomersRepo_FD
 {
@@ -18,7 +21,7 @@ namespace ShopVision50.API.Repositories.TopCustomersRepo_FD
                 from o in _context.Orders
                 join p in _context.Payments on o.OrderId equals p.OrderId
                 join u in _context.Users on o.UserId equals u.UserId
-                where p.Status == true   // 🔥 status là bool
+                where p.Status == true && o.Status == (OrderStatus)3
                 group o by new { o.UserId, u.FullName } into g
                 orderby g.Sum(x => x.TotalAmount) descending
                 select new
@@ -29,9 +32,7 @@ namespace ShopVision50.API.Repositories.TopCustomersRepo_FD
                     orderCount = g.Count()
                 };
 
-            return await query
-                .Take(limit)
-                .ToListAsync<object>();
+            return await query.Take(limit).ToListAsync<object>();
         }
     }
 }
