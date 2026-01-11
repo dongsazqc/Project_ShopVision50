@@ -19,6 +19,29 @@ namespace ShopVision50.Infrastructure.Migrations
                 .HasAnnotation("ProductVersion", "8.0.0")
                 .HasAnnotation("Relational:MaxIdentifierLength", 64);
 
+            modelBuilder.Entity("ShopVision50.Domain.Models.CHATAI", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    b.Property<string>("CauHoi")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("Cautraloi")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("ChatAis");
+                });
+
             modelBuilder.Entity("ShopVision50.Domain.Models.UserPromotion", b =>
                 {
                     b.Property<int>("UserPromotionId")
