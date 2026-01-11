@@ -39,7 +39,7 @@ namespace ShopVision50.API.Services.OrderService_FD
         OrderId = order.OrderId,
         OrderDate = order.OrderDate,
         OrderType = order.OrderType,
-        Status = order.IsPaid,
+        Status = order.Status,
         TotalAmount = order.TotalAmount,
         RecipientName = order.RecipientName,
         RecipientPhone = order.RecipientPhone,

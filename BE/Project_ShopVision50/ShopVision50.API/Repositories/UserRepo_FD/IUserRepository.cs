@@ -1,4 +1,5 @@
 ﻿using Shop_Db.Models;
+using ShopVision50.API.Models.Users.DTOs;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -12,6 +13,7 @@ namespace ShopVision50.API.Repositories
         Task<User?> GetByPhoneAsync(string phone);
         Task<User> AddAsync(User user);
         Task<User> UpdateAsync(User user);
+
         Task<bool> DeleteAsync(User user);
 
         Task<bool> CheckEmailExistsAsync(string email);

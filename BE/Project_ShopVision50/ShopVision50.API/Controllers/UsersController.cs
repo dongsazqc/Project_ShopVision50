@@ -61,6 +61,24 @@ namespace ShopVision50.API.Controllers
         }
 
 
+
+        // PUT api/users/update
+       [HttpPut("updateprofile/{id}")]
+       [Authorize]
+        public async Task<IActionResult> UpdateProfile(int id, [FromBody] UserProfile user)
+        {
+            if (user == null) return BadRequest("Body trống");
+            if (id != user.UserId) return BadRequest("Id trong URL và trong body không khớp");
+
+            var result = await _svc.UpdateUserProfileAsync(user);
+            if (!result.Success) return BadRequest(result.Message);
+            return Ok(result.Data);
+        }
+
+
+        
+
+
         // DELETE api/users/delete/{id}
         [HttpDelete("delete/{id}")]
         [Authorize]

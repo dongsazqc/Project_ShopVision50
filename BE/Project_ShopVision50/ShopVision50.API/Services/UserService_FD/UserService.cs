@@ -65,6 +65,31 @@ namespace ShopVision50.API.Services.UserService_FD
             return ServiceResult<User>.Ok(updatedUser, "Cập nhật người dùng thành công");
         }
 
+
+
+public async Task<ServiceResult<UserProfile>> UpdateUserProfileAsync(UserProfile user)
+{
+    var existingUser = await _repo.GetByIdAsync(user.UserId);
+    if (existingUser == null)
+        return ServiceResult<UserProfile>.Fail("Không tìm thấy người dùng");
+
+    existingUser.FullName = user.FullName;
+    existingUser.Phone = user.Phone;
+    existingUser.DefaultAddress = user.DefaultAddress;
+    var updatedUser = await _repo.UpdateAsync(existingUser);
+
+    var userProfile = new UserProfile
+    {
+        UserId = updatedUser.UserId,
+        FullName = updatedUser.FullName,
+        Phone = updatedUser.Phone,
+        DefaultAddress = updatedUser.DefaultAddress,
+    };
+
+    return ServiceResult<UserProfile>.Ok(userProfile, "Cập nhật người dùng thành công");
+}
+
+
         public async Task<ServiceResult<string>> DeleteUserAsync(int userId)
         {
             var user = await _repo.GetByIdAsync(userId);
