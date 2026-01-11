@@ -27,7 +27,7 @@ const { Option } = Select;
 const Cart = () => {
     const [messageApi, contextHolder] = message.useMessage();
     const navigate = useNavigate();
-    const { cartCount, setCartCount } = useAppContext();
+    const { handleUpdateCartCount } = useAppContext();
     const [cartItems, setCartItems] = useState([]);
     const [loading, setLoading] = useState(true);
     const [promotions, setPromotions] = useState([]);
@@ -141,7 +141,7 @@ const Cart = () => {
             setCartItems((prev) =>
                 prev.filter((item) => item.cartItemId !== cartItemId)
             );
-            setCartCount(cartCount - 1);
+            handleUpdateCartCount();
         } catch (error) {
             console.log(error);
         }

@@ -68,6 +68,10 @@ export default function Products() {
     const [searchId, setSearchId] = useState("");
     const [filterCategory, setFilterCategory] = useState(null);
 
+    const handleCaculatePrice = (price, discountPercent) => {
+        return (1-(discountPercent / 100)) * price;
+    }
+
     // ================= APPLY FILTER =================
     const applyFilter = () => {
         // We don't mutate original products array — fetchProducts will restore when reset
@@ -199,7 +203,7 @@ export default function Products() {
                     tenKichCo: v.tenKichCo,
                     giaBan: v.giaBan,
                     soLuongTon: v.soLuongTon,
-                    discountPercent: (v.giaBan / (priceRef.current || 1)) * 100,
+                    discountPercent: 100 - ((v.giaBan / (priceRef.current || 1)) * 100),
                 }))
             );
         } catch (err) {
@@ -308,7 +312,7 @@ export default function Products() {
                 variants.forEach((v) => {
                     handleUpdateVariant({
                         ...v,
-                        giaBan: (v.discountPercent / 100) * values.Price,
+                        giaBan: handleCaculatePrice(values.Price, v.discountPercent),
                     }, false);
                 });
                 fetchVariants(editingProduct.productId);
@@ -399,7 +403,7 @@ export default function Products() {
         variantForm.setFieldsValue({
             tenMau: variant.tenMau,
             tenKichCo: variant.tenKichCo,
-            giaBan: editingProduct.price * (variant.discountPercent / 100),
+            giaBan: handleCaculatePrice(editingProduct.price, variant.discountPercent),
             soLuongTon: variant.soLuongTon,
             discountPercent: variant.discountPercent
                 ? variant.discountPercent
@@ -800,7 +804,7 @@ export default function Products() {
             dataIndex: "giaBan",
             render: (v, r) => (
                 <InputNumber
-                    value={(r.discountPercent / 100) * editingProduct.price}
+                    value={handleCaculatePrice(editingProduct.price, r.discountPercent)}
                     min={0}
                     readOnly
                     onChange={(val) =>

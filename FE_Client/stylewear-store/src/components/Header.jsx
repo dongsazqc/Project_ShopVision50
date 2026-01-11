@@ -7,7 +7,6 @@ import {
     UserOutlined,
     SearchOutlined,
 } from "@ant-design/icons";
-import api from "../utils/axios";
 import { useAppContext } from "../context/AppContext";
 
 const { Header } = Layout;
@@ -17,12 +16,11 @@ const AppHeader = () => {
     const location = useLocation();
     const navigate = useNavigate();
 
-    const { cartCount, setCartCount } = useAppContext();
+    const { cartCount, handleUpdateCartCount } = useAppContext();
     // const [cartCount, setCartCount] = useState(0);
     const [keyword, setKeyword] = useState("");
 
     const token = localStorage.getItem("token");
-    const userId = localStorage.getItem("userId");
 
     const handleNavigateSearch = useCallback(() => {
         if (keyword.trim()) {
@@ -74,12 +72,7 @@ const AppHeader = () => {
     // }, []);
 
     useEffect(() => {
-        const fetch = async () => {
-            const res = await api.get(`/Cart/GetCartByUser/${userId}`);
-            const rawItems = res.data?.cartItems || [];
-            setCartCount(rawItems?.length);
-        };
-        fetch();
+        handleUpdateCartCount();
     }, []);
 
     console.log("Cart count in header:", cartCount);
