@@ -15,7 +15,7 @@ import api from "../utils/axios";
 
 const { Title } = Typography;
 
-const Products = () => {
+const Products = () => {    
     const navigate = useNavigate();
     const [products, setProducts] = useState([]);
     const [loading, setLoading] = useState(false);
@@ -97,7 +97,13 @@ const Products = () => {
                 })
             );
 
-            setProducts(productsWithImages.filter((p) => p.productVariants.some((v) => v.stock)));
+            setProducts(
+            productsWithImages.filter(
+                (p) => p.productVariants && p.productVariants.some((v) => v.stock)
+            )
+            );
+
+
         } catch (err) {
             console.error("Lỗi load products:", err);
             setProducts([]);
