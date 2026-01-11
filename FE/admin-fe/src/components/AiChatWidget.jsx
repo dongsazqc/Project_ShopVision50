@@ -16,93 +16,114 @@ export default function AiChatWidget() {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   };
 
-  async function sendMessage() {
-    if (!input.trim() || isStreaming) return;
+async function sendMessage() {
+  if (!input.trim() || isStreaming) return;
 
-    const userText = input;
-    setInput("");
-    setIsStreaming(true);
+  const userText = input;
+  setInput("");
+  setIsStreaming(true);
 
-    setMessages((m) => [...m, { role: "user", content: userText }]);
-    setMessages((m) => [...m, { role: "assistant", content: "", isLoading: true }]);
+  setMessages((m) => [...m, { role: "user", content: userText }]);
+  setMessages((m) => [...m, { role: "assistant", content: "", isLoading: true }]);
 
-    try {
-      const res = await fetch("https://sazqc.my/v1/chat/completions", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          messages: [{ role: "user", content: userText }],
-          stream: true,
-        }),
-      });
+  try {
+    const res = await fetch("https://sazqc.my/v1/chat/completions", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        messages: [{ role: "user", content: userText }],
+        stream: true,
+      }),
+    });
 
-      if (!res.body) {
-        console.error("No response body stream");
-        setIsStreaming(false);
-        return;
-      }
-
-      const reader = res.body.getReader();
-      const decoder = new TextDecoder("utf-8");
-
-      let aiText = "";
-
-      while (true) {
-        const { value, done } = await reader.read();
-        if (done) break;
-
-        const chunk = decoder.decode(value, { stream: true });
-
-        chunk.split("\n").forEach((line) => {
-          if (!line.trim()) return;
-
-          if (line.startsWith("data: ")) {
-            line = line.slice(6);
-          }
-
-          if (line === "[DONE]") {
-            return;
-          }
-
-          try {
-            const json = JSON.parse(line);
-            const delta =
-              json.choices?.[0]?.delta?.content ||
-              json.choices?.[0]?.message?.content;
-
-            if (delta) {
-              aiText += delta;
-
-              setMessages((m) => {
-                const copy = [...m];
-                copy[copy.length - 1] = {
-                  role: "assistant",
-                  content: aiText,
-                  isLoading: false,
-                };
-                return copy;
-              });
-            }
-          } catch {
-            // bỏ qua dòng không parse được
-          }
-        });
-      }
-    } catch (err) {
-      console.error("Fetch error:", err);
-      setMessages((m) => {
-        const copy = [...m];
-        copy[copy.length - 1] = {
-          role: "assistant",
-          content: "Đã xảy ra lỗi khi kết nối. Vui lòng thử lại!",
-          isLoading: false,
-        };
-        return copy;
-      });
-    } finally {
+    if (!res.body) {
+      console.error("No response body stream");
       setIsStreaming(false);
+      return;
     }
+
+    const reader = res.body.getReader();
+    const decoder = new TextDecoder("utf-8");
+
+    let aiText = "";
+
+    while (true) {
+      const { value, done } = await reader.read();
+      if (done) break;
+
+      const chunk = decoder.decode(value, { stream: true });
+
+      chunk.split("\n").forEach((line) => {
+        if (!line.trim()) return;
+
+        if (line.startsWith("data: ")) {
+          line = line.slice(6);
+        }
+
+        if (line === "[DONE]") {
+          return;
+        }
+
+        try {
+          const json = JSON.parse(line);
+          const delta =
+            json.choices?.[0]?.delta?.content ||
+            json.choices?.[0]?.message?.content;
+
+          if (delta) {
+            aiText += delta;
+
+            setMessages((m) => {
+              const copy = [...m];
+              copy[copy.length - 1] = {
+                role: "assistant",
+                content: aiText,
+                isLoading: false,
+              };
+              return copy;
+            });
+          }
+        } catch {
+          // ignore lines can't parse
+        }
+      });
+    }
+
+    // Lấy userId từ localStorage
+    const storedUser = JSON.parse(localStorage.getItem("user"));
+    const userId = storedUser?.userId || storedUser?.UserId || null;
+
+    if (!userId) {
+      console.warn("Không tìm thấy userId trong localStorage, không gửi được câu hỏi.");
+      setIsStreaming(false);
+      return;
+    }
+
+    await fetch("http://160.250.5.26:5000/api/ChatAi/save", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        UserId: userId.toString(),
+        CauHoi: userText,
+        Cautraloi: aiText,
+      }),
+    });
+  } catch (err) {
+    console.error("Fetch error:", err);
+    setMessages((m) => {
+      const copy = [...m];
+      copy[copy.length - 1] = {
+        role: "assistant",
+        content: "Đã xảy ra lỗi khi kết nối. Vui lòng thử lại!",
+        isLoading: false,
+      };
+      return copy;
+    });
+  } finally {
+    setIsStreaming(false);
   }
+}
+
 
   function resetChat() {
     setMessages([]);

@@ -46,6 +46,8 @@
     using ShopVision50.API.Repositories.CartItemRepository;
 using ShopVision50.API.Services.OrderService_FD;
 using ShopVision50.API.LlamaAiService;
+using ShopVision50.API.Services.ChatAiService_FD;
+using ShopVision50.API.Repositories.ChatAiRepository_FD;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -155,6 +157,12 @@ var builder = WebApplication.CreateBuilder(args);
 
     builder.Services.AddScoped<ICartItemRepository, CartItemRepository>();
     builder.Services.AddScoped<ICartItemService, CartItemService>();
+
+    
+    builder.Services.AddScoped<IChatAiService, ChatAiService>();
+    builder.Services.AddScoped<IChatAiRepository, ChatAiRepository>();
+
+
 
     builder.Services.AddSingleton(new LlamaAiService(
     "/home/dong/Desktop/Project_ShopVision50/BE/Project_ShopVision50/ShopVision50.AgentPy/llama.cpp/build/bin/llama-cli",
