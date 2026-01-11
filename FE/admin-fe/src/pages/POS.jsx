@@ -674,7 +674,7 @@ export default function POS() {
 
           {paymentMethod === "BankTransfer" && (
             <div style={{ textAlign: "center" }}>
-              <img src="/qr-store.png" style={{ width: 220 }} />
+              <img src="/anhQr.jpg" style={{ width: 220 }} />
             </div>
           )}
 

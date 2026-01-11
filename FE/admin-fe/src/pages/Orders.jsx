@@ -14,7 +14,8 @@ import { ReloadOutlined, SaveOutlined } from "@ant-design/icons";
 import { useEffect, useState } from "react";
 import api from "../utils/axios";
 import dayjs from "dayjs";
-
+import utc from "dayjs/plugin/utc";
+dayjs.extend(utc);
 const { RangePicker } = DatePicker;
 
 // STATUS: BE number → FE label
@@ -251,7 +252,7 @@ export default function Orders() {
     {
       title: "Ngày tạo",
       dataIndex: "orderDate",
-      render: (v) => dayjs(v).format("DD/MM/YYYY HH:mm"),
+      render: (v) => dayjs.utc(v).local().format("DD/MM/YYYY HH:mm"),
     },
   ];
 
@@ -453,4 +454,4 @@ export default function Orders() {
       </Modal>
     </div>
   );
-}
+}  
