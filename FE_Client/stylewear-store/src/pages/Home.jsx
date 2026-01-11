@@ -30,7 +30,8 @@ const Home = () => {
     const [images, setImages] = useState({});
     const [loading, setLoading] = useState(false);
     const [hovered, setHovered] = useState(null);
-
+const [hoveredIndex, setHoveredIndex] = useState(null);
+const [hoveredButton, setHoveredButton] = useState(null);
     useEffect(() => {
         fetchVariants();
     }, []);
@@ -207,7 +208,7 @@ const Home = () => {
             {/* ================= CONTENT ================= */}
             <Content style={styles.content}>
                 {/* FEATURED COLLECTION - CAROUSEL */}
-                <Row justify="center" style={{ marginBottom: 80 }}>
+                {/* <Row justify="center" style={{ marginBottom: 80 }}>
                     <Col xs={24} md={22} lg={20}>
                         <div style={styles.sectionHeader}>
                             <h2 style={styles.sectionTitle}>
@@ -249,7 +250,86 @@ const Home = () => {
                             ))}
                         </Carousel>
                     </Col>
-                </Row>
+                </Row> */}
+
+<Row justify="center" style={{ marginBottom: 80 }}>
+    <Col xs={24} md={22} lg={20}>
+        <div style={styles.sectionHeader}>
+            <h2 style={styles.sectionTitle}>
+                ✨ Bộ Sưu Tập Nổi Bật
+            </h2>
+            <p style={styles.sectionSubtitle}>
+                Xu hướng thời trang mới nhất năm 2025
+            </p>
+        </div>
+        <Carousel
+            autoplay
+            speed={1000}
+            
+            autoplaySpeed={4000}
+            dots={{ className: "custom-dots" }}
+            effect="fade"
+        >
+            {carouselImages.map((img, i) => (
+                <div key={i} style={styles.carouselWrapper}>
+                    <div 
+                        style={styles.carouselImageContainer}
+                        onMouseEnter={() => setHoveredIndex(i)}
+                        onMouseLeave={() => setHoveredIndex(null)}
+                    >
+                        <img
+                            src={img}
+                            style={{
+                                ...styles.carouselImage,
+                                transform: hoveredIndex === i ? 'scale(1.05)' : 'scale(1)',
+                            }}
+                            alt={`Collection ${i + 1}`}
+                            loading="lazy"
+                        />
+                        <div style={{
+                            ...styles.carouselOverlay,
+                            background: hoveredIndex === i 
+                                ? 'linear-gradient(to top, rgba(0,0,0,0.9) 0%, rgba(0,0,0,0.5) 60%, transparent 100%)'
+                                : 'linear-gradient(to top, rgba(0,0,0,0.85) 0%, rgba(0,0,0,0.4) 60%, transparent 100%)',
+                        }}>
+                            <div style={{
+                                ...styles.carouselContent,
+                                transform: hoveredIndex === i ? 'translateY(-8px)' : 'translateY(0)',
+                            }}>
+                                {/* <h3 style={styles.carouselTitle}>
+                                    Bộ Sưu Tập {["Xuân Hè", "Thu Đông", "Đặc Biệt", "Limited Edition"][i % 4]}
+                                </h3> */}
+                                <p style={styles.carouselDescription}>
+                                    Khám phá phong cách độc đáo và tinh tế
+                                </p>
+                                <Button
+                                    size="large"
+                                    style={{
+                                        ...styles.carouselButton,
+                                        backgroundColor: hoveredButton === i ? '#f0f0f0' : 'white',
+                                        transform: hoveredButton === i ? 'translateY(-2px)' : 'translateY(0)',
+                                        boxShadow: hoveredButton === i 
+                                            ? '0 6px 20px rgba(0,0,0,0.3)' 
+                                            : '0 4px 15px rgba(0,0,0,0.2)',
+                                    }}
+                                    onMouseEnter={() => setHoveredButton(i)}
+                                    onMouseLeave={() => setHoveredButton(null)}
+                                    onClick={() => navigate("/products")}
+                                >
+                                    Khám Phá Ngay →
+                                </Button>
+                            </div>
+                        </div>
+                        {/* Badge góc phải */}
+                        <div style={styles.badge}>
+                            <span style={styles.badgeText}>NEW</span>
+                        </div>
+                    </div>
+                </div>
+            ))}
+        </Carousel>
+    </Col>
+</Row>
 
                 {/* TOP NEW PRODUCTS */}
                 <div style={styles.productSection}>
@@ -644,9 +724,12 @@ const Home = () => {
 
 /* ================== DATA ================== */
 const carouselImages = [
-    "https://content.pancake.vn/1/s2360x2950/ac/7e/2d/d2/11a51615a03a8918bda28100852b0ec9783634c7c43beaa4cf2103f7-w:3000-h:3750-l:908357-t:image/jpeg.jpeg",
-    "https://content.pancake.vn/1/s2360x2950/50/5c/3b/c5/0987a112f0369bd2700c69b82a42c6f0c571fd06a0f45ddf787c1671-w:3000-h:3750-l:966537-t:image/jpeg.jpeg",
-    "https://content.pancake.vn/1/s2360x2950/6e/b4/d2/90/bc083c630c414ca4d1b14c67af364e88f6906cd7e6fd709fc29133d2-w:3000-h:3750-l:696235-t:image/jpeg.jpeg",
+    "https://intphcm.com/data/upload/banner-thoi-trang-tuoi.jpg",
+    "https://intphcm.com/data/upload/banner-thoi-trang-dep.jpg",
+    "https://intphcm.com/data/upload/banner-thoi-trang-nam.jpg",
+    // "https://content.pancake.vn/1/s2360x2950/ac/7e/2d/d2/11a51615a03a8918bda28100852b0ec9783634c7c43beaa4cf2103f7-w:3000-h:3750-l:908357-t:image/jpeg.jpeg",
+    // "https://content.pancake.vn/1/s2360x2950/50/5c/3b/c5/0987a112f0369bd2700c69b82a42c6f0c571fd06a0f45ddf787c1671-w:3000-h:3750-l:966537-t:image/jpeg.jpeg",
+    // "https://content.pancake.vn/1/s2360x2950/6e/b4/d2/90/bc083c630c414ca4d1b14c67af364e88f6906cd7e6fd709fc29133d2-w:3000-h:3750-l:696235-t:image/jpeg.jpeg",
 ];
 
 const categories = [
@@ -843,6 +926,46 @@ const styles = {
         fontWeight: 600,
         color: "#FF4D4F",
     },
+    // carouselWrapper: {
+    //     padding: "0 20px",
+    // },
+    // carouselImageContainer: {
+    //     position: "relative",
+    //     borderRadius: "24px",
+    //     overflow: "hidden",
+    //     boxShadow: "0 20px 60px rgba(0,0,0,0.2)",
+    // },
+    // carouselImage: {
+    //     width: "100%",
+    //     height: "420px",
+    //     objectFit: "contain",
+    //     display: "block",
+    // },
+    // carouselOverlay: {
+    //     position: "absolute",
+    //     bottom: 0,
+    //     left: 0,
+    //     right: 0,
+    //     padding: "24px",
+    //     background:
+    //         "linear-gradient(to top, rgba(0,0,0,0.8) 0%, transparent 100%)",
+    //     display: "flex",
+    //     justifyContent: "center",
+    //     alignItems: "center",
+    //     opacity: 0,
+    //     transition: "opacity 0.3s",
+    // },
+    // carouselButton: {
+    //     backgroundColor: "white",
+    //     color: "#1a1a1a",
+    //     borderColor: "white",
+    //     height: 40,
+    //     padding: "0 24px",
+    //     fontSize: "16px",
+    //     fontWeight: 600,
+    //     borderRadius: "24px",
+    // },
+
     carouselWrapper: {
         padding: "0 20px",
     },
@@ -851,37 +974,76 @@ const styles = {
         borderRadius: "24px",
         overflow: "hidden",
         boxShadow: "0 20px 60px rgba(0,0,0,0.2)",
+        background: "linear-gradient(135deg, #667eea 0%, #764ba2 100%)",
+        minHeight: "500px",
+        cursor: "pointer",
     },
     carouselImage: {
         width: "100%",
-        height: "420px",
-        objectFit: "contain",
+        height: "500px",
+        objectFit: "cover",
         display: "block",
+        transition: "transform 0.5s ease",
     },
     carouselOverlay: {
         position: "absolute",
         bottom: 0,
         left: 0,
         right: 0,
-        padding: "24px",
-        background:
-            "linear-gradient(to top, rgba(0,0,0,0.8) 0%, transparent 100%)",
+        padding: "48px 32px",
         display: "flex",
         justifyContent: "center",
         alignItems: "center",
-        opacity: 0,
-        transition: "opacity 0.3s",
+        transition: "all 0.4s ease",
+    },
+    carouselContent: {
+        textAlign: "center",
+        maxWidth: "600px",
+        transition: "transform 0.4s ease",
+    },
+    carouselTitle: {
+        fontSize: "32px",
+        fontWeight: 700,
+        color: "white",
+        marginBottom: "12px",
+        textShadow: "2px 2px 8px rgba(0,0,0,0.3)",
+        lineHeight: 1.2,
+    },
+    carouselDescription: {
+        fontSize: "16px",
+        color: "rgba(255,255,255,0.95)",
+        marginBottom: "24px",
+        fontWeight: 400,
+        textShadow: "1px 1px 4px rgba(0,0,0,0.5)",
     },
     carouselButton: {
-        backgroundColor: "white",
         color: "#1a1a1a",
         borderColor: "white",
-        height: 40,
-        padding: "0 24px",
+        height: 48,
+        padding: "0 32px",
         fontSize: "16px",
         fontWeight: 600,
         borderRadius: "24px",
+        transition: "all 0.3s ease",
+        border: "none",
     },
+    badge: {
+        position: "absolute",
+        top: "24px",
+        right: "24px",
+        backgroundColor: "#ff4757",
+        padding: "8px 16px",
+        borderRadius: "20px",
+        boxShadow: "0 4px 12px rgba(255,71,87,0.4)",
+        zIndex: 10,
+    },
+    badgeText: {
+        color: "white",
+        fontSize: "12px",
+        fontWeight: 700,
+        letterSpacing: "1px",
+    },
+
     productSection: {
         marginBottom: 80,
     },

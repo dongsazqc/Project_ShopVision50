@@ -20,7 +20,7 @@ import { useAppContext } from "../context/AppContext";
 const ProductDetail = () => {
     const { id } = useParams();
     const navigate = useNavigate();
-    const { cartCount, setCartCount } = useAppContext();
+    const { handleUpdateCartCount } = useAppContext();
     const baseURL = "http://160.250.5.26:5000";
 
     const [product, setProduct] = useState(null);
@@ -127,12 +127,15 @@ const ProductDetail = () => {
                 productVariantId: activeVariant.productVariantId,
                 quantity,
             });
-            setCartCount(cartCount + 1);
             setAddedModalVisible(true);
         } catch (error) {
             console.error(error);
             message.error("Không thể thêm vào giỏ hàng");
-        }
+        } 
+
+        setTimeout(()=>{
+            handleUpdateCartCount();
+        }, 500);
     };
 
     const handleBuyNow = () => {
