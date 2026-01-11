@@ -10,6 +10,7 @@ namespace Shop_Db.Models
 {
     public class User
     {
+        
         [Key]
         public int UserId { get; set; }
 
@@ -37,3 +38,4 @@ namespace Shop_Db.Models
     }
 
 }
+
