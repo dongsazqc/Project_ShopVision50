@@ -22,7 +22,7 @@ export default function AdminRoutes() {
   if (!user) return <Navigate to="/login" replace />;
 
   // Nếu là khách hàng → không được vào trang quản trị
-  if (user.roleId === 4) {
+  if (user.roleId === 3) {
     return (
       <Navigate
         to="/login"
@@ -33,7 +33,7 @@ export default function AdminRoutes() {
   }
 
   // Nếu là nhân viên → chỉ cho phép dashboard và POS
-  if (user.roleId === 3) {
+  if (user.roleId === 2) {
     return (
       <Routes>
         <Route path="/admin" element={<AdminLayout />}>
