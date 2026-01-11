@@ -67,7 +67,6 @@ const Products = () => {
             setLoading(true);
             const res = await api.get("/Products/getAllProducts");
             if (!res.data?.length) return setProducts([]);
-console.log("res" , res)
             const productsWithImages = await Promise.all(
                 res.data.map(async (item) => {
                     try {
@@ -108,7 +107,6 @@ console.log("res" , res)
 
     // ===== FILTER & PAGINATION =====
     const filteredProducts = useMemo(() => {
-        console.log("check product" , products)
         return products.filter((p) => {
             const matchCategory =
                 !filterCategory.length || filterCategory.includes(p.categoryId);
@@ -151,8 +149,6 @@ console.log("res" , res)
         topProductIds,
         keyword,
     ]);
-// console.log("product")
-// console.log("filtered" , filteredProducts)
     const paginatedProducts = useMemo(() => {
         const start = (page - 1) * pageSize;
         return filteredProducts.slice(start, start + pageSize);
