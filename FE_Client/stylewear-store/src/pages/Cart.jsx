@@ -45,7 +45,7 @@ const { useBreakpoint } = Grid;
 const Cart = () => {
     const [messageApi, contextHolder] = message.useMessage();
     const navigate = useNavigate();
-    const { cartCount, setCartCount } = useAppContext();
+    const { handleUpdateCartCount } = useAppContext();
     const [cartItems, setCartItems] = useState([]);
     const [loading, setLoading] = useState(true);
     const [promotions, setPromotions] = useState([]);
@@ -172,7 +172,7 @@ const Cart = () => {
             setCartItems((prev) =>
                 prev.filter((item) => item.cartItemId !== cartItemId)
             );
-            setCartCount(prev => prev - 1);
+            handleUpdateCartCount();
         } catch (error) {
             console.error("Lỗi xoá sản phẩm:", error);
             messageApi.error("Xoá sản phẩm thất bại");
@@ -205,7 +205,8 @@ const Cart = () => {
                 !selectedItems.includes(item.variantId)
             ));
             setSelectedItems([]);
-            setCartCount(prev => prev - itemsToRemove.length);
+            // setCartCount(prev => prev - itemsToRemove.length);
+            handleUpdateCartCount();
         } catch (error) {
             console.error("Lỗi xoá nhiều sản phẩm:", error);
             messageApi.error("Xoá sản phẩm thất bại");
