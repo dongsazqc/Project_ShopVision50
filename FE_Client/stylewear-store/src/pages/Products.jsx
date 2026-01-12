@@ -15,7 +15,7 @@ import api from "../utils/axios";
 
 const { Title } = Typography;
 
-const Products = () => {
+const Products = () => {    
     const navigate = useNavigate();
     const [products, setProducts] = useState([]);
     const [loading, setLoading] = useState(false);

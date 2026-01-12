@@ -120,6 +120,7 @@ namespace ShopVision50.API.Services.OrderService_FD
     {
         OrderDate = request.OrderDate,
         OrderType = request.OrderType,
+        IsPaid = true,
         Status = request.Status,
         RecipientName = request.RecipientName,
         RecipientPhone = request.RecipientPhone,
@@ -193,16 +194,16 @@ foreach (var item in orderItems)
             }).ToList();
         }
         public async Task UpdateStatusAsync(int orderId, OrderStatus status)
-{
-    var order = await _repository.GetByIdAsync(orderId);
+        {
+            var order = await _repository.GetByIdAsync(orderId);
 
-    if (order == null)
-        throw new Exception("Order not found");
+            if (order == null)
+                throw new Exception("Order not found");
 
-    order.Status = status;
+            order.Status = status;
 
-    await _repository.UpdateAsync(order);
-}
+            await _repository.UpdateAsync(order);
+        }
 
 
 
