@@ -203,9 +203,6 @@ const AppHeader = () => {
                     <Menu.Item key="/myorder" style={{ fontWeight: "normal" }}>
                         <Link to="/myorder">Đơn hàng của tôi</Link>
                     </Menu.Item>
-                    <Menu.Item key="/sale" style={{ fontWeight: "normal" }}>
-                        <Link to="/sale">Đang giảm giá</Link>
-                    </Menu.Item>
 
 
 
