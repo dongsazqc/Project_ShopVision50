@@ -13,6 +13,7 @@ import {
   Spin,
 } from "antd";
 import api from "../utils/axios";
+import { useAppContext } from "../context/AppContext";
 
 const Checkout = () => {
   const [messageApi, contextHolder] = message.useMessage();
@@ -31,21 +32,26 @@ const Checkout = () => {
   // 1) LẤY DỮ LIỆU BUY NOW HOẶC CART
   // =========================================
   useEffect(() => {
+    // Lấy sản phẩm từ Cart (chỉ những sản phẩm đã chọn)
+    const checkoutFromCart = JSON.parse(
+      sessionStorage.getItem("checkoutItems")
+    );
+    if (checkoutFromCart && checkoutFromCart.length > 0) {
+      setCheckoutItems(checkoutFromCart);
+      return;
+    }
+
+    // Nếu có mua ngay
     const buyNow = JSON.parse(sessionStorage.getItem("buyNow"));
     if (buyNow) {
       setCheckoutItems([buyNow]);
       return;
     }
 
-    const cart = JSON.parse(localStorage.getItem("cart")) || [];
-    if (cart.length > 0) {
-      setCheckoutItems(cart);
-      return;
-    }
-
+    // Nếu user đã login nhưng session rỗng → fetch từ server
     if (token) {
       fetchCartFromServer();
-    } else {  
+    } else {
       messageApi.warning("Không có sản phẩm để thanh toán");
       navigate("/");
     }
@@ -54,48 +60,50 @@ const Checkout = () => {
   // =========================================
   // 2) FETCH CART SERVER
   // =========================================
-const fetchCartFromServer = async () => {
-  if (!userId) {
-    messageApi.warning("Bạn chưa đăng nhập");
-    navigate("/");
-    return;
-  }
-
-  try {
-    setLoading(true);
-    const res = await api.get(`/Cart/GetCartByUser/${userId}`);
-    const data = res.data;
-
-    const serverCart = data.cartItems || [];
-
-    if (serverCart.length === 0) {
-      messageApi.warning("Giỏ hàng của bạn đang trống");
-      return navigate("/");
+  const fetchCartFromServer = async () => {
+    if (!userId) {
+      messageApi.warning("Bạn chưa đăng nhập");
+      navigate("/");
+      return;
     }
 
-    const normalized = serverCart.map((item) => ({
-      variantId: item.productVariantId,
-      cartItemId: item.cartItemId,
-      quantity: item.quantity,
-      giaBan: item.productVariant?.salePrice || item.price || 0,
-      name: item.productVariant?.product?.name || `Sản phẩm #${item.productVariantId}`,
-      color: item.productVariant?.color?.name || null,
-      size: item.productVariant?.size?.name || null,
-      image: item.productVariant?.product?.productImages?.[0]?.url
-        ? "http://160.250.5.26:5000" + item.productVariant.product.productImages[0].url
-        : "https://via.placeholder.com/150",
-      stock: item.productVariant?.stock || 9999,
-    }));
+    try {
+      setLoading(true);
+      const res = await api.get(`/Cart/GetCartByUser/${userId}`);
+      const data = res.data;
 
-    setCheckoutItems(normalized);
-  } catch (err) {
-    console.error(err);
-    messageApi.error("Không thể tải giỏ hàng từ server");
-  } finally {
-    setLoading(false);
-  }
-};
+      const serverCart = data.cartItems || [];
 
+      if (serverCart.length === 0) {
+        messageApi.warning("Giỏ hàng của bạn đang trống");
+        return navigate("/");
+      }
+
+      const normalized = serverCart.map((item) => ({
+        variantId: item.productVariantId,
+        cartItemId: item.cartItemId,
+        quantity: item.quantity,
+        giaBan: item.productVariant?.salePrice || item.price || 0,
+        name:
+          item.productVariant?.product?.name ||
+          `Sản phẩm #${item.productVariantId}`,
+        color: item.productVariant?.color?.name || null,
+        size: item.productVariant?.size?.name || null,
+        image: item.productVariant?.product?.productImages?.[0]?.url
+          ? "http://160.250.5.26:5000" +
+            item.productVariant.product.productImages[0].url
+          : "https://via.placeholder.com/150",
+        stock: item.productVariant?.stock || 9999,
+      }));
+
+      setCheckoutItems(normalized);
+    } catch (err) {
+      console.error(err);
+      messageApi.error("Không thể tải giỏ hàng từ server");
+    } finally {
+      setLoading(false);
+    }
+  };
 
   // =========================================
   // 3) FETCH USER PROFILE → AUTOFILL
@@ -124,65 +132,87 @@ const fetchCartFromServer = async () => {
   if (checkoutItems.length === 0)
     return <Spin style={{ marginTop: 100 }} size="large" />;
 
-  // =========================================
-  // 4) TÍNH TỔNG TIỀN
-  // =========================================
-  const totalAmount = checkoutItems.reduce(
+  // Tính subtotal
+  const subtotal = checkoutItems.reduce(
     (sum, item) => sum + item.giaBan * item.quantity,
     0
   );
 
+  // Tính phí vận chuyển: miễn phí nếu > 500k
+  const shipping = subtotal > 500000 ? 0 : 30000;
+
+  // Tính tổng đơn hàng
+  const totalAmount = subtotal + shipping;
+
   // =========================================
   // 5) SUBMIT ĐẶT HÀNG
   // =========================================
-const handleSubmit = async (values) => {
-  try {
-    setLoading(true);
+  const { setCartCount } = useAppContext();
+  const handleSubmit = async (values) => {
+    try {
+      setLoading(true);
 
-    // Mảng orderItems theo chuẩn JSON 2 có price
-    const orderItems = checkoutItems.map((item) => ({
-      productVariantId: item.variantId,
-      quantity: item.quantity,
-      price: item.giaBan,
-    }));
+      // Mảng orderItems theo chuẩn JSON 2 có price
+      const orderItems = checkoutItems.map((item) => ({
+        productVariantId: item.variantId,
+        quantity: item.quantity,
+        price: item.giaBan,
+      }));
 
-    // Thanh toán kiểu COD theo chuẩn JSON 2
-    const payments = [
-      {
-        method: "Cash",
-        amount: totalAmount,
-        cashReceived: totalAmount, // hoặc mày có input nhập tiền khách đưa thì set lại
-        cashChange: 0, // tiền thối = cashReceived - amount, tạm để 0
-      },
-    ];
+      // Thanh toán kiểu COD
+      const payments = [
+        {
+          method: "Cash",
+          amount: totalAmount,
+          cashReceived: totalAmount,
+          cashChange: 0,
+        },
+      ];
 
-    const orderPayload = {
-      orderDate: new Date().toISOString(),
-      orderType: "Online",
-      status: 0, // Pending
-      totalAmount: totalAmount,
-      recipientName: values.recipientName,
-      recipientPhone: values.recipientPhone,
-      shippingAddress: values.shippingAddress,
-      userId: Number(userId),
-      orderItems: orderItems,
-      payments: payments,
-    };
+      const orderPayload = {
+        orderDate: new Date().toISOString(),
+        orderType: "Online",
+        status: 0,
+        totalAmount: totalAmount,
+        recipientName: values.recipientName,
+        recipientPhone: values.recipientPhone,
+        shippingAddress: values.shippingAddress,
+        userId: Number(userId),
+        orderItems: orderItems,
+        payments: payments,
+      };
 
-    await api.post("/Orders/Add", orderPayload);
+      // ================== TẠO ĐƠN HÀNG ==================
+      await api.post("/Orders/Add", orderPayload);
+      messageApi.success("Đơn hàng đã được tạo, chờ xử lý");
 
-    messageApi.success("Đơn hàng đã được tạo, chờ xử lý");
-    sessionStorage.removeItem("buyNow");
-    localStorage.removeItem("cart");
-    navigate("/ordersuccess");
-  } catch (error) {
-    console.error(error);
-    messageApi.error("Đặt hàng thất bại");
-  } finally {
-    setLoading(false);
-  }
-};
+      // ================== XÓA SẢN PHẨM KHỎI GIỎ HÀNG SERVER ==================
+      if (userId) {
+        const cartItemIds = checkoutItems
+          .map((item) => item.cartItemId)
+          .filter(Boolean); // chỉ lấy những item có cartItemId
 
+        // Xóa từng item
+        for (let id of cartItemIds) {
+          await api.delete(`/CartItems/${id}`);
+        }
+
+        // Cập nhật lại cartCount trong context
+        setCartCount(0);
+      }
+
+      // ================== XÓA LOCAL STORAGE ==================
+      sessionStorage.removeItem("buyNow");
+      localStorage.removeItem("cart");
+
+      navigate("/ordersuccess");
+    } catch (error) {
+      console.error(error);
+      messageApi.error("Đặt hàng thất bại");
+    } finally {
+      setLoading(false);
+    }
+  };
   return (
     <div style={{ padding: 24, maxWidth: 900, margin: "0 auto" }}>
       {contextHolder}
@@ -242,14 +272,14 @@ const handleSubmit = async (values) => {
                   </Form.Item>
 
                   <Form.Item
-    label="Phương thức thanh toán"
-    name="paymentMethod"
-    initialValue="COD"
->
-    <Radio.Group disabled>
-        <Radio value="COD">Ship COD</Radio>
-    </Radio.Group>
-</Form.Item>
+                    label="Phương thức thanh toán"
+                    name="paymentMethod"
+                    initialValue="COD"
+                  >
+                    <Radio.Group disabled>
+                      <Radio value="COD">Ship COD</Radio>
+                    </Radio.Group>
+                  </Form.Item>
 
                   <Button
                     type="primary"
@@ -279,6 +309,21 @@ const handleSubmit = async (values) => {
                     <Divider />
                   </div>
                 ))}
+
+                <div
+                  style={{
+                    display: "flex",
+                    justifyContent: "space-between",
+                    fontSize: 16,
+                  }}
+                >
+                  <span>Vận chuyển</span>
+                  <span>
+                    {shipping === 0
+                      ? "Miễn phí"
+                      : shipping.toLocaleString() + " ₫"}
+                  </span>
+                </div>
 
                 <div
                   style={{
