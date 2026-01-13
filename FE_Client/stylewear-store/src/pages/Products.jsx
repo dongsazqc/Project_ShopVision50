@@ -257,7 +257,8 @@ const Products = () => {
             background: 'white',
             borderRadius: '12px',
             transition: 'all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.1)',
-            border: '2px solid transparent'
+            border: '2px solid transparent',
+            gap: '8px'
         },
         checkboxHover: {
             transform: 'translateX(8px)',
@@ -322,6 +323,7 @@ const Products = () => {
             padding: '14px 16px',
             marginBottom: '10px',
             background: 'white',
+             gap: '10px',
             borderRadius: '12px',
             cursor: 'pointer',
             transition: 'all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.1)',
@@ -379,7 +381,6 @@ const Products = () => {
             boxShadow: '0 6px 24px rgba(0, 0, 0, 0.08)',
             transition: 'all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275)',
             cursor: 'pointer',
-            height: '100%',
             background: 'white',
             position: 'relative',
             border: '1px solid rgba(255, 255, 255, 0.2)'
@@ -631,37 +632,41 @@ const Products = () => {
                         <div style={styles.filterTitleUnderline} />
                     </h1>
 
-                    {/* Categories */}
                     <div style={styles.section}>
-                        <h2 style={styles.sectionTitle}>
-                            <span>📁</span> Danh mục
-                        </h2>
-                        <Checkbox.Group
-                            style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}
-                            value={filterCategory}
-                            onChange={setFilterCategory}
-                        >
-                            {categories.map((cat) => (
-                                <label
-                                    key={cat.categoryId || cat.CategoryId}
-                                    style={styles.customCheckbox}
-                                    onMouseEnter={(e) => {
-                                        e.currentTarget.style.transform = 'translateX(8px)';
-                                        e.currentTarget.style.borderColor = '#667eea';
-                                        e.currentTarget.style.boxShadow = '0 4px 15px rgba(102, 126, 234, 0.1)';
-                                    }}
-                                    onMouseLeave={(e) => {
-                                        e.currentTarget.style.transform = 'translateX(0)';
-                                        e.currentTarget.style.borderColor = 'transparent';
-                                        e.currentTarget.style.boxShadow = 'none';
-                                    }}
-                                >
-                                    <Checkbox value={cat.categoryId || cat.CategoryId} />
-                                    <span>{cat.name || cat.Name}</span>
-                                </label>
-                            ))}
-                        </Checkbox.Group>
-                    </div>
+  <h2 style={styles.sectionTitle}>
+    <span>📁</span> Danh mục
+  </h2>
+  <Checkbox.Group
+    style={{ display: 'flex', flexDirection: 'column', gap: 10 }}
+    value={filterCategory}
+    onChange={setFilterCategory}
+  >
+    {categories.map((cat) => {
+      const id = cat.categoryId || cat.CategoryId;
+      const name = cat.name || cat.Name;
+      return (
+        <label
+          key={id}
+          style={styles.customCheckbox}
+          onMouseEnter={(e) => {
+            e.currentTarget.style.transform = 'translateX(8px)';
+            e.currentTarget.style.borderColor = '#667eea';
+            e.currentTarget.style.boxShadow = '0 4px 15px rgba(102, 126, 234, 0.1)';
+          }}
+          onMouseLeave={(e) => {
+            e.currentTarget.style.transform = 'translateX(0)';
+            e.currentTarget.style.borderColor = 'transparent';
+            e.currentTarget.style.boxShadow = 'none';
+          }}
+        >
+          <Checkbox value={id} />
+          <span>{name}</span>
+        </label>
+      );
+    })}
+  </Checkbox.Group>
+</div>
+
 
                     {/* Price Filter */}
                     <div style={{ ...styles.section, animationDelay: '0.3s' }}>
@@ -924,7 +929,6 @@ const Products = () => {
                                     onChange={setPage}
                                     showSizeChanger={false}
                                     showQuickJumper
-                                    showTotal={(total, range) => `${range[0]}-${range[1]} của ${total} sản phẩm`}
                                     itemRender={(current, type, originalElement) => {
                                         if (type === 'prev') {
                                             return <button style={styles.pageButton}>← Trước</button>;

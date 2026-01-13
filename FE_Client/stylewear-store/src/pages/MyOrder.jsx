@@ -559,91 +559,89 @@ const MyOrder = () => {
               <Divider>Danh sách sản phẩm</Divider>
 
               <Table
-                dataSource={selectedOrder.orderItems}
-                rowKey="orderItemId"
-                pagination={false}
-                bordered
-                size="middle"
-                summary={(pageData) => {
-                  const totalQuantity = pageData.reduce((sum, item) => sum + item.quantity, 0);
-                  const totalAmount = pageData.reduce(
-                    (sum, item) => sum + item.quantity * item.productVariant.salePrice,
-                    0
-                  );
+  dataSource={selectedOrder.orderItems}
+  rowKey="orderItemId"
+  pagination={false}
+  bordered
+  size="middle"
+  columns={[
+    {
+      title: "Sản phẩm",
+      key: "product",
+      render: (_, record) => (
+        <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
+          <ProductImage>
+            {record.productVariant?.productOrder?.name?.charAt(0) || "P"}
+          </ProductImage>
+          <div>
+            <Text strong>{record.productVariant?.productOrder?.name || "N/A"}</Text>
+            <div style={{ display: "flex", gap: 8, marginTop: 4 }}>
+              {record.productVariant?.color?.name && (
+                <Tag color="blue" style={{ margin: 0, borderRadius: 4 }}>
+                  {record.productVariant.color.name}
+                </Tag>
+              )}
+              {record.productVariant?.size?.name && (
+                <Tag color="green" style={{ margin: 0, borderRadius: 4 }}>
+                  {record.productVariant.size.name}
+                </Tag>
+              )}
+            </div>
+          </div>
+        </div>
+      ),
+    },
+    {
+      title: "Giá",
+      dataIndex: ["productVariant", "salePrice"],
+      key: "price",
+      render: (v) => (
+        <Text strong style={{ color: "#1890ff" }}>
+          {Number(v).toLocaleString()} đ
+        </Text>
+      ),
+    },
+    {
+      title: "Số lượng",
+      dataIndex: "quantity",
+      key: "quantity",
+      render: (v) => <Tag color="blue">{v}</Tag>,
+    },
+    {
+      title: "Thành tiền",
+      key: "total",
+      render: (_, record) => (
+        <Text strong style={{ color: "#ff4d4f", fontSize: 15 }}>
+          {Number(record.quantity * record.productVariant.salePrice).toLocaleString()} đ
+        </Text>
+      ),
+    },
+  ]}
+  summary={(pageData) => {
+    const totalQuantity = pageData.reduce((sum, item) => sum + item.quantity, 0);
+    const totalAmount = pageData.reduce(
+      (sum, item) => sum + item.quantity * item.productVariant.salePrice,
+      0
+    );
 
-                  return (
-                    <Table.Summary.Row style={{ background: "#fafafa" }}>
-                      <Table.Summary.Cell index={0} colSpan={4} align="right">
-                        <Text strong>Tổng cộng:</Text>
-                      </Table.Summary.Cell>
-                      <Table.Summary.Cell index={4}>
-                        <Text strong>{totalQuantity} sản phẩm</Text>
-                      </Table.Summary.Cell>
-                      <Table.Summary.Cell index={5}>
-                        <Text strong type="danger" style={{ fontSize: 16 }}>
-                          {Number(totalAmount).toLocaleString()} đ
-                        </Text>
-                      </Table.Summary.Cell>
-                    </Table.Summary.Row>
-                  );
-                }}
-                columns={[
-                  {
-                    title: "Sản phẩm",
-                    key: "product",
-                    render: (_, record) => (
-                      <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
-                        <ProductImage>
-                          {record.productVariant?.productOrder?.name?.charAt(0) || "P"}
-                        </ProductImage>
-                        <div>
-                          <Text strong>{record.productVariant?.productOrder?.name || "N/A"}</Text>
-                          <div style={{ display: "flex", gap: 8, marginTop: 4 }}>
-                            {record.productVariant?.color?.name && (
-                              <Tag color="blue" style={{ margin: 0, borderRadius: 4 }}>
-                                {record.productVariant.color.name}
-                              </Tag>
-                            )}
-                            {record.productVariant?.size?.name && (
-                              <Tag color="green" style={{ margin: 0, borderRadius: 4 }}>
-                                {record.productVariant.size.name}
-                              </Tag>
-                            )}
-                          </div>
-                        </div>
-                      </div>
-                    ),
-                  },
-                  {
-                    title: "Giá",
-                    dataIndex: ["productVariant", "salePrice"],
-                    key: "price",
-                    align: "right",
-                    render: (v) => (
-                      <Text strong style={{ color: "#1890ff" }}>
-                        {Number(v).toLocaleString()} đ
-                      </Text>
-                    ),
-                  },
-                  {
-                    title: "Số lượng",
-                    dataIndex: "quantity",
-                    key: "quantity",
-                    align: "center",
-                    render: (v) => <Tag color="blue">{v}</Tag>,
-                  },
-                  {
-                    title: "Thành tiền",
-                    key: "total",
-                    align: "right",
-                    render: (_, record) => (
-                      <Text strong style={{ color: "#ff4d4f", fontSize: 15 }}>
-                        {Number(record.quantity * record.productVariant.salePrice).toLocaleString()} đ
-                      </Text>
-                    ),
-                  },
-                ]}
-              />
+    return (
+      <Table.Summary.Row style={{ background: "#fafafa" }}>
+        <Table.Summary.Cell index={0} colSpan={2} align="right">
+          <Text strong>Tổng cộng:</Text>
+        </Table.Summary.Cell>
+        <Table.Summary.Cell index={1} align="center">
+          <Text strong>{totalQuantity} sản phẩm</Text>
+        </Table.Summary.Cell>
+        <Table.Summary.Cell index={2} align="right">
+          <Text strong type="danger" style={{ fontSize: 16 }}>
+            {Number(totalAmount).toLocaleString()} đ
+          </Text>
+        </Table.Summary.Cell>
+      </Table.Summary.Row>
+    );
+  }}
+/>
+
 
               <div style={{ 
                 marginTop: 24, 
