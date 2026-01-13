@@ -4,6 +4,7 @@ import { DeleteOutlined } from "@ant-design/icons";
 import api from "../utils/axios";
 import { useNavigate } from "react-router-dom";
 import { useAppContext } from "../context/AppContext";
+
 const baseURL = "http://160.250.5.26:5000";
 
 const Cart = () => {
@@ -218,16 +219,15 @@ const Cart = () => {
                 />
               </Col>
               <Col xs={6}>
-                              <Image
-                src={item.image}
-                alt={item.name}
-                width={80}
-                height={80}
-                style={{ objectFit: "contain" }} // hoặc "cover" tuỳ ý, "contain" thì giữ tỉ lệ, không bị crop
-                preview={false} // nếu không cần zoom ảnh
-                fallback="https://via.placeholder.com/150"
-              />
-
+                <Image
+                  src={item.image}
+                  alt={item.name}
+                  width={80}
+                  height={80}
+                  style={{ objectFit: "contain" }} // hoặc "cover" tuỳ ý, "contain" thì giữ tỉ lệ, không bị crop
+                  preview={false} // nếu không cần zoom ảnh
+                  fallback="https://via.placeholder.com/150"
+                />
               </Col>
               <Col xs={16}>
                 <h4 style={{ margin: 0 }}>{item.name}</h4>

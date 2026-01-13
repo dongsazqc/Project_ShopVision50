@@ -67,7 +67,6 @@ const Products = () => {
             setLoading(true);
             const res = await api.get("/Products/getAllProducts");
             if (!res.data?.length) return setProducts([]);
-
             const productsWithImages = await Promise.all(
                 res.data.map(async (item) => {
                     try {
@@ -97,13 +96,7 @@ const Products = () => {
                 })
             );
 
-            setProducts(
-            productsWithImages.filter(
-                (p) => p.productVariants && p.productVariants.some((v) => v.stock)
-            )
-            );
-
-
+            setProducts(productsWithImages.filter((p) => (p?.productVariants ||[])?.some((v) => v.stock)));
         } catch (err) {
             console.error("Lỗi load products:", err);
             setProducts([]);
@@ -156,7 +149,6 @@ const Products = () => {
         topProductIds,
         keyword,
     ]);
-
     const paginatedProducts = useMemo(() => {
         const start = (page - 1) * pageSize;
         return filteredProducts.slice(start, start + pageSize);
