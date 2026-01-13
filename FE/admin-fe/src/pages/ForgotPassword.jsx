@@ -193,18 +193,20 @@ const ForgotPassword = () => {
                                     >
                                         ◦ Bảo mật tài khoản
                                     </div>
-                                    <div
+                                        <div
                                         style={{
                                             padding: "8px 12px",
                                             borderRadius: 999,
                                             background: "rgba(16,185,129,0.08)",
                                             border: "1px solid rgba(16,185,129,0.25)",
-                                            fontSize: 12,
-                                            color: "#047857",
+                                            fontSize: 14,
+                                            color: "#fff",
+                                            fontWeight: "bold",
+                                            textShadow: "0 0 3px rgba(0,0,0,0.3)"
                                         }}
-                                    >
+                                        >
                                         ◦ Xác thực OTP
-                                    </div>
+                                        </div>
                                     <div
                                         style={{
                                             padding: "8px 12px",

@@ -13,9 +13,58 @@ import {
     Empty,
     Divider,
     Modal,
+    Input,
+    Rate,
+    List,
+    Avatar,
+    Tooltip,
+    Badge,
+    Progress,
+    Tabs,
+    Collapse,
+    Space,
+    Statistic,
+    Alert,
+    Skeleton,
+    Carousel
 } from "antd";
+import {
+    ShoppingCartOutlined,
+    ThunderboltOutlined,
+    HeartOutlined,
+    HeartFilled,
+    ShareAltOutlined,
+    StarFilled,
+    CheckCircleFilled,
+    SafetyCertificateFilled,
+    RocketOutlined,
+    CrownFilled,
+    FireFilled,
+    GiftOutlined,
+    SyncOutlined,
+    ArrowRightOutlined,
+    PlusOutlined,
+    MinusOutlined,
+    EnvironmentOutlined,
+    ClockCircleOutlined,
+    ShopOutlined,
+    TrophyOutlined,
+    MessageOutlined,
+    UserOutlined,
+    CalendarOutlined,
+    EyeOutlined,
+    ShoppingOutlined,
+    CreditCardOutlined,
+    TruckOutlined,
+    UndoOutlined,
+} from "@ant-design/icons";
 import api from "../utils/axios";
 import { useAppContext } from "../context/AppContext";
+import "./ProductDetail.css";
+
+const { TextArea } = Input;
+const { Panel } = Collapse;
+const { TabPane } = Tabs;
 
 const ProductDetail = () => {
     const { id } = useParams();
@@ -32,36 +81,91 @@ const ProductDetail = () => {
     const [activeVariant, setActiveVariant] = useState(null);
     const [activeImage, setActiveImage] = useState(null);
     const [addedModalVisible, setAddedModalVisible] = useState(false);
+    
+    // UI States
+    const [isWishlisted, setIsWishlisted] = useState(false);
+    const [imageZoom, setImageZoom] = useState(false);
+    const [zoomPosition, setZoomPosition] = useState({ x: 0, y: 0 });
+    const [activeTab, setActiveTab] = useState("description");
+    const [isHoveringBuy, setIsHoveringBuy] = useState(false);
+    const [isHoveringCart, setIsHoveringCart] = useState(false);
+    const [showShippingInfo, setShowShippingInfo] = useState(false);
+    const [viewCount, setViewCount] = useState(Math.floor(Math.random() * 500) + 100);
+    const [soldCount, setSoldCount] = useState(Math.floor(Math.random() * 200) + 50);
+
+    // Comment states
+    const [comments, setComments] = useState([]);
+    const [commentLoading, setCommentLoading] = useState(false);
+    const [commentContent, setCommentContent] = useState("");
+    const [commentRating, setCommentRating] = useState(0);
+    const [submittingComment, setSubmittingComment] = useState(false);
+    
+    // Rating từ API thực tế
+    const [averageRating, setAverageRating] = useState(0);
+    const [totalReviews, setTotalReviews] = useState(0);
+    const [ratingDistribution, setRatingDistribution] = useState({ 5: 0, 4: 0, 3: 0, 2: 0, 1: 0 });
+
+    // Tính toán rating từ API
+    const calculateRatingFromAPI = (commentsData) => {
+        if (!commentsData || commentsData.length === 0) {
+            return {
+                average: 0,
+                total: 0,
+                distribution: { 5: 0, 4: 0, 3: 0, 2: 0, 1: 0 }
+            };
+        }
+
+        const total = commentsData.length;
+        const sum = commentsData.reduce((acc, comment) => acc + comment.rating, 0);
+        const average = total > 0 ? (sum / total).toFixed(1) : 0;
+        
+        // Tính phân bố rating
+        const distribution = { 5: 0, 4: 0, 3: 0, 2: 0, 1: 0 };
+        commentsData.forEach(comment => {
+            const rating = Math.round(comment.rating);
+            if (distribution.hasOwnProperty(rating)) {
+                distribution[rating] += 1;
+            }
+        });
+
+        return {
+            average: parseFloat(average),
+            total: total,
+            distribution: distribution
+        };
+    };
 
     useEffect(() => {
         const fetchProduct = async () => {
             try {
                 setLoading(true);
-                const resProduct = await api.get(
-                    `/ProductVariant/${id}/variants`
-                );
+                const resProduct = await api.get(`/ProductVariant/${id}/variants`);
                 const data = resProduct.data;
+                const rawVariants = data.variants?.$values || data.variants || [];
 
-                const rawVariants =
-                    data.variants?.$values || data.variants || [];
+                const resImages = await api.get(`/products/${id}/images/checkimages`);
+                const images = resImages.data
+                    ?.map(img => img.url)
+                    .filter(Boolean)
+                    .map(url => baseURL + url) || [];
 
-                const resImages = await api.get(
-                    `/products/${id}/images/checkimages`
-                );
-                const images =
-                    resImages.data
-                        ?.map((img) => img.url)
-                        .filter(Boolean)
-                        .map((url) => baseURL + url) || [];
+                // Auto-select first color and size if available
+                const firstColor = [...new Set(rawVariants.map(v => v.tenMau).filter(Boolean))][0];
+                const firstSize = [...new Set(rawVariants.map(v => v.tenKichCo).filter(Boolean))][0];
 
                 setProduct({
                     productId: data.productId,
                     name: data.tenSanPham || data.name,
-                    description: data.description || "",
+                    description: data.description || "Sản phẩm chất lượng cao với thiết kế hiện đại và tiện ích vượt trội. Được làm từ chất liệu cao cấp, bền bỉ theo thời gian.",
                     images,
+                    category: "Thời trang",
+                    brand: "Premium Brand",
+                    tags: ["HOT", "Freeship", "Mới", "Ưu đãi", "Bán chạy"]
                 });
                 setVariants(rawVariants);
                 setActiveImage(images[0] || null);
+                setSelectedColor(firstColor);
+                setSelectedSize(firstSize);
             } catch (err) {
                 console.error(err);
                 message.error("Không thể tải thông tin sản phẩm");
@@ -69,30 +173,57 @@ const ProductDetail = () => {
                 setLoading(false);
             }
         };
+
+        const fetchComments = async () => {
+            try {
+                setCommentLoading(true);
+                const res = await api.get(`/comments/product/${id}`);
+                const commentsData = res.data || [];
+                setComments(commentsData);
+                
+                // Tính toán rating từ API thực tế
+                const ratingData = calculateRatingFromAPI(commentsData);
+                setAverageRating(ratingData.average);
+                setTotalReviews(ratingData.total);
+                setRatingDistribution(ratingData.distribution);
+                
+            } catch (error) {
+                console.error(error);
+                message.error("Không tải được bình luận");
+                setAverageRating(0);
+                setTotalReviews(0);
+                setRatingDistribution({ 5: 0, 4: 0, 3: 0, 2: 0, 1: 0 });
+            } finally {
+                setCommentLoading(false);
+            }
+        };
+
         fetchProduct();
+        fetchComments();
+        
+        // Increment view count on load
+        setViewCount(prev => prev + 1);
     }, [id]);
 
     useEffect(() => {
         if (selectedColor && selectedSize) {
-            setActiveVariant(
-                variants.find(
-                    (v) =>
-                        v.tenMau === selectedColor &&
-                        v.tenKichCo === selectedSize
-                ) || null
-            );
+            const variant = variants.find(
+                v => v.tenMau === selectedColor && v.tenKichCo === selectedSize
+            ) || null;
+            setActiveVariant(variant);
             setQuantity(1);
         } else {
             setActiveVariant(null);
         }
     }, [selectedColor, selectedSize, variants]);
 
-    const colors = [...new Set(variants.map((v) => v.tenMau).filter(Boolean))];
-    const sizes = [
-        ...new Set(variants.map((v) => v.tenKichCo).filter(Boolean)),
-    ];
+    const colors = [...new Set(variants.map(v => v.tenMau).filter(Boolean))];
+    const sizes = [...new Set(variants.map(v => v.tenKichCo).filter(Boolean))];
     const minPrice = variants.length
-        ? Math.min(...variants.map((v) => Number(v.giaBan)))
+        ? Math.min(...variants.map(v => Number(v.giaBan)))
+        : 0;
+    const maxPrice = variants.length
+        ? Math.max(...variants.map(v => Number(v.giaBan)))
         : 0;
     const isVariantSelected = !!activeVariant;
 
@@ -100,11 +231,16 @@ const ProductDetail = () => {
         if (!activeVariant) return;
         const token = localStorage.getItem("token");
 
+        // Animation effect
+        const cartBtn = document.querySelector('.cart-btn');
+        if (cartBtn) {
+            cartBtn.classList.add('adding');
+            setTimeout(() => cartBtn.classList.remove('adding'), 600);
+        }
+
         if (!token) {
             const cart = JSON.parse(localStorage.getItem("cart") || "[]");
-            const existing = cart.find(
-                (item) => item.variantId === activeVariant.productVariantId
-            );
+            const existing = cart.find(item => item.variantId === activeVariant.productVariantId);
             if (existing) existing.quantity += quantity;
             else
                 cart.push({
@@ -131,9 +267,9 @@ const ProductDetail = () => {
         } catch (error) {
             console.error(error);
             message.error("Không thể thêm vào giỏ hàng");
-        } 
+        }
 
-        setTimeout(()=>{
+        setTimeout(() => {
             handleUpdateCartCount();
         }, 500);
     };
@@ -154,245 +290,735 @@ const ProductDetail = () => {
         navigate("/checkout");
     };
 
-    if (loading) return <Spin style={{ marginTop: 100 }} size="large" />;
-    if (!product)
-        return (
-            <Empty
-                description="Sản phẩm không tồn tại"
-                style={{ marginTop: 100 }}
-            />
-        );
+    const handleSubmitComment = async () => {
+        if (!commentContent.trim()) {
+            message.warning("Nội dung bình luận không được để trống");
+            return;
+        }
+        if (commentRating < 1) {
+            message.warning("Vui lòng chọn đánh giá sao");
+            return;
+        }
+
+        const userId = localStorage.getItem("userId");
+
+        if (!userId) {
+            message.error("Bạn chưa đăng nhập");
+            return;
+        }
+
+        setSubmittingComment(true);
+        try {
+            await api.post("/comments", {
+                userId: Number(userId),
+                productId: product.productId,
+                content: commentContent,
+                rating: commentRating,
+            });
+
+            message.success("Cảm ơn bạn đã bình luận!");
+            setCommentContent("");
+            setCommentRating(0);
+
+            // Tải lại comment mới
+            const res = await api.get(`/comments/product/${product.productId}`);
+            const commentsData = res.data || [];
+            setComments(commentsData);
+            
+            // Cập nhật rating từ API mới
+            const ratingData = calculateRatingFromAPI(commentsData);
+            setAverageRating(ratingData.average);
+            setTotalReviews(ratingData.total);
+            setRatingDistribution(ratingData.distribution);
+            
+        } catch (error) {
+            console.error(error);
+            message.error("Gửi bình luận thất bại");
+        } finally {
+            setSubmittingComment(false);
+        }
+    };
+
+    const handleImageMouseMove = (e) => {
+        if (!imageZoom) return;
+        const { left, top, width, height } = e.currentTarget.getBoundingClientRect();
+        const x = ((e.clientX - left) / width) * 100;
+        const y = ((e.clientY - top) / height) * 100;
+        setZoomPosition({ x, y });
+    };
+
+    const getDiscountPercentage = () => {
+        if (!activeVariant || maxPrice === minPrice) return 0;
+        return Math.round(((maxPrice - activeVariant.giaBan) / maxPrice) * 100);
+    };
+
+    // Hàm lấy màu rating dựa trên điểm số
+    const getRatingColor = (rating) => {
+        if (rating >= 4) return '#52c41a';
+        if (rating >= 3) return '#faad14';
+        if (rating >= 2) return '#fa8c16';
+        return '#f5222d';
+    };
+
+    if (loading) return (
+        <div style={{ padding: "40px 24px", maxWidth: 1200, margin: "0 auto" }}>
+            <Row gutter={[32, 32]}>
+                <Col xs={24} lg={12}>
+                    <Skeleton.Image active style={{ width: "100%", height: 400 }} />
+                    <Row gutter={[8, 8]} style={{ marginTop: 16 }}>
+                        {[1,2,3,4,5].map(i => (
+                            <Col span={4} key={i}>
+                                <Skeleton.Image active style={{ width: "100%", height: 60 }} />
+                            </Col>
+                        ))}
+                    </Row>
+                </Col>
+                <Col xs={24} lg={12}>
+                    <Skeleton active paragraph={{ rows: 6 }} />
+                </Col>
+            </Row>
+        </div>
+    );
+
+    if (!product) return (
+        <div style={{ padding: "100px 24px", textAlign: "center" }}>
+            <Empty 
+                image="https://gw.alipayobjects.com/zos/antfincdn/ZHrcdLPrvN/empty.svg"
+                imageStyle={{ height: 120 }}
+                description={
+                    <span style={{ fontSize: 16, color: "#666" }}>
+                        Sản phẩm không tồn tại hoặc đã bị xóa
+                    </span>
+                }
+            >
+                <Button 
+                    type="primary" 
+                    size="large"
+                    icon={<ArrowRightOutlined />}
+                    onClick={() => navigate("/")}
+                    style={{ marginTop: 24 }}
+                >
+                    Quay lại trang chủ
+                </Button>
+            </Empty>
+        </div>
+    );
 
     return (
-        <div style={{ padding: 24 }}>
-            <Row gutter={[24, 24]}>
-                {/* Hình ảnh */}
-                <Col xs={24} md={10}>
-                    <Card style={{ borderRadius: 16, overflow: "hidden" }}>
-                        <Image
-                            src={
-                                activeImage || "https://via.placeholder.com/400"
-                            }
-                            width="100%"
-                            style={{ borderRadius: 16 }}
-                        />
-                        {product.images.length > 0 && (
-                            <div
-                                style={{
-                                    display: "flex",
-                                    gap: 8,
-                                    marginTop: 12,
-                                    flexWrap: "wrap",
-                                }}
+        <div className="product-detail-container">
+            {/* Breadcrumb */}
+            <div className="breadcrumb">
+                <Space>
+                    <a onClick={() => navigate("/")}>Trang chủ</a>
+                    <ArrowRightOutlined style={{ fontSize: 12, color: "#999" }} />
+                    <a onClick={() => navigate("/products")}>Sản phẩm</a>
+                    <ArrowRightOutlined style={{ fontSize: 12, color: "#999" }} />
+                    <span style={{ color: "#ee4d2d" }}>{product.name}</span>
+                </Space>
+            </div>
+
+            {/* Main Product Section */}
+            <Row gutter={[32, 32]} className="main-product-section">
+                <Col xs={24} lg={10}>
+                    <Card 
+                        className="product-image-card"
+                        bodyStyle={{ padding: 0, borderRadius: 16 }}
+                        hoverable
+                    >
+                        <div 
+                            className={`image-container ${imageZoom ? 'zoomed' : ''}`}
+                            onMouseEnter={() => setImageZoom(true)}
+                            onMouseLeave={() => setImageZoom(false)}
+                            onMouseMove={handleImageMouseMove}
+                        >
+                            <Badge.Ribbon 
+                                text="HOT" 
+                                color="#ee4d2d"
+                                style={{ top: 10 }}
                             >
-                                {product.images.map((img, index) => (
-                                    <Image
-                                        key={index}
-                                        src={img}
-                                        width={60}
-                                        height={60}
-                                        preview={false}
-                                        style={{
-                                            cursor: "pointer",
-                                            borderRadius: 8,
-                                            border:
-                                                activeImage === img
-                                                    ? "2px solid #ee4d2d"
-                                                    : "1px solid #eee",
-                                        }}
-                                        onClick={() => setActiveImage(img)}
-                                    />
-                                ))}
+                                <Image
+                                    src={activeImage || "https://via.placeholder.com/600"}
+                                    preview={false}
+                                    className="main-image"
+                                    alt={product.name}
+                                />
+                            </Badge.Ribbon>
+                            {imageZoom && (
+                                <div 
+                                    className="zoom-preview"
+                                    style={{
+                                        backgroundImage: `url(${activeImage})`,
+                                        backgroundPosition: `${zoomPosition.x}% ${zoomPosition.y}%`
+                                    }}
+                                />
+                            )}
+                            <Button
+                                className="wishlist-btn"
+                                type="text"
+                                icon={isWishlisted ? <HeartFilled /> : <HeartOutlined />}
+                                onClick={() => setIsWishlisted(!isWishlisted)}
+                                style={{ color: isWishlisted ? '#ff4d4f' : '#666' }}
+                            />
+                        </div>
+                        
+                        {product.images.length > 1 && (
+                            <div className="thumbnail-carousel">
+                                <Carousel 
+                                    dots={false}
+                                    arrows
+                                    slidesToShow={5}
+                                    responsive={[
+                                        { breakpoint: 768, settings: { slidesToShow: 4 } },
+                                        { breakpoint: 576, settings: { slidesToShow: 3 } }
+                                    ]}
+                                >
+                                    {product.images.map((img, idx) => (
+                                        <div key={idx} className="thumbnail-container">
+                                            <Image
+                                                src={img}
+                                                preview={false}
+                                                className={`thumbnail ${activeImage === img ? 'active' : ''}`}
+                                                onClick={() => setActiveImage(img)}
+                                            />
+                                        </div>
+                                    ))}
+                                </Carousel>
                             </div>
                         )}
+                        
+                        {/* Product Stats */}
+                        <div className="product-stats">
+                            <Row gutter={[16, 16]}>
+                                <Col span={8}>
+                                    <Statistic
+                                        title="Đã bán"
+                                        value={soldCount}
+                                        prefix={<ShoppingOutlined />}
+                                        valueStyle={{ fontSize: 16 }}
+                                    />
+                                </Col>
+                                <Col span={8}>
+                                    <Statistic
+                                        title="Lượt xem"
+                                        value={viewCount}
+                                        prefix={<EyeOutlined />}
+                                        valueStyle={{ fontSize: 16 }}
+                                    />
+                                </Col>
+                                <Col span={8}>
+                                    {/* RATING TỪ API THỰC TẾ */}
+                                    <div className="rating-statistic">
+                                        <StarFilled style={{ 
+                                            color: getRatingColor(averageRating), 
+                                            fontSize: 18,
+                                            marginRight: 4
+                                        }} />
+                                        <div>
+                                            <div className="rating-value" style={{ color: getRatingColor(averageRating) }}>
+                                                {averageRating > 0 ? averageRating : "0.0"}
+                                            </div>
+                                            <div className="rating-count-text">
+                                                ({totalReviews} đánh giá)
+                                            </div>
+                                        </div>
+                                    </div>
+                                </Col>
+                            </Row>
+                        </div>
                     </Card>
                 </Col>
 
-                {/* Thông tin */}
-                <Col xs={24} md={14}>
-                    <Card style={{ borderRadius: 16, padding: 24 }}>
-                        <h2 style={{ marginBottom: 8 }}>{product.name}</h2>
-                        <div style={{ marginBottom: 16 }}>
-                            <Tag color="red">HOT</Tag>
-                            <Tag color="green">Freeship</Tag>
-                        </div>
-
-                        <div
-                            style={{
-                                background: "#fff5f5",
-                                padding: 16,
-                                borderRadius: 12,
-                                marginBottom: 16,
-                            }}
-                        >
-                            <span style={{ fontSize: 14 }}>Giá từ </span>
-                            <span
-                                style={{
-                                    fontSize: 28,
-                                    color: "#ee4d2d",
-                                    fontWeight: 600,
-                                }}
-                            >
-                                {minPrice.toLocaleString("vi-VN")} ₫
-                            </span>
-                        </div>
-
-                        {/* Chọn màu */}
-                        {colors.length > 0 && (
-                            <div style={{ marginBottom: 12 }}>
-                                <strong>Màu sắc:</strong>
-                                <div
-                                    style={{
-                                        display: "flex",
-                                        gap: 8,
-                                        flexWrap: "wrap",
-                                        marginTop: 8,
-                                    }}
-                                >
-                                    {colors.map((c) => (
-                                        <Button
-                                            key={c}
-                                            type={
-                                                selectedColor === c
-                                                    ? "primary"
-                                                    : "default"
-                                            }
-                                            onClick={() => setSelectedColor(c)}
-                                        >
-                                            {c}
-                                        </Button>
-                                    ))}
-                                </div>
+                <Col xs={24} lg={14}>
+                    <Card className="product-info-card" bodyStyle={{ padding: 32 }}>
+                        {/* PHẦN HEADER VỚI RATING NỔI BẬT Ở TRÊN CÙNG */}
+                        <div className="product-header-with-rating">
+                            <div className="header-main">
+                                <h1 className="product-title">{product.name}</h1>
+                                <Space className="header-actions">
+                                    <Button 
+                                        type="text" 
+                                        icon={<ShareAltOutlined />}
+                                        className="share-btn"
+                                    >
+                                        Chia sẻ
+                                    </Button>
+                                    <Button 
+                                        type="text" 
+                                        icon={isWishlisted ? <HeartFilled /> : <HeartOutlined />}
+                                        className="wishlist-btn-large"
+                                        onClick={() => setIsWishlisted(!isWishlisted)}
+                                    >
+                                        {isWishlisted ? 'Đã thích' : 'Yêu thích'}
+                                    </Button>
+                                </Space>
                             </div>
-                        )}
-
-                        {/* Chọn size */}
-                        {sizes.length > 0 && (
-                            <div style={{ marginBottom: 12 }}>
-                                <strong>Kích cỡ:</strong>
-                                <div
-                                    style={{
-                                        display: "flex",
-                                        gap: 8,
-                                        flexWrap: "wrap",
-                                        marginTop: 8,
-                                    }}
-                                >
-                                    {sizes.map((s) => (
-                                        <Button
-                                            key={s}
-                                            type={
-                                                selectedSize === s
-                                                    ? "primary"
-                                                    : "default"
-                                            }
-                                            onClick={() => setSelectedSize(s)}
-                                        >
-                                            {s}
-                                        </Button>
-                                    ))}
+                            
+                            {/* RATING LỚN NỔI BẬT Ở DƯỚI TÊN SẢN PHẨM */}
+                            {totalReviews > 0 && (
+                                <div className="prominent-rating">
+                                    <Card className="rating-highlight-card" bodyStyle={{ padding: '12px 16px' }}>
+                                        <Row align="middle" gutter={[16, 0]}>
+                                            <Col>
+                                                <div className="rating-big-number" style={{ color: getRatingColor(averageRating) }}>
+                                                    {averageRating}
+                                                </div>
+                                            </Col>
+                                            <Col flex="auto">
+                                                <Space direction="vertical" size={0}>
+                                                    <Rate 
+                                                        disabled 
+                                                        value={averageRating} 
+                                                        style={{ 
+                                                            fontSize: 18, 
+                                                            color: getRatingColor(averageRating) 
+                                                        }} 
+                                                    />
+                                                    <div className="rating-info">
+                                                        {totalReviews} đánh giá • {soldCount} đã bán
+                                                    </div>
+                                                </Space>
+                                            </Col>
+                                            <Col>
+                                                <Button 
+                                                    type="link" 
+                                                    onClick={() => setActiveTab("reviews")}
+                                                    className="view-reviews-btn"
+                                                >
+                                                    Xem đánh giá
+                                                </Button>
+                                            </Col>
+                                        </Row>
+                                    </Card>
                                 </div>
-                            </div>
-                        )}
-
-                        {/* Số lượng */}
-                        <div
-                            style={{
-                                marginTop: 12,
-                                display: "flex",
-                                alignItems: "center",
-                                gap: 16,
-                            }}
-                        >
-                            <strong>Số lượng:</strong>
-                            <InputNumber
-                                min={1}
-                                max={activeVariant?.soLuongTon || 99}
-                                value={quantity}
-                                onChange={(v) =>
-                                    setQuantity(
-                                        Math.min(
-                                            v,
-                                            activeVariant?.soLuongTon || 99
-                                        )
-                                    )
-                                }
-                            />
-                            {activeVariant && (
-                                <span style={{ color: "#888" }}>
-                                    Còn {activeVariant.soLuongTon}
-                                </span>
                             )}
                         </div>
 
-                        {/* Nút hành động */}
-                        <div
-                            style={{ display: "flex", gap: 16, marginTop: 24 }}
-                        >
+                        <div className="product-meta">
+                            <Space size={[8, 8]} wrap>
+                                <Tag icon={<CrownFilled />} color="gold">Premium</Tag>
+                                <Tag icon={<FireFilled />} color="red">Bán chạy</Tag>
+                                <Tag icon={<GiftOutlined />} color="green">Quà tặng</Tag>
+                                <Tag icon={<SyncOutlined />} color="blue">Đổi trả 7 ngày</Tag>
+                            </Space>
+                        </div>
+
+                        <div className="price-section">
+                            {activeVariant && getDiscountPercentage() > 0 && (
+                                <div className="discount-badge">
+                                    <span className="discount-percent">-{getDiscountPercentage()}%</span>
+                                    <span className="original-price">
+                                        {maxPrice.toLocaleString("vi-VN")} ₫
+                                    </span>
+                                </div>
+                            )}
+                            <div className="current-price">
+                                <span className="price-amount">
+                                    {(activeVariant?.giaBan || minPrice).toLocaleString("vi-VN")} ₫
+                                </span>
+                                {!activeVariant && (
+                                    <span className="price-range">
+                                        - {maxPrice.toLocaleString("vi-VN")} ₫
+                                    </span>
+                                )}
+                            </div>
+                            <div className="price-save">
+                                <SafetyCertificateFilled style={{ color: '#52c41a' }} />
+                                <span>Tiết kiệm {(maxPrice - minPrice).toLocaleString("vi-VN")} ₫</span>
+                            </div>
+                        </div>
+
+                        {/* Color Selection */}
+                        {colors.length > 0 && (
+                            <div className="variant-section">
+                                <h3 className="variant-title">
+                                    <span>Màu sắc</span>
+                                    <span className="selected-value">{selectedColor}</span>
+                                </h3>
+                                <div className="color-options">
+                                    {colors.map((color) => (
+                                        <Tooltip key={color} title={color}>
+                                            <div
+                                                className={`color-option ${selectedColor === color ? 'selected' : ''}`}
+                                                onClick={() => setSelectedColor(color)}
+                                                style={{
+                                                    background: color.toLowerCase(),
+                                                    border: color.toLowerCase() === 'white' ? '1px solid #ddd' : 'none'
+                                                }}
+                                            >
+                                                {selectedColor === color && (
+                                                    <CheckCircleFilled className="color-check" />
+                                                )}
+                                            </div>
+                                        </Tooltip>
+                                    ))}
+                                </div>
+                            </div>
+                        )}
+
+                        {/* Size Selection */}
+                        {sizes.length > 0 && (
+                            <div className="variant-section">
+                                <h3 className="variant-title">
+                                    <span>Kích thước</span>
+                                    <span className="selected-value">{selectedSize}</span>
+                                </h3>
+                                <div className="size-options">
+                                    {sizes.map((size) => (
+                                        <Button
+                                            key={size}
+                                            className={`size-option ${selectedSize === size ? 'selected' : ''}`}
+                                            onClick={() => setSelectedSize(size)}
+                                        >
+                                            {size}
+                                            {selectedSize === size && (
+                                                <CheckCircleFilled className="size-check" />
+                                            )}
+                                        </Button>
+                                    ))}
+                                </div>
+                                <a className="size-guide-link">
+                                    <EnvironmentOutlined /> Hướng dẫn chọn size
+                                </a>
+                            </div>
+                        )}
+
+                        {/* Quantity Selection */}
+                        <div className="quantity-section">
+                            <h3 className="quantity-title">Số lượng</h3>
+                            <div className="quantity-controls">
+                                <Button
+                                    icon={<MinusOutlined />}
+                                    onClick={() => setQuantity(Math.max(1, quantity - 1))}
+                                    disabled={quantity <= 1}
+                                    className="quantity-btn"
+                                />
+                                <InputNumber
+                                    value={quantity}
+                                    min={1}
+                                    max={activeVariant?.soLuongTon || 99}
+                                    onChange={(v) => setQuantity(Math.min(v, activeVariant?.soLuongTon || 99))}
+                                    className="quantity-input"
+                                />
+                                <Button
+                                    icon={<PlusOutlined />}
+                                    onClick={() => setQuantity(Math.min(activeVariant?.soLuongTon || 99, quantity + 1))}
+                                    disabled={quantity >= (activeVariant?.soLuongTon || 99)}
+                                    className="quantity-btn"
+                                />
+                                <span className="stock-info">
+                                    {activeVariant ? `Còn ${activeVariant.soLuongTon} sản phẩm` : 'Chọn màu/size để xem số lượng'}
+                                </span>
+                            </div>
+                            <Progress
+                                percent={activeVariant ? Math.min(100, (activeVariant.soLuongTon / 100) * 100) : 0}
+                                size="small"
+                                showInfo={false}
+                                strokeColor="#52c41a"
+                            />
+                        </div>
+
+                        {/* Action Buttons */}
+                        <div className="action-buttons">
                             <Button
-                                style={{
-                                    flex: 1,
-                                    borderRadius: 8,
-                                    background: isVariantSelected
-                                        ? "#fff5f5"
-                                        : "#ffe6e6",
-                                    border: `1px solid ${
-                                        isVariantSelected
-                                            ? "#ee4d2d"
-                                            : "#ff9999"
-                                    }`,
-                                    color: isVariantSelected
-                                        ? "#ee4d2d"
-                                        : "#ff9999",
-                                    fontWeight: 600,
-                                    height: 44,
-                                }}
+                                className={`cart-btn ${isHoveringCart ? 'hover' : ''}`}
+                                icon={<ShoppingCartOutlined />}
+                                size="large"
                                 onClick={handleAddToCart}
                                 disabled={!isVariantSelected}
+                                onMouseEnter={() => setIsHoveringCart(true)}
+                                onMouseLeave={() => setIsHoveringCart(false)}
                             >
-                                Thêm vào giỏ
+                                Thêm vào giỏ hàng
                             </Button>
-
                             <Button
-                                style={{
-                                    flex: 1,
-                                    borderRadius: 8,
-                                    background: isVariantSelected
-                                        ? "#ee4d2d"
-                                        : "#ff9999",
-                                    border: `1px solid ${
-                                        isVariantSelected
-                                            ? "#ee4d2d"
-                                            : "#ff9999"
-                                    }`,
-                                    color: "#fff",
-                                    fontWeight: 600,
-                                    height: 44,
-                                }}
+                                className={`buy-now-btn ${isHoveringBuy ? 'hover' : ''}`}
+                                type="primary"
+                                icon={<ThunderboltOutlined />}
+                                size="large"
                                 onClick={handleBuyNow}
                                 disabled={!isVariantSelected}
+                                onMouseEnter={() => setIsHoveringBuy(true)}
+                                onMouseLeave={() => setIsHoveringBuy(false)}
                             >
                                 Mua ngay
                             </Button>
+                        </div>
+
+                        {/* Shipping Info */}
+                        <div className="shipping-info">
+                            <Row gutter={[16, 16]}>
+                                <Col span={12}>
+                                    <Space>
+                                        <TruckOutlined style={{ color: '#1890ff' }} />
+                                        <div>
+                                            <div className="shipping-title">Giao hàng siêu tốc</div>
+                                            <div className="shipping-desc">Nhận hàng trong 2 giờ</div>
+                                        </div>
+                                    </Space>
+                                </Col>
+                                <Col span={12}>
+                                    <Space>
+                                        <UndoOutlined style={{ color: '#52c41a' }} />
+                                        <div>
+                                            <div className="shipping-title">Đổi trả dễ dàng</div>
+                                            <div className="shipping-desc">7 ngày miễn phí</div>
+                                        </div>
+                                    </Space>
+                                </Col>
+                                <Col span={12}>
+                                    <Space>
+                                        <div>
+                                            <div className="shipping-title">Bảo hành chính hãng</div>
+                                            <div className="shipping-desc">12 tháng</div>
+                                        </div>
+                                    </Space>
+                                </Col>
+                                <Col span={12}>
+                                    <Space>
+                                        <CreditCardOutlined style={{ color: '#fa8c16' }} />
+                                        <div>
+                                            <div className="shipping-title">Thanh toán linh hoạt</div>
+                                            <div className="shipping-desc">COD, Visa, Momo</div>
+                                        </div>
+                                    </Space>
+                                </Col>
+                            </Row>
                         </div>
                     </Card>
                 </Col>
             </Row>
 
-            {/* Mô tả sản phẩm */}
-            <Divider />
-            <Card style={{ borderRadius: 16, padding: 16 }}>
-                <h3>Mô tả sản phẩm</h3>
-                <p style={{ color: "#666", whiteSpace: "pre-line" }}>
-                    {product.description}
-                </p>
+            {/* Product Details Tabs */}
+            <Card className="details-tabs-card">
+                <Tabs 
+                    activeKey={activeTab} 
+                    onChange={setActiveTab}
+                    className="detail-tabs"
+                >
+                    <TabPane 
+                        tab={
+                            <span>
+                                <MessageOutlined /> Mô tả sản phẩm
+                            </span>
+                        } 
+                        key="description"
+                    >
+                        <div className="product-description">
+                            <div className="description-content">
+                                {product.description.split('\n').map((paragraph, idx) => (
+                                    <p key={idx}>{paragraph}</p>
+                                ))}
+                            </div>
+                            <div className="description-features">
+                                <h3>Đặc điểm nổi bật</h3>
+                                <ul>
+                                    <li>Chất liệu cao cấp, bền đẹp theo thời gian</li>
+                                    <li>Thiết kế hiện đại, phong cách trẻ trung</li>
+                                    <li>Phù hợp nhiều hoàn cảnh sử dụng</li>
+                                    <li>Dễ dàng vệ sinh và bảo quản</li>
+                                    <li>Cam kết chính hãng 100%</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </TabPane>
+                    
+                    <TabPane 
+                        tab={
+                            <span>
+                                <StarFilled /> Đánh giá ({totalReviews})
+                            </span>
+                        } 
+                        key="reviews"
+                    >
+                        <div className="reviews-section">
+                            {/* Rating Summary từ API thực */}
+                            <div className="rating-summary">
+                                <div className="overall-rating">
+                                    <div className="rating-number" style={{ color: getRatingColor(averageRating) }}>
+                                        {averageRating}
+                                    </div>
+                                    <Rate 
+                                        disabled 
+                                        value={averageRating} 
+                                        style={{ color: getRatingColor(averageRating) }}
+                                    />
+                                    <div className="rating-count">{totalReviews} đánh giá</div>
+                                </div>
+                                <div className="rating-bars">
+                                    {[5,4,3,2,1].map(star => {
+                                        const count = ratingDistribution[star];
+                                        const percent = totalReviews > 0 ? (count / totalReviews) * 100 : 0;
+                                        return (
+                                            <div key={star} className="rating-bar-item">
+                                                <span>{star} sao</span>
+                                                <Progress 
+                                                    percent={percent} 
+                                                    size="small"
+                                                    strokeColor={getRatingColor(star)}
+                                                />
+                                                <span>{count}</span>
+                                            </div>
+                                        );
+                                    })}
+                                </div>
+                            </div>
+
+                            {/* Comment Form */}
+                            <Card className="comment-form-card">
+                                <h3>Viết đánh giá của bạn</h3>
+                                <div style={{ marginBottom: 16 }}>
+                                    <Rate 
+                                        value={commentRating} 
+                                        onChange={setCommentRating}
+                                        className="rating-input"
+                                    />
+                                </div>
+                                <TextArea
+                                    rows={4}
+                                    placeholder="Chia sẻ cảm nhận của bạn về sản phẩm..."
+                                    value={commentContent}
+                                    onChange={(e) => setCommentContent(e.target.value)}
+                                    className="comment-textarea"
+                                />
+                                <Button
+                                    type="primary"
+                                    loading={submittingComment}
+                                    onClick={handleSubmitComment}
+                                    className="submit-comment-btn"
+                                    size="large"
+                                >
+                                    <MessageOutlined /> Gửi đánh giá
+                                </Button>
+                            </Card>
+
+                            {/* Comments List từ API thực */}
+                            <div className="comments-list">
+                                <h3>Đánh giá từ khách hàng ({totalReviews})</h3>
+                                {commentLoading ? (
+                                    <div style={{ textAlign: 'center', padding: 40 }}>
+                                        <Spin size="large" />
+                                    </div>
+                                ) : comments.length === 0 ? (
+                                    <Empty 
+                                        description="Chưa có đánh giá nào"
+                                        image={Empty.PRESENTED_IMAGE_SIMPLE}
+                                    />
+                                ) : (
+                                    <List
+                                        itemLayout="vertical"
+                                        dataSource={comments}
+                                        renderItem={(item) => (
+                                            <List.Item key={item.commentId} className="comment-item">
+                                                <List.Item.Meta
+                                                    avatar={
+                                                        <Avatar 
+                                                            icon={<UserOutlined />}
+                                                            size={48}
+                                                            style={{ 
+                                                                backgroundColor: `#${Math.floor(Math.random()*16777215).toString(16)}`
+                                                            }}
+                                                        />
+                                                    }
+                                                    title={
+                                                        <div className="comment-header">
+                                                            <div className="comment-user">
+                                                                <strong>{item.user?.fullName || "Khách hàng"}</strong>
+                                                                {item.user?.userId && (
+                                                                    <Tag color="green" icon={<CheckCircleFilled />}>
+                                                                        Đã mua hàng
+                                                                    </Tag>
+                                                                )}
+                                                            </div>
+                                                            <div className="comment-rating">
+                                                                <Rate 
+                                                                    disabled 
+                                                                    value={item.rating} 
+                                                                    style={{ fontSize: 14, color: getRatingColor(item.rating) }}
+                                                                />
+                                                                <span className="comment-date">
+                                                                    <CalendarOutlined /> 
+                                                                    {new Date(item.createdDate).toLocaleDateString('vi-VN')}
+                                                                </span>
+                                                            </div>
+                                                        </div>
+                                                    }
+                                                    description={
+                                                        <div className="comment-content">
+                                                            {item.content}
+                                                            <div className="comment-actions">
+                                                                <Button 
+                                                                    type="text" 
+                                                                    icon={<ThunderboltOutlined />}
+                                                                    size="small"
+                                                                >
+                                                                    Hữu ích
+                                                                </Button>
+                                                            </div>
+                                                        </div>
+                                                    }
+                                                />
+                                            </List.Item>
+                                        )}
+                                    />
+                                )}
+                            </div>
+                        </div>
+                    </TabPane>
+                    
+                    <TabPane 
+                        tab={
+                            <span>
+                                <ShopOutlined /> Chính sách mua hàng
+                            </span>
+                        } 
+                        key="policies"
+                    >
+                        <Collapse ghost className="policy-collapse">
+                            <Panel header="Chính sách giao hàng" key="1">
+                                <ul>
+                                    <li>Giao hàng toàn quốc</li>
+                                    <li>Miễn phí vận chuyển cho đơn hàng trên 500.000đ</li>
+                                    <li>Giao hàng nhanh trong 2-4 giờ tại nội thành</li>
+                                    <li>Giao hàng tiêu chuẩn 2-5 ngày với các tỉnh thành khác</li>
+                                </ul>
+                            </Panel>
+                            <Panel header="Chính sách đổi trả" key="2">
+                                <ul>
+                                    <li>Đổi trả trong vòng 7 ngày kể từ khi nhận hàng</li>
+                                    <li>Sản phẩm phải còn nguyên vẹn, chưa qua sử dụng</li>
+                                    <li>Miễn phí đổi trả với lỗi từ nhà sản xuất</li>
+                                    <li>Hoàn tiền trong vòng 3-5 ngày làm việc</li>
+                                </ul>
+                            </Panel>
+                            <Panel header="Chính sách bảo hành" key="3">
+                                <ul>
+                                    <li>Bảo hành 12 tháng chính hãng</li>
+                                    <li>Hỗ trợ sửa chữa tại các trung tâm bảo hành toàn quốc</li>
+                                    <li>Bảo hành 1 đổi 1 trong 30 ngày đầu với lỗi kỹ thuật</li>
+                                </ul>
+                            </Panel>
+                        </Collapse>
+                    </TabPane>
+                </Tabs>
             </Card>
 
-            {/* Modal */}
+            {/* Success Modal */}
             <Modal
-                title="Thêm vào giỏ hàng"
+                title={
+                    <Space>
+                        <CheckCircleFilled style={{ color: '#52c41a' }} />
+                        Thêm vào giỏ hàng thành công
+                    </Space>
+                }
                 open={addedModalVisible}
                 footer={[
+                    <Button
+                        key="continue"
+                        onClick={() => setAddedModalVisible(false)}
+                        className="modal-btn"
+                    >
+                        Tiếp tục mua sắm
+                    </Button>,
                     <Button
                         key="view"
                         type="primary"
@@ -400,19 +1026,44 @@ const ProductDetail = () => {
                             setAddedModalVisible(false);
                             navigate("/cart");
                         }}
+                        className="modal-btn"
+                        icon={<ShoppingCartOutlined />}
                     >
                         Xem giỏ hàng
                     </Button>,
                     <Button
-                        key="continue"
-                        onClick={() => setAddedModalVisible(false)}
+                        key="checkout"
+                        type="primary"
+                        danger
+                        onClick={() => {
+                            setAddedModalVisible(false);
+                            handleBuyNow();
+                        }}
+                        className="modal-btn"
+                        icon={<ThunderboltOutlined />}
                     >
-                        Tiếp tục mua sắm
-                    </Button>,
+                        Thanh toán ngay
+                    </Button>
                 ]}
                 onCancel={() => setAddedModalVisible(false)}
+                className="success-modal"
             >
-                <p>Sản phẩm đã được thêm vào giỏ hàng thành công!</p>
+                <div className="modal-content">
+                    <Image
+                        src={activeImage}
+                        width={80}
+                        height={80}
+                        style={{ borderRadius: 8, marginRight: 16 }}
+                    />
+                    <div>
+                        <h4>{product.name}</h4>
+                        <p>{selectedColor} - {selectedSize}</p>
+                        <p>Số lượng: {quantity}</p>
+                        <p className="modal-price">
+                            Thành tiền: <strong>{((activeVariant?.giaBan || minPrice) * quantity).toLocaleString('vi-VN')} ₫</strong>
+                        </p>
+                    </div>
+                </div>
             </Modal>
         </div>
     );

@@ -11,7 +11,14 @@ import {
   Radio,
   message,
   Spin,
+  Tag,
+  Space,
 } from "antd";
+import {
+  GiftOutlined,
+  CheckCircleOutlined,
+  ShoppingOutlined
+} from "@ant-design/icons";
 import api from "../utils/axios";
 import { useAppContext } from "../context/AppContext";
 
@@ -26,25 +33,50 @@ const Checkout = () => {
   const userId = localStorage.getItem("userId");
   const token = localStorage.getItem("token");
 
-  const [checkoutItems, setCheckoutItems] = useState([]); // danh sách sản phẩm để thanh toán
+  const [checkoutData, setCheckoutData] = useState({
+    items: [],
+    subtotal: 0,
+    discountAmount: 0,
+    shipping: 0,
+    total: 0,
+    promotion: null
+  });
+
+  // Format price function
+  const formatPrice = (price) =>
+    new Intl.NumberFormat("vi-VN", {
+      style: "currency",
+      currency: "VND",
+      minimumFractionDigits: 0
+    }).format(price);
 
   // =========================================
   // 1) LẤY DỮ LIỆU BUY NOW HOẶC CART
   // =========================================
   useEffect(() => {
-    // Lấy sản phẩm từ Cart (chỉ những sản phẩm đã chọn)
-    const checkoutFromCart = JSON.parse(
-      sessionStorage.getItem("checkoutItems")
+    // Lấy dữ liệu checkout đầy đủ từ Cart (bao gồm promotion)
+    const checkoutDataFromCart = JSON.parse(
+      sessionStorage.getItem("checkoutData")
     );
-    if (checkoutFromCart && checkoutFromCart.length > 0) {
-      setCheckoutItems(checkoutFromCart);
+    
+    if (checkoutDataFromCart && checkoutDataFromCart.items && checkoutDataFromCart.items.length > 0) {
+      console.log("Checkout data loaded:", checkoutDataFromCart);
+      setCheckoutData(checkoutDataFromCart);
       return;
     }
 
-    // Nếu có mua ngay
+    // Nếu có mua ngay (cần update buyNow để có cấu trúc tương tự)
     const buyNow = JSON.parse(sessionStorage.getItem("buyNow"));
     if (buyNow) {
-      setCheckoutItems([buyNow]);
+      const buyNowData = {
+        items: [buyNow],
+        subtotal: buyNow.giaBan * buyNow.quantity,
+        discountAmount: 0,
+        shipping: buyNow.giaBan * buyNow.quantity > 500000 ? 0 : 30000,
+        total: buyNow.giaBan * buyNow.quantity + (buyNow.giaBan * buyNow.quantity > 500000 ? 0 : 30000),
+        promotion: null
+      };
+      setCheckoutData(buyNowData);
       return;
     }
 
@@ -58,7 +90,7 @@ const Checkout = () => {
   }, []);
 
   // =========================================
-  // 2) FETCH CART SERVER
+  // 2) FETCH CART SERVER (fallback)
   // =========================================
   const fetchCartFromServer = async () => {
     if (!userId) {
@@ -79,7 +111,7 @@ const Checkout = () => {
         return navigate("/");
       }
 
-      const normalized = serverCart.map((item) => ({
+      const items = serverCart.map((item) => ({
         variantId: item.productVariantId,
         cartItemId: item.cartItemId,
         quantity: item.quantity,
@@ -96,7 +128,18 @@ const Checkout = () => {
         stock: item.productVariant?.stock || 9999,
       }));
 
-      setCheckoutItems(normalized);
+      const subtotal = items.reduce((sum, item) => sum + item.giaBan * item.quantity, 0);
+      const shipping = subtotal > 500000 ? 0 : 30000;
+      const total = subtotal + shipping;
+
+      setCheckoutData({
+        items,
+        subtotal,
+        discountAmount: 0,
+        shipping,
+        total,
+        promotion: null
+      });
     } catch (err) {
       console.error(err);
       messageApi.error("Không thể tải giỏ hàng từ server");
@@ -129,23 +172,11 @@ const Checkout = () => {
     fetchUserProfile();
   }, []);
 
-  if (checkoutItems.length === 0)
+  if (checkoutData.items.length === 0)
     return <Spin style={{ marginTop: 100 }} size="large" />;
 
-  // Tính subtotal
-  const subtotal = checkoutItems.reduce(
-    (sum, item) => sum + item.giaBan * item.quantity,
-    0
-  );
-
-  // Tính phí vận chuyển: miễn phí nếu > 500k
-  const shipping = subtotal > 500000 ? 0 : 30000;
-
-  // Tính tổng đơn hàng
-  const totalAmount = subtotal + shipping;
-
   // =========================================
-  // 5) SUBMIT ĐẶT HÀNG
+  // 4) SUBMIT ĐẶT HÀNG
   // =========================================
   const { setCartCount } = useAppContext();
   const handleSubmit = async (values) => {
@@ -153,7 +184,7 @@ const Checkout = () => {
       setLoading(true);
 
       // Mảng orderItems theo chuẩn JSON 2 có price
-      const orderItems = checkoutItems.map((item) => ({
+      const orderItems = checkoutData.items.map((item) => ({
         productVariantId: item.variantId,
         quantity: item.quantity,
         price: item.giaBan,
@@ -163,24 +194,32 @@ const Checkout = () => {
       const payments = [
         {
           method: "Cash",
-          amount: totalAmount,
-          cashReceived: totalAmount,
+          amount: checkoutData.total,
+          cashReceived: checkoutData.total,
           cashChange: 0,
         },
       ];
 
+      // Chuẩn bị payload cho order
       const orderPayload = {
         orderDate: new Date().toISOString(),
         orderType: "Online",
         status: 0,
-        totalAmount: totalAmount,
+        totalAmount: checkoutData.total,
+        subtotal: checkoutData.subtotal,
+        discountAmount: checkoutData.discountAmount,
+        shippingFee: checkoutData.shipping,
         recipientName: values.recipientName,
         recipientPhone: values.recipientPhone,
         shippingAddress: values.shippingAddress,
         userId: Number(userId),
         orderItems: orderItems,
         payments: payments,
+        promotionCode: checkoutData.promotion?.code || null,
+        promotionDiscount: checkoutData.discountAmount || 0,
       };
+
+      console.log("Order payload:", orderPayload);
 
       // ================== TẠO ĐƠN HÀNG ==================
       await api.post("/Orders/Add", orderPayload);
@@ -188,9 +227,9 @@ const Checkout = () => {
 
       // ================== XÓA SẢN PHẨM KHỎI GIỎ HÀNG SERVER ==================
       if (userId) {
-        const cartItemIds = checkoutItems
+        const cartItemIds = checkoutData.items
           .map((item) => item.cartItemId)
-          .filter(Boolean); // chỉ lấy những item có cartItemId
+          .filter(Boolean);
 
         // Xóa từng item
         for (let id of cartItemIds) {
@@ -203,36 +242,42 @@ const Checkout = () => {
 
       // ================== XÓA LOCAL STORAGE ==================
       sessionStorage.removeItem("buyNow");
+      sessionStorage.removeItem("checkoutData");
       localStorage.removeItem("cart");
 
       navigate("/ordersuccess");
     } catch (error) {
-      console.error(error);
-      messageApi.error("Đặt hàng thất bại");
+      console.error("Order error:", error);
+      messageApi.error("Đặt hàng thất bại: " + (error.response?.data?.message || error.message));
     } finally {
       setLoading(false);
     }
   };
+
   return (
-    <div style={{ padding: 24, maxWidth: 900, margin: "0 auto" }}>
+    <div style={{ padding: 24, maxWidth: 1200, margin: "0 auto" }}>
       {contextHolder}
-      <Card bordered={false} style={{ borderRadius: 16 }}>
-        <h2 style={{ marginBottom: 20 }}>Thanh toán đơn hàng</h2>
+      <Card bordered={false} style={{ borderRadius: 16, boxShadow: '0 2px 8px rgba(0,0,0,0.1)' }}>
+        <h2 style={{ marginBottom: 20, color: '#1890ff' }}>Thanh toán đơn hàng</h2>
 
         {userLoading ? (
           <div style={{ textAlign: "center", padding: 40 }}>
             <Spin size="large" />
           </div>
         ) : (
-          <Row gutter={[24, 24]}>
+          <Row gutter={[32, 24]}>
             {/* FORM THANH TOÁN */}
-            <Col xs={24} md={14}>
-              <Card title="Thông tin giao hàng" bordered={false}>
+            <Col xs={24} lg={14}>
+              <Card 
+                title="Thông tin giao hàng" 
+                bordered={false}
+                style={{ marginBottom: 24 }}
+              >
                 <Form
                   form={form}
                   layout="vertical"
                   onFinish={handleSubmit}
-                  initialValues={{ paymentMethod: "COD" }} // mặc định COD
+                  initialValues={{ paymentMethod: "COD" }}
                 >
                   <Form.Item
                     label="Họ và tên"
@@ -241,7 +286,7 @@ const Checkout = () => {
                       { required: true, message: "Vui lòng nhập họ tên" },
                     ]}
                   >
-                    <Input placeholder="Nguyễn Văn A" />
+                    <Input placeholder="Nguyễn Văn A" size="large" />
                   </Form.Item>
 
                   <Form.Item
@@ -258,7 +303,7 @@ const Checkout = () => {
                       },
                     ]}
                   >
-                    <Input placeholder="0123456789" />
+                    <Input placeholder="0123456789" size="large" />
                   </Form.Item>
 
                   <Form.Item
@@ -268,7 +313,7 @@ const Checkout = () => {
                       { required: true, message: "Vui lòng nhập địa chỉ" },
                     ]}
                   >
-                    <Input.TextArea rows={3} />
+                    <Input.TextArea rows={3} size="large" placeholder="Số nhà, đường, phường/xã, quận/huyện, tỉnh/thành phố" />
                   </Form.Item>
 
                   <Form.Item
@@ -277,7 +322,7 @@ const Checkout = () => {
                     initialValue="COD"
                   >
                     <Radio.Group disabled>
-                      <Radio value="COD">Ship COD</Radio>
+                      <Radio value="COD">Thanh toán khi nhận hàng (COD)</Radio>
                     </Radio.Group>
                   </Form.Item>
 
@@ -285,9 +330,16 @@ const Checkout = () => {
                     type="primary"
                     htmlType="submit"
                     loading={loading}
-                    style={{ background: "#ee4d2d", borderColor: "#ee4d2d" }}
+                    style={{ 
+                      background: "#52c41a", 
+                      borderColor: "#52c41a",
+                      height: 50,
+                      fontSize: 16,
+                      fontWeight: 'bold'
+                    }}
                     block
                     size="large"
+                    icon={<CheckCircleOutlined />}
                   >
                     Xác nhận đặt hàng
                   </Button>
@@ -296,46 +348,99 @@ const Checkout = () => {
             </Col>
 
             {/* TÓM TẮT ĐƠN HÀNG */}
-            <Col xs={24} md={10}>
-              <Card title="Tóm tắt đơn hàng" bordered={false}>
-                {checkoutItems.map((item, idx) => (
-                  <div key={idx} style={{ marginBottom: 15 }}>
-                    <strong>{item.name}</strong>
-                    <div style={{ color: "#666" }}>
-                      Màu: {item.color} | Size: {item.size}
+            <Col xs={24} lg={10}>
+              <Card 
+                title="Tóm tắt đơn hàng" 
+                bordered={false}
+                style={{ position: 'sticky', top: 20 }}
+              >
+                {/* Danh sách sản phẩm */}
+                <div style={{ maxHeight: 300, overflowY: 'auto', marginBottom: 20 }}>
+                  {checkoutData.items.map((item, idx) => (
+                    <div key={idx} style={{ marginBottom: 15, paddingBottom: 15, borderBottom: '1px solid #f0f0f0' }}>
+                      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
+                        <div style={{ flex: 1 }}>
+                          <strong style={{ fontSize: 15 }}>{item.name}</strong>
+                          <div style={{ color: "#666", fontSize: 13, marginTop: 4 }}>
+                            {item.color && <span>Màu: {item.color} </span>}
+                            {item.size && <span>| Size: {item.size}</span>}
+                          </div>
+                          <div style={{ fontSize: 13, marginTop: 2 }}>Số lượng: {item.quantity}</div>
+                        </div>
+                        <div style={{ textAlign: 'right', marginLeft: 10 }}>
+                          <div style={{ fontWeight: 'bold', color: '#ff4d4f', fontSize: 15 }}>
+                            {formatPrice(item.giaBan)}
+                          </div>
+                          <div style={{ fontSize: 12, color: '#666' }}>
+                            {formatPrice(item.giaBan * item.quantity)}
+                          </div>
+                        </div>
+                      </div>
                     </div>
-                    <div>Số lượng: {item.quantity}</div>
-                    <div>Đơn giá: {item.giaBan.toLocaleString()} ₫</div>
-                    <Divider />
-                  </div>
-                ))}
-
-                <div
-                  style={{
-                    display: "flex",
-                    justifyContent: "space-between",
-                    fontSize: 16,
-                  }}
-                >
-                  <span>Vận chuyển</span>
-                  <span>
-                    {shipping === 0
-                      ? "Miễn phí"
-                      : shipping.toLocaleString() + " ₫"}
-                  </span>
+                  ))}
                 </div>
 
-                <div
-                  style={{
-                    display: "flex",
-                    justifyContent: "space-between",
-                    fontSize: 18,
-                  }}
-                >
-                  <strong>Tổng tiền</strong>
-                  <strong style={{ color: "#ee4d2d" }}>
-                    {totalAmount.toLocaleString()} ₫
-                  </strong>
+                {/* Chi tiết giá */}
+                <div style={{ borderTop: '1px solid #f0f0f0', paddingTop: 20 }}>
+                  <div style={{ display: "flex", justifyContent: "space-between", marginBottom: 12 }}>
+                    <span>Tạm tính</span>
+                    <span style={{ fontWeight: 'bold' }}>{formatPrice(checkoutData.subtotal)}</span>
+                  </div>
+
+                  {/* Hiển thị discount nếu có */}
+                  {checkoutData.discountAmount > 0 && checkoutData.promotion && (
+                    <div style={{ display: "flex", justifyContent: "space-between", marginBottom: 12 }}>
+                      <span>
+                        <Space>
+                          <GiftOutlined style={{ color: '#52c41a' }} />
+                          <span>Giảm giá ({checkoutData.promotion.code})</span>
+                        </Space>
+                      </span>
+                      <span style={{ color: '#52c41a', fontWeight: 'bold' }}>
+                        -{formatPrice(checkoutData.discountAmount)}
+                      </span>
+                    </div>
+                  )}
+
+                  <div style={{ display: "flex", justifyContent: "space-between", marginBottom: 12 }}>
+                    <span>Phí vận chuyển</span>
+                    <span style={{ fontWeight: checkoutData.shipping === 0 ? 'bold' : 'normal' }}>
+                      {checkoutData.shipping === 0 ? (
+                        <span style={{ color: '#52c41a', fontWeight: 'bold' }}>MIỄN PHÍ</span>
+                      ) : (
+                        formatPrice(checkoutData.shipping)
+                      )}
+                    </span>
+                  </div>
+
+                  <Divider style={{ margin: '16px 0' }} />
+
+                  <div style={{ display: "flex", justifyContent: "space-between", fontSize: 20 }}>
+                    <strong>Tổng tiền</strong>
+                    <strong style={{ color: "#ff4d4f", fontSize: 22 }}>
+                      {formatPrice(checkoutData.total)}
+                    </strong>
+                  </div>
+
+                  {/* Thông tin promotion */}
+                  {checkoutData.promotion && (
+                    <div style={{ 
+                      marginTop: 16, 
+                      padding: 12, 
+                      backgroundColor: '#f6ffed', 
+                      borderRadius: 6,
+                      border: '1px solid #b7eb8f'
+                    }}>
+                      <Space align="center">
+                        <CheckCircleOutlined style={{ color: '#52c41a' }} />
+                        <span>Mã khuyến mãi đã áp dụng:</span>
+                        <Tag color="red" style={{ fontSize: 12 }}>
+                          {checkoutData.promotion.discountDisplay}
+                        </Tag>
+                        <span style={{ fontWeight: 'bold', fontSize: 12 }}>{checkoutData.promotion.code}</span>
+                      </Space>
+                    </div>
+                  )}
                 </div>
               </Card>
             </Col>
