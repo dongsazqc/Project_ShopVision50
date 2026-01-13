@@ -48,6 +48,8 @@ using ShopVision50.API.Services.OrderService_FD;
 using ShopVision50.API.LlamaAiService;
 using ShopVision50.API.Services.ChatAiService_FD;
 using ShopVision50.API.Repositories.ChatAiRepository_FD;
+using ShopVision50.API.Repositories.ComentRepo_FD;
+using ShopVision50.API.Services.CommentService_FD;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -161,6 +163,10 @@ var builder = WebApplication.CreateBuilder(args);
     
     builder.Services.AddScoped<IChatAiService, ChatAiService>();
     builder.Services.AddScoped<IChatAiRepository, ChatAiRepository>();
+
+
+    builder.Services.AddScoped<ICommentRepository, CommentRepository>();
+    builder.Services.AddScoped<ICommentService, CommentService>();
 
 
 
