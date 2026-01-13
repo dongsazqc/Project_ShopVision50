@@ -409,8 +409,10 @@ const ProductDetail = () => {
                 imageStyle={{ height: 120 }}
                 description={
                     <span style={{ fontSize: 16, color: "#666" }}>
-                        Sản phẩm không tồn tại hoặc đã bị xóa
-                    </span>
+
+                Đơn hàng của bạn đã được ghi nhận. Người bán sẽ tiến hành xác nhận trong thời gian sớm nhất.                    
+                        
+                                     </span>
                 }
             >
                 <Button 

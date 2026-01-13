@@ -1132,3 +1132,110 @@
     background-size: 200px 100%;
     animation: shimmer 1.5s infinite;
 }
+
+
+/* Rating Statistic trong product-stats */
+.rating-statistic {
+    display: flex;
+    align-items: center;
+}
+
+.rating-value {
+    font-size: 18px;
+    font-weight: 700;
+    line-height: 1;
+}
+
+.rating-count-text {
+    font-size: 11px;
+    color: #666;
+    margin-top: 2px;
+}
+
+/* Phần header với rating nổi bật */
+.product-header-with-rating {
+    margin-bottom: 24px;
+}
+
+.header-main {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 16px;
+}
+
+.product-title {
+    font-size: 28px;
+    font-weight: 700;
+    color: #1a1a1a;
+    margin: 0;
+    flex: 1;
+    line-height: 1.4;
+}
+
+.header-actions {
+    margin-left: 16px;
+}
+
+/* Rating nổi bật dưới tên sản phẩm */
+.prominent-rating {
+    margin-top: 16px;
+}
+
+.rating-highlight-card {
+    border-radius: 12px !important;
+    background: linear-gradient(135deg, #fff8e1 0%, #fff3e0 100%);
+    border: 2px solid #ffeaa7;
+    box-shadow: 0 4px 20px rgba(255, 193, 7, 0.15);
+    animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.01); }
+    100% { transform: scale(1); }
+}
+
+.rating-big-number {
+    font-size: 42px;
+    font-weight: 800;
+    line-height: 1;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
+}
+
+.rating-info {
+    font-size: 14px;
+    color: #666;
+    margin-top: 4px;
+}
+
+.view-reviews-btn {
+    font-weight: 600;
+    color: #1890ff;
+}
+
+.view-reviews-btn:hover {
+    color: #40a9ff;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .header-main {
+        flex-direction: column;
+        gap: 12px;
+    }
+    
+    .header-actions {
+        margin-left: 0;
+        width: 100%;
+        justify-content: flex-start;
+    }
+    
+    .product-title {
+        font-size: 24px;
+    }
+    
+    .rating-big-number {
+        font-size: 32px;
+    }
+}

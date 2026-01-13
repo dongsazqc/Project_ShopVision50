@@ -37,6 +37,7 @@ namespace ShopVision50.Infrastructure
         public DbSet<ReturnItem> ReturnItems { get; set; } = null!;
         public DbSet<UserPromotion> UserPromotions { get; set; }
         public DbSet<CHATAI> ChatAis { get; set; }
+        public DbSet<Comment> Comments { get; set; } = null!;
 
 
     }

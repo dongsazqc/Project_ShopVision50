@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using ShopVision50.Infrastructure;
 
@@ -10,9 +11,11 @@ using ShopVision50.Infrastructure;
 namespace ShopVision50.Infrastructure.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260113103427_updatecoment1")]
+    partial class updatecoment1
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -58,6 +61,9 @@ namespace ShopVision50.Infrastructure.Migrations
                     b.Property<int>("ProductId")
                         .HasColumnType("int");
 
+                    b.Property<int>("ProductVariantId")
+                        .HasColumnType("int");
+
                     b.Property<int?>("Rating")
                         .HasColumnType("int");
 
@@ -67,6 +73,8 @@ namespace ShopVision50.Infrastructure.Migrations
                     b.HasKey("CommentId");
 
                     b.HasIndex("ProductId");
+
+                    b.HasIndex("ProductVariantId");
 
                     b.HasIndex("UserId");
 
@@ -705,6 +713,12 @@ namespace ShopVision50.Infrastructure.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("Shop_Db.Models.ProductVariant", "ProductVariant")
+                        .WithMany()
+                        .HasForeignKey("ProductVariantId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("Shop_Db.Models.User", "User")
                         .WithMany()
                         .HasForeignKey("UserId")
@@ -712,6 +726,8 @@ namespace ShopVision50.Infrastructure.Migrations
                         .IsRequired();
 
                     b.Navigation("Product");
+
+                    b.Navigation("ProductVariant");
 
                     b.Navigation("User");
                 });

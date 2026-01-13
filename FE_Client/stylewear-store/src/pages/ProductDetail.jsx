@@ -99,16 +99,41 @@ const ProductDetail = () => {
     const [commentContent, setCommentContent] = useState("");
     const [commentRating, setCommentRating] = useState(0);
     const [submittingComment, setSubmittingComment] = useState(false);
+    
+    // Rating từ API thực tế
+    const [averageRating, setAverageRating] = useState(0);
+    const [totalReviews, setTotalReviews] = useState(0);
+    const [ratingDistribution, setRatingDistribution] = useState({ 5: 0, 4: 0, 3: 0, 2: 0, 1: 0 });
 
-    // Mock data for related products
-    const relatedProducts = Array(4).fill().map((_, i) => ({
-        id: i + 1,
-        name: `Sản phẩm tương tự ${i + 1}`,
-        price: Math.floor(Math.random() * 500000) + 100000,
-        discount: Math.random() > 0.5 ? Math.floor(Math.random() * 30) + 10 : 0,
-        image: `https://picsum.photos/200/200?random=${i}`,
-        rating: Math.random() * 2 + 3
-    }));
+    // Tính toán rating từ API
+    const calculateRatingFromAPI = (commentsData) => {
+        if (!commentsData || commentsData.length === 0) {
+            return {
+                average: 0,
+                total: 0,
+                distribution: { 5: 0, 4: 0, 3: 0, 2: 0, 1: 0 }
+            };
+        }
+
+        const total = commentsData.length;
+        const sum = commentsData.reduce((acc, comment) => acc + comment.rating, 0);
+        const average = total > 0 ? (sum / total).toFixed(1) : 0;
+        
+        // Tính phân bố rating
+        const distribution = { 5: 0, 4: 0, 3: 0, 2: 0, 1: 0 };
+        commentsData.forEach(comment => {
+            const rating = Math.round(comment.rating);
+            if (distribution.hasOwnProperty(rating)) {
+                distribution[rating] += 1;
+            }
+        });
+
+        return {
+            average: parseFloat(average),
+            total: total,
+            distribution: distribution
+        };
+    };
 
     useEffect(() => {
         const fetchProduct = async () => {
@@ -135,8 +160,6 @@ const ProductDetail = () => {
                     images,
                     category: "Thời trang",
                     brand: "Premium Brand",
-                    rating: 4.7,
-                    reviewCount: 128,
                     tags: ["HOT", "Freeship", "Mới", "Ưu đãi", "Bán chạy"]
                 });
                 setVariants(rawVariants);
@@ -155,23 +178,21 @@ const ProductDetail = () => {
             try {
                 setCommentLoading(true);
                 const res = await api.get(`/comments/product/${id}`);
-                // Mock additional data for demo
-                const mockComments = res.data || Array(5).fill().map((_, i) => ({
-                    commentId: i + 1,
-                    content: `Sản phẩm rất tốt, chất lượng vượt mong đợi! Tôi sẽ mua tiếp vào lần sau.`,
-                    rating: Math.floor(Math.random() * 3) + 3,
-                    user: {
-                        fullName: `Khách hàng ${i + 1}`,
-                        avatar: `https://i.pravatar.cc/150?img=${i + 10}`
-                    },
-                    createdDate: new Date(Date.now() - Math.random() * 86400000 * 30).toISOString(),
-                    likes: Math.floor(Math.random() * 50),
-                    isVerified: Math.random() > 0.5
-                }));
-                setComments(mockComments);
+                const commentsData = res.data || [];
+                setComments(commentsData);
+                
+                // Tính toán rating từ API thực tế
+                const ratingData = calculateRatingFromAPI(commentsData);
+                setAverageRating(ratingData.average);
+                setTotalReviews(ratingData.total);
+                setRatingDistribution(ratingData.distribution);
+                
             } catch (error) {
                 console.error(error);
                 message.error("Không tải được bình luận");
+                setAverageRating(0);
+                setTotalReviews(0);
+                setRatingDistribution({ 5: 0, 4: 0, 3: 0, 2: 0, 1: 0 });
             } finally {
                 setCommentLoading(false);
             }
@@ -301,7 +322,15 @@ const ProductDetail = () => {
 
             // Tải lại comment mới
             const res = await api.get(`/comments/product/${product.productId}`);
-            setComments(res.data || []);
+            const commentsData = res.data || [];
+            setComments(commentsData);
+            
+            // Cập nhật rating từ API mới
+            const ratingData = calculateRatingFromAPI(commentsData);
+            setAverageRating(ratingData.average);
+            setTotalReviews(ratingData.total);
+            setRatingDistribution(ratingData.distribution);
+            
         } catch (error) {
             console.error(error);
             message.error("Gửi bình luận thất bại");
@@ -321,6 +350,14 @@ const ProductDetail = () => {
     const getDiscountPercentage = () => {
         if (!activeVariant || maxPrice === minPrice) return 0;
         return Math.round(((maxPrice - activeVariant.giaBan) / maxPrice) * 100);
+    };
+
+    // Hàm lấy màu rating dựa trên điểm số
+    const getRatingColor = (rating) => {
+        if (rating >= 4) return '#52c41a';
+        if (rating >= 3) return '#faad14';
+        if (rating >= 2) return '#fa8c16';
+        return '#f5222d';
     };
 
     if (loading) return (
@@ -469,12 +506,22 @@ const ProductDetail = () => {
                                     />
                                 </Col>
                                 <Col span={8}>
-                                    <Statistic
-                                        title="Đánh giá"
-                                        value={product.rating || 4.5}
-                                        prefix={<StarFilled />}
-                                        valueStyle={{ fontSize: 16, color: '#faad14' }}
-                                    />
+                                    {/* RATING TỪ API THỰC TẾ */}
+                                    <div className="rating-statistic">
+                                        <StarFilled style={{ 
+                                            color: getRatingColor(averageRating), 
+                                            fontSize: 18,
+                                            marginRight: 4
+                                        }} />
+                                        <div>
+                                            <div className="rating-value" style={{ color: getRatingColor(averageRating) }}>
+                                                {averageRating > 0 ? averageRating : "0.0"}
+                                            </div>
+                                            <div className="rating-count-text">
+                                                ({totalReviews} đánh giá)
+                                            </div>
+                                        </div>
+                                    </div>
                                 </Col>
                             </Row>
                         </div>
@@ -483,25 +530,67 @@ const ProductDetail = () => {
 
                 <Col xs={24} lg={14}>
                     <Card className="product-info-card" bodyStyle={{ padding: 32 }}>
-                        <div className="product-header">
-                            <h1 className="product-title">{product.name}</h1>
-                            <Space>
-                                <Button 
-                                    type="text" 
-                                    icon={<ShareAltOutlined />}
-                                    className="share-btn"
-                                >
-                                    Chia sẻ
-                                </Button>
-                                <Button 
-                                    type="text" 
-                                    icon={isWishlisted ? <HeartFilled /> : <HeartOutlined />}
-                                    className="wishlist-btn-large"
-                                    onClick={() => setIsWishlisted(!isWishlisted)}
-                                >
-                                    {isWishlisted ? 'Đã thích' : 'Yêu thích'}
-                                </Button>
-                            </Space>
+                        {/* PHẦN HEADER VỚI RATING NỔI BẬT Ở TRÊN CÙNG */}
+                        <div className="product-header-with-rating">
+                            <div className="header-main">
+                                <h1 className="product-title">{product.name}</h1>
+                                <Space className="header-actions">
+                                    <Button 
+                                        type="text" 
+                                        icon={<ShareAltOutlined />}
+                                        className="share-btn"
+                                    >
+                                        Chia sẻ
+                                    </Button>
+                                    <Button 
+                                        type="text" 
+                                        icon={isWishlisted ? <HeartFilled /> : <HeartOutlined />}
+                                        className="wishlist-btn-large"
+                                        onClick={() => setIsWishlisted(!isWishlisted)}
+                                    >
+                                        {isWishlisted ? 'Đã thích' : 'Yêu thích'}
+                                    </Button>
+                                </Space>
+                            </div>
+                            
+                            {/* RATING LỚN NỔI BẬT Ở DƯỚI TÊN SẢN PHẨM */}
+                            {totalReviews > 0 && (
+                                <div className="prominent-rating">
+                                    <Card className="rating-highlight-card" bodyStyle={{ padding: '12px 16px' }}>
+                                        <Row align="middle" gutter={[16, 0]}>
+                                            <Col>
+                                                <div className="rating-big-number" style={{ color: getRatingColor(averageRating) }}>
+                                                    {averageRating}
+                                                </div>
+                                            </Col>
+                                            <Col flex="auto">
+                                                <Space direction="vertical" size={0}>
+                                                    <Rate 
+                                                        disabled 
+                                                        value={averageRating} 
+                                                        style={{ 
+                                                            fontSize: 18, 
+                                                            color: getRatingColor(averageRating) 
+                                                        }} 
+                                                    />
+                                                    <div className="rating-info">
+                                                        {totalReviews} đánh giá • {soldCount} đã bán
+                                                    </div>
+                                                </Space>
+                                            </Col>
+                                            <Col>
+                                                <Button 
+                                                    type="link" 
+                                                    onClick={() => setActiveTab("reviews")}
+                                                    className="view-reviews-btn"
+                                                >
+                                                    Xem đánh giá
+                                                </Button>
+                                            </Col>
+                                        </Row>
+                                    </Card>
+                                </div>
+                            )}
                         </div>
 
                         <div className="product-meta">
@@ -736,27 +825,37 @@ const ProductDetail = () => {
                     <TabPane 
                         tab={
                             <span>
-                                <StarFilled /> Đánh giá ({comments.length})
+                                <StarFilled /> Đánh giá ({totalReviews})
                             </span>
                         } 
                         key="reviews"
                     >
                         <div className="reviews-section">
-                            {/* Rating Summary */}
+                            {/* Rating Summary từ API thực */}
                             <div className="rating-summary">
                                 <div className="overall-rating">
-                                    <div className="rating-number">{product.rating || 4.7}</div>
-                                    <Rate disabled defaultValue={product.rating || 4.7} />
-                                    <div className="rating-count">{comments.length} đánh giá</div>
+                                    <div className="rating-number" style={{ color: getRatingColor(averageRating) }}>
+                                        {averageRating}
+                                    </div>
+                                    <Rate 
+                                        disabled 
+                                        value={averageRating} 
+                                        style={{ color: getRatingColor(averageRating) }}
+                                    />
+                                    <div className="rating-count">{totalReviews} đánh giá</div>
                                 </div>
                                 <div className="rating-bars">
                                     {[5,4,3,2,1].map(star => {
-                                        const count = comments.filter(c => Math.round(c.rating) === star).length;
-                                        const percent = comments.length ? (count / comments.length) * 100 : 0;
+                                        const count = ratingDistribution[star];
+                                        const percent = totalReviews > 0 ? (count / totalReviews) * 100 : 0;
                                         return (
                                             <div key={star} className="rating-bar-item">
                                                 <span>{star} sao</span>
-                                                <Progress percent={percent} size="small" />
+                                                <Progress 
+                                                    percent={percent} 
+                                                    size="small"
+                                                    strokeColor={getRatingColor(star)}
+                                                />
                                                 <span>{count}</span>
                                             </div>
                                         );
@@ -792,9 +891,9 @@ const ProductDetail = () => {
                                 </Button>
                             </Card>
 
-                            {/* Comments List */}
+                            {/* Comments List từ API thực */}
                             <div className="comments-list">
-                                <h3>Đánh giá từ khách hàng</h3>
+                                <h3>Đánh giá từ khách hàng ({totalReviews})</h3>
                                 {commentLoading ? (
                                     <div style={{ textAlign: 'center', padding: 40 }}>
                                         <Spin size="large" />
@@ -813,16 +912,18 @@ const ProductDetail = () => {
                                                 <List.Item.Meta
                                                     avatar={
                                                         <Avatar 
-                                                            src={item.user?.avatar} 
                                                             icon={<UserOutlined />}
                                                             size={48}
+                                                            style={{ 
+                                                                backgroundColor: `#${Math.floor(Math.random()*16777215).toString(16)}`
+                                                            }}
                                                         />
                                                     }
                                                     title={
                                                         <div className="comment-header">
                                                             <div className="comment-user">
                                                                 <strong>{item.user?.fullName || "Khách hàng"}</strong>
-                                                                {item.isVerified && (
+                                                                {item.user?.userId && (
                                                                     <Tag color="green" icon={<CheckCircleFilled />}>
                                                                         Đã mua hàng
                                                                     </Tag>
@@ -831,8 +932,8 @@ const ProductDetail = () => {
                                                             <div className="comment-rating">
                                                                 <Rate 
                                                                     disabled 
-                                                                    defaultValue={item.rating} 
-                                                                    style={{ fontSize: 14 }}
+                                                                    value={item.rating} 
+                                                                    style={{ fontSize: 14, color: getRatingColor(item.rating) }}
                                                                 />
                                                                 <span className="comment-date">
                                                                     <CalendarOutlined /> 
@@ -844,17 +945,15 @@ const ProductDetail = () => {
                                                     description={
                                                         <div className="comment-content">
                                                             {item.content}
-                                                            {item.likes > 0 && (
-                                                                <div className="comment-actions">
-                                                                    <Button 
-                                                                        type="text" 
-                                                                        icon={<HeartOutlined />}
-                                                                        size="small"
-                                                                    >
-                                                                        Hữu ích ({item.likes})
-                                                                    </Button>
-                                                                </div>
-                                                            )}
+                                                            <div className="comment-actions">
+                                                                <Button 
+                                                                    type="text" 
+                                                                    icon={<ThunderboltOutlined />}
+                                                                    size="small"
+                                                                >
+                                                                    Hữu ích
+                                                                </Button>
+                                                            </div>
                                                         </div>
                                                     }
                                                 />
@@ -902,61 +1001,6 @@ const ProductDetail = () => {
                     </TabPane>
                 </Tabs>
             </Card>
-
-            {/* Related Products */}
-            <div className="related-products-section">
-                <div className="section-header">
-                    <h2>
-                        <TrophyOutlined /> Sản phẩm tương tự
-                    </h2>
-                    <Button type="link" onClick={() => navigate('/products')}>
-                        Xem tất cả <ArrowRightOutlined />
-                    </Button>
-                </div>
-                <Row gutter={[16, 16]}>
-                    {relatedProducts.map((item) => (
-                        <Col xs={12} sm={8} md={6} key={item.id}>
-                            <Card
-                                hoverable
-                                className="related-product-card"
-                                cover={
-                                    <Image
-                                        src={item.image}
-                                        alt={item.name}
-                                        preview={false}
-                                        height={200}
-                                        style={{ objectFit: 'cover' }}
-                                    />
-                                }
-                                onClick={() => navigate(`/product/${item.id}`)}
-                            >
-                                <div className="related-product-info">
-                                    <div className="related-product-name">{item.name}</div>
-                                    <div className="related-product-price">
-                                        <span className="current-price">
-                                            {item.price.toLocaleString('vi-VN')} ₫
-                                        </span>
-                                        {item.discount > 0 && (
-                                            <span className="original-price">
-                                                {Math.round(item.price * (100 + item.discount) / 100).toLocaleString('vi-VN')} ₫
-                                            </span>
-                                        )}
-                                    </div>
-                                    {item.discount > 0 && (
-                                        <Tag color="red" className="discount-tag">
-                                            -{item.discount}%
-                                        </Tag>
-                                    )}
-                                    <div className="related-product-rating">
-                                        <Rate disabled defaultValue={item.rating} style={{ fontSize: 12 }} />
-                                        <span>({Math.floor(Math.random() * 100)})</span>
-                                    </div>
-                                </div>
-                            </Card>
-                        </Col>
-                    ))}
-                </Row>
-            </div>
 
             {/* Success Modal */}
             <Modal

@@ -640,8 +640,8 @@ const Login = () => {
                 }}
                 title={
                     <div style={{ display: "flex", alignItems: "center", gap: "12px" }}>
-                        <SafetyCertificateOutlined style={{ color: "#6366f1", fontSize: "20px" }} />
-                        <span style={{ fontSize: "1.25rem", fontWeight: 600 }}>
+                        <SafetyCertificateOutlined style={{ color: "#ffffff", fontSize: "20px" }} />
+                        <span style={{ fontSize: "1.25rem", fontWeight: 600 , color: "white"}}>
                             Khôi phục mật khẩu
                         </span>
                     </div>
@@ -666,7 +666,7 @@ const Login = () => {
                 <Steps
                     current={step - 1}
                     size="small"
-                    style={{ marginBottom: 30 }}
+                    style={{ marginBottom: 30}}
                     items={[
                         {
                             title: 'Email',
@@ -992,6 +992,7 @@ const Login = () => {
                     background: transparent !important;
                     backdrop-filter: blur(20px);
                     -webkit-backdrop-filter: blur(20px);
+                    color: "white";
                     border: 1px solid rgba(255, 255, 255, 0.1);
                 }
                 
